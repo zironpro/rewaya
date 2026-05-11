@@ -63,10 +63,10 @@ export default function CategoryBento() {
                 alt={cat.name}
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-              <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
+              <div className="absolute inset-0 bg-white/10 group-hover:bg-black/40 transition-colors duration-500" />
+              <div className="absolute inset-0 flex flex-col justify-center items-center text-secondary group-hover:text-white transition-colors duration-500">
                 <h3 className="text-4xl md:text-5xl font-serif font-black uppercase tracking-tighter mb-4">{cat.name}</h3>
-                <span className="nav-link text-white border-b border-white pb-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="nav-link border-b border-current pb-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   Discover More
                 </span>
               </div>

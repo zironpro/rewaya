@@ -109,7 +109,7 @@ export default function ProductDetailPage() {
                   </button>
                 </div>
 
-                <button className="w-full py-6 bg-secondary text-white text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-primary transition-all duration-500 shadow-xl shadow-secondary/10">
+                <button className="w-full py-6 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-secondary hover:scale-[1.02] hover:shadow-2xl transition-all duration-500 shadow-lg active:scale-[0.98]">
                   Add to Collection
                 </button>
               </div>
