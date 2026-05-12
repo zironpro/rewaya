@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Heart, Plus, Search } from "lucide-react";
+import { Heart, Plus, Eye } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { 
@@ -16,6 +16,15 @@ import {
 
 import { useSetAtom } from "jotai";
 import { cartAtom, CartItem } from "@/lib/store";
+
+export interface BookProps {
+  id: number | string;
+  title: string;
+  author: string;
+  price: number;
+  image: string;
+  category: string;
+}
 
 export default function BookCard({ id, title, author, price, image, category }: BookProps) {
   const setCart = useSetAtom(cartAtom);
@@ -58,7 +67,7 @@ export default function BookCard({ id, title, author, price, image, category }: 
             </Button>
             <DialogTrigger asChild>
               <Button variant="ghost" size="icon" className="bg-white/80 backdrop-blur-sm rounded-full h-9 w-9">
-                <Search size={16} strokeWidth={1.5} />
+                <Eye size={16} strokeWidth={1.5} />
               </Button>
             </DialogTrigger>
           </div>
