@@ -171,7 +171,7 @@ export default function Home() {
 								className="h-full w-full object-cover transition-transform duration-[3s] group-hover:scale-110"
 								src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 							/>
-							<div className="absolute inset-0 flex flex-col items-start justify-center bg-gradient-to-r from-secondary/80 to-transparent px-12 md:px-24">
+							<div className="absolute inset-0 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 to-transparent px-12 md:px-24">
 								<span className="mb-6 block font-bold text-[10px] text-white uppercase tracking-[0.4em]">
 									Special Release
 								</span>

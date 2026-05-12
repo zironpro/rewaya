@@ -119,10 +119,10 @@ export default function ProductStrip({
 				className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto pb-8"
 				ref={scrollRef}
 			>
-				{books.map((book) => (
+				{books.map((book, i) => (
 					<div
 						className="min-w-[240px] snap-start md:min-w-[280px]"
-						key={book.id}
+						key={`${book.id}-${Number(i + 1)}`}
 					>
 						<BookCard {...book} />
 					</div>
