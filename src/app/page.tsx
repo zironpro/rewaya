@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategoryBento from "@/components/CategoryBento";
@@ -39,12 +41,18 @@ const featuredBooks = [
   }
 ];
 
+import { motion } from "framer-motion";
+
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
 
-      <main>
+      <motion.main
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.5 }}
+      >
         <Hero />
 
         <section id="shop" className="py-24 container mx-auto px-6">
@@ -87,14 +95,14 @@ export default function Home() {
                   placeholder="EMAIL ADDRESS"
                   className="w-full px-0 py-4 border-b border-black focus:outline-none text-[10px] tracking-widest font-bold placeholder:text-stone-300"
                 />
-                <button className="w-full py-4 bg-black text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-stone-800 transition-colors">
+                <button className="w-full py-4 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-primary-dark transition-colors">
                   Join the Circle
                 </button>
               </div>
             </div>
           </div>
         </section>
-      </main>
+      </motion.main>
 
       <Footer />
     </div>

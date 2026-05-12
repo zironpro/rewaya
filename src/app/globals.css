@@ -77,3 +77,21 @@ h1, h2, h3, h4, h5, h6 {
 .book-shadow {
   box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2);
 }
+
+/* Custom Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
