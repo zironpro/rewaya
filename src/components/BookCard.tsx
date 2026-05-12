@@ -17,6 +17,15 @@ import {
 import { useSetAtom } from "jotai";
 import { cartAtom, CartItem } from "@/lib/store";
 
+interface BookProps {
+  id: number;
+  title: string;
+  author: string;
+  price: number;
+  image: string;
+  category: string;
+}
+
 export default function BookCard({ id, title, author, price, image, category }: BookProps) {
   const setCart = useSetAtom(cartAtom);
 
