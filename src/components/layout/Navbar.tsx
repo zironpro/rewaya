@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -93,11 +94,13 @@ export function Navbar() {
 				<div className="h-20 border-stone-100 border-b">
 					<div className="container mx-auto flex h-full items-center gap-4 px-6 md:gap-8">
 						{/* Logo */}
-						<Link className="flex flex-shrink-0 items-center gap-3" href="/">
-							<img
-								alt="Rewaya"
-								className="h-10 w-auto object-contain md:h-12"
-								src="/Al%20Rewaya%20Book%20World%20Approved%20Logo%201%20-%20Copy.png"
+						<Link className="flex shrink-0 items-center gap-3" href="/">
+							<Image
+								alt="Al Rewaya Logo"
+								className="h-16 w-auto object-contain"
+								height={64}
+								src="/logo.png"
+								width={260}
 							/>
 							<div className="hidden flex-col leading-none xl:flex">
 								<span className="font-bold text-secondary text-xl uppercase tracking-tighter">
@@ -110,7 +113,7 @@ export function Navbar() {
 						</Link>
 
 						{/* Reduced Noon-style Search Bar */}
-						<div className="relative mx-auto hidden max-w-xl flex-grow md:block">
+						<div className="relative mx-auto hidden max-w-xl grow md:block">
 							<div className="group relative">
 								<Search
 									className="absolute top-1/2 left-4 -translate-y-1/2 text-stone-400 transition-colors group-focus-within:text-primary"

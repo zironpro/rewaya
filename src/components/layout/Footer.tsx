@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Mail, MapPin, Phone } from "lucide-react";
 
 // Brand SVG components for social media
@@ -55,10 +57,12 @@ export function Footer() {
 				<div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-4">
 					<div className="col-span-1 md:col-span-1">
 						<div className="mb-8">
-							<img
+							<Image
 								alt="Al Rewaya Logo"
 								className="h-16 w-auto object-contain"
-								src="/Al%20Rewaya%20Book%20World%20Approved%20Logo%201.png"
+								height={64}
+								src="/logo.png"
+								width={260}
 							/>
 						</div>
 						<p className="mb-6 text-sm leading-relaxed">
