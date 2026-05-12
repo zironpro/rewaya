@@ -48,7 +48,7 @@ const FacebookIcon = ({ size = 18 }) => (
 	</svg>
 );
 
-export default function Footer() {
+export function Footer() {
 	return (
 		<footer className="mt-20 border-stone-900 border-t bg-stone-950 py-20 text-stone-400">
 			<div className="container mx-auto px-6">

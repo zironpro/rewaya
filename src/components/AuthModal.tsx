@@ -192,7 +192,7 @@ export default function AuthModal() {
 					{view === "login" && showEmailForm && (
 						<div className="mt-6 w-full">
 							<div className="relative mb-4 flex items-center justify-center">
-								<div className="absolute h-[1px] w-full bg-stone-100" />
+								<div className="absolute h-px w-full bg-stone-100" />
 								<span className="relative bg-white px-6 font-medium text-[10px] text-stone-300 lowercase italic tracking-wider">
 									or log in with
 								</span>

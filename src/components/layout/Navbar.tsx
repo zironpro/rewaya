@@ -65,7 +65,7 @@ const searchBooks = [
 	{ id: 4, title: "Think and Grow Rich", author: "Napoleon Hill", price: 55.0 },
 ];
 
-export default function Navbar() {
+export function Navbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");

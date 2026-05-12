@@ -6,8 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { SlidersHorizontal, X } from "lucide-react";
 
 import BookCard from "@/components/BookCard";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -104,7 +102,7 @@ export default function ShopPage() {
 							key={cat}
 							variant="ghost"
 						>
-							<span className="text-[10px] tracking-[0.1em]">{cat}</span>
+							<span className="text-[10px] tracking-widest">{cat}</span>
 							<span className="text-[8px] text-stone-300 group-hover:text-black">
 								(
 								{cat === "ALL"
@@ -146,7 +144,7 @@ export default function ShopPage() {
 					<div className="flex items-center space-x-3">
 						<Checkbox id="in-stock" />
 						<label
-							className="cursor-pointer font-bold text-[10px] uppercase tracking-[0.1em]"
+							className="cursor-pointer font-bold text-[10px] uppercase tracking-widest"
 							htmlFor="in-stock"
 						>
 							In Stock
@@ -155,7 +153,7 @@ export default function ShopPage() {
 					<div className="flex items-center space-x-3">
 						<Checkbox id="pre-order" />
 						<label
-							className="cursor-pointer font-bold text-[10px] uppercase tracking-[0.1em]"
+							className="cursor-pointer font-bold text-[10px] uppercase tracking-widest"
 							htmlFor="pre-order"
 						>
 							Pre-Order
@@ -177,10 +175,8 @@ export default function ShopPage() {
 	);
 
 	return (
-		<div className="flex min-h-screen flex-col bg-white">
-			<Navbar />
-
-			<main className="flex-grow pt-32">
+		<>
+			<main className="grow pt-32">
 				{/* Header */}
 				<section className="container mx-auto mb-12 px-6 text-center">
 					<span className="mb-6 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
@@ -206,21 +202,21 @@ export default function ShopPage() {
 				<section className="container mx-auto mb-32 px-6">
 					<div className="flex flex-col gap-16 lg:flex-row">
 						{/* Sidebar Filters (Desktop Only) */}
-						<aside className="scrollbar-thin sticky top-32 hidden h-fit max-h-[calc(100vh-160px)] w-64 flex-shrink-0 space-y-12 overflow-y-auto pr-4 lg:block">
+						<aside className="scrollbar-thin sticky top-32 hidden h-fit max-h-[calc(100vh-160px)] w-64 shrink-0 space-y-12 overflow-y-auto pr-4 lg:block">
 							<FilterContent />
 						</aside>
 
 						{/* Product Grid Area */}
-						<div className="flex-grow">
+						<div className="grow">
 							<div className="mb-12 hidden items-center justify-between border-stone-100 border-b pb-4 lg:flex">
-								<p className="font-bold text-[10px] text-stone-400 uppercase tracking-[0.1em]">
+								<p className="font-bold text-[10px] text-stone-400 uppercase tracking-widest">
 									Showing {allBooks.length} Results
 								</p>
 								<div className="flex items-center gap-6">
-									<span className="font-bold text-[10px] text-stone-400 uppercase tracking-[0.1em]">
+									<span className="font-bold text-[10px] text-stone-400 uppercase tracking-widest">
 										Sort By:
 									</span>
-									<select className="cursor-pointer bg-transparent font-bold text-[10px] uppercase tracking-[0.1em] outline-none">
+									<select className="cursor-pointer bg-transparent font-bold text-[10px] uppercase tracking-widest outline-none">
 										<option>Newest First</option>
 										<option>Price: Low to High</option>
 										<option>Price: High to Low</option>
@@ -244,14 +240,14 @@ export default function ShopPage() {
 					<>
 						<motion.div
 							animate={{ opacity: 1 }}
-							className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm lg:hidden"
+							className="fixed inset-0 z-100 bg-black/40 backdrop-blur-sm lg:hidden"
 							exit={{ opacity: 0 }}
 							initial={{ opacity: 0 }}
 							onClick={() => setIsMobileFilterOpen(false)}
 						/>
 						<motion.div
 							animate={{ y: 0 }}
-							className="fixed right-0 bottom-0 left-0 z-[101] max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-8 shadow-heavy lg:hidden"
+							className="fixed right-0 bottom-0 left-0 z-101 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-8 shadow-heavy lg:hidden"
 							exit={{ y: "100%" }}
 							initial={{ y: "100%" }}
 							transition={{ type: "spring", damping: 25, stiffness: 200 }}
@@ -270,8 +266,6 @@ export default function ShopPage() {
 					</>
 				)}
 			</AnimatePresence>
-
-			<Footer />
-		</div>
+		</>
 	);
 }

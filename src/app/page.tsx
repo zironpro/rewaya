@@ -2,9 +2,7 @@
 
 import BundleSection from "@/components/BundleSection";
 import CategoryStrip from "@/components/CategoryStrip";
-import Footer from "@/components/Footer";
 import HeroCarousel from "@/components/HeroCarousel";
-import Navbar from "@/components/Navbar";
 import PolicyCards from "@/components/PolicyCards";
 import ProductStrip from "@/components/ProductStrip";
 import { Button } from "@/components/ui/button";
@@ -90,120 +88,113 @@ const allBooks = [
 
 export default function Home() {
 	return (
-		<div className="flex min-h-screen flex-col bg-white">
-			<Navbar />
+		<main className="overflow-hidden pt-20 lg:pt-32">
+			<HeroCarousel />
+			<CategoryStrip />
 
-			<main className="overflow-hidden pt-20 lg:pt-32">
-				<HeroCarousel />
-				<CategoryStrip />
+			{/* 1. RECOMMENDED FOR YOU */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+				}))}
+				subtitle="Based on your taste"
+				title="Recommended for You"
+			/>
 
-				{/* 1. RECOMMENDED FOR YOU */}
-				<ProductStrip
-					books={[...allBooks, ...allBooks].map((book, i) => ({
-						...book, 
-					}))}
-					subtitle="Based on your taste"
-					title="Recommended for You"
+			{/* 2. TODAY'S DEALS */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+				}))}
+				subtitle="Limited Time"
+				title="Today's Deals"
+			/>
+
+			{/* INTERSTITIAL BANNER 1 */}
+			<section className="relative my-16 h-[400px] overflow-hidden bg-stone-900">
+				<img
+					alt="Promotion"
+					className="h-full w-full object-cover opacity-60"
+					src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
 				/>
+				<div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
+					<h3 className="mb-6 font-serif text-3xl uppercase italic tracking-widest md:text-5xl">
+						Explore <span className="font-normal italic">Islamic</span> History
+					</h3>
+					<p className="mb-8 font-bold text-[10px] uppercase tracking-[0.4em] opacity-80">
+						Curated collection for the modern seeker
+					</p>
+					<Button
+						className="h-12 rounded-none border-white px-10 font-bold text-[10px] text-white uppercase tracking-widest transition-all hover:bg-white hover:text-black"
+						variant="outline"
+					>
+						Shop Now
+					</Button>
+				</div>
+			</section>
 
-				{/* 2. TODAY'S DEALS */}
-				<ProductStrip
-					books={[...allBooks, ...allBooks].map((book, i) => ({
-						...book, 
-					}))}
-					subtitle="Limited Time"
-					title="Today's Deals"
-				/>
+			{/* 2. NEW SELLERS */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+					badge: "new seller",
+				}))}
+				subtitle="Latest Arrivals"
+				title="New Sellers"
+			/>
 
-				{/* INTERSTITIAL BANNER 1 */}
-				<section className="relative my-16 h-[400px] overflow-hidden bg-stone-900">
-					<img
-						alt="Promotion"
-						className="h-full w-full object-cover opacity-60"
-						src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
-					/>
-					<div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-						<h3 className="mb-6 font-serif text-3xl uppercase italic tracking-widest md:text-5xl">
-							Explore <span className="font-normal italic">Islamic</span>{" "}
-							History
-						</h3>
-						<p className="mb-8 font-bold text-[10px] uppercase tracking-[0.4em] opacity-80">
-							Curated collection for the modern seeker
-						</p>
-						<Button
-							className="h-12 rounded-none border-white px-10 font-bold text-[10px] text-white uppercase tracking-widest transition-all hover:bg-white hover:text-black"
-							variant="outline"
-						>
-							Shop Now
-						</Button>
-					</div>
-				</section>
+			{/* BUNDLES SECTION */}
+			<BundleSection />
 
-				{/* 2. NEW SELLERS */}
-				<ProductStrip
-					books={[...allBooks, ...allBooks].map((book, i) => ({
-						...book, 
-						badge: "new seller",
-					}))}
-					subtitle="Latest Arrivals"
-					title="New Sellers"
-				/>
+			{/* 3. BEST SELLERS */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+					badge: "best seller",
+				}))}
+				subtitle="Top Rated"
+				title="Best Sellers"
+			/>
 
-				{/* BUNDLES SECTION */}
-				<BundleSection />
-
-				{/* 3. BEST SELLERS */}
-				<ProductStrip
-					books={[...allBooks, ...allBooks].map((book, i) => ({
-						...book, 
-						badge: "best seller",
-					}))}
-					subtitle="Top Rated"
-					title="Best Sellers"
-				/>
-
-				{/* INTERSTITIAL BANNER 2 */}
-				<section className="py-16">
-					<div className="container mx-auto px-6">
-						<div className="group relative h-[400px] overflow-hidden rounded-2xl shadow-2xl">
-							<img
-								alt="Children's Books"
-								className="h-full w-full object-cover transition-transform duration-[3s] group-hover:scale-110"
-								src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
-							/>
-							<div className="absolute inset-0 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 to-transparent px-12 md:px-24">
-								<span className="mb-6 block font-bold text-[10px] text-white uppercase tracking-[0.4em]">
-									Special Release
-								</span>
-								<h3 className="mb-10 max-w-xl font-serif text-4xl text-white uppercase leading-tight md:text-6xl">
-									Nurturing the <br />
-									<span className="font-normal text-white/60 italic">
-										Next Generation
-									</span>{" "}
-									<br /> of Seekers.
-								</h3>
-								<Button className="h-14 rounded-none border-none bg-primary px-12 font-bold text-[10px] uppercase tracking-widest transition-all hover:bg-primary-dark">
-									Shop Children&apos;s
-								</Button>
-							</div>
+			{/* INTERSTITIAL BANNER 2 */}
+			<section className="py-16">
+				<div className="container mx-auto px-6">
+					<div className="group relative h-[400px] overflow-hidden rounded-2xl shadow-2xl">
+						<img
+							alt="Children's Books"
+							className="h-full w-full object-cover transition-transform duration-[3s] group-hover:scale-110"
+							src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
+						/>
+						<div className="absolute inset-0 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 to-transparent px-12 md:px-24">
+							<span className="mb-6 block font-bold text-[10px] text-white uppercase tracking-[0.4em]">
+								Special Release
+							</span>
+							<h3 className="mb-10 max-w-xl font-serif text-4xl text-white uppercase leading-tight md:text-6xl">
+								Nurturing the <br />
+								<span className="font-normal text-white/60 italic">
+									Next Generation
+								</span>{" "}
+								<br /> of Seekers.
+							</h3>
+							<Button className="h-14 rounded-none border-none bg-primary px-12 font-bold text-[10px] uppercase tracking-widest transition-all hover:bg-primary-dark">
+								Shop Children&apos;s
+							</Button>
 						</div>
 					</div>
-				</section>
+				</div>
+			</section>
 
-				{/* 4. CHILDREN'S COLLECTION */}
-				<ProductStrip
-					books={[...allBooks, ...allBooks].map((book, i) => ({
-						...book,
-						badge: "new arrival",
-					}))}
-					subtitle="For Young Readers"
-					title="Children's Collection"
-				/>
+			{/* 4. CHILDREN'S COLLECTION */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+					badge: "new arrival",
+				}))}
+				subtitle="For Young Readers"
+				title="Children's Collection"
+			/>
 
-				<PolicyCards />
-			</main>
-
-			<Footer />
-		</div>
+			<PolicyCards />
+		</main>
 	);
 }

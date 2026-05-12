@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+
 import AuthModal from "@/components/AuthModal";
-import LoadingScreen from "@/components/LoadingScreen";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar } from "@/components/layout/Navbar";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
-const inter = Inter({
-	variable: "--font-inter",
-	subsets: ["latin"],
-});
+import { inter, playfair } from "@/assets/fonts";
 
-const playfair = Playfair_Display({
-	variable: "--font-playfair",
-	subsets: ["latin"],
-});
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
 	title: "Al Rewaya Book World | Your Premier Islamic Bookstore",
@@ -28,14 +23,20 @@ export default function RootLayout({
 }>) {
 	return (
 		<html
-			className={`${inter.variable} ${playfair.variable} h-full scroll-smooth antialiased`}
+			className={cn(
+				"scroll-smooth antialiased",
+				inter.variable,
+				playfair.variable
+			)}
 			lang="en"
 		>
 			<body className="flex min-h-full flex-col font-sans">
-				<LoadingScreen />
+				{/* <LoadingScreen /> */}
+				<Navbar />
 				<AuthModal />
-				<div className="grow pb-16 md:pb-0">{children}</div>
+				{children}
 				<MobileBottomNav />
+				<Footer />
 			</body>
 		</html>
 	);
