@@ -1,10 +1,17 @@
 "use client";
 
+import React from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import CategoryBento from "@/components/CategoryBento";
 import BookCard from "@/components/BookCard";
 import Footer from "@/components/Footer";
+import HeroCarousel from "@/components/HeroCarousel";
+import PolicyCards from "@/components/PolicyCards";
+import ProductStrip from "@/components/ProductStrip";
+import CategoryStrip from "@/components/CategoryStrip";
+import BundleSection from "@/components/BundleSection";
 
 const featuredBooks = [
   {
@@ -41,7 +48,13 @@ const featuredBooks = [
   }
 ];
 
-import { motion } from "framer-motion";
+const allBooks = [
+  ...featuredBooks,
+  { id: 5, title: "Reclaim Your Heart", author: "Yasmin Mogahed", price: 55, category: "Islamic", image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop" },
+  { id: 6, title: "Deep Work", author: "Cal Newport", price: 70, category: "Self-Help", image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop" },
+  { id: 7, title: "The 5 AM Club", author: "Robin Sharma", price: 60, category: "Self-Help", image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop" },
+  { id: 8, title: "The Power of Now", author: "Eckhart Tolle", price: 50, category: "Spirituality", image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop" },
+];
 
 export default function Home() {
   return (
@@ -52,56 +65,88 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
+        className="pt-20 lg:pt-32"
       >
-        <Hero />
+        <HeroCarousel />
+        <CategoryStrip />
 
-        <section id="shop" className="py-24 container mx-auto px-6">
-          <div className="flex flex-col items-center mb-20">
-            <span className="nav-link text-stone-400 mb-4 tracking-[0.3em]">Curated Collection</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-black text-center">
-              MOST <span className="italic font-normal">WANTED</span> PIECES.
-            </h2>
-          </div>
+        {/* 1. RECOMMENDED FOR YOU */}
+        <ProductStrip
+          title="Recommended for You"
+          subtitle="Based on your taste"
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-rec-${i}` }))}
+        />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
-            {featuredBooks.map((book) => (
-              <BookCard key={book.id} {...book} />
-            ))}
+        {/* 2. TODAY'S DEALS */}
+        <ProductStrip
+          title="Today's Deals"
+          subtitle="Limited Time"
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-deal-${i}` }))}
+        />
+
+        {/* INTERSTITIAL BANNER 1 */}
+        <section className="h-[400px] relative overflow-hidden bg-stone-900 my-16">
+          <img
+            src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
+            className="w-full h-full object-cover opacity-60"
+            alt="Promotion"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-6">
+            <h3 className="text-3xl md:text-5xl font-serif italic mb-6 uppercase tracking-widest">Explore <span className="font-normal italic">Islamic</span> History</h3>
+            <p className="text-[10px] tracking-[0.4em] font-bold uppercase mb-8 opacity-80">Curated collection for the modern seeker</p>
+            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black h-12 px-10 rounded-none text-[10px] tracking-widest uppercase font-bold transition-all">
+              Shop Now
+            </Button>
           </div>
         </section>
 
-        <CategoryBento />
+        {/* 2. NEW SELLERS */}
+        <ProductStrip
+          title="New Sellers"
+          subtitle="Latest Arrivals"
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-new-${i}` }))}
+        />
 
-        <section id="new-arrivals" className="py-32 container mx-auto px-6 border-t border-stone-100">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-            <div className="relative aspect-[4/5] overflow-hidden">
+        {/* BUNDLES SECTION */}
+        <BundleSection />
+
+        {/* 3. BEST SELLERS */}
+        <ProductStrip
+          title="Best Sellers"
+          subtitle="Top Rated"
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-best-${i}` }))}
+        />
+
+        {/* INTERSTITIAL BANNER 2 */}
+        <section className="py-16">
+          <div className="container mx-auto px-6">
+            <div className="relative h-[400px] overflow-hidden group rounded-2xl shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1491841573634-28140fc7ced7?q=80&w=1200&auto=format&fit=crop"
-                alt="Reading lifestyle"
-                className="w-full h-full object-cover grayscale"
+                src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
+                className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-110"
+                alt="Children's Books"
               />
-            </div>
-            <div className="flex flex-col items-start text-left">
-              <span className="nav-link text-stone-400 mb-6">Our Philosophy</span>
-              <h2 className="text-5xl md:text-7xl font-serif font-black mb-10 leading-[0.95]">
-                READ. <br /> REFLECT. <br /> <span className="italic font-normal text-stone-400">EVOLVE.</span>
-              </h2>
-              <p className="text-sm text-stone-500 mb-12 max-w-sm leading-relaxed uppercase tracking-wider">
-                At Rewaya, we believe that books are the seeds of tomorrow's wisdom. Join our community of lifelong learners and seekers.
-              </p>
-              <div className="flex flex-col w-full gap-4 max-w-md">
-                <input
-                  type="email"
-                  placeholder="EMAIL ADDRESS"
-                  className="w-full px-0 py-4 border-b border-black focus:outline-none text-[10px] tracking-widest font-bold placeholder:text-stone-300"
-                />
-                <button className="w-full py-4 bg-primary text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-primary-dark transition-colors">
-                  Join the Circle
-                </button>
+              <div className="absolute inset-0 bg-gradient-to-r from-secondary/80 to-transparent flex flex-col items-start justify-center px-12 md:px-24">
+                <span className="text-[10px] tracking-[0.4em] text-white uppercase font-bold mb-6 block">Special Release</span>
+                <h3 className="text-4xl md:text-6xl font-serif text-white mb-10 max-w-xl leading-tight uppercase">Nurturing the <br /><span className="italic font-normal text-white/60">Next Generation</span> <br /> of Seekers.</h3>
+                <Button className="h-14 px-12 text-[10px] tracking-widest uppercase font-bold rounded-none bg-primary hover:bg-primary-dark border-none transition-all">
+                  Shop Children&apos;s
+                </Button>
               </div>
             </div>
           </div>
         </section>
+
+        {/* 4. CHILDREN'S COLLECTION */}
+        <ProductStrip
+          title="Children's Collection"
+          subtitle="For Young Readers"
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-children-${i}` }))}
+        />
+
+
+
+        <PolicyCards />
       </motion.main>
 
       <Footer />

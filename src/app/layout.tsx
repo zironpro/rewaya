@@ -13,11 +13,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Rewaya Books | Modern Arabic & International Bookstore",
-  description: "Curated collection of Islamic, Self-Help, and Fiction books. Experience the future of reading with Rewaya.",
+  title: "Al Rewaya Book World | Your Premier Islamic Bookstore",
+  description: "Discover a curated collection of Islamic literature, academic texts, and classic books at Rewaya Book World.",
 };
 
 import LoadingScreen from "@/components/LoadingScreen";
+import AuthModal from "@/components/AuthModal";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
 export default function RootLayout({
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans">
         <LoadingScreen />
+        <AuthModal />
         <div className="flex-grow pb-16 md:pb-0">
           {children}
         </div>
