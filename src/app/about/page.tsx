@@ -1,71 +1,81 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
 export default function AboutPage() {
-  return (
-    <div className="flex flex-col min-h-screen bg-[#FDFCFB]">
-      <Navbar />
-      
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-24 md:py-32 border-b border-stone-100">
-          <div className="container mx-auto px-6">
-            <div className="max-w-4xl">
-              <span className="text-[10px] tracking-[0.4em] text-stone-400 uppercase font-bold mb-8 block">Our Story</span>
-              <h1 className="text-5xl md:text-8xl font-serif font-black leading-[0.9] mb-12">
-                WHERE WORDS <br /> 
-                <span className="italic font-normal text-stone-300">MEET</span> SOUL.
-              </h1>
-              <p className="text-xl md:text-2xl text-stone-600 leading-relaxed font-light max-w-2xl">
-                Rewaya was born from a simple belief: that books are more than paper and ink—they are the vessels of our shared humanity and divine wisdom.
-              </p>
-            </div>
-          </div>
-        </section>
+	return (
+		<main className="grow">
+			{/* Hero Section */}
+			<section className="border-stone-100 border-b py-24 md:py-32">
+				<div className="container mx-auto px-6">
+					<div className="max-w-4xl">
+						<span className="mb-8 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
+							Our Story
+						</span>
+						<h1 className="mb-12 font-black font-serif text-5xl leading-[0.9] md:text-8xl">
+							WHERE WORDS <br />
+							<span className="font-normal text-stone-300 italic">MEET</span>{" "}
+							SOUL.
+						</h1>
+						<p className="max-w-2xl font-light text-stone-600 text-xl leading-relaxed md:text-2xl">
+							Rewaya was born from a simple belief: that books are more than
+							paper and ink—they are the vessels of our shared humanity and
+							divine wisdom.
+						</p>
+					</div>
+				</div>
+			</section>
 
-        {/* Philosophy */}
-        <section className="py-32 bg-white">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-              <div>
-                <img 
-                  src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop" 
-                  alt="Aesthetic library" 
-                  className="w-full aspect-[3/4] object-cover grayscale"
-                />
-              </div>
-              <div className="flex flex-col gap-12">
-                <div>
-                  <h3 className="text-3xl font-serif font-bold mb-6">Curated with Purpose</h3>
-                  <p className="text-stone-500 leading-relaxed uppercase tracking-widest text-[11px] font-bold">
-                    Every title in our collection is hand-selected. We don't just sell books; we offer pathways to reflection, growth, and peace. From classical Islamic texts to modern masterpieces of fiction and self-improvement.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-serif font-bold mb-6">A Global Community</h3>
-                  <p className="text-stone-500 leading-relaxed uppercase tracking-widest text-[11px] font-bold">
-                    Rewaya serves seekers from all walks of life. We bridge the gap between tradition and modernity, creating a space where everyone is welcome to explore the world's most profound ideas.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+			{/* Philosophy */}
+			<section className="bg-white py-32">
+				<div className="container mx-auto px-6">
+					<div className="grid grid-cols-1 items-center gap-24 md:grid-cols-2">
+						<div>
+							<img
+								alt="Aesthetic library"
+								className="aspect-[3/4] w-full object-cover grayscale"
+								src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop"
+							/>
+						</div>
+						<div className="flex flex-col gap-12">
+							<div>
+								<h3 className="mb-6 font-bold font-serif text-3xl">
+									Curated with Purpose
+								</h3>
+								<p className="font-bold text-[11px] text-stone-500 uppercase leading-relaxed tracking-widest">
+									Every title in our collection is hand-selected. We don't just
+									sell books; we offer pathways to reflection, growth, and
+									peace. From classical Islamic texts to modern masterpieces of
+									fiction and self-improvement.
+								</p>
+							</div>
+							<div>
+								<h3 className="mb-6 font-bold font-serif text-3xl">
+									A Global Community
+								</h3>
+								<p className="font-bold text-[11px] text-stone-500 uppercase leading-relaxed tracking-widest">
+									Rewaya serves seekers from all walks of life. We bridge the
+									gap between tradition and modernity, creating a space where
+									everyone is welcome to explore the world's most profound
+									ideas.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 
-        {/* Vision */}
-        <section className="py-32 bg-black text-white">
-          <div className="container mx-auto px-6 text-center">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-4xl md:text-6xl font-serif font-black mb-12 italic">The future of reading is reflective.</h2>
-              <p className="text-stone-400 text-sm tracking-[0.2em] uppercase leading-loose">
-                Join us in our mission to bring back the art of deep reading and thoughtful contemplation. In a world of noise, we choose the melody of silence and the weight of words.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
-  );
+			{/* Vision */}
+			<section className="bg-black py-32 text-white">
+				<div className="container mx-auto px-6 text-center">
+					<div className="mx-auto max-w-3xl">
+						<h2 className="mb-12 font-black font-serif text-4xl italic md:text-6xl">
+							The future of reading is reflective.
+						</h2>
+						<p className="text-sm text-stone-400 uppercase leading-loose tracking-[0.2em]">
+							Join us in our mission to bring back the art of deep reading and
+							thoughtful contemplation. In a world of noise, we choose the
+							melody of silence and the weight of words.
+						</p>
+					</div>
+				</div>
+			</section>
+		</main>
+	);
 }

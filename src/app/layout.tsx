@@ -1,44 +1,44 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Al Rewaya Book World | Your Premier Islamic Bookstore",
-  description: "Discover a curated collection of Islamic literature, academic texts, and classic books at Rewaya Book World.",
-};
-
-import LoadingScreen from "@/components/LoadingScreen";
 import AuthModal from "@/components/AuthModal";
+import { Footer } from "@/components/layout/Footer";
+import { Navbar } from "@/components/layout/Navbar";
 import MobileBottomNav from "@/components/MobileBottomNav";
 
+import { inter, playfair } from "@/assets/fonts";
+
+import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = {
+	title: "Al Rewaya Book World | Your Premier Islamic Bookstore",
+	description:
+		"Discover a curated collection of Islamic literature, academic texts, and classic books at Rewaya Book World.",
+};
+
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
-    >
-      <body className="min-h-full flex flex-col font-sans">
-        <LoadingScreen />
-        <AuthModal />
-        <div className="flex-grow pb-16 md:pb-0">
-          {children}
-        </div>
-        <MobileBottomNav />
-      </body>
-    </html>
-  );
+	return (
+		<html
+			className={cn(
+				"scroll-smooth antialiased",
+				playfair.variable,
+				"font-sans",
+				inter.variable
+			)}
+			lang="en"
+		>
+			<body className="flex min-h-full flex-col">
+				{/* <LoadingScreen /> */}
+				<Navbar />
+				<AuthModal />
+				{children}
+				<MobileBottomNav />
+				<Footer />
+			</body>
+		</html>
+	);
 }

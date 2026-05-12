@@ -1,92 +1,114 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function ContactPage() {
-  return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <Navbar />
+	return (
+		<main className="grow pt-32">
+			<div className="container mx-auto px-6">
+				<div className="mb-32 grid grid-cols-1 gap-32 lg:grid-cols-2">
+					{/* Contact Info */}
+					<div className="flex flex-col justify-between py-12">
+						<div>
+							<span className="mb-12 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
+								Get in Touch
+							</span>
+							<h1 className="mb-16 font-black font-serif text-6xl leading-[0.85] md:text-8xl">
+								LET'S <br />
+								<span className="font-normal text-stone-300 italic">
+									CONNECT.
+								</span>
+							</h1>
 
-      <main className="flex-grow pt-32">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-32 mb-32">
-            {/* Contact Info */}
-            <div className="flex flex-col justify-between py-12">
-              <div>
-                <span className="text-[10px] tracking-[0.4em] text-stone-400 uppercase font-bold mb-12 block">Get in Touch</span>
-                <h1 className="text-6xl md:text-8xl font-serif font-black leading-[0.85] mb-16">
-                  LET'S <br />
-                  <span className="italic font-normal text-stone-300">CONNECT.</span>
-                </h1>
+							<div className="space-y-12">
+								<div>
+									<h3 className="mb-4 font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em]">
+										Email Us
+									</h3>
+									<p className="font-serif text-2xl">hello@rewayabooks.com</p>
+								</div>
+								<div>
+									<h3 className="mb-4 font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em]">
+										Visit Us
+									</h3>
+									<p className="font-serif text-2xl">
+										123 Wisdom Ave, <br />
+										Knowledge District, NY 10001
+									</p>
+								</div>
+								<div>
+									<h3 className="mb-4 font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em]">
+										Follow
+									</h3>
+									<div className="flex gap-8">
+										<a
+											className="font-bold text-xs uppercase tracking-widest transition-colors hover:text-stone-400"
+											href="#"
+										>
+											Instagram
+										</a>
+										<a
+											className="font-bold text-xs uppercase tracking-widest transition-colors hover:text-stone-400"
+											href="#"
+										>
+											Twitter
+										</a>
+										<a
+											className="font-bold text-xs uppercase tracking-widest transition-colors hover:text-stone-400"
+											href="#"
+										>
+											Pinterest
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                <div className="space-y-12">
-                  <div>
-                    <h3 className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-4">Email Us</h3>
-                    <p className="text-2xl font-serif">hello@rewayabooks.com</p>
-                  </div>
-                  <div>
-                    <h3 className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-4">Visit Us</h3>
-                    <p className="text-2xl font-serif">123 Wisdom Ave, <br />Knowledge District, NY 10001</p>
-                  </div>
-                  <div>
-                    <h3 className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400 mb-4">Follow</h3>
-                    <div className="flex gap-8">
-                      <a href="#" className="text-xs tracking-widest font-bold uppercase hover:text-stone-400 transition-colors">Instagram</a>
-                      <a href="#" className="text-xs tracking-widest font-bold uppercase hover:text-stone-400 transition-colors">Twitter</a>
-                      <a href="#" className="text-xs tracking-widest font-bold uppercase hover:text-stone-400 transition-colors">Pinterest</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+						<div className="mt-24 border-stone-100 border-t pt-12">
+							<p className="max-w-xs text-[10px] text-stone-400 uppercase leading-loose tracking-[0.2em]">
+								Our team typically responds within 24-48 business hours. We look
+								forward to hearing your thoughts.
+							</p>
+						</div>
+					</div>
 
-              <div className="mt-24 pt-12 border-t border-stone-100">
-                <p className="text-[10px] text-stone-400 tracking-[0.2em] uppercase max-w-xs leading-loose">
-                  Our team typically responds within 24-48 business hours. We look forward to hearing your thoughts.
-                </p>
-              </div>
-            </div>
+					{/* Contact Form */}
+					<div className="bg-stone-50 p-12 md:p-20">
+						<form className="space-y-12">
+							<div className="space-y-2">
+								<label className="font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em]">
+									Full Name
+								</label>
+								<Input placeholder="ENTER YOUR NAME" type="text" />
+							</div>
 
-            {/* Contact Form */}
-            <div className="bg-stone-50 p-12 md:p-20">
-              <form className="space-y-12">
-                <div className="space-y-2">
-                  <label className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400">Full Name</label>
-                  <Input
-                    type="text"
-                    placeholder="ENTER YOUR NAME"
-                  />
-                </div>
+							<div className="space-y-2">
+								<label className="font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em]">
+									Email Address
+								</label>
+								<Input placeholder="EMAIL@EXAMPLE.COM" type="email" />
+							</div>
 
-                <div className="space-y-2">
-                  <label className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400">Email Address</label>
-                  <Input
-                    type="email"
-                    placeholder="EMAIL@EXAMPLE.COM"
-                  />
-                </div>
+							<div className="space-y-2">
+								<label className="font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em]">
+									Message
+								</label>
+								<textarea
+									className="w-full resize-none border-stone-300 border-b bg-transparent py-4 text-sm uppercase tracking-widest transition-colors focus:border-black focus:outline-none"
+									placeholder="WHAT'S ON YOUR MIND?"
+									rows={4}
+								/>
+							</div>
 
-                <div className="space-y-2">
-                  <label className="text-[10px] tracking-[0.2em] uppercase font-bold text-stone-400">Message</label>
-                  <textarea
-                    rows={4}
-                    className="w-full bg-transparent border-b border-stone-300 py-4 focus:outline-none focus:border-black transition-colors text-sm uppercase tracking-widest resize-none"
-                    placeholder="WHAT'S ON YOUR MIND?"
-                  />
-                </div>
-
-                <Button variant="premium" className="w-full h-16">
-                  Send Message
-                  <span className="ml-4 transform group-hover:translate-x-2 transition-transform">→</span>
-                </Button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      <Footer />
-    </div>
-  );
+							<Button className="h-16 w-full" variant="premium">
+								Send Message
+								<span className="ml-4 transform transition-transform group-hover:translate-x-2">
+									→
+								</span>
+							</Button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+	);
 }
