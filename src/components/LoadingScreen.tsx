@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     // Simulate initial page load
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -15,13 +17,23 @@ export default function LoadingScreen() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (!isLoading) {
+      window.scrollTo(0, 0);
+    }
+  }, [isLoading]);
+
+  if (!mounted) return null;
+
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
+          key="loader"
           initial={{ opacity: 1 }}
           exit={{ 
             y: "-100%",
+            pointerEvents: "none",
             transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1], delay: 0.2 }
           }}
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white"

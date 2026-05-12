@@ -37,6 +37,7 @@ export default function BookCard({ id, title, author, price, image, category }: 
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
       className="group"
     >
       <Dialog>

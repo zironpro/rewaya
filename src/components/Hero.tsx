@@ -45,7 +45,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 1, delay: 0.8 }}
           className="relative w-full aspect-[21/7] overflow-hidden"
         >
           <img
