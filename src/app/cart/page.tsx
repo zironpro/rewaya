@@ -1,138 +1,175 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
+
+import { AnimatePresence, motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { Trash2, Minus, Plus, ArrowRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { cartAtom, cartTotalAtom, CartItem } from "@/lib/store";
-import { Button } from "@/components/ui/button";
-import Navbar from "@/components/Navbar";
+import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
+
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+
+import { CartItem, cartAtom, cartTotalAtom } from "@/lib/store";
 
 export default function CartPage() {
-  const [cart, setCart] = useAtom(cartAtom);
-  const [total] = useAtom(cartTotalAtom);
+	const [cart, setCart] = useAtom(cartAtom);
+	const [total] = useAtom(cartTotalAtom);
 
-  const updateQuantity = (id: number, delta: number) => {
-    setCart((prev: CartItem[]) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
-  };
+	const updateQuantity = (id: number, delta: number) => {
+		setCart((prev: CartItem[]) =>
+			prev.map((item) =>
+				item.id === id
+					? { ...item, quantity: Math.max(1, item.quantity + delta) }
+					: item
+			)
+		);
+	};
 
-  const removeItem = (id: number) => {
-    setCart((prev: CartItem[]) => prev.filter((item) => item.id !== id));
-  };
+	const removeItem = (id: number) => {
+		setCart((prev: CartItem[]) => prev.filter((item) => item.id !== id));
+	};
 
-  return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <Navbar />
+	return (
+		<div className="flex min-h-screen flex-col bg-white">
+			<Navbar />
 
-      <main className="flex-grow pt-32 pb-32">
-        <div className="container mx-auto px-6">
-          <div className="mb-16">
-            <span className="text-[10px] tracking-[0.4em] text-stone-400 uppercase font-bold mb-4 block">Your Selection</span>
-            <h1 className="text-5xl md:text-7xl font-serif font-black">SHOPPING <span className="italic font-normal">BAG</span>.</h1>
-          </div>
+			<main className="grow pt-32 pb-32">
+				<div className="container mx-auto px-6">
+					<div className="mb-16">
+						<span className="mb-4 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
+							Your Selection
+						</span>
+						<h1 className="font-black font-serif text-5xl md:text-7xl">
+							SHOPPING <span className="font-normal italic">BAG</span>.
+						</h1>
+					</div>
 
-          {cart.length === 0 ? (
-            <div className="text-center py-32 border-y border-stone-100">
-              <p className="text-stone-400 uppercase tracking-widest text-sm mb-8">Your bag is currently empty.</p>
-              <Link href="/shop">
-                <Button variant="premium">Explore the Library</Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="flex flex-col lg:flex-row gap-20">
-              {/* Cart Items List */}
-              <div className="flex-grow space-y-8">
-                <div className="hidden md:grid grid-cols-4 pb-6 border-b border-stone-100 text-[10px] tracking-[0.2em] font-bold uppercase text-stone-400">
-                  <div className="col-span-2">Product</div>
-                  <div className="text-center">Quantity</div>
-                  <div className="text-right">Total</div>
-                </div>
+					{cart.length === 0 ? (
+						<div className="border-stone-100 border-y py-32 text-center">
+							<p className="mb-8 text-sm text-stone-400 uppercase tracking-widest">
+								Your bag is currently empty.
+							</p>
+							<Link href="/shop">
+								<Button variant="premium">Explore the Library</Button>
+							</Link>
+						</div>
+					) : (
+						<div className="flex flex-col gap-20 lg:flex-row">
+							{/* Cart Items List */}
+							<div className="flex-grow space-y-8">
+								<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-[10px] text-stone-400 uppercase tracking-[0.2em] md:grid">
+									<div className="col-span-2">Product</div>
+									<div className="text-center">Quantity</div>
+									<div className="text-right">Total</div>
+								</div>
 
-                <AnimatePresence>
-                  {cart.map((item) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      className="grid grid-cols-1 md:grid-cols-4 gap-8 py-8 border-b border-stone-50 items-center"
-                    >
-                      <div className="col-span-2 flex gap-6">
-                        <div className="w-24 h-32 bg-stone-50 overflow-hidden flex-shrink-0">
-                          <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="flex flex-col justify-center gap-1">
-                          <h3 className="text-xs font-bold uppercase tracking-wider text-secondary">{item.title}</h3>
-                          <p className="text-[10px] text-stone-400 uppercase tracking-widest mb-4">{item.author}</p>
-                          <button 
-                            onClick={() => removeItem(item.id)}
-                            className="flex items-center gap-2 text-[9px] uppercase tracking-widest font-bold text-stone-300 hover:text-primary transition-colors w-fit"
-                          >
-                            <Trash2 size={12} /> Remove
-                          </button>
-                        </div>
-                      </div>
+								<AnimatePresence>
+									{cart.map((item) => (
+										<motion.div
+											animate={{ opacity: 1, y: 0 }}
+											className="grid grid-cols-1 items-center gap-8 border-stone-50 border-b py-8 md:grid-cols-4"
+											exit={{ opacity: 0, x: -20 }}
+											initial={{ opacity: 0, y: 20 }}
+											key={item.id}
+										>
+											<div className="col-span-2 flex gap-6">
+												<div className="h-32 w-24 shrink-0 overflow-hidden bg-stone-50">
+													<img
+														alt={item.title}
+														className="h-full w-full object-cover"
+														src={item.image}
+													/>
+												</div>
+												<div className="flex flex-col justify-center gap-1">
+													<h3 className="font-bold text-secondary text-xs uppercase tracking-wider">
+														{item.title}
+													</h3>
+													<p className="mb-4 text-[10px] text-stone-400 uppercase tracking-widest">
+														{item.author}
+													</p>
+													<button
+														className="flex w-fit items-center gap-2 font-bold text-[9px] text-stone-300 uppercase tracking-widest transition-colors hover:text-primary"
+														onClick={() => removeItem(item.id)}
+													>
+														<Trash2 size={12} /> Remove
+													</button>
+												</div>
+											</div>
 
-                      <div className="flex justify-center items-center">
-                        <div className="flex items-center border border-stone-100 rounded-sm">
-                          <button onClick={() => updateQuantity(item.id, -1)} className="p-2 hover:bg-stone-50 transition-colors">
-                            <Minus size={12} />
-                          </button>
-                          <span className="w-10 text-center text-[10px] font-bold">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, 1)} className="p-2 hover:bg-stone-50 transition-colors">
-                            <Plus size={12} />
-                          </button>
-                        </div>
-                      </div>
+											<div className="flex items-center justify-center">
+												<div className="flex items-center rounded-sm border border-stone-100">
+													<button
+														className="p-2 transition-colors hover:bg-stone-50"
+														onClick={() => updateQuantity(item.id, -1)}
+													>
+														<Minus size={12} />
+													</button>
+													<span className="w-10 text-center font-bold text-[10px]">
+														{item.quantity}
+													</span>
+													<button
+														className="p-2 transition-colors hover:bg-stone-50"
+														onClick={() => updateQuantity(item.id, 1)}
+													>
+														<Plus size={12} />
+													</button>
+												</div>
+											</div>
 
-                      <div className="text-right">
-                        <span className="text-sm font-bold text-primary">AED {(item.price * item.quantity).toFixed(2)}</span>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
+											<div className="text-right">
+												<span className="font-bold text-primary text-sm">
+													AED {(item.price * item.quantity).toFixed(2)}
+												</span>
+											</div>
+										</motion.div>
+									))}
+								</AnimatePresence>
+							</div>
 
-              {/* Order Summary Sidebar */}
-              <aside className="w-full lg:w-96">
-                <div className="bg-stone-50 p-8 sticky top-32">
-                  <h3 className="text-[10px] tracking-[0.2em] font-bold uppercase mb-8 pb-4 border-b border-stone-200">Order Summary</h3>
-                  <div className="space-y-4 mb-8">
-                    <div className="flex justify-between text-[10px] tracking-widest uppercase font-bold text-stone-500">
-                      <span>Subtotal</span>
-                      <span>AED {total.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-[10px] tracking-widest uppercase font-bold text-stone-500">
-                      <span>Shipping</span>
-                      <span>FREE</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-end border-t border-stone-200 pt-6 mb-10">
-                    <span className="text-[10px] tracking-[0.2em] font-bold uppercase">Total</span>
-                    <span className="text-2xl font-serif font-black text-primary">AED {total.toFixed(2)}</span>
-                  </div>
-                  <Button variant="premium" className="w-full h-16 group">
-                    Checkout <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                  <p className="mt-6 text-[9px] text-stone-400 text-center uppercase tracking-widest leading-relaxed">
-                    Complimentary shipping on all orders. <br /> Returns accepted within 30 days.
-                  </p>
-                </div>
-              </aside>
-            </div>
-          )}
-        </div>
-      </main>
+							{/* Order Summary Sidebar */}
+							<aside className="w-full lg:w-96">
+								<div className="sticky top-32 bg-stone-50 p-8">
+									<h3 className="mb-8 border-stone-200 border-b pb-4 font-bold text-[10px] uppercase tracking-[0.2em]">
+										Order Summary
+									</h3>
+									<div className="mb-8 space-y-4">
+										<div className="flex justify-between font-bold text-[10px] text-stone-500 uppercase tracking-widest">
+											<span>Subtotal</span>
+											<span>AED {total.toFixed(2)}</span>
+										</div>
+										<div className="flex justify-between font-bold text-[10px] text-stone-500 uppercase tracking-widest">
+											<span>Shipping</span>
+											<span>FREE</span>
+										</div>
+									</div>
+									<div className="mb-10 flex items-end justify-between border-stone-200 border-t pt-6">
+										<span className="font-bold text-[10px] uppercase tracking-[0.2em]">
+											Total
+										</span>
+										<span className="font-black font-serif text-2xl text-primary">
+											AED {total.toFixed(2)}
+										</span>
+									</div>
+									<Button className="group h-16 w-full" variant="premium">
+										Checkout{" "}
+										<ArrowRight
+											className="ml-2 transition-transform group-hover:translate-x-1"
+											size={16}
+										/>
+									</Button>
+									<p className="mt-6 text-center text-[9px] text-stone-400 uppercase leading-relaxed tracking-widest">
+										Complimentary shipping on all orders. <br /> Returns
+										accepted within 30 days.
+									</p>
+								</div>
+							</aside>
+						</div>
+					)}
+				</div>
+			</main>
 
-      <Footer />
-    </div>
-  );
+			<Footer />
+		</div>
+	);
 }

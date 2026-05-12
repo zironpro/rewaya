@@ -1,108 +1,147 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
+import { ArrowRight, Tag } from "lucide-react";
+
 import { Button } from "./ui/button";
-import { ArrowRight, Sparkles, Tag } from "lucide-react";
 
 const bundles = [
-  {
-    id: "seeker-set",
-    title: "The Modern Seeker",
-    count: 5,
-    price: 249,
-    originalPrice: 310,
-    tag: "MOST POPULAR",
-    image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-    books: ["Reclaim Your Heart", "The Sealed Nectar", "Atomic Habits", "Deep Work", "5 AM Club"]
-  },
-  {
-    id: "history-set",
-    title: "Islamic History Core",
-    count: 4,
-    price: 199,
-    originalPrice: 260,
-    tag: "BEST VALUE",
-    image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-    books: ["History of Islam", "The Caliphate", "Great Explorers", "Golden Age"]
-  }
+	{
+		id: "seeker-set",
+		title: "The Modern Seeker",
+		count: 5,
+		price: 249,
+		originalPrice: 310,
+		tag: "MOST POPULAR",
+		image:
+			"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+		books: [
+			"Reclaim Your Heart",
+			"The Sealed Nectar",
+			"Atomic Habits",
+			"Deep Work",
+			"5 AM Club",
+		],
+	},
+	{
+		id: "history-set",
+		title: "Islamic History Core",
+		count: 4,
+		price: 199,
+		originalPrice: 260,
+		tag: "BEST VALUE",
+		image:
+			"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+		books: [
+			"History of Islam",
+			"The Caliphate",
+			"Great Explorers",
+			"Golden Age",
+		],
+	},
 ];
 
 export default function BundleSection() {
-  return (
-    <section className="py-16 bg-white border-y border-stone-100 overflow-hidden relative">
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 text-center md:text-left">
-          <div className="max-w-xl">
-            <span className="text-[9px] tracking-[0.4em] text-primary uppercase font-black mb-3 block">Special Campaigns</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-black text-secondary leading-tight uppercase">
-              CURATED <span className="italic font-normal text-primary">SETS</span>.
-            </h2>
-          </div>
-          <Button variant="ghost" className="text-primary hover:text-secondary text-[9px] tracking-widest uppercase font-black gap-2">
-            View All <ArrowRight size={14} />
-          </Button>
-        </div>
+	return (
+		<section className="relative overflow-hidden border-stone-100 border-y bg-white py-16">
+			<div className="container relative z-10 mx-auto px-6">
+				<div className="mb-12 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
+					<div className="max-w-xl">
+						<span className="mb-3 block font-black text-[9px] text-primary uppercase tracking-[0.4em]">
+							Special Campaigns
+						</span>
+						<h2 className="font-black font-serif text-4xl text-secondary uppercase leading-tight md:text-5xl">
+							CURATED{" "}
+							<span className="font-normal text-primary italic">SETS</span>.
+						</h2>
+					</div>
+					<Button
+						className="gap-2 font-black text-[9px] text-primary uppercase tracking-widest hover:text-secondary"
+						variant="ghost"
+					>
+						View All <ArrowRight size={14} />
+					</Button>
+				</div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {bundles.map((bundle, i) => (
-            <motion.div 
-              key={bundle.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="group relative bg-stone-50 border border-stone-100 hover:border-primary/30 transition-all duration-500 p-6 md:p-8 cursor-pointer flex flex-col sm:flex-row gap-12 items-center"
-            >
-              {/* Triple Visual Stack */}
-              <div className="relative w-32 h-44 flex-shrink-0 mb-6 sm:mb-0">
-                {/* Book 3 (Back) */}
-                <div className="absolute inset-0 bg-stone-200 shadow-lg transform -rotate-12 translate-x-[-15px] transition-transform group-hover:-rotate-15 duration-500 overflow-hidden border border-stone-100">
-                  <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop" className="w-full h-full object-cover opacity-60" alt="Book 3" />
-                </div>
-                {/* Book 2 (Middle) */}
-                <div className="absolute inset-0 bg-stone-100 shadow-xl transform rotate-6 translate-x-[15px] transition-transform group-hover:rotate-12 duration-500 overflow-hidden border border-stone-200">
-                  <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=300&auto=format&fit=crop" className="w-full h-full object-cover opacity-80" alt="Book 2" />
-                </div>
-                {/* Book 1 (Front) */}
-                <div className="absolute inset-0 bg-white shadow-2xl transform rotate-0 transition-transform group-hover:-translate-y-2 duration-500 overflow-hidden border border-stone-300">
-                  <img src={bundle.image} className="w-full h-full object-cover" alt={bundle.title} />
-                </div>
-                
-                {/* Floating Badge */}
-                <div className="absolute -top-3 -right-3 w-10 h-10 bg-primary text-white flex flex-col items-center justify-center rounded-full shadow-lg z-20 border-2 border-white">
-                  <span className="text-xs font-black leading-none">{bundle.count}</span>
-                  <span className="text-[6px] font-bold uppercase tracking-tighter">Sets</span>
-                </div>
-              </div>
+				<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+					{bundles.map((bundle, i) => (
+						<motion.div
+							className="group relative flex cursor-pointer flex-col items-center gap-12 border border-stone-100 bg-stone-50 p-6 transition-all duration-500 hover:border-primary/30 sm:flex-row md:p-8"
+							initial={{ opacity: 0, y: 20 }}
+							key={bundle.id}
+							viewport={{ once: true }}
+							whileInView={{ opacity: 1, y: 0 }}
+						>
+							{/* Triple Visual Stack */}
+							<div className="relative mb-6 h-44 w-32 flex-shrink-0 sm:mb-0">
+								{/* Book 3 (Back) */}
+								<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden border border-stone-100 bg-stone-200 shadow-lg transition-transform duration-500 group-hover:-rotate-15">
+									<img
+										alt="Book 3"
+										className="h-full w-full object-cover opacity-60"
+										src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop"
+									/>
+								</div>
+								{/* Book 2 (Middle) */}
+								<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden border border-stone-200 bg-stone-100 shadow-xl transition-transform duration-500 group-hover:rotate-12">
+									<img
+										alt="Book 2"
+										className="h-full w-full object-cover opacity-80"
+										src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=300&auto=format&fit=crop"
+									/>
+								</div>
+								{/* Book 1 (Front) */}
+								<div className="absolute inset-0 rotate-0 transform overflow-hidden border border-stone-300 bg-white shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+									<img
+										alt={bundle.title}
+										className="h-full w-full object-cover"
+										src={bundle.image}
+									/>
+								</div>
 
-              {/* Content */}
-              <div className="flex-grow">
-                <div className="flex items-center gap-2 mb-3">
-                  <Tag size={10} className="text-primary" />
-                  <span className="text-[8px] font-black tracking-widest text-primary uppercase">
-                    {bundle.tag}
-                  </span>
-                </div>
-                <h3 className="text-xl font-serif font-black uppercase mb-2 text-secondary group-hover:text-primary transition-colors">
-                  {bundle.title}
-                </h3>
-                <p className="text-[9px] text-stone-400 uppercase tracking-widest font-bold mb-6 line-clamp-1">
-                  {bundle.books.slice(0, 3).join(", ")}...
-                </p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[9px] text-stone-300 uppercase tracking-widest font-bold line-through mr-2">AED {bundle.originalPrice}</span>
-                    <span className="text-lg font-black text-secondary">AED {bundle.price}</span>
-                  </div>
-                  <Button className="bg-primary hover:bg-secondary text-white rounded-none h-10 px-6 text-[8px] font-black tracking-widest uppercase transition-all shadow-md">
-                    Buy Set
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+								{/* Floating Badge */}
+								<div className="absolute -top-3 -right-3 z-20 flex h-10 w-10 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-lg">
+									<span className="font-black text-xs leading-none">
+										{bundle.count}
+									</span>
+									<span className="font-bold text-[6px] uppercase tracking-tighter">
+										Sets
+									</span>
+								</div>
+							</div>
+
+							{/* Content */}
+							<div className="flex-grow">
+								<div className="mb-3 flex items-center gap-2">
+									<Tag className="text-primary" size={10} />
+									<span className="font-black text-[8px] text-primary uppercase tracking-widest">
+										{bundle.tag}
+									</span>
+								</div>
+								<h3 className="mb-2 font-black font-serif text-secondary text-xl uppercase transition-colors group-hover:text-primary">
+									{bundle.title}
+								</h3>
+								<p className="mb-6 line-clamp-1 font-bold text-[9px] text-stone-400 uppercase tracking-widest">
+									{bundle.books.slice(0, 3).join(", ")}...
+								</p>
+								<div className="flex items-center justify-between">
+									<div>
+										<span className="mr-2 font-bold text-[9px] text-stone-300 uppercase tracking-widest line-through">
+											AED {bundle.originalPrice}
+										</span>
+										<span className="font-black text-lg text-secondary">
+											AED {bundle.price}
+										</span>
+									</div>
+									<Button className="h-10 rounded-none bg-primary px-6 font-black text-[8px] text-white uppercase tracking-widest shadow-md transition-all hover:bg-secondary">
+										Buy Set
+									</Button>
+								</div>
+							</div>
+						</motion.div>
+					))}
+				</div>
+			</div>
+		</section>
+	);
 }

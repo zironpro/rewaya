@@ -1,65 +1,64 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
-  return (
-    <div className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-white">
-      <div className="container mx-auto px-6 py-10">
-        <div className="flex flex-col items-center text-center mb-10">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl md:text-8xl font-serif font-black tracking-tight leading-[0.85] mb-6"
-          >
-            THE NEW <br /> 
-            <span className="italic font-normal">LITERARY</span> <br />
-            STANDARD.
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="nav-link max-w-md text-stone-500 mb-8"
-          >
-            Curating the finest collection of Islamic and international literature for the modern seeker.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex gap-4"
-          >
-            <button className="px-10 py-4 bg-primary text-white text-xs font-bold uppercase tracking-widest hover:bg-primary-dark transition-colors">
-              Shop Now
-            </button>
-            <button className="px-10 py-4 border border-primary text-primary text-xs font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-colors">
-              Our Story
-            </button>
-          </motion.div>
-        </div>
+	return (
+		<div className="relative flex min-h-screen items-center overflow-hidden bg-white pt-16">
+			<div className="container mx-auto px-6 py-10">
+				<div className="mb-10 flex flex-col items-center text-center">
+					<motion.h1
+						animate={{ opacity: 1, y: 0 }}
+						className="mb-6 font-black font-serif text-5xl leading-[0.85] tracking-tight md:text-8xl"
+						initial={{ opacity: 0, y: 20 }}
+						transition={{ duration: 0.8 }}
+					>
+						THE NEW <br />
+						<span className="font-normal italic">LITERARY</span> <br />
+						STANDARD.
+					</motion.h1>
+					<motion.p
+						animate={{ opacity: 1 }}
+						className="nav-link mb-8 max-w-md text-stone-500"
+						initial={{ opacity: 0 }}
+						transition={{ delay: 0.4 }}
+					>
+						Curating the finest collection of Islamic and international
+						literature for the modern seeker.
+					</motion.p>
+					<motion.div
+						animate={{ opacity: 1 }}
+						className="flex gap-4"
+						initial={{ opacity: 0 }}
+						transition={{ delay: 0.6 }}
+					>
+						<button className="bg-primary px-10 py-4 font-bold text-white text-xs uppercase tracking-widest transition-colors hover:bg-primary-dark">
+							Shop Now
+						</button>
+						<button className="border border-primary px-10 py-4 font-bold text-primary text-xs uppercase tracking-widest transition-colors hover:bg-primary hover:text-white">
+							Our Story
+						</button>
+					</motion.div>
+				</div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="relative w-full aspect-[21/7] overflow-hidden"
-        >
-          <img
-            src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop"
-            alt="Library"
-            className="w-full h-full object-cover grayscale brightness-75"
-          />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-white text-xs font-bold uppercase tracking-[0.5em] border-b-2 border-white pb-2">
-              Explore the Collection
-            </span>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-  );
+				<motion.div
+					animate={{ opacity: 1, y: 0 }}
+					className="relative aspect-[21/7] w-full overflow-hidden"
+					initial={{ opacity: 0, y: 40 }}
+					transition={{ duration: 1, delay: 0.8 }}
+				>
+					<img
+						alt="Library"
+						className="h-full w-full object-cover brightness-75 grayscale"
+						src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop"
+					/>
+					<div className="absolute inset-0 flex items-center justify-center">
+						<span className="border-white border-b-2 pb-2 font-bold text-white text-xs uppercase tracking-[0.5em]">
+							Explore the Collection
+						</span>
+					</div>
+				</motion.div>
+			</div>
+		</div>
+	);
 }

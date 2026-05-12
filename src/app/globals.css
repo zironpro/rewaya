@@ -1,107 +1,114 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #901C51; /* Burgundy from logo */
-  --color-primary-dark: #70143E;
-  --color-secondary: #201E50; /* Dark Blue from logo */
-  --color-accent: #C4A484; 
-  --color-paper: #ffffff;
-  --color-ink: #201E50;
-  
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-inter);
+	--color-primary: #901c51; /* Burgundy from logo */
+	--color-primary-dark: #70143e;
+	--color-secondary: #201e50; /* Dark Blue from logo */
+	--color-accent: #c4a484;
+	--color-paper: #ffffff;
+	--color-ink: #201e50;
 
-  --shadow-soft: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+	--font-serif: var(--font-playfair);
+	--font-sans: var(--font-inter);
+
+	--shadow-soft: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #201E50;
-  --primary: #901C51;
+	--background: #ffffff;
+	--foreground: #201e50;
+	--primary: #901c51;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #201E50;
-    --primary: #901C51;
-  }
+	:root {
+		--background: #ffffff;
+		--foreground: #201e50;
+		--primary: #901c51;
+	}
 }
 
 * {
-  transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  letter-spacing: -0.01em;
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+	letter-spacing: -0.01em;
 }
 
-button, a, .cursor-pointer {
-  cursor: pointer !important;
+button,
+a,
+.cursor-pointer {
+	cursor: pointer !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	letter-spacing: -0.02em;
 }
 
 .nav-link {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: #000000;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: #000000;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid #eeeeee;
+	background: rgba(255, 255, 255, 0.95);
+	border-bottom: 1px solid #eeeeee;
 }
 
 .sale-badge {
-  background: #ff0000;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+	background: #ff0000;
+	color: #ffffff;
+	font-size: 10px;
+	font-weight: 800;
+	padding: 2px 8px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
 }
 
 .book-shadow {
-  box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2);
+	box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.2);
 }
 
 /* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+	width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+	background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 10px;
+	background: #e5e7eb;
+	border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d1d5db;
+	background: #d1d5db;
 }
 
 /* Hide scrollbar for specific containers */
 .no-scrollbar::-webkit-scrollbar {
-  display: none !important;
+	display: none !important;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none !important;  /* IE and Edge */
-  scrollbar-width: none !important;  /* Firefox */
+	-ms-overflow-style: none !important; /* IE and Edge */
+	scrollbar-width: none !important; /* Firefox */
 }

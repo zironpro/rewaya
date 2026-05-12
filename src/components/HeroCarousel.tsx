@@ -1,126 +1,145 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 
 const banners = [
-  {
-    id: 1,
-    title: "RAMADAN SPECIAL",
-    subtitle: "UP TO 40% OFF ON ALL ISLAMIC LITERATURE",
-    cta: "Shop the Sale",
-    bg: "bg-stone-900",
-    image: "https://images.unsplash.com/photo-1585036156171-3839efc2296c?q=80&w=2000&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "NEW ARRIVALS",
-    subtitle: "THE LATEST FROM GLOBAL AUTHORS",
-    cta: "Explore New",
-    bg: "bg-secondary",
-    image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "BOOK BUNDLES",
-    subtitle: "BUY 4 GET 2 FREE ON SELECTED COLLECTIONS",
-    cta: "View Bundles",
-    bg: "bg-primary",
-    image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2000&auto=format&fit=crop",
-  },
+	{
+		id: 1,
+		title: "RAMADAN SPECIAL",
+		subtitle: "UP TO 40% OFF ON ALL ISLAMIC LITERATURE",
+		cta: "Shop the Sale",
+		bg: "bg-stone-900",
+		image:
+			"https://images.unsplash.com/photo-1585036156171-3839efc2296c?q=80&w=2000&auto=format&fit=crop",
+	},
+	{
+		id: 2,
+		title: "NEW ARRIVALS",
+		subtitle: "THE LATEST FROM GLOBAL AUTHORS",
+		cta: "Explore New",
+		bg: "bg-secondary",
+		image:
+			"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000&auto=format&fit=crop",
+	},
+	{
+		id: 3,
+		title: "BOOK BUNDLES",
+		subtitle: "BUY 4 GET 2 FREE ON SELECTED COLLECTIONS",
+		cta: "View Bundles",
+		bg: "bg-primary",
+		image:
+			"https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2000&auto=format&fit=crop",
+	},
 ];
 
 export default function HeroCarousel() {
-  const [current, setCurrent] = useState(0);
+	const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setCurrent((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+		}, 6000);
+		return () => clearInterval(timer);
+	}, []);
 
-  const next = () => setCurrent((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
-  const prev = () => setCurrent((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+	const next = () =>
+		setCurrent((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+	const prev = () =>
+		setCurrent((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
 
-  return (
-    <div className="relative h-[70vh] md:h-[85vh] w-full overflow-hidden bg-stone-50">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 w-full h-full"
-        >
-          {/* Background Image with Overlay */}
-          <div className="absolute inset-0">
-            <img 
-              src={banners[current].image} 
-              alt={banners[current].title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />
-          </div>
+	return (
+		<div className="relative h-[70vh] w-full overflow-hidden bg-stone-50 md:h-[85vh]">
+			<AnimatePresence mode="wait">
+				<motion.div
+					animate={{ opacity: 1 }}
+					className="absolute inset-0 h-full w-full"
+					exit={{ opacity: 0 }}
+					initial={{ opacity: 0 }}
+					key={current}
+					transition={{ duration: 1 }}
+				>
+					{/* Background Image with Overlay */}
+					<div className="absolute inset-0">
+						<img
+							alt={banners[current].title}
+							className="h-full w-full object-cover"
+							src={banners[current].image}
+						/>
+						<div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />
+					</div>
 
-          {/* Content */}
-          <div className="relative container mx-auto px-6 h-full flex flex-col justify-center items-center text-center text-white">
-            <motion.span 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-xs md:text-sm font-bold tracking-[0.4em] uppercase mb-6"
-            >
-              {banners[current].subtitle}
-            </motion.span>
-            <motion.h2 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-5xl md:text-8xl font-serif font-black mb-10 leading-none"
-            >
-              {banners[current].title.split(' ').map((word, i) => (
-                <span key={i} className={i % 2 !== 0 ? "italic font-normal" : ""}>
-                  {word}{" "}
-                </span>
-              ))}
-            </motion.h2>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <Button size="lg" className="bg-primary hover:bg-primary-dark text-white px-10 h-14 text-xs font-bold uppercase tracking-widest rounded-none">
-                {banners[current].cta} <ArrowRight size={16} className="ml-2" />
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+					{/* Content */}
+					<div className="container relative mx-auto flex h-full flex-col items-center justify-center px-6 text-center text-white">
+						<motion.span
+							animate={{ opacity: 1, y: 0 }}
+							className="mb-6 font-bold text-xs uppercase tracking-[0.4em] md:text-sm"
+							initial={{ opacity: 0, y: 20 }}
+							transition={{ delay: 0.2 }}
+						>
+							{banners[current].subtitle}
+						</motion.span>
+						<motion.h2
+							animate={{ opacity: 1, y: 0 }}
+							className="mb-10 font-black font-serif text-5xl leading-none md:text-8xl"
+							initial={{ opacity: 0, y: 30 }}
+							transition={{ delay: 0.4 }}
+						>
+							{banners[current].title.split(" ").map((word, i) => (
+								<span
+									className={i % 2 !== 0 ? "font-normal italic" : ""}
+									key={Number(i + 1)}
+								>
+									{word}{" "}
+								</span>
+							))}
+						</motion.h2>
+						<motion.div
+							animate={{ opacity: 1, y: 0 }}
+							initial={{ opacity: 0, y: 20 }}
+							transition={{ delay: 0.6 }}
+						>
+							<Button
+								className="h-14 rounded-none bg-primary px-10 font-bold text-white text-xs uppercase tracking-widest hover:bg-primary-dark"
+								size="lg"
+							>
+								{banners[current].cta} <ArrowRight className="ml-2" size={16} />
+							</Button>
+						</motion.div>
+					</div>
+				</motion.div>
+			</AnimatePresence>
 
-      {/* Navigation Arrows */}
-      <div className="absolute bottom-10 right-6 md:right-12 flex gap-4 z-10">
-        <button onClick={prev} className="p-3 border border-white/30 text-white hover:bg-white hover:text-black transition-all">
-          <ChevronLeft size={24} />
-        </button>
-        <button onClick={next} className="p-3 border border-white/30 text-white hover:bg-white hover:text-black transition-all">
-          <ChevronRight size={24} />
-        </button>
-      </div>
+			{/* Navigation Arrows */}
+			<div className="absolute right-6 bottom-10 z-10 flex gap-4 md:right-12">
+				<button
+					className="border border-white/30 p-3 text-white transition-all hover:bg-white hover:text-black"
+					onClick={prev}
+				>
+					<ChevronLeft size={24} />
+				</button>
+				<button
+					className="border border-white/30 p-3 text-white transition-all hover:bg-white hover:text-black"
+					onClick={next}
+				>
+					<ChevronRight size={24} />
+				</button>
+			</div>
 
-      {/* Progress Indicators */}
-      <div className="absolute bottom-10 left-6 md:left-12 flex gap-3 z-10">
-        {banners.map((_, i) => (
-          <div 
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`h-1 transition-all duration-500 cursor-pointer ${current === i ? "w-12 bg-primary" : "w-6 bg-white/30 hover:bg-white/50"}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
+			{/* Progress Indicators */}
+			<div className="absolute bottom-10 left-6 z-10 flex gap-3 md:left-12">
+				{banners.map((_, i) => (
+					<div
+						className={`h-1 cursor-pointer transition-all duration-500 ${current === i ? "w-12 bg-primary" : "w-6 bg-white/30 hover:bg-white/50"}`}
+						key={Number(i + 1)}
+						onClick={() => setCurrent(i)}
+					/>
+				))}
+			</div>
+		</div>
+	);
 }
