@@ -159,30 +159,26 @@ export default function Home() {
 			/>
 
 			{/* INTERSTITIAL BANNER 2 */}
-			<section className="py-16">
-				<div className="container mx-auto px-6">
-					<div className="group relative h-[400px] overflow-hidden rounded-2xl shadow-2xl">
-						<Image
-							alt="Children's Books"
-							className="h-full w-full object-cover transition-transform duration-[3s] group-hover:scale-110"
-							fill
-							src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
-						/>
-						<div className="absolute inset-0 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 to-transparent px-12 md:px-24">
-							<span className="mb-6 block font-bold text-[10px] text-white uppercase tracking-[0.4em]">
-								Special Release
-							</span>
-							<h3 className="mb-10 max-w-xl font-serif text-4xl text-white uppercase leading-tight md:text-6xl">
-								Nurturing the <br />
-								<span className="font-normal text-white/60 italic">
-									Next Generation
-								</span>{" "}
-								<br /> of Seekers.
-							</h3>
-							<Button className="h-14 rounded-none border-none bg-primary px-12 font-bold text-[10px] uppercase tracking-widest transition-all hover:bg-primary-dark">
-								Shop Children&apos;s
-							</Button>
-						</div>
+			<section className="container mx-auto px-6 py-16">
+				<div className="group relative overflow-hidden rounded-2xl shadow-2xl">
+					<Image
+						alt="Children's Books"
+						className="object-cover transition-transform group-hover:scale-110"
+						fill
+						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
+					/>
+					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 p-12 md:p-24">
+						<span className="mb-6 block font-bold text-white text-xs uppercase tracking-[0.4em]">
+							Special Release
+						</span>
+						<h3 className="mb-10 max-w-xl font-serif text-4xl text-white uppercase leading-tight md:text-6xl">
+							Nurturing the <br />
+							<span className="font-normal text-white/60 italic">
+								Next Generation
+							</span>{" "}
+							<br /> of Seekers.
+						</h3>
+						<Button>Shop Children&apos;s</Button>
 					</div>
 				</div>
 			</section>

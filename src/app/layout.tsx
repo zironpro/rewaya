@@ -25,12 +25,13 @@ export default function RootLayout({
 		<html
 			className={cn(
 				"scroll-smooth antialiased",
-				inter.variable,
-				playfair.variable
+				playfair.variable,
+				"font-sans",
+				inter.variable
 			)}
 			lang="en"
 		>
-			<body className="flex min-h-full flex-col font-sans">
+			<body className="flex min-h-full flex-col">
 				{/* <LoadingScreen /> */}
 				<Navbar />
 				<AuthModal />

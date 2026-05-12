@@ -103,10 +103,10 @@ export function Navbar() {
 								width={260}
 							/>
 							<div className="hidden flex-col leading-none xl:flex">
-								<span className="font-bold text-secondary text-xl uppercase tracking-tighter">
-									alrewaya
+								<span className="font-bold text-secondary text-xl uppercase tracking-tight">
+									Al Rewaya
 								</span>
-								<span className="font-black text-[10px] text-primary tracking-[0.2em]">
+								<span className="font-semibold text-[10px] text-primary tracking-[0.2em]">
 									BOOK WORLD
 								</span>
 							</div>
