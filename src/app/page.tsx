@@ -61,11 +61,8 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
 
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="pt-20 lg:pt-32"
+      <main
+        className="pt-20 lg:pt-32 overflow-hidden"
       >
         <HeroCarousel />
         <CategoryStrip />
@@ -104,7 +101,7 @@ export default function Home() {
         <ProductStrip
           title="New Sellers"
           subtitle="Latest Arrivals"
-          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-new-${i}` }))}
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-new-${i}`, badge: "new seller" }))}
         />
 
         {/* BUNDLES SECTION */}
@@ -114,7 +111,7 @@ export default function Home() {
         <ProductStrip
           title="Best Sellers"
           subtitle="Top Rated"
-          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-best-${i}` }))}
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-best-${i}`, badge: "best seller" }))}
         />
 
         {/* INTERSTITIAL BANNER 2 */}
@@ -141,13 +138,13 @@ export default function Home() {
         <ProductStrip
           title="Children's Collection"
           subtitle="For Young Readers"
-          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-children-${i}` }))}
+          books={[...allBooks, ...allBooks].map((book, i) => ({ ...book, id: `${book.id}-children-${i}`, badge: "new arrival" }))}
         />
 
 
 
         <PolicyCards />
-      </motion.main>
+      </main>
 
       <Footer />
     </div>

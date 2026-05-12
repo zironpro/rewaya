@@ -24,9 +24,10 @@ export interface BookProps {
   price: number;
   image: string;
   category: string;
+  badge?: "new seller" | "new arrival" | "best seller";
 }
 
-export default function BookCard({ id, title, author, price, image, category }: BookProps) {
+export default function BookCard({ id, title, author, price, image, category, badge }: BookProps) {
   const setCart = useSetAtom(cartAtom);
 
   const addToBag = (e?: React.MouseEvent) => {
@@ -79,12 +80,21 @@ export default function BookCard({ id, title, author, price, image, category }: 
             </Button>
           </div>
 
-          {/* Sale Badge */}
-          {price < 50 && (
-            <div className="absolute top-4 left-0">
-              <span className="sale-badge bg-primary">Sale</span>
-            </div>
-          )}
+          {/* Status Badges */}
+          <div className="absolute top-4 left-0 flex flex-col gap-1 items-start z-10">
+            {badge === "best seller" && (
+              <span className="bg-secondary text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 shadow-lg">Best Seller</span>
+            )}
+            {badge === "new arrival" && (
+              <span className="bg-primary text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 shadow-lg">New Arrival</span>
+            )}
+            {badge === "new seller" && (
+              <span className="bg-stone-800 text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 shadow-lg border-l-4 border-primary">New Seller</span>
+            )}
+            {price < 50 && !badge && (
+              <span className="bg-primary text-white text-[9px] font-black uppercase tracking-[0.2em] px-3 py-1.5 shadow-lg italic">Special Offer</span>
+            )}
+          </div>
         </div>
 
         {/* Info Container */}
