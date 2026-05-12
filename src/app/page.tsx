@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import BundleSection from "@/components/BundleSection";
 import CategoryStrip from "@/components/CategoryStrip";
 import HeroCarousel from "@/components/HeroCarousel";
@@ -160,9 +162,10 @@ export default function Home() {
 			<section className="py-16">
 				<div className="container mx-auto px-6">
 					<div className="group relative h-[400px] overflow-hidden rounded-2xl shadow-2xl">
-						<img
+						<Image
 							alt="Children's Books"
 							className="h-full w-full object-cover transition-transform duration-[3s] group-hover:scale-110"
+							fill
 							src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 						/>
 						<div className="absolute inset-0 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 to-transparent px-12 md:px-24">
