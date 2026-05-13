@@ -1,0 +1,121 @@
+import Image from "next/image";
+
+import BundleSection from "@/components/BundleSection";
+import CategoryStrip from "@/components/CategoryStrip";
+import PolicyCards from "@/components/PolicyCards";
+import ProductStrip from "@/components/ProductStrip";
+import { Button } from "@/components/ui/button";
+
+import HeroCarousel from "@/features/home/components/hero-carousel";
+import { allBooks } from "@/features/products/data/products";
+
+export const HomepageView = () => {
+	return (
+		<main className="overflow-hidden pt-20 lg:pt-32">
+			<HeroCarousel />
+			<CategoryStrip />
+
+			{/* 1. RECOMMENDED FOR YOU */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+				}))}
+				subtitle="Based on your taste"
+				title="Recommended for You"
+			/>
+
+			{/* 2. TODAY'S DEALS */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+				}))}
+				subtitle="Limited Time"
+				title="Today's Deals"
+			/>
+
+			{/* INTERSTITIAL BANNER 1 */}
+			<section className="relative my-16 h-[400px] overflow-hidden bg-stone-900">
+				<Image
+					alt="Promotion"
+					className="h-full w-full object-cover opacity-60"
+					fill
+					src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
+				/>
+				<div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
+					<h3 className="mb-6 font-serif text-3xl uppercase italic tracking-widest md:text-5xl">
+						Explore <span className="font-normal italic">Islamic</span> History
+					</h3>
+					<p className="mb-8 font-bold text-[10px] uppercase tracking-[0.4em] opacity-80">
+						Curated collection for the modern seeker
+					</p>
+					<Button
+						className="h-12 rounded-none border-white px-10 font-bold text-[10px] text-white uppercase tracking-widest transition-all hover:bg-white hover:text-black"
+						variant="outline"
+					>
+						Shop Now
+					</Button>
+				</div>
+			</section>
+
+			{/* 2. NEW SELLERS */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+					badge: "new seller",
+				}))}
+				subtitle="Latest Arrivals"
+				title="New Sellers"
+			/>
+
+			{/* BUNDLES SECTION */}
+			<BundleSection />
+
+			{/* 3. BEST SELLERS */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+					badge: "best seller",
+				}))}
+				subtitle="Top Rated"
+				title="Best Sellers"
+			/>
+
+			{/* INTERSTITIAL BANNER 2 */}
+			<section className="container mx-auto px-6 py-16">
+				<div className="group relative overflow-hidden rounded-2xl shadow-2xl">
+					<Image
+						alt="Children's Books"
+						className="object-cover transition-transform group-hover:scale-110"
+						fill
+						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
+					/>
+					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 p-12 md:p-24">
+						<span className="mb-6 block font-bold text-white text-xs uppercase tracking-[0.4em]">
+							Special Release
+						</span>
+						<h3 className="mb-10 max-w-xl font-serif text-4xl text-white uppercase leading-tight md:text-6xl">
+							Nurturing the <br />
+							<span className="font-normal text-white/60 italic">
+								Next Generation
+							</span>{" "}
+							<br /> of Seekers.
+						</h3>
+						<Button>Shop Children&apos;s</Button>
+					</div>
+				</div>
+			</section>
+
+			{/* 4. CHILDREN'S COLLECTION */}
+			<ProductStrip
+				books={[...allBooks, ...allBooks].map((book, i) => ({
+					...book,
+					badge: "new arrival",
+				}))}
+				subtitle="For Young Readers"
+				title="Children's Collection"
+			/>
+
+			<PolicyCards />
+		</main>
+	);
+};

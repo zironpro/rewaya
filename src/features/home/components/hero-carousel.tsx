@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import Image from "next/image";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -15,7 +17,7 @@ const banners = [
 		cta: "Shop the Sale",
 		bg: "bg-stone-900",
 		image:
-			"https://images.unsplash.com/photo-1585036156171-3839efc2296c?q=80&w=2000&auto=format&fit=crop",
+			"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000&auto=format&fit=crop",
 	},
 	{
 		id: 2,
@@ -65,9 +67,10 @@ export default function HeroCarousel() {
 				>
 					{/* Background Image with Overlay */}
 					<div className="absolute inset-0">
-						<img
+						<Image
 							alt={banners[current].title}
 							className="h-full w-full object-cover"
+							fill
 							src={banners[current].image}
 						/>
 						<div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />
