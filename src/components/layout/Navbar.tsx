@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import {
 	Baby,
 	BookOpen,
@@ -20,12 +20,13 @@ import {
 	Sparkles,
 	Star,
 	User,
+	X,
 	Zap,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import { authModalAtom, cartCountAtom } from "@/lib/store";
+import { cartCountAtom } from "@/lib/store";
 
 const megaMenuData = {
 	categories: [
@@ -64,20 +65,43 @@ export function Navbar() {
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [cartCount] = useAtom(cartCountAtom);
-	const setAuthModal = useSetAtom(authModalAtom);
 
 	const categories = [
 		{
 			name: "Shop All",
 			href: "/shop",
-			icon: <Sparkles className="text-primary" size={14} />,
+			icon: <Sparkles className="text-secondary" size={14} />,
 		},
-		{ name: "Today's Deals", href: "/#deals", icon: <Zap size={14} /> },
-		{ name: "Islamic", href: "/#islamic", icon: <Moon size={14} /> },
-		{ name: "Fiction", href: "/#fiction", icon: <Feather size={14} /> },
-		{ name: "Children", href: "/#children", icon: <Baby size={14} /> },
-		{ name: "Bundles", href: "/bundles", icon: <Package size={14} /> },
-		{ name: "New Arrivals", href: "/#new", icon: <Sparkles size={14} /> },
+		{
+			name: "Today's Deals",
+			href: "/#deals",
+			icon: <Zap className="text-secondary" size={14} />,
+		},
+		{
+			name: "Islamic",
+			href: "/#islamic",
+			icon: <Moon className="text-secondary" size={14} />,
+		},
+		{
+			name: "Fiction",
+			href: "/#fiction",
+			icon: <Feather className="text-secondary" size={14} />,
+		},
+		{
+			name: "Children",
+			href: "/#children",
+			icon: <Baby className="text-secondary" size={14} />,
+		},
+		{
+			name: "Bundles",
+			href: "/bundles",
+			icon: <Package className="text-secondary" size={14} />,
+		},
+		{
+			name: "New Arrivals",
+			href: "/#new",
+			icon: <Sparkles className="text-secondary" size={14} />,
+		},
 	];
 
 	return (
@@ -96,11 +120,11 @@ export function Navbar() {
 								width={260}
 							/>
 							<div className="hidden flex-col leading-none xl:flex">
-								<span className="font-bold text-2xl text-secondary uppercase tracking-tight">
+								<span className="font-bold text-2xl text-secondary tracking-tight">
 									Al Rewaya
 								</span>
-								<span className="font-bold text-[11px] text-primary tracking-[0.3em]">
-									BOOK WORLD
+								<span className="font-bold text-primary text-xm tracking-widest">
+									Book World
 								</span>
 							</div>
 						</Link>
@@ -157,27 +181,28 @@ export function Navbar() {
 							>
 								<Search size={20} />
 							</Button>
-							<Button
-								className="h-10 gap-2 px-3 hover:text-primary"
-								onClick={() => setAuthModal({ isOpen: true, view: "login" })}
-								variant="ghost"
-							>
-								<User size={20} strokeWidth={1.5} />
-								<span className="hidden font-bold text-[10px] uppercase tracking-widest xl:block">
-									Sign In
-								</span>
-							</Button>
+							<Link href="/login">
+								<Button
+									className="h-10 gap-2 px-3 hover:text-primary"
+									variant="ghost"
+								>
+									<User size={20} strokeWidth={1.5} />
+									<span className="hidden font-bold text-xm xl:block">
+										Sign In
+									</span>
+								</Button>
+							</Link>
 							<Link href="/cart">
 								<Button
 									className="relative h-10 gap-2 px-3 hover:text-primary"
 									variant="ghost"
 								>
 									<ShoppingBag size={20} strokeWidth={1.5} />
-									<span className="hidden font-bold text-[10px] uppercase tracking-widest xl:block">
+									<span className="hidden font-bold text-xm xl:block">
 										Cart
 									</span>
 									{cartCount > 0 && (
-										<span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[9px] text-white ring-2 ring-white">
+										<span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[10px] text-white ring-2 ring-white">
 											{cartCount}
 										</span>
 									)}
@@ -185,11 +210,11 @@ export function Navbar() {
 							</Link>
 							<Button
 								className="lg:hidden"
-								onClick={() => setIsMobileMenuOpen(true)}
+								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 								size="icon"
 								variant="ghost"
 							>
-								<Menu size={22} />
+								{isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
 							</Button>
 						</div>
 					</div>
@@ -199,7 +224,7 @@ export function Navbar() {
 				<nav className="relative hidden overflow-visible border-stone-50 border-b bg-white lg:block">
 					<div className="container mx-auto flex h-12 items-center gap-10 px-6">
 						<button
-							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-black text-[11px] text-secondary uppercase tracking-widest transition-colors hover:text-primary"
+							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-bold text-secondary text-sm transition-colors hover:text-primary"
 							onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
 							onMouseEnter={() => setIsMegaMenuOpen(true)}
 						>
@@ -211,7 +236,7 @@ export function Navbar() {
 						</button>
 						{categories.map((cat) => (
 							<Link
-								className="flex items-center gap-2 whitespace-nowrap font-bold text-[12px] text-stone-500 uppercase tracking-widest transition-colors hover:text-primary"
+								className="flex items-center gap-2 whitespace-nowrap font-bold text-secondary text-sm transition-colors hover:text-primary"
 								href={cat.href}
 								key={cat.name}
 							>
@@ -220,8 +245,6 @@ export function Navbar() {
 							</Link>
 						))}
 					</div>
-
-					{/* FIXME: Fix the mobile navbar closing bug */}
 
 					{/* Mega Menu Dropdown */}
 					<AnimatePresence>
@@ -248,17 +271,17 @@ export function Navbar() {
 										<div className="grid grid-cols-5 gap-12">
 											{megaMenuData.categories.map((group) => (
 												<div className="space-y-6" key={group.name}>
-													<h4 className="border-stone-100 border-b pb-3 font-black text-[13px] text-secondary uppercase tracking-[0.1em]">
+													<h4 className="border-stone-100 border-b pb-3 font-bold text-secondary text-sm">
 														{group.name}
 													</h4>
 													<ul className="space-y-3">
 														{group.items.map((item) => (
 															<li key={item}>
 																<Link
-																	className="group/item flex items-center gap-2 text-[14px] text-stone-500 transition-colors hover:text-primary"
+																	className="group/item flex items-center gap-2 text-base text-secondary transition-colors hover:text-primary"
 																	href="/shop"
 																>
-																	<div className="h-1 w-1 rounded-full bg-stone-300 transition-colors group-hover/item:bg-primary" />
+																	<div className="h-1 w-1 rounded-full bg-secondary/30 transition-colors group-hover/item:bg-primary" />
 																	{item}
 																</Link>
 															</li>
@@ -270,23 +293,24 @@ export function Navbar() {
 											{/* Featured Section */}
 											<div className="col-span-1 border-stone-100 border-l pl-12">
 												<div className="group/feat relative mb-4 aspect-[3/4] overflow-hidden rounded-lg">
-													<img
+													<Image
 														alt="Featured"
-														className="h-full w-full object-cover transition-transform duration-700 group-hover/feat:scale-110"
+														className="object-cover transition-transform duration-700 group-hover/feat:scale-110"
+														fill
 														src={megaMenuData.featured.image}
 													/>
 													<div className="absolute inset-0 bg-secondary/10 transition-colors group-hover/feat:bg-transparent" />
 													<div className="absolute bottom-4 left-4">
-														<span className="bg-primary px-2 py-1 font-black text-[8px] text-white uppercase tracking-widest">
+														<span className="bg-primary px-2 py-1 font-bold text-white text-xm">
 															{megaMenuData.featured.tag}
 														</span>
 													</div>
 												</div>
-												<h4 className="mb-2 font-black text-[10px] text-secondary uppercase tracking-widest">
+												<h4 className="mb-2 font-bold text-secondary text-xm">
 													{megaMenuData.featured.title}
 												</h4>
 												<Link
-													className="font-bold text-[10px] text-primary uppercase tracking-widest hover:underline"
+													className="font-bold text-primary text-xm hover:underline"
 													href="/shop"
 												>
 													Discover Collection
@@ -302,10 +326,10 @@ export function Navbar() {
 														<BookOpen size={16} />
 													</div>
 													<div>
-														<p className="font-black text-[9px] text-secondary uppercase tracking-widest">
+														<p className="font-bold text-secondary text-xm">
 															New Releases
 														</p>
-														<p className="text-[8px] text-stone-400 uppercase">
+														<p className="text-stone-400 text-xm">
 															Updated Daily
 														</p>
 													</div>
@@ -315,10 +339,10 @@ export function Navbar() {
 														<Star size={16} />
 													</div>
 													<div>
-														<p className="font-black text-[9px] text-secondary uppercase tracking-widest">
+														<p className="font-bold text-secondary text-xm">
 															Best Sellers
 														</p>
-														<p className="text-[8px] text-stone-400 uppercase">
+														<p className="text-stone-400 text-xm">
 															Top 100 Books
 														</p>
 													</div>
@@ -327,7 +351,7 @@ export function Navbar() {
 											<div className="flex gap-4">
 												<div className="flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-2 text-primary">
 													<Zap fill="currentColor" size={14} />
-													<span className="font-black text-[10px] uppercase tracking-widest">
+													<span className="font-bold text-xm">
 														Sale: Up to 40% Off
 													</span>
 												</div>
@@ -342,37 +366,50 @@ export function Navbar() {
 			</header>
 
 			{/* Mobile Menu */}
+			{/* Mobile Menu Overlay */}
 			<AnimatePresence>
 				{isMobileMenuOpen && (
-					<motion.div
-						animate={{ opacity: 1, height: "auto" }}
-						className="overflow-hidden border-stone-100 border-t bg-white py-8 md:hidden"
-						exit={{ opacity: 0, height: 0 }}
-						initial={{ opacity: 0, height: 0 }}
-					>
-						<div className="flex flex-col gap-6 px-6">
-							{["Shop", "Islamic", "Fiction", "New", "About", "Log In"].map(
-								(item) => (
-									<Link
-										className="nav-link text-xl"
-										href={
-											item === "Log In"
-												? "/login"
-												: item === "Shop"
-													? "/shop"
-													: item === "About"
-														? "/about"
-														: "#"
-										}
-										key={item}
-										onClick={() => setIsMobileMenuOpen(false)}
-									>
-										{item}
-									</Link>
-								)
-							)}
-						</div>
-					</motion.div>
+					<>
+						{/* Backdrop */}
+						<motion.div
+							animate={{ opacity: 1 }}
+							className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm lg:hidden"
+							exit={{ opacity: 0 }}
+							initial={{ opacity: 0 }}
+							onClick={() => setIsMobileMenuOpen(false)}
+						/>
+
+						{/* Menu Content */}
+						<motion.div
+							animate={{ opacity: 1, y: 0 }}
+							className="fixed inset-x-0 top-20 z-40 overflow-hidden border-stone-100 border-t bg-white py-8 shadow-2xl lg:hidden"
+							exit={{ opacity: 0, y: -20 }}
+							initial={{ opacity: 0, y: -20 }}
+						>
+							<div className="flex flex-col gap-6 px-6">
+								{["Shop", "Islamic", "Fiction", "New", "About", "Log In"].map(
+									(item) => (
+										<Link
+											className="nav-link text-xl"
+											href={
+												item === "Log In"
+													? "/login"
+													: item === "Shop"
+														? "/shop"
+														: item === "About"
+															? "/about"
+															: "#"
+											}
+											key={item}
+											onClick={() => setIsMobileMenuOpen(false)}
+										>
+											{item}
+										</Link>
+									)
+								)}
+							</div>
+						</motion.div>
+					</>
 				)}
 			</AnimatePresence>
 		</>

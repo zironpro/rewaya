@@ -16,11 +16,6 @@ export const cartCountAtom = atom((get) => {
 	return cart.reduce((acc, item) => acc + item.quantity, 0);
 });
 
-export const authModalAtom = atom({
-	isOpen: false,
-	view: "login" as "login" | "signup",
-});
-
 export const cartTotalAtom = atom((get) => {
 	const cart = get(cartAtom);
 	return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);

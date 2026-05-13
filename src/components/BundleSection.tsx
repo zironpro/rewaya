@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Tag } from "lucide-react";
-
 import Image from "next/image";
 import Link from "next/link";
+
+import { motion } from "framer-motion";
+import { ArrowRight, Tag } from "lucide-react";
 
 import { Button } from "./ui/button";
 
@@ -50,17 +50,17 @@ export default function BundleSection() {
 			<div className="container relative z-10 mx-auto px-6">
 				<div className="mb-12 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
 					<div className="max-w-xl">
-						<span className="mb-3 block font-black text-[9px] text-primary uppercase tracking-[0.4em]">
+						<span className="mb-3 block font-bold text-primary text-xm">
 							Special Campaigns
 						</span>
-						<h2 className="font-black font-serif text-4xl text-secondary uppercase leading-tight md:text-5xl">
-							CURATED{" "}
-							<span className="font-normal text-primary italic">SETS</span>.
+						<h2 className="font-black font-serif text-4xl text-secondary leading-tight md:text-5xl">
+							Curated{" "}
+							<span className="font-normal text-primary italic">Sets</span>.
 						</h2>
 					</div>
 					<Link href="/bundles">
 						<Button
-							className="gap-2 font-black text-[9px] text-primary uppercase tracking-widest hover:text-secondary"
+							className="gap-2 font-bold text-primary text-xm hover:text-secondary"
 							variant="ghost"
 						>
 							View All <ArrowRight size={14} />
@@ -69,8 +69,12 @@ export default function BundleSection() {
 				</div>
 
 				<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-					{bundles.map((bundle, i) => (
-						<Link href={`/bundle/${bundle.id}`} key={bundle.id} className="block">
+					{bundles.map((bundle) => (
+						<Link
+							className="block"
+							href={`/bundle/${bundle.id}`}
+							key={bundle.id}
+						>
 							<motion.div
 								className="group relative flex cursor-pointer flex-col items-center gap-12 border border-stone-100 bg-stone-50 p-6 transition-all duration-500 hover:border-primary/30 sm:flex-row md:p-8"
 								initial={{ opacity: 0, y: 20 }}
@@ -81,37 +85,38 @@ export default function BundleSection() {
 								<div className="relative mb-6 h-44 w-32 flex-shrink-0 sm:mb-0">
 									{/* Book 3 (Back) */}
 									<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden border border-stone-100 bg-stone-200 shadow-lg transition-transform duration-500 group-hover:-rotate-15">
-										<img
+										<Image
 											alt="Book 3"
-											className="h-full w-full object-cover opacity-60"
+											className="object-cover opacity-60"
+											fill
 											src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop"
 										/>
 									</div>
 									{/* Book 2 (Middle) */}
 									<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden border border-stone-200 bg-stone-100 shadow-xl transition-transform duration-500 group-hover:rotate-12">
-										<img
+										<Image
 											alt="Book 2"
-											className="h-full w-full object-cover opacity-80"
+											className="object-cover opacity-80"
+											fill
 											src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=300&auto=format&fit=crop"
 										/>
 									</div>
 									{/* Book 1 (Front) */}
 									<div className="absolute inset-0 rotate-0 transform overflow-hidden border border-stone-300 bg-white shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-										<img
+										<Image
 											alt={bundle.title}
-											className="h-full w-full object-cover"
+											className="object-cover"
+											fill
 											src={bundle.image}
 										/>
 									</div>
 
 									{/* Floating Badge */}
 									<div className="absolute -top-3 -right-3 z-20 flex h-10 w-10 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-lg">
-										<span className="font-black text-xs leading-none">
+										<span className="font-black text-xm leading-none">
 											{bundle.count}
 										</span>
-										<span className="font-bold text-[6px] uppercase tracking-tighter">
-											Sets
-										</span>
+										<span className="font-bold text-[10px]">Sets</span>
 									</div>
 								</div>
 
@@ -119,26 +124,26 @@ export default function BundleSection() {
 								<div className="flex-grow">
 									<div className="mb-3 flex items-center gap-2">
 										<Tag className="text-primary" size={10} />
-										<span className="font-black text-[8px] text-primary uppercase tracking-widest">
+										<span className="font-bold text-primary text-xm">
 											{bundle.tag}
 										</span>
 									</div>
-									<h3 className="mb-2 font-black font-serif text-secondary text-xl uppercase transition-colors group-hover:text-primary">
+									<h3 className="mb-2 font-black font-serif text-secondary text-xl transition-colors group-hover:text-primary">
 										{bundle.title}
 									</h3>
-									<p className="mb-6 line-clamp-1 font-bold text-[9px] text-stone-400 uppercase tracking-widest">
+									<p className="mb-6 line-clamp-1 font-bold text-stone-400 text-xm">
 										{bundle.books.slice(0, 3).join(", ")}...
 									</p>
 									<div className="flex items-center justify-between">
 										<div>
-											<span className="mr-2 font-bold text-[9px] text-stone-300 uppercase tracking-widest line-through">
+											<span className="mr-2 font-bold text-stone-300 text-xm line-through">
 												AED {bundle.originalPrice}
 											</span>
 											<span className="font-black text-lg text-secondary">
 												AED {bundle.price}
 											</span>
 										</div>
-										<Button className="h-10 rounded-none bg-primary px-6 font-black text-[8px] text-white uppercase tracking-widest shadow-md transition-all hover:bg-secondary">
+										<Button className="h-10 rounded-none bg-primary px-6 font-bold text-white text-xm shadow-md transition-all hover:bg-secondary">
 											Buy Set
 										</Button>
 									</div>

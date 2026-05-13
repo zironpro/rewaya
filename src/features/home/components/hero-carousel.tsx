@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button";
 const banners = [
 	{
 		id: 1,
-		title: "RAMADAN SPECIAL",
-		subtitle: "UP TO 40% OFF ON ALL ISLAMIC LITERATURE",
+		title: "Ramadan Special",
+		subtitle: "Up to 40% off on all Islamic literature",
 		cta: "Shop the Sale",
 		bg: "bg-stone-900",
 		image:
@@ -21,8 +21,8 @@ const banners = [
 	},
 	{
 		id: 2,
-		title: "NEW ARRIVALS",
-		subtitle: "THE LATEST FROM GLOBAL AUTHORS",
+		title: "New Arrivals",
+		subtitle: "The latest from global authors",
 		cta: "Explore New",
 		bg: "bg-secondary",
 		image:
@@ -30,8 +30,8 @@ const banners = [
 	},
 	{
 		id: 3,
-		title: "BOOK BUNDLES",
-		subtitle: "BUY 4 GET 2 FREE ON SELECTED COLLECTIONS",
+		title: "Book Bundles",
+		subtitle: "Buy 4 get 2 free on selected collections",
 		cta: "View Bundles",
 		bg: "bg-primary",
 		image:
@@ -80,7 +80,7 @@ export default function HeroCarousel() {
 					<div className="container relative mx-auto flex h-full flex-col items-center justify-center px-6 text-center text-white">
 						<motion.span
 							animate={{ opacity: 1, y: 0 }}
-							className="mb-6 font-bold text-xs uppercase tracking-[0.4em] md:text-sm"
+							className="mb-6 font-bold text-xm md:text-sm"
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.2 }}
 						>
@@ -107,7 +107,7 @@ export default function HeroCarousel() {
 							transition={{ delay: 0.6 }}
 						>
 							<Button
-								className="h-14 rounded-none bg-primary px-10 font-bold text-white text-xs uppercase tracking-widest hover:bg-primary-dark"
+								className="h-14 rounded-none bg-primary px-10 font-bold text-white text-xm hover:bg-primary-dark"
 								size="lg"
 							>
 								{banners[current].cta} <ArrowRight className="ml-2" size={16} />

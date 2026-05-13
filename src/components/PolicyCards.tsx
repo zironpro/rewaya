@@ -4,22 +4,22 @@ import { CreditCard, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 
 const policies = [
 	{
-		title: "FREE SHIPPING",
+		title: "Free shipping",
 		desc: "On all orders above AED 200 within UAE",
 		icon: Truck,
 	},
 	{
-		title: "14-DAY RETURNS",
+		title: "14-day returns",
 		desc: "Hassle-free return and exchange policy",
 		icon: RotateCcw,
 	},
 	{
-		title: "SECURE PAYMENT",
+		title: "Secure payment",
 		desc: "100% secure payment processing",
 		icon: CreditCard,
 	},
 	{
-		title: "GENUINE BOOKS",
+		title: "Genuine books",
 		desc: "Direct from authorized publishers",
 		icon: ShieldCheck,
 	},
@@ -40,10 +40,8 @@ export default function PolicyCards() {
 								<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm transition-all duration-500 group-hover:bg-primary group-hover:text-white">
 									<Icon size={28} strokeWidth={1.2} />
 								</div>
-								<h3 className="mb-2 font-black text-[11px] uppercase tracking-[0.2em]">
-									{policy.title}
-								</h3>
-								<p className="text-[10px] text-stone-400 uppercase leading-relaxed tracking-widest">
+								<h3 className="mb-2 font-bold text-sm">{policy.title}</h3>
+								<p className="text-stone-400 text-xm leading-relaxed">
 									{policy.desc}
 								</p>
 							</div>

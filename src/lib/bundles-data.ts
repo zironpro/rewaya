@@ -30,7 +30,7 @@ export const bundles: Bundle[] = [
 		count: 5,
 		price: 149,
 		originalPrice: 165,
-		tag: "KIDS FAVORITE",
+		tag: "Kids Favorite",
 		mainImage: "/bundle_kids_essentials_1778661036870.png",
 		books: [
 			{
@@ -41,10 +41,12 @@ export const bundles: Bundle[] = [
 				author: "Multiple Authors",
 				language: "English",
 				genre: "Quran Stories",
-				overview: "A beautiful exploration of the story of the horse as mentioned in the Holy Quran, tailored for young minds.",
-				image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 20.00,
-				costPrice: 7.00
+				overview:
+					"A beautiful exploration of the story of the horse as mentioned in the Holy Quran, tailored for young minds.",
+				image:
+					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 20.0,
+				costPrice: 7.0,
 			},
 			{
 				id: "b1-2",
@@ -54,10 +56,12 @@ export const bundles: Bundle[] = [
 				author: "Multiple Authors",
 				language: "English",
 				genre: "Sunnah/Comics",
-				overview: "Engaging comic-style illustrations that teach 101 essential Sunnahs of the Prophet in a fun way.",
-				image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 40.00,
-				costPrice: 13.00
+				overview:
+					"Engaging comic-style illustrations that teach 101 essential Sunnahs of the Prophet in a fun way.",
+				image:
+					"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 40.0,
+				costPrice: 13.0,
 			},
 			{
 				id: "b1-3",
@@ -67,10 +71,12 @@ export const bundles: Bundle[] = [
 				author: "Educational Experts",
 				language: "English",
 				genre: "Learning",
-				overview: "A systematic approach to learning phonics, essential for early literacy and Quranic reading foundations.",
-				image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 45.00,
-				costPrice: 16.00
+				overview:
+					"A systematic approach to learning phonics, essential for early literacy and Quranic reading foundations.",
+				image:
+					"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 45.0,
+				costPrice: 16.0,
 			},
 			{
 				id: "b1-4",
@@ -80,10 +86,12 @@ export const bundles: Bundle[] = [
 				author: "Multiple Authors",
 				language: "English",
 				genre: "Quran Foundation",
-				overview: "The perfect introduction to the Quran for toddlers, with simple language and vibrant illustrations.",
-				image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 30.00,
-				costPrice: 9.00
+				overview:
+					"The perfect introduction to the Quran for toddlers, with simple language and vibrant illustrations.",
+				image:
+					"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 30.0,
+				costPrice: 9.0,
 			},
 			{
 				id: "b1-5",
@@ -93,12 +101,14 @@ export const bundles: Bundle[] = [
 				author: "Multiple Authors",
 				language: "English",
 				genre: "Ibadah",
-				overview: "A step-by-step visual guide to performing Salah, designed for children to follow along easily.",
-				image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 30.00,
-				costPrice: 9.00
-			}
-		]
+				overview:
+					"A step-by-step visual guide to performing Salah, designed for children to follow along easily.",
+				image:
+					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 30.0,
+				costPrice: 9.0,
+			},
+		],
 	},
 	{
 		id: "bundle-2",
@@ -118,9 +128,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Supplications",
 				overview: "A collection of daily Duas every Muslim child should know.",
-				image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 10.00,
-				costPrice: 4.00
+				image:
+					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 10.0,
+				costPrice: 4.0,
 			},
 			{
 				id: "b2-2",
@@ -131,9 +142,10 @@ export const bundles: Bundle[] = [
 				language: "Arabic/English",
 				genre: "Learning Tools",
 				overview: "High-quality flash cards for mastering the Arabic alphabet.",
-				image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.00,
-				costPrice: 5.00
+				image:
+					"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 15.0,
+				costPrice: 5.0,
 			},
 			{
 				id: "b2-3",
@@ -144,9 +156,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Biography",
 				overview: "Inspiring stories of the female companions of the Prophet.",
-				image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 55.00,
-				costPrice: 18.00
+				image:
+					"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 55.0,
+				costPrice: 18.0,
 			},
 			{
 				id: "b2-4",
@@ -157,9 +170,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Activity",
 				overview: "Games and puzzles themed around the Quran.",
-				image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 25.00,
-				costPrice: 6.00
+				image:
+					"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 25.0,
+				costPrice: 6.0,
 			},
 			{
 				id: "b2-5",
@@ -169,12 +183,14 @@ export const bundles: Bundle[] = [
 				author: "Creative Team",
 				language: "English",
 				genre: "Activity",
-				overview: "Learn the life of the Prophet through interactive exercises.",
-				image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 25.00,
-				costPrice: 6.00
-			}
-		]
+				overview:
+					"Learn the life of the Prophet through interactive exercises.",
+				image:
+					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 25.0,
+				costPrice: 6.0,
+			},
+		],
 	},
 	{
 		id: "bundle-3",
@@ -193,10 +209,12 @@ export const bundles: Bundle[] = [
 				author: "Educational Team",
 				language: "English",
 				genre: "Flash Cards",
-				overview: "A comprehensive set of flash cards covering various subjects.",
-				image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 35.00,
-				costPrice: 8.50
+				overview:
+					"A comprehensive set of flash cards covering various subjects.",
+				image:
+					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 35.0,
+				costPrice: 8.5,
 			},
 			{
 				id: "b3-2",
@@ -207,9 +225,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Skill Building",
 				overview: "Improve handwriting through word family exercises.",
-				image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 10.00,
-				costPrice: 4.50
+				image:
+					"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 10.0,
+				costPrice: 4.5,
 			},
 			{
 				id: "b3-3",
@@ -220,9 +239,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Activity",
 				overview: "Endless practice with wipe-and-clean pattern drawing.",
-				image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.00,
-				costPrice: 4.50
+				image:
+					"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 15.0,
+				costPrice: 4.5,
 			},
 			{
 				id: "b3-4",
@@ -233,9 +253,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Logic",
 				overview: "Challenging puzzles to boost cognitive development.",
-				image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.00,
-				costPrice: 6.50
+				image:
+					"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 15.0,
+				costPrice: 6.5,
 			},
 			{
 				id: "b3-5",
@@ -246,11 +267,12 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Art/Activity",
 				overview: "Sticker fun and coloring for imaginative play.",
-				image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 20.00,
-				costPrice: 7.00
-			}
-		]
+				image:
+					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 20.0,
+				costPrice: 7.0,
+			},
+		],
 	},
 	{
 		id: "bundle-4",
@@ -270,9 +292,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Quiz",
 				overview: "A massive quiz set covering all areas of Islamic knowledge.",
-				image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.00,
-				costPrice: 4.00
+				image:
+					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 15.0,
+				costPrice: 4.0,
 			},
 			{
 				id: "b4-2",
@@ -283,9 +306,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Stories",
 				overview: "A large collection of magical and moral tales.",
-				image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 35.00,
-				costPrice: 12.00
+				image:
+					"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 35.0,
+				costPrice: 12.0,
 			},
 			{
 				id: "b4-3",
@@ -296,9 +320,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Knowledge",
 				overview: "A wonder for every day of the year.",
-				image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 48.00,
-				costPrice: 15.15
+				image:
+					"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 48.0,
+				costPrice: 15.15,
 			},
 			{
 				id: "b4-4",
@@ -309,9 +334,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Activity",
 				overview: "Interactive sticker play themed around the seasons.",
-				image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 30.00,
-				costPrice: 9.55
+				image:
+					"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 30.0,
+				costPrice: 9.55,
 			},
 			{
 				id: "b4-5",
@@ -322,11 +348,12 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Logic",
 				overview: "The final word in cognitive exercise books.",
-				image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 40.00,
-				costPrice: 11.50
-			}
-		]
+				image:
+					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 40.0,
+				costPrice: 11.5,
+			},
+		],
 	},
 	{
 		id: "bundle-5",
@@ -345,10 +372,12 @@ export const bundles: Bundle[] = [
 				author: "Islamic Authors",
 				language: "English",
 				genre: "Quran Stories",
-				overview: "Learn about the animal kingdom through the lens of revelation.",
-				image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 35.00,
-				costPrice: 10.50
+				overview:
+					"Learn about the animal kingdom through the lens of revelation.",
+				image:
+					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 35.0,
+				costPrice: 10.5,
 			},
 			{
 				id: "b5-2",
@@ -358,10 +387,12 @@ export const bundles: Bundle[] = [
 				author: "History Team",
 				language: "English",
 				genre: "Prophets",
-				overview: "Short, engaging biographies of the 25 prophets mentioned in the Quran.",
-				image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 60.00,
-				costPrice: 17.00
+				overview:
+					"Short, engaging biographies of the 25 prophets mentioned in the Quran.",
+				image:
+					"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 60.0,
+				costPrice: 17.0,
 			},
 			{
 				id: "b5-3",
@@ -372,9 +403,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Logic",
 				overview: "Challenging word searches to test your focus.",
-				image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.00,
-				costPrice: 4.25
+				image:
+					"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 15.0,
+				costPrice: 4.25,
 			},
 			{
 				id: "b5-4",
@@ -385,9 +417,10 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Logic",
 				overview: "Hardcore Sudoku for advanced puzzle lovers.",
-				image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.00,
-				costPrice: 4.15
+				image:
+					"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 15.0,
+				costPrice: 4.15,
 			},
 			{
 				id: "b5-5",
@@ -398,10 +431,11 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Quran Stories",
 				overview: "A treasury of miracles and lessons from the Quran.",
-				image: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 20.00,
-				costPrice: 5.41
-			}
-		]
-	}
+				image:
+					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
+				retailPrice: 20.0,
+				costPrice: 5.41,
+			},
+		],
+	},
 ];

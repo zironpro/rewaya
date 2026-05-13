@@ -71,7 +71,7 @@ export default function CategoryStrip() {
 							src={cat.image}
 						/>
 					</motion.div>
-					<span className="text-center font-black text-[11px] text-stone-500 uppercase tracking-[0.2em] transition-colors group-hover:text-primary md:text-xs">
+					<span className="text-center font-bold text-stone-500 text-xm transition-colors group-hover:text-primary">
 						{cat.name}
 					</span>
 				</Link>

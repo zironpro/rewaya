@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { motion } from "framer-motion";
 
 const categories = [
@@ -46,30 +48,31 @@ export default function CategoryBento() {
 		<section className="bg-white py-32">
 			<div className="container mx-auto px-6">
 				<div className="mb-20 flex flex-col items-center text-center">
-					<span className="nav-link mb-4 text-stone-400 tracking-[0.3em]">
-						Shop by Category
+					<span className="mb-4 font-bold text-stone-400 text-xm">
+						Shop by category
 					</span>
 					<h2 className="font-black font-serif text-4xl md:text-5xl">
-						ESSENTIALS <span className="font-normal italic">&</span> CLASSICS.
+						Essentials <span className="font-normal italic">&</span> Classics.
 					</h2>
 				</div>
 
 				<div className="grid h-auto grid-cols-1 gap-6 md:grid-cols-2">
-					{categories.slice(0, 2).map((cat, index) => (
+					{categories.slice(0, 2).map((cat) => (
 						<motion.div
 							className="group relative aspect-[16/10] cursor-pointer overflow-hidden"
 							initial={{ opacity: 0 }}
 							key={cat.id}
 							whileInView={{ opacity: 1 }}
 						>
-							<img
+							<Image
 								alt={cat.name}
-								className="absolute inset-0 h-full w-full object-cover transition-all duration-1000 group-hover:scale-105"
+								className="object-cover transition-all duration-1000 group-hover:scale-105"
+								fill
 								src={cat.image}
 							/>
 							<div className="absolute inset-0 bg-white/10 transition-colors duration-500 group-hover:bg-black/40" />
 							<div className="absolute inset-0 flex flex-col items-center justify-center text-secondary transition-colors duration-500 group-hover:text-white">
-								<h3 className="mb-4 font-black font-serif text-4xl uppercase tracking-tighter md:text-5xl">
+								<h3 className="mb-4 font-black font-serif text-4xl tracking-tighter md:text-5xl">
 									{cat.name}
 								</h3>
 								<span className="nav-link border-current border-b pb-1 opacity-0 transition-opacity group-hover:opacity-100">

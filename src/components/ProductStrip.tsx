@@ -40,7 +40,7 @@ const CountdownTimer = () => {
 	return (
 		<div className="flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50 px-4 py-2">
 			<Timer className="animate-pulse text-primary" size={14} />
-			<div className="flex items-center gap-1 font-black font-mono text-xs">
+			<div className="flex items-center gap-1 font-black font-mono text-xm">
 				<span className="text-secondary">{format(timeLeft.hours)}</span>
 				<span className="text-stone-300">:</span>
 				<span className="text-secondary">{format(timeLeft.minutes)}</span>
@@ -81,12 +81,12 @@ export default function ProductStrip({
 			<div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
 				<div>
 					{subtitle && (
-						<span className="mb-3 block font-bold text-[10px] text-primary uppercase tracking-[0.4em]">
+						<span className="mb-3 block font-bold text-primary text-xm">
 							{subtitle}
 						</span>
 					)}
 					<div className="flex flex-wrap items-center gap-4 md:gap-6">
-						<h2 className="whitespace-nowrap font-black font-serif text-2xl uppercase md:text-4xl">
+						<h2 className="whitespace-nowrap font-black font-serif text-2xl md:text-4xl">
 							{title.split(" ").map((word, i) => (
 								<span
 									className={i % 2 !== 0 ? "font-normal italic" : ""}
@@ -130,7 +130,7 @@ export default function ProductStrip({
 				{/* View All Card */}
 				<div className="group flex min-w-[240px] cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30 md:min-w-[280px]">
 					<div className="text-center">
-						<span className="font-black text-[10px] text-stone-300 uppercase tracking-widest transition-colors group-hover:text-primary">
+						<span className="font-bold text-stone-300 text-xm transition-colors group-hover:text-primary">
 							View All <br /> Collection
 						</span>
 					</div>

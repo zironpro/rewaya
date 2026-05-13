@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import AuthModal from "@/components/AuthModal";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import MobileBottomNav from "@/components/MobileBottomNav";
@@ -32,9 +31,8 @@ export default function RootLayout({
 			lang="en"
 		>
 			<body className="flex min-h-full flex-col">
-				{/* <LoadingScreen /> */}
 				<Navbar />
-				<AuthModal />
+
 				{children}
 				<MobileBottomNav />
 				<Footer />

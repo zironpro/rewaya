@@ -43,6 +43,10 @@
 	--radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@utility text-xm {
+	font-size: 0.8125rem;
+}
+
 :root {
 	--primary: oklch(0.205 0 0);
 	--background: oklch(1 0 0);
@@ -70,9 +74,21 @@
 	--radius: 0.625rem;
 }
 
-/* FIXME:  Avoid using global `transition: all`. It causes unnecessary animations, performance issues */
-* {
-	transition: all 0.2s ease-in-out;
+html {
+	@apply font-sans antialiased;
+	font-size: 14px;
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 1280px) {
+	html {
+		font-size: 18px;
+	}
 }
 
 body {
@@ -88,20 +104,24 @@ a,
 }
 
 h1,
-h2,
+h2 {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+
 h3,
 h4,
 h5,
 h6 {
 	font-family: var(--font-serif);
 	font-weight: 700;
-	letter-spacing: -0.02em;
+	letter-spacing: -0.01em;
 }
 
 .nav-link {
 	font-size: 0.75rem;
 	font-weight: 600;
-	text-transform: uppercase;
 	letter-spacing: 0.15em;
 	color: #000000;
 }
@@ -112,13 +132,7 @@ h6 {
 }
 
 .sale-badge {
-	background: #ff0000;
-	color: #ffffff;
-	font-size: 10px;
-	font-weight: 800;
-	padding: 2px 8px;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
+	@apply bg-red-600 text-white text-xm font-extrabold px-2 py-0.5;
 }
 
 .book-shadow {

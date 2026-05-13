@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
@@ -35,11 +36,12 @@ export default function BundleCard({
 		>
 			<Dialog>
 				{/* Image Container */}
-				<div className="book-shadow relative mb-4 aspect-[4/5] overflow-hidden bg-stone-50">
+				<div className="book-shadow relative mb-4 aspect-[4/5] overflow-hidden rounded-lg bg-stone-50">
 					<Link href={`/bundle/${id}`}>
-						<img
+						<Image
 							alt={title}
-							className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+							className="object-cover transition-transform duration-700 group-hover:scale-105"
+							fill
 							src={mainImage}
 						/>
 					</Link>
@@ -65,23 +67,23 @@ export default function BundleCard({
 					</div>
 
 					{/* Quick Add (Bottom) */}
-					<div className="absolute right-0 bottom-0 left-0 translate-y-full bg-secondary p-4 transition-transform duration-300 group-hover:translate-y-0">
+					<div className="absolute right-0 bottom-0 left-0 translate-y-full bg-primary p-4 transition-transform duration-300 group-hover:translate-y-0">
 						<Button
-							className="h-10 w-full text-[9px] text-white hover:bg-white/10"
+							className="h-10 w-full text-white text-xm hover:bg-white/10"
 							variant="ghost"
 						>
-							<Plus className="mr-2" size={14} /> Add Bundle to Bag
+							<Plus className="mr-2" size={14} /> Add to Bag
 						</Button>
 					</div>
 
 					{/* Status Badges */}
 					<div className="absolute top-4 left-0 z-10 flex flex-col items-start gap-1">
 						{tag && (
-							<span className="bg-primary px-3 py-1.5 font-black text-[10px] text-white uppercase tracking-[0.2em] shadow-lg">
+							<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
 								{tag}
 							</span>
 						)}
-						<span className="border-secondary border-l-4 bg-white px-3 py-1.5 font-black text-[10px] text-secondary uppercase tracking-[0.2em] shadow-lg">
+						<span className="border-primary border-l-4 bg-white px-3 py-1.5 font-bold text-primary text-xm shadow-lg">
 							{count} Book Set
 						</span>
 					</div>
@@ -93,19 +95,19 @@ export default function BundleCard({
 					href={`/bundle/${id}`}
 				>
 					<div className="flex items-start justify-between gap-4">
-						<h3 className="flex-1 font-bold text-[13px] text-secondary uppercase leading-tight tracking-wider transition-colors group-hover:text-primary">
+						<h3 className="flex-1 font-bold text-base text-primary leading-tight transition-colors">
 							{title}
 						</h3>
 						<div className="flex flex-col items-end">
 							<span className="whitespace-nowrap font-bold text-primary text-sm">
 								AED {price.toFixed(2)}
 							</span>
-							<span className="text-[10px] text-stone-300 line-through">
+							<span className="text-stone-300 text-xm line-through">
 								AED {originalPrice.toFixed(2)}
 							</span>
 						</div>
 					</div>
-					<p className="flex items-center gap-2 text-[11px] text-stone-500 uppercase tracking-widest">
+					<p className="flex items-center gap-2 text-stone-500 text-xm">
 						<Package size={11} /> {count} Volumes Collection
 					</p>
 				</Link>
@@ -113,10 +115,11 @@ export default function BundleCard({
 				{/* Quick View Dialog Content */}
 				<DialogContent className="max-w-3xl">
 					<div className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
-						<div className="aspect-[4/5] overflow-hidden bg-stone-50">
-							<img
+						<div className="relative aspect-[4/5] overflow-hidden bg-stone-50">
+							<Image
 								alt={title}
-								className="h-full w-full object-cover"
+								className="object-cover"
+								fill
 								src={mainImage}
 							/>
 						</div>
@@ -124,7 +127,7 @@ export default function BundleCard({
 							<DialogHeader>
 								<DialogDescription>Bundle Collection</DialogDescription>
 								<DialogTitle className="mt-2 text-4xl">{title}</DialogTitle>
-								<p className="mt-2 text-stone-400 text-xs uppercase tracking-widest">
+								<p className="mt-2 text-sm text-stone-400">
 									Exclusive {count}-Book Anthology
 								</p>
 							</DialogHeader>
@@ -138,14 +141,14 @@ export default function BundleCard({
 										AED {originalPrice.toFixed(2)}
 									</p>
 								</div>
-								<p className="text-sm text-stone-500 uppercase leading-relaxed tracking-widest">
+								<p className="text-base text-stone-500 leading-relaxed">
 									Experience the full spectrum of this curated theme. This
 									bundle includes {count} essential volumes carefully selected
 									to provide a comprehensive journey through {title}.
 								</p>
 								<div className="flex gap-4">
-									<Button className="h-14 flex-1 bg-secondary text-white hover:bg-primary">
-										Add Bundle to Bag
+									<Button className="h-14 flex-1 bg-primary text-white hover:bg-primary-dark">
+										Add to Bag
 									</Button>
 									<Button className="h-14 w-14" size="icon" variant="outline">
 										<Heart size={20} strokeWidth={1.5} />

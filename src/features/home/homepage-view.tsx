@@ -17,7 +17,7 @@ export const HomepageView = () => {
 
 			{/* 1. RECOMMENDED FOR YOU */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book, i) => ({
+				books={[...allBooks, ...allBooks].map((book) => ({
 					...book,
 				}))}
 				subtitle="Based on your taste"
@@ -26,7 +26,7 @@ export const HomepageView = () => {
 
 			{/* 2. TODAY'S DEALS */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book, i) => ({
+				books={[...allBooks, ...allBooks].map((book) => ({
 					...book,
 				}))}
 				subtitle="Limited Time"
@@ -42,14 +42,14 @@ export const HomepageView = () => {
 					src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
 				/>
 				<div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-					<h3 className="mb-6 font-serif text-3xl uppercase italic tracking-widest md:text-5xl">
+					<h3 className="mb-6 font-serif text-3xl italic md:text-5xl">
 						Explore <span className="font-normal italic">Islamic</span> History
 					</h3>
-					<p className="mb-8 font-bold text-[10px] uppercase tracking-[0.4em] opacity-80">
+					<p className="mb-8 font-bold text-xm opacity-80">
 						Curated collection for the modern seeker
 					</p>
 					<Button
-						className="h-12 rounded-none border-white px-10 font-bold text-[10px] text-white uppercase tracking-widest transition-all hover:bg-white hover:text-black"
+						className="h-12 rounded-none border-white px-10 font-bold text-white text-xm transition-all hover:bg-white hover:text-black"
 						variant="outline"
 					>
 						Shop Now
@@ -59,7 +59,7 @@ export const HomepageView = () => {
 
 			{/* 2. NEW SELLERS */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book, i) => ({
+				books={[...allBooks, ...allBooks].map((book) => ({
 					...book,
 					badge: "new seller",
 				}))}
@@ -72,7 +72,7 @@ export const HomepageView = () => {
 
 			{/* 3. BEST SELLERS */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book, i) => ({
+				books={[...allBooks, ...allBooks].map((book) => ({
 					...book,
 					badge: "best seller",
 				}))}
@@ -90,10 +90,10 @@ export const HomepageView = () => {
 						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 					/>
 					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 p-12 md:p-24">
-						<span className="mb-6 block font-bold text-white text-xs uppercase tracking-[0.4em]">
+						<span className="mb-6 block font-bold text-sm text-white">
 							Special Release
 						</span>
-						<h3 className="mb-10 max-w-xl font-serif text-4xl text-white uppercase leading-tight md:text-6xl">
+						<h3 className="mb-10 max-w-xl font-serif text-4xl text-white leading-tight md:text-6xl">
 							Nurturing the <br />
 							<span className="font-normal text-white/60 italic">
 								Next Generation
@@ -107,7 +107,7 @@ export const HomepageView = () => {
 
 			{/* 4. CHILDREN'S COLLECTION */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book, i) => ({
+				books={[...allBooks, ...allBooks].map((book) => ({
 					...book,
 					badge: "new arrival",
 				}))}
