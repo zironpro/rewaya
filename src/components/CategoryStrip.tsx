@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
@@ -51,33 +52,30 @@ const categories = [
 
 export default function CategoryStrip() {
 	return (
-		<section className="border-stone-50 border-b bg-white py-16">
-			<div className="container mx-auto px-6">
-				<div className="no-scrollbar flex items-center justify-between gap-6 overflow-x-auto py-4 md:gap-10">
-					{categories.map((cat, i) => (
-						<Link
-							className="group flex shrink-0 flex-col items-center gap-4"
-							href={cat.href}
-							key={cat.name}
-						>
-							<motion.div
-								className="h-32 w-32 overflow-hidden rounded-[2.5rem] border-2 border-stone-100 bg-stone-50 shadow-sm transition-all group-hover:border-primary/30 group-hover:shadow-xl md:h-48 md:w-48 md:rounded-[3.5rem]"
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-							>
-								<img
-									alt={cat.name}
-									className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-									src={cat.image}
-								/>
-							</motion.div>
-							<span className="text-center font-black text-[11px] text-stone-500 uppercase tracking-[0.2em] transition-colors group-hover:text-primary md:text-xs">
-								{cat.name}
-							</span>
-						</Link>
-					))}
-				</div>
-			</div>
+		<section className="no-scrollbar container mx-auto flex items-center justify-between gap-6 overflow-x-auto border-stone-50 border-b px-6 py-16 md:gap-10">
+			{categories.map((cat, i) => (
+				<Link
+					className="group flex shrink-0 flex-col items-center gap-4"
+					href={cat.href}
+					key={`${cat.name}-${Number(i)}`}
+				>
+					<motion.div
+						className="relative size-32 overflow-hidden rounded-sm border-2 border-stone-100 bg-stone-50 shadow-sm transition-all group-hover:border-primary/30 group-hover:shadow-xl md:size-48"
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+					>
+						<Image
+							alt={cat.name}
+							className="object-cover transition-transform duration-700 group-hover:scale-110"
+							fill
+							src={cat.image}
+						/>
+					</motion.div>
+					<span className="text-center font-black text-[11px] text-stone-500 uppercase tracking-[0.2em] transition-colors group-hover:text-primary md:text-xs">
+						{cat.name}
+					</span>
+				</Link>
+			))}
 		</section>
 	);
 }
