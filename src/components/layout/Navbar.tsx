@@ -221,6 +221,8 @@ export function Navbar() {
 						))}
 					</div>
 
+					{/* FIXME: Fix the mobile navbar closing bug */}
+
 					{/* Mega Menu Dropdown */}
 					<AnimatePresence>
 						{isMegaMenuOpen && (
