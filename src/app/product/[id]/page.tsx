@@ -49,11 +49,8 @@ export default function ProductDetailPage() {
 		<main className="pt-24 pb-32">
 			<div className="container mx-auto px-6">
 				<Breadcrumbs
-					items={[
-						{ label: "Shop", href: "/shop" },
-						{ label: product.title }
-					]}
-					className="mb-12 mt-12"
+					className="mt-12 mb-12"
+					items={[{ label: "Shop", href: "/shop" }, { label: product.title }]}
 				/>
 
 				<div className="grid grid-cols-1 gap-20 md:grid-cols-2">

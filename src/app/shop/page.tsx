@@ -6,9 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { SlidersHorizontal, X } from "lucide-react";
 
 import BookCard from "@/components/BookCard";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 const allBooks = [
 	{
@@ -109,7 +109,7 @@ export default function ShopPage() {
 								{cat === "ALL"
 									? allBooks.length
 									: allBooks.filter((b) => b.category.toUpperCase() === cat)
-										.length}
+											.length}
 								)
 							</span>
 						</Button>
@@ -180,10 +180,7 @@ export default function ShopPage() {
 			<main className="grow pt-32">
 				{/* Header */}
 				<section className="container mx-auto mb-12 px-6">
-					<Breadcrumbs
-						items={[{ label: "Shop" }]}
-						className="mb-8 mt-8"
-					/>
+					<Breadcrumbs className="mt-8 mb-8" items={[{ label: "Shop" }]} />
 					<div className="text-center">
 						<span className="mb-6 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
 							Collection
