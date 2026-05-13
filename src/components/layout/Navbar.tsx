@@ -120,10 +120,10 @@ export function Navbar() {
 								width={260}
 							/>
 							<div className="hidden flex-col leading-none xl:flex">
-								<span className="font-bold text-2xl text-secondary tracking-tight">
+								<span className="font-bold text-3xl text-secondary tracking-tight">
 									Al Rewaya
 								</span>
-								<span className="font-bold text-primary text-xm tracking-widest">
+								<span className="font-bold text-primary text-sm uppercase tracking-widest">
 									Book World
 								</span>
 							</div>
@@ -134,10 +134,10 @@ export function Navbar() {
 							<div className="group relative">
 								<Search
 									className="absolute top-1/2 left-4 -translate-y-1/2 text-stone-400 transition-colors group-focus-within:text-primary"
-									size={18}
+									size={22}
 								/>
 								<input
-									className="w-full rounded-lg border border-stone-100 bg-stone-50 py-3 pr-4 pl-12 text-sm outline-none transition-all placeholder:text-stone-300 focus:border-primary/30 focus:bg-white"
+									className="w-full rounded-lg border border-stone-100 bg-stone-50 py-4 pr-4 pl-12 text-base outline-none transition-all placeholder:text-stone-300 focus:border-primary/30 focus:bg-white"
 									onChange={(e) => setSearchQuery(e.target.value)}
 									placeholder="What are you looking for?"
 									type="text"
@@ -197,12 +197,12 @@ export function Navbar() {
 									className="relative h-10 gap-2 px-3 hover:text-primary"
 									variant="ghost"
 								>
-									<ShoppingBag size={20} strokeWidth={1.5} />
-									<span className="hidden font-bold text-xm xl:block">
+									<ShoppingBag size={24} strokeWidth={1.5} />
+									<span className="hidden font-bold text-sm xl:block">
 										Cart
 									</span>
 									{cartCount > 0 && (
-										<span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[10px] text-white ring-2 ring-white">
+										<span className="absolute -top-1 -right-1 flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-primary px-1 font-bold text-white text-xs ring-2 ring-white">
 											{cartCount}
 										</span>
 									)}
@@ -253,7 +253,7 @@ export function Navbar() {
 								{/* Backdrop */}
 								<motion.div
 									animate={{ opacity: 1 }}
-									className="fixed inset-0 top-[144px] z-30 bg-black/20 backdrop-blur-sm"
+									className="fixed inset-0 top-32 z-30 bg-black/20 backdrop-blur-sm"
 									exit={{ opacity: 0 }}
 									initial={{ opacity: 0 }}
 									onClick={() => setIsMegaMenuOpen(false)}

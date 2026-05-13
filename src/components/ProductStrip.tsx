@@ -81,7 +81,7 @@ export default function ProductStrip({
 			<div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
 				<div>
 					{subtitle && (
-						<span className="mb-3 block font-bold text-primary text-xm">
+						<span className="mb-3 block font-bold text-base text-primary uppercase tracking-wider">
 							{subtitle}
 						</span>
 					)}

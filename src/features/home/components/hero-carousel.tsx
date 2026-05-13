@@ -80,7 +80,7 @@ export default function HeroCarousel() {
 					<div className="container relative mx-auto flex h-full flex-col items-center justify-center px-6 text-center text-white">
 						<motion.span
 							animate={{ opacity: 1, y: 0 }}
-							className="mb-6 font-bold text-xm md:text-sm"
+							className="mb-6 font-bold text-base uppercase tracking-widest md:text-lg"
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.2 }}
 						>
@@ -107,7 +107,7 @@ export default function HeroCarousel() {
 							transition={{ delay: 0.6 }}
 						>
 							<Button
-								className="h-14 rounded-none bg-primary px-10 font-bold text-white text-xm hover:bg-primary-dark"
+								className="h-14 rounded-none bg-primary px-10 font-bold text-base text-white hover:bg-primary-dark"
 								size="lg"
 							>
 								{banners[current].cta} <ArrowRight className="ml-2" size={16} />

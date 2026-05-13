@@ -40,8 +40,8 @@ export default function PolicyCards() {
 								<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm transition-all duration-500 group-hover:bg-primary group-hover:text-white">
 									<Icon size={28} strokeWidth={1.2} />
 								</div>
-								<h3 className="mb-2 font-bold text-sm">{policy.title}</h3>
-								<p className="text-stone-400 text-xm leading-relaxed">
+								<h3 className="mb-2 font-bold text-base">{policy.title}</h3>
+								<p className="text-sm text-stone-400 leading-relaxed">
 									{policy.desc}
 								</p>
 							</div>

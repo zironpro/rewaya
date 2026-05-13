@@ -45,11 +45,11 @@ export const HomepageView = () => {
 					<h3 className="mb-6 font-serif text-3xl italic md:text-5xl">
 						Explore <span className="font-normal italic">Islamic</span> History
 					</h3>
-					<p className="mb-8 font-bold text-xm opacity-80">
+					<p className="mb-8 font-bold text-base opacity-80 md:text-lg">
 						Curated collection for the modern seeker
 					</p>
 					<Button
-						className="h-12 rounded-none border-white px-10 font-bold text-white text-xm transition-all hover:bg-white hover:text-black"
+						className="h-12 rounded-none border-white px-10 font-bold text-base text-white transition-all hover:bg-white hover:text-black"
 						variant="outline"
 					>
 						Shop Now
@@ -90,7 +90,7 @@ export const HomepageView = () => {
 						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 					/>
 					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 p-12 md:p-24">
-						<span className="mb-6 block font-bold text-sm text-white">
+						<span className="mb-6 block font-bold text-base text-white uppercase tracking-widest">
 							Special Release
 						</span>
 						<h3 className="mb-10 max-w-xl font-serif text-4xl text-white leading-tight md:text-6xl">

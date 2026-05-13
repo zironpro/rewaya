@@ -136,14 +136,14 @@ export default function BookCard({
 					href={`/product/${id}`}
 				>
 					<div className="flex items-start justify-between gap-4">
-						<h3 className="flex-1 font-bold text-primary text-sm leading-tight transition-colors">
+						<h3 className="flex-1 font-bold text-base text-primary leading-tight transition-colors">
 							{title}
 						</h3>
-						<span className="whitespace-nowrap font-bold text-primary text-sm">
+						<span className="whitespace-nowrap font-bold text-base text-primary">
 							AED {price.toFixed(2)}
 						</span>
 					</div>
-					<p className="text-stone-400 text-xm">{author}</p>
+					<p className="font-medium text-sm text-stone-400">{author}</p>
 				</Link>
 
 				{/* Quick View Dialog Content */}

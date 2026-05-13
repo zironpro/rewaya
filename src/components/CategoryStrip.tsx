@@ -8,44 +8,37 @@ import { motion } from "framer-motion";
 const categories = [
 	{
 		name: "Islamic",
-		image:
-			"https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/islamic.png",
 		href: "/#islamic",
 	},
 	{
 		name: "Children",
-		image:
-			"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/children.png",
 		href: "/#children",
 	},
 	{
 		name: "Academic",
-		image:
-			"https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/academic.png",
 		href: "/#academic",
 	},
 	{
 		name: "Fiction",
-		image:
-			"https://images.unsplash.com/photo-1474932430478-367dbb6832c1?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/fiction.png",
 		href: "/#fiction",
 	},
 	{
 		name: "Self-Help",
-		image:
-			"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/selfhelp.png",
 		href: "/#selfhelp",
 	},
 	{
 		name: "History",
-		image:
-			"https://images.unsplash.com/photo-1461360228754-6e81c478b882?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/history.png",
 		href: "/#history",
 	},
 	{
 		name: "Biographies",
-		image:
-			"https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?q=80&w=300&auto=format&fit=crop",
+		image: "/categories/biographies.png",
 		href: "/#biographies",
 	},
 ];
@@ -71,7 +64,7 @@ export default function CategoryStrip() {
 							src={cat.image}
 						/>
 					</motion.div>
-					<span className="text-center font-bold text-stone-500 text-xm transition-colors group-hover:text-primary">
+					<span className="text-center font-semibold text-sm text-stone-600 transition-colors group-hover:text-primary">
 						{cat.name}
 					</span>
 				</Link>
