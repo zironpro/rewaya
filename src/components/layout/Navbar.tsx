@@ -83,7 +83,7 @@ export function Navbar() {
 		{ name: "Islamic", href: "/#islamic", icon: <Moon size={14} /> },
 		{ name: "Fiction", href: "/#fiction", icon: <Feather size={14} /> },
 		{ name: "Children", href: "/#children", icon: <Baby size={14} /> },
-		{ name: "Bundles", href: "/#bundles", icon: <Package size={14} /> },
+		{ name: "Bundles", href: "/bundles", icon: <Package size={14} /> },
 		{ name: "New Arrivals", href: "/#new", icon: <Sparkles size={14} /> },
 	];
 

@@ -14,6 +14,8 @@ import {
 	Truck,
 } from "lucide-react";
 
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
+
 // Mock data fetch for a single product
 const getProduct = (id: string) => ({
 	id: Number.parseInt(id),
@@ -46,18 +48,13 @@ export default function ProductDetailPage() {
 	return (
 		<main className="pt-24 pb-32">
 			<div className="container mx-auto px-6">
-				{/* Breadcrumbs */}
-				<nav className="mb-12 flex gap-2 text-[10px] text-stone-400 uppercase tracking-widest">
-					<a className="hover:text-primary" href="/">
-						Home
-					</a>
-					<span>/</span>
-					<a className="hover:text-primary" href="/shop">
-						Shop
-					</a>
-					<span>/</span>
-					<span className="font-bold text-secondary">{product.title}</span>
-				</nav>
+				<Breadcrumbs
+					items={[
+						{ label: "Shop", href: "/shop" },
+						{ label: product.title }
+					]}
+					className="mb-12 mt-12"
+				/>
 
 				<div className="grid grid-cols-1 gap-20 md:grid-cols-2">
 					{/* Image Gallery Side */}

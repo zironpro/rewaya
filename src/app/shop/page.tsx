@@ -8,6 +8,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 import BookCard from "@/components/BookCard";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 const allBooks = [
 	{
@@ -108,7 +109,7 @@ export default function ShopPage() {
 								{cat === "ALL"
 									? allBooks.length
 									: allBooks.filter((b) => b.category.toUpperCase() === cat)
-											.length}
+										.length}
 								)
 							</span>
 						</Button>
@@ -178,13 +179,19 @@ export default function ShopPage() {
 		<>
 			<main className="grow pt-32">
 				{/* Header */}
-				<section className="container mx-auto mb-12 px-6 text-center">
-					<span className="mb-6 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
-						Collection
-					</span>
-					<h1 className="mb-8 font-black font-serif text-5xl md:text-7xl">
-						THE <span className="font-normal italic">LIBRARY</span>.
-					</h1>
+				<section className="container mx-auto mb-12 px-6">
+					<Breadcrumbs
+						items={[{ label: "Shop" }]}
+						className="mb-8 mt-8"
+					/>
+					<div className="text-center">
+						<span className="mb-6 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
+							Collection
+						</span>
+						<h1 className="mb-8 font-black font-serif text-5xl md:text-7xl">
+							THE <span className="font-normal italic">LIBRARY</span>.
+						</h1>
+					</div>
 				</section>
 
 				{/* Mobile Filter Toggle */}
