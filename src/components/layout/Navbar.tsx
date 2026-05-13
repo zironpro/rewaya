@@ -59,13 +59,6 @@ const megaMenuData = {
 	},
 };
 
-const searchBooks = [
-	{ id: 1, title: "The Sealed Nectar", author: "Safiur Rahman", price: 85.0 },
-	{ id: 2, title: "Atomic Habits", author: "James Clear", price: 65.0 },
-	{ id: 3, title: "The Alchemist", author: "Paulo Coelho", price: 45.0 },
-	{ id: 4, title: "Think and Grow Rich", author: "Napoleon Hill", price: 55.0 },
-];
-
 export function Navbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
@@ -103,10 +96,10 @@ export function Navbar() {
 								width={260}
 							/>
 							<div className="hidden flex-col leading-none xl:flex">
-								<span className="font-bold text-secondary text-xl uppercase tracking-tight">
+								<span className="font-bold text-2xl text-secondary uppercase tracking-tight">
 									Al Rewaya
 								</span>
-								<span className="font-semibold text-[10px] text-primary tracking-[0.2em]">
+								<span className="font-bold text-[11px] text-primary tracking-[0.3em]">
 									BOOK WORLD
 								</span>
 							</div>
@@ -206,7 +199,7 @@ export function Navbar() {
 				<nav className="relative hidden overflow-visible border-stone-50 border-b bg-white lg:block">
 					<div className="container mx-auto flex h-12 items-center gap-10 px-6">
 						<button
-							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-black text-[10px] text-secondary uppercase tracking-widest transition-colors hover:text-primary"
+							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-black text-[11px] text-secondary uppercase tracking-widest transition-colors hover:text-primary"
 							onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
 							onMouseEnter={() => setIsMegaMenuOpen(true)}
 						>
@@ -218,7 +211,7 @@ export function Navbar() {
 						</button>
 						{categories.map((cat) => (
 							<Link
-								className="flex items-center gap-2 whitespace-nowrap font-bold text-[10px] text-stone-400 uppercase tracking-widest transition-colors hover:text-primary"
+								className="flex items-center gap-2 whitespace-nowrap font-bold text-[12px] text-stone-500 uppercase tracking-widest transition-colors hover:text-primary"
 								href={cat.href}
 								key={cat.name}
 							>
@@ -253,17 +246,17 @@ export function Navbar() {
 										<div className="grid grid-cols-5 gap-12">
 											{megaMenuData.categories.map((group) => (
 												<div className="space-y-6" key={group.name}>
-													<h4 className="border-stone-100 border-b pb-3 font-black text-[11px] text-secondary uppercase tracking-[0.2em]">
+													<h4 className="border-stone-100 border-b pb-3 font-black text-[13px] text-secondary uppercase tracking-[0.1em]">
 														{group.name}
 													</h4>
 													<ul className="space-y-3">
 														{group.items.map((item) => (
 															<li key={item}>
 																<Link
-																	className="group/item flex items-center gap-2 text-stone-400 text-xs transition-colors hover:text-primary"
+																	className="group/item flex items-center gap-2 text-[14px] text-stone-500 transition-colors hover:text-primary"
 																	href="/shop"
 																>
-																	<div className="h-1 w-1 rounded-full bg-stone-200 transition-colors group-hover/item:bg-primary" />
+																	<div className="h-1 w-1 rounded-full bg-stone-300 transition-colors group-hover/item:bg-primary" />
 																	{item}
 																</Link>
 															</li>

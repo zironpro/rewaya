@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { bundles } from "@/lib/bundles-data";
+import { cn } from "@/lib/utils";
 
 const categories = ["ALL", "KIDS", "EDUCATIONAL", "SPIRITUAL", "HISTORY"];
 
@@ -21,7 +22,7 @@ export default function BundlesPage() {
 		<div className="space-y-12">
 			{/* Search */}
 			<div>
-				<h3 className="mb-8 border-stone-100 border-b pb-4 font-bold text-[10px] uppercase tracking-[0.2em]">
+				<h3 className="mb-8 border-stone-100 border-b pb-4 font-black text-[11px] text-secondary uppercase tracking-[0.2em]">
 					Search Archive
 				</h3>
 				<div className="relative">
@@ -38,7 +39,7 @@ export default function BundlesPage() {
 			</div>
 
 			<div>
-				<h3 className="mb-8 border-stone-100 border-b pb-4 font-bold text-[10px] uppercase tracking-[0.2em]">
+				<h3 className="mb-8 border-stone-100 border-b pb-4 font-black text-[11px] text-secondary uppercase tracking-[0.2em]">
 					Curations
 				</h3>
 				<div className="flex flex-col gap-2">
@@ -48,8 +49,15 @@ export default function BundlesPage() {
 							key={cat}
 							variant="ghost"
 						>
-							<span className="text-[10px] tracking-widest">{cat}</span>
-							<span className="text-[8px] text-stone-300 group-hover:text-black">
+							<span
+								className={cn(
+									"font-bold text-[11px] tracking-widest",
+									cat === "ALL" && "text-primary"
+								)}
+							>
+								{cat}
+							</span>
+							<span className="text-[10px] text-stone-300 group-hover:text-black">
 								(
 								{cat === "ALL"
 									? bundles.length
@@ -65,7 +73,7 @@ export default function BundlesPage() {
 			</div>
 
 			<div>
-				<h3 className="mb-8 border-stone-100 border-b pb-4 font-bold text-[10px] uppercase tracking-[0.2em]">
+				<h3 className="mb-8 border-stone-100 border-b pb-4 font-black text-[11px] text-secondary uppercase tracking-[0.2em]">
 					Volume Count
 				</h3>
 				<div className="space-y-4">
@@ -108,7 +116,7 @@ export default function BundlesPage() {
 				<section className="container mx-auto mb-12 px-6">
 					<Breadcrumbs className="mt-8 mb-8" items={[{ label: "Bundles" }]} />
 					<div className="text-center">
-						<span className="mb-6 block font-bold text-[10px] text-stone-400 uppercase tracking-[0.4em]">
+						<span className="mb-6 block font-bold text-[11px] text-primary uppercase tracking-[0.4em]">
 							Curated Collections
 						</span>
 						<h1 className="mb-8 font-black font-serif text-5xl text-secondary uppercase md:text-7xl">
@@ -140,7 +148,7 @@ export default function BundlesPage() {
 						{/* Product Grid Area */}
 						<div className="grow">
 							<div className="mb-12 hidden items-center justify-between border-stone-100 border-b pb-4 lg:flex">
-								<p className="font-bold text-[10px] text-stone-400 uppercase tracking-widest">
+								<p className="font-bold text-[10px] text-primary uppercase tracking-widest">
 									Showing {bundles.length} Curations
 								</p>
 								<div className="flex items-center gap-6">

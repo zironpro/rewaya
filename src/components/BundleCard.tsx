@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
+
 import { motion } from "framer-motion";
-import { Eye, Heart, Plus, Package } from "lucide-react";
+import { Eye, Heart, Package, Plus } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -13,6 +14,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+
 import { Bundle } from "@/lib/bundles-data";
 
 export default function BundleCard({
@@ -75,13 +77,13 @@ export default function BundleCard({
 					{/* Status Badges */}
 					<div className="absolute top-4 left-0 z-10 flex flex-col items-start gap-1">
 						{tag && (
-							<span className="bg-primary px-3 py-1.5 font-black text-[9px] text-white uppercase tracking-[0.2em] shadow-lg">
+							<span className="bg-primary px-3 py-1.5 font-black text-[10px] text-white uppercase tracking-[0.2em] shadow-lg">
 								{tag}
 							</span>
 						)}
-            <span className="bg-white px-3 py-1.5 font-black text-[9px] text-secondary uppercase tracking-[0.2em] shadow-lg border-l-4 border-secondary">
-              {count} Book Set
-            </span>
+						<span className="border-secondary border-l-4 bg-white px-3 py-1.5 font-black text-[10px] text-secondary uppercase tracking-[0.2em] shadow-lg">
+							{count} Book Set
+						</span>
 					</div>
 				</div>
 
@@ -91,20 +93,20 @@ export default function BundleCard({
 					href={`/bundle/${id}`}
 				>
 					<div className="flex items-start justify-between gap-4">
-						<h3 className="flex-1 font-bold text-secondary text-xs uppercase leading-tight tracking-wider transition-colors group-hover:text-primary">
+						<h3 className="flex-1 font-bold text-[13px] text-secondary uppercase leading-tight tracking-wider transition-colors group-hover:text-primary">
 							{title}
 						</h3>
 						<div className="flex flex-col items-end">
-							<span className="whitespace-nowrap font-bold text-primary text-xs">
+							<span className="whitespace-nowrap font-bold text-primary text-sm">
 								AED {price.toFixed(2)}
 							</span>
-              <span className="text-[9px] text-stone-300 line-through">
-                AED {originalPrice.toFixed(2)}
-              </span>
+							<span className="text-[10px] text-stone-300 line-through">
+								AED {originalPrice.toFixed(2)}
+							</span>
 						</div>
 					</div>
-					<p className="text-[10px] text-stone-400 uppercase tracking-widest flex items-center gap-2">
-						<Package size={10} /> {count} Volumes Collection
+					<p className="flex items-center gap-2 text-[11px] text-stone-500 uppercase tracking-widest">
+						<Package size={11} /> {count} Volumes Collection
 					</p>
 				</Link>
 
@@ -129,22 +131,20 @@ export default function BundleCard({
 
 							<div className="space-y-6">
 								<div className="flex items-baseline gap-4">
-                  <p className="font-black font-serif text-3xl text-primary">
-                    AED {price.toFixed(2)}
-                  </p>
-                  <p className="text-lg text-stone-300 line-through">
-                    AED {originalPrice.toFixed(2)}
-                  </p>
-                </div>
+									<p className="font-black font-serif text-3xl text-primary">
+										AED {price.toFixed(2)}
+									</p>
+									<p className="text-lg text-stone-300 line-through">
+										AED {originalPrice.toFixed(2)}
+									</p>
+								</div>
 								<p className="text-sm text-stone-500 uppercase leading-relaxed tracking-widest">
-									Experience the full spectrum of this curated theme. This bundle 
-                  includes {count} essential volumes carefully selected to provide 
-                  a comprehensive journey through {title}.
+									Experience the full spectrum of this curated theme. This
+									bundle includes {count} essential volumes carefully selected
+									to provide a comprehensive journey through {title}.
 								</p>
 								<div className="flex gap-4">
-									<Button
-										className="h-14 flex-1 bg-secondary text-white hover:bg-primary"
-									>
+									<Button className="h-14 flex-1 bg-secondary text-white hover:bg-primary">
 										Add Bundle to Bag
 									</Button>
 									<Button className="h-14 w-14" size="icon" variant="outline">
