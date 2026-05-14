@@ -179,14 +179,14 @@ export const ShopView = () => {
 					<>
 						<motion.div
 							animate={{ opacity: 1 }}
-							className="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm lg:hidden"
+							className="fixed inset-0 z-100 bg-black/40 backdrop-blur-sm lg:hidden"
 							exit={{ opacity: 0 }}
 							initial={{ opacity: 0 }}
 							onClick={() => setIsMobileFilterOpen(false)}
 						/>
 						<motion.div
 							animate={{ y: 0 }}
-							className="fixed right-0 bottom-0 left-0 z-[101] max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-8 shadow-heavy lg:hidden"
+							className="fixed right-0 bottom-0 left-0 z-101 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-8 shadow-heavy lg:hidden"
 							exit={{ y: "100%" }}
 							initial={{ y: "100%" }}
 							transition={{ type: "spring", damping: 25, stiffness: 200 }}

@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import {
 	Carousel,
 	CarouselContent,
@@ -32,13 +33,9 @@ export default function ProductStrip({
 			>
 				<div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
 					<div>
-						{subtitle && (
-							<span className="mb-3 block font-bold text-base text-primary uppercase tracking-wider">
-								{subtitle}
-							</span>
-						)}
+						{subtitle && <Badge variant="secondary">{subtitle}</Badge>}
 						<div className="flex flex-wrap items-center gap-4 md:gap-6">
-							<h2 className="whitespace-nowrap font-black font-serif text-2xl md:text-4xl">
+							<h2 className="whitespace-nowrap font-bold font-serif text-2xl md:text-4xl">
 								{title.split(" ").map((word, i) => (
 									<span
 										className={i % 2 !== 0 ? "font-normal italic" : ""}

@@ -71,20 +71,22 @@ export default function BookCard({
 				{/* Icons Overlay */}
 				<div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
 					<Button
-						className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm"
+						className="size-9 rounded-full bg-white/80 backdrop-blur-sm"
 						size="icon"
 						variant="ghost"
 					>
 						<Heart size={16} strokeWidth={1.5} />
 					</Button>
-					<DialogTrigger asChild>
-						<Button
-							className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm"
-							size="icon"
-							variant="ghost"
-						>
-							<Eye size={16} strokeWidth={1.5} />
-						</Button>
+					<DialogTrigger
+						render={
+							<Button
+								className="size-9 rounded-full bg-white/80 backdrop-blur-sm"
+								size="icon"
+								variant="ghost"
+							/>
+						}
+					>
+						<Eye size={16} strokeWidth={1.5} />
 					</DialogTrigger>
 				</div>
 

@@ -57,7 +57,7 @@ export default function CategoryStrip() {
 				<CarouselContent className="-ml-6">
 					{categories.map((cat) => (
 						<CarouselItem
-							className="basis-[42%] pl-6 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-/5"
+							className="basis-[42%] pl-6 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/7"
 							key={cat.name}
 						>
 							<Link

@@ -34,25 +34,22 @@ export const HomepageView = () => {
 			/>
 
 			{/* INTERSTITIAL BANNER 1 */}
-			<section className="relative my-16 h-[400px] overflow-hidden bg-stone-900">
+			<section className="relative mb-16 overflow-hidden bg-stone-900 py-16">
 				<Image
 					alt="Promotion"
-					className="h-full w-full object-cover opacity-60"
+					className="object-cover opacity-60"
 					fill
 					sizes="100vw"
 					src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
 				/>
-				<div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
-					<h3 className="mb-6 font-serif text-3xl italic md:text-5xl">
+				<div className="relative z-10 flex flex-col items-center justify-center text-center text-white">
+					<h3 className="mb-4 font-serif text-3xl italic md:text-5xl">
 						Explore <span className="font-normal italic">Islamic</span> History
 					</h3>
-					<p className="mb-8 font-bold text-base opacity-80 md:text-lg">
+					<p className="mb-8 font-medium text-base md:text-lg">
 						Curated collection for the modern seeker
 					</p>
-					<Button
-						className="h-12 rounded-none border-white px-10 font-bold text-base text-white transition-all hover:bg-white hover:text-black"
-						variant="outline"
-					>
+					<Button size="lg" variant="outline">
 						Shop Now
 					</Button>
 				</div>
@@ -82,7 +79,7 @@ export const HomepageView = () => {
 			/>
 
 			{/* INTERSTITIAL BANNER 2 */}
-			<section className="container mx-auto px-6 py-16">
+			<section className="container mx-auto mb-12 px-6 py-16">
 				<div className="group relative overflow-hidden rounded-2xl shadow-2xl">
 					<Image
 						alt="Children's Books"
