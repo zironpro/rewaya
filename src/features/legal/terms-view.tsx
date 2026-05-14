@@ -1,18 +1,16 @@
-"use client";
-
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 export const TermsView = () => {
 	return (
-		<main className="grow pt-20 pb-32">
-			<div className="container mx-auto px-6">
+		<main className="grow pt-6 pb-32">
+			<div className="container mx-auto">
 				<Breadcrumbs
-					className="mb-12"
+					className="mb-6"
 					items={[{ label: "Terms and Conditions" }]}
 				/>
 
 				<div className="mx-auto max-w-3xl">
-					<span className="mb-6 block font-bold text-stone-400 text-xm uppercase tracking-widest">
+					<span className="mb-6 block font-semibold text-muted-foreground text-sm">
 						Legal Information
 					</span>
 					<h1 className="mb-12 font-black font-serif text-5xl md:text-7xl">
