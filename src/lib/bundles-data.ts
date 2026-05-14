@@ -116,7 +116,7 @@ export const bundles: Bundle[] = [
 		count: 5,
 		price: 115,
 		originalPrice: 130,
-		tag: "BEST SELLER",
+		tag: "Best Seller",
 		mainImage: "/bundle_kids_activities_1778661057672.png",
 		books: [
 			{
@@ -198,7 +198,7 @@ export const bundles: Bundle[] = [
 		count: 5,
 		price: 85,
 		originalPrice: 95,
-		tag: "TOP VALUE",
+		tag: "Top Value",
 		mainImage: "/bundle_learning_fun_1778661083188.png",
 		books: [
 			{
@@ -280,7 +280,7 @@ export const bundles: Bundle[] = [
 		count: 5,
 		price: 149,
 		originalPrice: 168,
-		tag: "PREMIUM SET",
+		tag: "Premium Set",
 		mainImage: "/bundle_knowledge_adventure_1778661106586.png",
 		books: [
 			{
@@ -361,7 +361,7 @@ export const bundles: Bundle[] = [
 		count: 5,
 		price: 125,
 		originalPrice: 145,
-		tag: "BEST SELLER",
+		tag: "Best Seller",
 		mainImage: "/bundle_prophet_stories_1778661132026.png",
 		books: [
 			{

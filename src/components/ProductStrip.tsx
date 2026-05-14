@@ -1,7 +1,7 @@
 "use client";
+import { useCallback, useEffect, useState } from "react";
 
-import { useEffect, useRef, useState } from "react";
-
+import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight, Timer } from "lucide-react";
 
 import BookCard, { BookProps } from "./BookCard";
@@ -62,19 +62,20 @@ export default function ProductStrip({
 	subtitle,
 	books,
 }: ProductStripProps) {
-	const scrollRef = useRef<HTMLDivElement>(null);
+	const [emblaRef, emblaApi] = useEmblaCarousel({
+		align: "start",
+		containScroll: "trimSnaps",
+		dragFree: true,
+	});
 
-	const scroll = (direction: "left" | "right") => {
-		if (scrollRef.current) {
-			const { scrollLeft, clientWidth } = scrollRef.current;
-			const scrollTo =
-				direction === "left"
-					? scrollLeft - clientWidth * 0.8
-					: scrollLeft + clientWidth * 0.8;
-
-			scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
-		}
-	};
+	const scrollPrev = useCallback(
+		() => emblaApi && emblaApi.scrollPrev(),
+		[emblaApi]
+	);
+	const scrollNext = useCallback(
+		() => emblaApi && emblaApi.scrollNext(),
+		[emblaApi]
+	);
 
 	return (
 		<section className="group/strip container mx-auto px-6 py-16">
@@ -102,37 +103,36 @@ export default function ProductStrip({
 				<div className="flex gap-2">
 					<button
 						className="rounded-full border border-stone-100 p-3 text-stone-400 transition-all hover:border-primary hover:bg-stone-50 hover:text-primary"
-						onClick={() => scroll("left")}
+						onClick={scrollPrev}
 					>
 						<ChevronLeft size={20} />
 					</button>
 					<button
 						className="rounded-full border border-stone-100 p-3 text-stone-400 transition-all hover:border-primary hover:bg-stone-50 hover:text-primary"
-						onClick={() => scroll("right")}
+						onClick={scrollNext}
 					>
 						<ChevronRight size={20} />
 					</button>
 				</div>
 			</div>
 
-			<div
-				className="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto pb-8"
-				ref={scrollRef}
-			>
-				{books.map((book, i) => (
-					<div
-						className="min-w-[240px] snap-start md:min-w-[280px]"
-						key={`${book.id}-${Number(i + 1)}`}
-					>
-						<BookCard {...book} />
-					</div>
-				))}
-				{/* View All Card */}
-				<div className="group flex min-w-[240px] cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30 md:min-w-[280px]">
-					<div className="text-center">
-						<span className="font-bold text-stone-300 text-xm transition-colors group-hover:text-primary">
-							View All <br /> Collection
-						</span>
+			<div className="h-full w-full overflow-hidden" ref={emblaRef}>
+				<div className="flex items-stretch gap-6 pb-8">
+					{books.map((book, i) => (
+						<div
+							className="min-w-[240px] flex-[0_0_auto] md:min-w-[280px]"
+							key={`${book.id}-${Number(i + 1)}`}
+						>
+							<BookCard {...book} />
+						</div>
+					))}
+					{/* View All Card */}
+					<div className="group flex min-w-[240px] flex-[0_0_auto] cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30 md:min-w-[280px]">
+						<div className="text-center">
+							<span className="font-bold text-stone-300 text-xm transition-colors group-hover:text-primary">
+								View All <br /> Collection
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>

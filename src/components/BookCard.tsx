@@ -57,26 +57,28 @@ export default function BookCard({
 
 	return (
 		<motion.div
-			className="group"
+			className="group flex h-full flex-col"
 			initial={{ opacity: 0 }}
 			viewport={{ once: true }}
 			whileInView={{ opacity: 1 }}
 		>
 			<Dialog>
 				{/* Image Container */}
-				<div className="book-shadow relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
-					<Link
-						className="relative block h-full w-full"
-						href={`/product/${id}`}
-					>
-						<Image
-							alt={title}
-							className="object-cover transition-transform duration-700 group-hover:scale-105"
-							fill
-							sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-							src={image}
-						/>
-					</Link>
+				<div className="book-shadow relative mb-4 h-[340px] w-full overflow-hidden rounded-lg bg-stone-50">
+					<div className="absolute inset-0">
+						<Link
+							className="relative block h-full w-full"
+							href={`/product/${id}`}
+						>
+							<Image
+								alt={title}
+								className="object-cover transition-transform duration-700 group-hover:scale-105"
+								fill
+								sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+								src={image}
+							/>
+						</Link>
+					</div>
 
 					{/* Icons Overlay */}
 					<div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
@@ -112,7 +114,7 @@ export default function BookCard({
 					{/* Status Badges */}
 					<div className="absolute top-4 left-0 z-10 flex flex-col items-start gap-1">
 						{badge === "best seller" && (
-							<span className="bg-secondary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
+							<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
 								Best Seller
 							</span>
 						)}
@@ -122,12 +124,12 @@ export default function BookCard({
 							</span>
 						)}
 						{badge === "new seller" && (
-							<span className="border-primary border-l-4 bg-stone-800 px-3 py-1.5 font-bold text-white text-xm shadow-lg">
+							<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
 								New Seller
 							</span>
 						)}
 						{price < 50 && !badge && (
-							<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm italic shadow-lg">
+							<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
 								Special Offer
 							</span>
 						)}
@@ -140,7 +142,7 @@ export default function BookCard({
 					href={`/product/${id}`}
 				>
 					<div className="flex items-start justify-between gap-4">
-						<h3 className="flex-1 font-bold text-base text-primary leading-tight transition-colors">
+						<h3 className="line-clamp-2 min-h-[2.5rem] flex-1 font-bold text-base text-primary leading-tight transition-colors">
 							{title}
 						</h3>
 						<span className="whitespace-nowrap font-bold text-base text-primary">
@@ -153,14 +155,16 @@ export default function BookCard({
 				{/* Quick View Dialog Content */}
 				<DialogContent className="max-w-3xl">
 					<div className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
-						<div className="relative aspect-[3/4] overflow-hidden bg-stone-50">
-							<Image
-								alt={title}
-								className="object-cover"
-								fill
-								sizes="(max-width: 768px) 100vw, 400px"
-								src={image}
-							/>
+						<div className="relative h-[340px] w-full overflow-hidden bg-stone-50">
+							<div className="absolute inset-0">
+								<Image
+									alt={title}
+									className="object-cover"
+									fill
+									sizes="(max-width: 768px) 100vw, 400px"
+									src={image}
+								/>
+							</div>
 						</div>
 						<div className="flex flex-col justify-between py-4">
 							<DialogHeader>
