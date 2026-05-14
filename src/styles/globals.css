@@ -52,7 +52,7 @@
 
 :root {
 	--primary: oklch(0.4395 0.1561 358.62);
-	--background: oklch(1 0 0);
+	--background: oklch(0.9735 0.0027 360);
 	--foreground: oklch(0.145 0 0);
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.145 0 0);
@@ -89,7 +89,7 @@
 
 /* Custom Minimalist Scrollbar */
 ::-webkit-scrollbar {
-	width: 4px;
+	width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -102,7 +102,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #d1d5db;
+	background: var(--primary);
 }
 
 /* Hide scrollbar for specific containers */

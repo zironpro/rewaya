@@ -9,53 +9,25 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-const banners = [
-	{
-		id: 1,
-		title: "Ramadan Special",
-		subtitle: "Up to 40% off on all Islamic literature",
-		cta: "Shop the Sale",
-		bg: "bg-stone-900",
-		image:
-			"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000&auto=format&fit=crop",
-	},
-	{
-		id: 2,
-		title: "New Arrivals",
-		subtitle: "The latest from global authors",
-		cta: "Explore New",
-		bg: "bg-secondary",
-		image:
-			"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000&auto=format&fit=crop",
-	},
-	{
-		id: 3,
-		title: "Book Bundles",
-		subtitle: "Buy 4 get 2 free on selected collections",
-		cta: "View Bundles",
-		bg: "bg-primary",
-		image:
-			"https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2000&auto=format&fit=crop",
-	},
-];
+import { BANNERS } from "../data/banners";
 
 export default function HeroCarousel() {
 	const [current, setCurrent] = useState(0);
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setCurrent((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+			setCurrent((prev) => (prev === BANNERS.length - 1 ? 0 : prev + 1));
 		}, 6000);
 		return () => clearInterval(timer);
 	}, []);
 
 	const next = () =>
-		setCurrent((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+		setCurrent((prev) => (prev === BANNERS.length - 1 ? 0 : prev + 1));
 	const prev = () =>
-		setCurrent((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+		setCurrent((prev) => (prev === 0 ? BANNERS.length - 1 : prev - 1));
 
 	return (
-		<div className="relative h-[70vh] w-full overflow-hidden bg-stone-50 md:h-[85vh]">
+		<div className="relative h-[70vh] w-full overflow-hidden bg-stone-50 md:h-[calc(100vh-113px)]">
 			<AnimatePresence mode="wait">
 				<motion.div
 					animate={{ opacity: 1 }}
@@ -68,12 +40,12 @@ export default function HeroCarousel() {
 					{/* Background Image with Overlay */}
 					<div className="absolute inset-0">
 						<Image
-							alt={banners[current].title}
+							alt={BANNERS[current].title}
 							className="h-full w-full object-cover"
 							fill
 							priority={current === 0}
 							sizes="100vw"
-							src={banners[current].image}
+							src={BANNERS[current].image}
 						/>
 						<div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />
 					</div>
@@ -86,7 +58,7 @@ export default function HeroCarousel() {
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.2 }}
 						>
-							{banners[current].subtitle}
+							{BANNERS[current].subtitle}
 						</motion.span>
 						<motion.h2
 							animate={{ opacity: 1, y: 0 }}
@@ -94,7 +66,7 @@ export default function HeroCarousel() {
 							initial={{ opacity: 0, y: 30 }}
 							transition={{ delay: 0.4 }}
 						>
-							{banners[current].title.split(" ").map((word, i) => (
+							{BANNERS[current].title.split(" ").map((word, i) => (
 								<span
 									className={i % 2 !== 0 ? "font-normal italic" : ""}
 									key={Number(i + 1)}
@@ -112,7 +84,7 @@ export default function HeroCarousel() {
 								className="h-14 rounded-none bg-primary px-10 font-bold text-base text-white hover:bg-primary-dark"
 								size="lg"
 							>
-								{banners[current].cta} <ArrowRight className="ml-2" size={16} />
+								{BANNERS[current].cta} <ArrowRight className="ml-2" size={16} />
 							</Button>
 						</motion.div>
 					</div>
@@ -137,7 +109,7 @@ export default function HeroCarousel() {
 
 			{/* Progress Indicators */}
 			<div className="absolute bottom-10 left-6 z-10 flex gap-3 md:left-12">
-				{banners.map((_, i) => (
+				{BANNERS.map((_, i) => (
 					<div
 						className={`h-1 cursor-pointer transition-all duration-500 ${current === i ? "w-12 bg-primary" : "w-6 bg-white/30 hover:bg-white/50"}`}
 						key={Number(i + 1)}
