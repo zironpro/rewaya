@@ -35,7 +35,7 @@ export const CartView = () => {
 			<div className="container mx-auto px-6">
 				<Breadcrumbs className="mb-8" items={[{ label: "Shopping Bag" }]} />
 				<div className="mb-16">
-					<span className="mb-4 block font-bold text-stone-400 text-xm">
+					<span className="mb-4 block font-bold text-sm text-stone-400">
 						Your Selection
 					</span>
 					<h1 className="font-black font-serif text-5xl md:text-7xl">
@@ -45,7 +45,7 @@ export const CartView = () => {
 
 				{cart.length === 0 ? (
 					<div className="border-stone-100 border-y py-32 text-center">
-						<p className="mb-8 text-stone-400 text-xm">
+						<p className="mb-8 text-sm text-stone-400">
 							Your bag is currently empty.
 						</p>
 						<Link href="/shop">
@@ -56,7 +56,7 @@ export const CartView = () => {
 					<div className="flex flex-col gap-20 lg:flex-row">
 						{/* Cart Items List */}
 						<div className="flex-grow space-y-8">
-							<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-stone-400 text-xm md:grid">
+							<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-sm text-stone-400 md:grid">
 								<div className="col-span-2">Product</div>
 								<div className="text-center">Quantity</div>
 								<div className="text-right">Total</div>
@@ -82,14 +82,14 @@ export const CartView = () => {
 												/>
 											</div>
 											<div className="flex flex-col justify-center gap-1">
-												<h3 className="font-bold text-secondary text-xm">
+												<h3 className="font-bold text-secondary text-sm">
 													{item.title}
 												</h3>
-												<p className="mb-4 text-stone-400 text-xm">
+												<p className="mb-4 text-sm text-stone-400">
 													{item.author}
 												</p>
 												<button
-													className="flex w-fit items-center gap-2 font-bold text-stone-300 text-xm transition-colors hover:text-primary"
+													className="flex w-fit items-center gap-2 font-bold text-sm text-stone-300 transition-colors hover:text-primary"
 													onClick={() => removeItem(item.id)}
 												>
 													<Trash2 size={12} /> Remove
@@ -105,7 +105,7 @@ export const CartView = () => {
 												>
 													<Minus size={12} />
 												</button>
-												<span className="w-10 text-center font-bold text-xm">
+												<span className="w-10 text-center font-bold text-sm">
 													{item.quantity}
 												</span>
 												<button
@@ -130,21 +130,21 @@ export const CartView = () => {
 						{/* Order Summary Sidebar */}
 						<aside className="w-full lg:w-96">
 							<div className="sticky top-32 bg-stone-50 p-8">
-								<h3 className="mb-8 border-stone-200 border-b pb-4 font-bold text-xm">
+								<h3 className="mb-8 border-stone-200 border-b pb-4 font-bold text-sm">
 									Order Summary
 								</h3>
 								<div className="mb-8 space-y-4">
-									<div className="flex justify-between font-bold text-stone-500 text-xm">
+									<div className="flex justify-between font-bold text-sm text-stone-500">
 										<span>Subtotal</span>
 										<span>AED {total.toFixed(2)}</span>
 									</div>
-									<div className="flex justify-between font-bold text-stone-500 text-xm">
+									<div className="flex justify-between font-bold text-sm text-stone-500">
 										<span>Shipping</span>
 										<span>Free</span>
 									</div>
 								</div>
 								<div className="mb-10 flex items-end justify-between border-stone-200 border-t pt-6">
-									<span className="font-bold text-xm">Total</span>
+									<span className="font-bold text-sm">Total</span>
 									<span className="font-black font-serif text-2xl text-primary">
 										AED {total.toFixed(2)}
 									</span>
@@ -156,7 +156,7 @@ export const CartView = () => {
 										size={16}
 									/>
 								</Button>
-								<p className="mt-6 text-center text-stone-400 text-xm leading-relaxed">
+								<p className="mt-6 text-center text-sm text-stone-400 leading-relaxed">
 									Complimentary shipping on all orders. <br /> Returns accepted
 									within 30 days.
 								</p>

@@ -74,7 +74,7 @@ export default function ProductStrip({
 					<CarouselItem className="flex basis-[240px] pl-6 md:basis-[280px]">
 						<div className="group flex h-full min-h-0 w-full cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30">
 							<div className="text-center">
-								<span className="font-bold text-stone-300 text-xm transition-colors group-hover:text-primary">
+								<span className="font-bold text-sm text-stone-300 transition-colors group-hover:text-primary">
 									View All <br /> Collection
 								</span>
 							</div>

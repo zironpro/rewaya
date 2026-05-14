@@ -119,7 +119,7 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 									>
 										<Minus size={14} />
 									</button>
-									<span className="w-12 text-center font-bold text-xm">
+									<span className="w-12 text-center font-bold text-sm">
 										{quantity}
 									</span>
 									<button
@@ -129,7 +129,7 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 										<Plus size={14} />
 									</button>
 								</div>
-								<button className="flex items-center gap-2 font-bold text-xm transition-colors hover:text-primary">
+								<button className="flex items-center gap-2 font-bold text-sm transition-colors hover:text-primary">
 									<Share2 size={14} /> Share
 								</button>
 							</div>
@@ -147,7 +147,7 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 										className="flex flex-col"
 										key={`${Number(i)}-${detail.label}`}
 									>
-										<span className="mb-1 font-bold text-stone-400 text-xm">
+										<span className="mb-1 font-bold text-sm text-stone-400">
 											{detail.label}
 										</span>
 										<span className="font-bold text-sm">{detail.value}</span>
@@ -156,21 +156,21 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 							</div>
 
 							<div className="flex flex-col gap-4 pt-6">
-								<div className="flex items-center gap-4 text-xm">
+								<div className="flex items-center gap-4 text-sm">
 									<Truck className="text-primary" size={18} />
-									<span className="text-xm">
+									<span className="text-sm">
 										Express Shipping Available (2-3 Days)
 									</span>
 								</div>
-								<div className="flex items-center gap-4 text-xm">
+								<div className="flex items-center gap-4 text-sm">
 									<RefreshCcw className="text-primary" size={18} />
-									<span className="text-xm">
+									<span className="text-sm">
 										30-Day Spiritual Reflection Returns
 									</span>
 								</div>
-								<div className="flex items-center gap-4 text-xm">
+								<div className="flex items-center gap-4 text-sm">
 									<ShieldCheck className="text-primary" size={18} />
-									<span className="text-xm">
+									<span className="text-sm">
 										100% Authentic Edition Guarantee
 									</span>
 								</div>

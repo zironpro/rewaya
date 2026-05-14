@@ -34,10 +34,10 @@ export default function Hero() {
 						initial={{ opacity: 0 }}
 						transition={{ delay: 0.6 }}
 					>
-						<button className="bg-primary px-10 py-4 font-bold text-white text-xm transition-colors hover:bg-primary-dark">
+						<button className="bg-primary px-10 py-4 font-bold text-sm text-white transition-colors hover:bg-primary-dark">
 							Shop Now
 						</button>
-						<button className="border border-primary px-10 py-4 font-bold text-primary text-xm transition-colors hover:bg-primary hover:text-white">
+						<button className="border border-primary px-10 py-4 font-bold text-primary text-sm transition-colors hover:bg-primary hover:text-white">
 							Our Story
 						</button>
 					</motion.div>
@@ -58,7 +58,7 @@ export default function Hero() {
 						src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop"
 					/>
 					<div className="absolute inset-0 flex items-center justify-center">
-						<span className="border-white border-b-2 pb-2 font-bold text-white text-xm">
+						<span className="border-white border-b-2 pb-2 font-bold text-sm text-white">
 							Explore the Collection
 						</span>
 					</div>

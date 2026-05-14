@@ -93,7 +93,7 @@ export default function BookCard({
 				{/* Quick Add (Bottom) */}
 				<div className="absolute right-0 bottom-0 left-0 translate-y-full bg-primary p-4 transition-transform duration-300 group-hover:translate-y-0">
 					<Button
-						className="h-10 w-full text-white text-xm hover:bg-white/10"
+						className="h-10 w-full text-sm text-white hover:bg-white/10"
 						onClick={addToBag}
 						variant="ghost"
 					>
@@ -104,22 +104,22 @@ export default function BookCard({
 				{/* Status Badges */}
 				<div className="absolute top-4 left-0 z-10 flex flex-col items-start gap-1">
 					{badge === "best seller" && (
-						<span className="bg-secondary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
+						<span className="bg-secondary px-3 py-1.5 font-bold text-sm text-white shadow-lg">
 							Best Seller
 						</span>
 					)}
 					{badge === "new arrival" && (
-						<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm shadow-lg">
+						<span className="bg-primary px-3 py-1.5 font-bold text-sm text-white shadow-lg">
 							New Arrival
 						</span>
 					)}
 					{badge === "new seller" && (
-						<span className="border-primary border-l-4 bg-stone-800 px-3 py-1.5 font-bold text-white text-xm shadow-lg">
+						<span className="border-primary border-l-4 bg-stone-800 px-3 py-1.5 font-bold text-sm text-white shadow-lg">
 							New Seller
 						</span>
 					)}
 					{price < 50 && !badge && (
-						<span className="bg-primary px-3 py-1.5 font-bold text-white text-xm italic shadow-lg">
+						<span className="bg-primary px-3 py-1.5 font-bold text-sm text-white italic shadow-lg">
 							Special Offer
 						</span>
 					)}

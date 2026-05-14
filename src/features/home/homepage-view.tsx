@@ -3,6 +3,7 @@ import Image from "next/image";
 import BundleSection from "@/components/BundleSection";
 import CategoryStrip from "@/components/CategoryStrip";
 import PolicyCards from "@/components/PolicyCards";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 import HeroCarousel from "@/features/home/components/hero-carousel";
@@ -79,7 +80,7 @@ export const HomepageView = () => {
 			/>
 
 			{/* INTERSTITIAL BANNER 2 */}
-			<section className="container mx-auto mb-12 px-6 py-16">
+			<section className="container mx-auto mb-12 pb-16">
 				<div className="group relative overflow-hidden rounded-2xl shadow-2xl">
 					<Image
 						alt="Children's Books"
@@ -88,18 +89,16 @@ export const HomepageView = () => {
 						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 					/>
-					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 p-12 md:p-24">
-						<span className="mb-6 block font-bold text-base text-white uppercase tracking-widest">
-							Special Release
-						</span>
-						<h3 className="mb-10 max-w-xl font-serif text-4xl text-white leading-tight md:text-6xl">
-							Nurturing the <br />
-							<span className="font-normal text-white/60 italic">
+					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary p-12 md:p-20">
+						<Badge variant="secondary">Special Release</Badge>
+						<h3 className="mt-2 mb-9 max-w-2xl font-serif text-4xl text-white leading-tight md:text-6xl">
+							Nurturing the
+							<span className="font-normal text-accent italic">
 								Next Generation
 							</span>{" "}
-							<br /> of Seekers.
+							of Seekers.
 						</h3>
-						<Button>Shop Children&apos;s</Button>
+						<Button size="lg">Shop Children&apos;s</Button>
 					</div>
 				</div>
 			</section>

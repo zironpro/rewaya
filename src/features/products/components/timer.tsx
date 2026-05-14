@@ -38,7 +38,7 @@ export const CountdownTimer = () => {
 	return (
 		<div className="flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50 px-4 py-2">
 			<Timer className="animate-pulse text-primary" size={14} />
-			<div className="flex items-center gap-1 font-black font-mono text-xm">
+			<div className="flex items-center gap-1 font-black font-mono text-sm">
 				<span className="text-secondary">{format(timeLeft.hours)}</span>
 				<span className="text-stone-300">:</span>
 				<span className="text-secondary">{format(timeLeft.minutes)}</span>

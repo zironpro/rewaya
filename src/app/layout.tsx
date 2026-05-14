@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 
+import { TooltipProvider } from "@/components/ui/tooltip";
+
 import { inter, playfair } from "@/assets/fonts";
 
 import { cn } from "@/lib/utils";
@@ -26,7 +28,9 @@ export default function RootLayout({
 			)}
 			lang="en"
 		>
-			<body className="min-h-screen">{children}</body>
+			<body className="min-h-screen">
+				<TooltipProvider delay={0}>{children}</TooltipProvider>
+			</body>
 		</html>
 	);
 }

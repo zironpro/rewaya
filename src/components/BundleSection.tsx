@@ -1,12 +1,11 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 
-import { motion } from "framer-motion";
 import { ArrowRight, Tag } from "lucide-react";
 
+import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { Tooltip, TooltipPopup, TooltipTrigger } from "./ui/tooltip";
 
 const bundles = [
 	{
@@ -46,113 +45,107 @@ const bundles = [
 
 export default function BundleSection() {
 	return (
-		<section className="relative overflow-hidden border-stone-100 border-y bg-white py-16">
-			<div className="container relative z-10 mx-auto px-6">
-				<div className="mb-12 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
+		<section className="relative mb-16 overflow-hidden border-y bg-card py-16">
+			<div className="container relative z-10 mx-auto">
+				<div className="mb-9 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
 					<div className="max-w-xl">
-						<span className="mb-3 block font-bold text-primary text-xm">
-							Special Campaigns
-						</span>
-						<h2 className="font-black font-serif text-4xl text-secondary leading-tight md:text-5xl">
+						<Badge variant="secondary">Special Campaigns</Badge>
+						<h2 className="font-bold font-serif text-4xl text-secondary leading-tight md:text-5xl">
 							Curated{" "}
-							<span className="font-normal text-primary italic">Sets</span>.
+							<span className="font-normal text-primary italic">Sets.</span>
 						</h2>
 					</div>
-					<Link href="/bundles">
-						<Button
-							className="gap-2 font-bold text-primary text-xm hover:text-secondary"
-							variant="ghost"
-						>
-							View All <ArrowRight size={14} />
-						</Button>
-					</Link>
+
+					<Button
+						nativeButton={false}
+						render={<Link href="/bundles" />}
+						variant="ghost"
+					>
+						View All <ArrowRight />
+					</Button>
 				</div>
 
 				<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 					{bundles.map((bundle) => (
-						<Link
-							className="block"
-							href={`/bundle/${bundle.id}`}
+						<div
+							className="group relative flex cursor-pointer flex-col items-center gap-12 rounded-sm border bg-muted p-6 transition-all duration-500 hover:border-primary sm:flex-row md:p-9"
 							key={bundle.id}
 						>
-							<motion.div
-								className="group relative flex cursor-pointer flex-col items-center gap-12 border border-stone-100 bg-stone-50 p-6 transition-all duration-500 hover:border-primary/30 sm:flex-row md:p-8"
-								initial={{ opacity: 0, y: 20 }}
-								viewport={{ once: true }}
-								whileInView={{ opacity: 1, y: 0 }}
-							>
-								{/* Triple Visual Stack */}
-								<div className="relative mb-6 h-44 w-32 flex-shrink-0 sm:mb-0">
-									{/* Book 3 (Back) */}
-									<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden border border-stone-100 bg-stone-200 shadow-lg transition-transform duration-500 group-hover:-rotate-15">
-										<Image
-											alt="Book 3"
-											className="object-cover opacity-60"
-											fill
-											sizes="128px"
-											src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop"
-										/>
-									</div>
-									{/* Book 2 (Middle) */}
-									<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden border border-stone-200 bg-stone-100 shadow-xl transition-transform duration-500 group-hover:rotate-12">
-										<Image
-											alt="Book 2"
-											className="object-cover opacity-80"
-											fill
-											sizes="128px"
-											src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=300&auto=format&fit=crop"
-										/>
-									</div>
-									{/* Book 1 (Front) */}
-									<div className="absolute inset-0 rotate-0 transform overflow-hidden border border-stone-300 bg-white shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
-										<Image
-											alt={bundle.title}
-											className="object-cover"
-											fill
-											sizes="128px"
-											src={bundle.image}
-										/>
-									</div>
+							<Link
+								className="absolute inset-0"
+								href={`/bundle/${bundle.id}`}
+							/>
+							<div className="relative mb-6 h-44 w-32 shrink-0 sm:mb-0">
+								<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden border border-stone-100 bg-stone-200 shadow-lg transition-transform duration-500 group-hover:-rotate-15">
+									<Image
+										alt="Book 3"
+										className="object-cover opacity-60"
+										fill
+										sizes="128px"
+										src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop"
+									/>
+								</div>
 
-									{/* Floating Badge */}
-									<div className="absolute -top-3 -right-3 z-20 flex h-10 w-10 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-lg">
-										<span className="font-black text-xm leading-none">
+								<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden border border-stone-200 bg-stone-100 shadow-xl transition-transform duration-500 group-hover:rotate-12">
+									<Image
+										alt="Book 2"
+										className="object-cover opacity-80"
+										fill
+										sizes="128px"
+										src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=300&auto=format&fit=crop"
+									/>
+								</div>
+								{/* Book 1 (Front) */}
+								<div className="absolute inset-0 rotate-0 transform overflow-hidden border border-stone-300 bg-white shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+									<Image
+										alt={bundle.title}
+										className="object-cover"
+										fill
+										sizes="128px"
+										src={bundle.image}
+									/>
+								</div>
+
+								<Tooltip>
+									<TooltipTrigger
+										render={
+											<span className="absolute -top-3 -right-3 z-20 flex size-8 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-lg" />
+										}
+									>
+										<span className="font-bold text-xs leading-none">
 											{bundle.count}
 										</span>
-										<span className="font-bold text-[10px]">Sets</span>
-									</div>
-								</div>
-
-								{/* Content */}
-								<div className="flex-grow">
-									<div className="mb-3 flex items-center gap-2">
-										<Tag className="text-primary" size={10} />
-										<span className="font-bold text-primary text-xm">
-											{bundle.tag}
-										</span>
-									</div>
-									<h3 className="mb-2 font-black font-serif text-secondary text-xl transition-colors group-hover:text-primary">
+									</TooltipTrigger>
+									<TooltipPopup>{bundle.count} Books sets</TooltipPopup>
+								</Tooltip>
+							</div>
+							{/* Content */}
+							<div className="flex h-full grow flex-col justify-between">
+								<div>
+									<p className="mb-3 flex items-center gap-2 text-primary text-sm">
+										<Tag size={14} />
+										{bundle.tag}
+									</p>
+									<h3 className="mb-2 font-semibold font-serif text-4xl text-secondary transition-colors group-hover:text-primary">
 										{bundle.title}
 									</h3>
-									<p className="mb-6 line-clamp-1 font-bold text-stone-400 text-xm">
-										{bundle.books.slice(0, 3).join(", ")}...
+									<p className="mb-6 line-clamp-2 font-medium text-muted-foreground">
+										{bundle.books.join(", ")}
 									</p>
-									<div className="flex items-center justify-between">
-										<div>
-											<span className="mr-2 font-bold text-stone-300 text-xm line-through">
-												AED {bundle.originalPrice}
-											</span>
-											<span className="font-black text-lg text-secondary">
-												AED {bundle.price}
-											</span>
-										</div>
-										<Button className="h-10 rounded-none bg-primary px-6 font-bold text-white text-xm shadow-md transition-all hover:bg-secondary">
-											Buy Set
-										</Button>
-									</div>
 								</div>
-							</motion.div>
-						</Link>
+								<div className="flex items-center justify-between">
+									<div>
+										<span className="mr-2 font-medium text-muted-foreground/60 line-through">
+											AED {bundle.originalPrice}
+										</span>
+										<span className="font-bold text-lg text-secondary">
+											AED {bundle.price}
+										</span>
+									</div>
+									<Button>Buy Set</Button>
+								</div>
+							</div>
+						</div>
 					))}
 				</div>
 			</div>
