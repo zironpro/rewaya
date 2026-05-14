@@ -63,7 +63,7 @@ export function BookCard({
 	};
 
 	return (
-		<div className="relative">
+		<div className="group relative">
 			<Link className="absolute inset-0" href={`/product/${id}`} />
 			{/* Image Container */}
 			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
@@ -76,7 +76,7 @@ export function BookCard({
 				/>
 
 				{/* Icons Overlay */}
-				<div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+				<div className="absolute top-4 right-4 z-10 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
 					<Button
 						className={`size-9 rounded-full backdrop-blur-sm transition-colors ${
 							isWishlisted
@@ -134,11 +134,7 @@ export function BookCard({
 											collection.
 										</p>
 										<div className="flex gap-4">
-											<Button
-												className="h-14 flex-1"
-												onClick={() => addToBag()}
-												variant="premium"
-											>
+											<Button onClick={() => addToBag()} variant="premium">
 												Add to Bag
 											</Button>
 											<Button
@@ -164,9 +160,9 @@ export function BookCard({
 				</div>
 
 				{/* Quick Add (Bottom) */}
-				<div className="absolute right-0 bottom-0 left-0 z-10 translate-y-full bg-primary p-4 transition-transform duration-300 group-hover:translate-y-0">
+				<div className="absolute right-0 bottom-0 left-0 z-10 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
 					<Button
-						className="h-10 w-full text-sm text-white hover:bg-white/10"
+						className="w-full p-6 text-white hover:text-white"
 						onClick={addToBag}
 						variant="ghost"
 					>
@@ -177,22 +173,22 @@ export function BookCard({
 				{/* Status Badges */}
 				<div className="absolute top-4 left-0 z-10 flex flex-col items-start gap-1">
 					{badge === "best seller" && (
-						<span className="bg-secondary px-3 py-1.5 font-bold text-sm text-white shadow-lg">
+						<span className="bg-secondary px-3 py-1 font-medium text-white text-xs shadow-md">
 							Best Seller
 						</span>
 					)}
 					{badge === "new arrival" && (
-						<span className="bg-primary px-3 py-1.5 font-bold text-sm text-white shadow-lg">
+						<span className="bg-primary px-3 py-1 font-medium text-white text-xs shadow-md">
 							New Arrival
 						</span>
 					)}
 					{badge === "new seller" && (
-						<span className="border-primary border-l-4 bg-stone-800 px-3 py-1.5 font-bold text-sm text-white shadow-lg">
+						<span className="border-primary border-l-4 bg-stone-800 px-3 py-1 font-medium text-white text-xs shadow-md">
 							New Seller
 						</span>
 					)}
 					{price < 50 && !badge && (
-						<span className="bg-primary px-3 py-1.5 font-bold text-sm text-white italic shadow-lg">
+						<span className="bg-primary px-3 py-1 font-medium text-white text-xs italic shadow-md">
 							Special Offer
 						</span>
 					)}
@@ -200,20 +196,17 @@ export function BookCard({
 			</div>
 
 			{/* Info Container */}
-			<Link
-				className="flex cursor-pointer flex-col gap-1 px-1"
-				href={`/product/${id}`}
-			>
+			<div className="flex cursor-pointer flex-col gap-1 px-1">
 				<div className="flex items-start justify-between gap-4">
-					<h3 className="flex-1 font-bold text-base text-primary leading-tight transition-colors">
+					<h3 className="flex-1 font-semibold text-base text-primary leading-tight transition-colors">
 						{title}
 					</h3>
-					<span className="whitespace-nowrap font-bold text-base text-primary">
+					<span className="whitespace-nowrap font-medium text-secondary text-sm">
 						AED {price.toFixed(2)}
 					</span>
 				</div>
 				<p className="font-medium text-sm text-stone-400">{author}</p>
-			</Link>
+			</div>
 		</div>
 	);
 }

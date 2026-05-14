@@ -53,10 +53,6 @@
 	--color-info: var(--info);
 }
 
-@utility text-sm {
-	font-size: 0.9375rem;
-}
-
 :root {
 	--primary: oklch(0.4395 0.1561 358.62);
 	--background: oklch(0.99 0.0027 360);
@@ -138,14 +134,4 @@
 	html {
 		@apply font-sans;
 	}
-}
-
-.dark {
-	--destructive-foreground: var(--color-red-400);
-	--info: var(--color-blue-500);
-	--info-foreground: var(--color-blue-400);
-	--success: var(--color-emerald-500);
-	--success-foreground: var(--color-emerald-400);
-	--warning: var(--color-amber-500);
-	--warning-foreground: var(--color-amber-400);
 }
