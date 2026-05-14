@@ -1,6 +1,6 @@
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
-import MobileBottomNav from "@/components/MobileBottomNav";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 
 export default function MainLayout({
 	children,

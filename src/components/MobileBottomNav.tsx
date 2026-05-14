@@ -9,7 +9,7 @@ import { Grid, Home, ShoppingBag, User } from "lucide-react";
 
 import { cartCountAtom } from "@/lib/store";
 
-export default function MobileBottomNav() {
+export function MobileBottomNav() {
 	const pathname = usePathname();
 	const [cartCount] = useAtom(cartCountAtom);
 

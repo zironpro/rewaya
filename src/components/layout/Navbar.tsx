@@ -26,7 +26,12 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { LanguageIcon } from "@/assets/icons/language";
+import { Logo } from "@/assets/logo";
+
 import { cartCountAtom } from "@/lib/store";
+
+import { SearchInput } from "./components/search-input";
 
 const megaMenuData = {
 	categories: [
@@ -59,155 +64,95 @@ const megaMenuData = {
 		tag: "CURATED",
 	},
 };
+const categories = [
+	{
+		name: "Shop All",
+		href: "/shop",
+		icon: Sparkles,
+	},
+	{
+		name: "Today's Deals",
+		href: "/#deals",
+		icon: Zap,
+	},
+	{
+		name: "Islamic",
+		href: "/#islamic",
+		icon: Moon,
+	},
+	{
+		name: "Fiction",
+		href: "/#fiction",
+		icon: Feather,
+	},
+	{
+		name: "Children",
+		href: "/#children",
+		icon: Baby,
+	},
+	{
+		name: "Bundles",
+		href: "/bundles",
+		icon: Package,
+	},
+	{
+		name: "New Arrivals",
+		href: "/#new",
+		icon: Sparkles,
+	},
+];
 
 export function Navbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-	const [searchQuery, setSearchQuery] = useState("");
 	const [cartCount] = useAtom(cartCountAtom);
-
-	const categories = [
-		{
-			name: "Shop All",
-			href: "/shop",
-			icon: <Sparkles className="text-secondary" size={14} />,
-		},
-		{
-			name: "Today's Deals",
-			href: "/#deals",
-			icon: <Zap className="text-secondary" size={14} />,
-		},
-		{
-			name: "Islamic",
-			href: "/#islamic",
-			icon: <Moon className="text-secondary" size={14} />,
-		},
-		{
-			name: "Fiction",
-			href: "/#fiction",
-			icon: <Feather className="text-secondary" size={14} />,
-		},
-		{
-			name: "Children",
-			href: "/#children",
-			icon: <Baby className="text-secondary" size={14} />,
-		},
-		{
-			name: "Bundles",
-			href: "/bundles",
-			icon: <Package className="text-secondary" size={14} />,
-		},
-		{
-			name: "New Arrivals",
-			href: "/#new",
-			icon: <Sparkles className="text-secondary" size={14} />,
-		},
-	];
 
 	return (
 		<>
-			<header className="fixed top-0 right-0 left-0 z-40 bg-white shadow-sm">
-				{/* Top Bar: Logo, Search, Icons */}
-				<div className="h-20 border-stone-100 border-b">
+			<header className="sticky inset-x-0 top-0 z-40 bg-white shadow-sm">
+				<div className="h-16 border-stone-100 border-b">
 					<div className="container mx-auto flex h-full items-center gap-4 px-6 md:gap-8">
-						{/* Logo */}
-						<Link className="flex shrink-0 items-center gap-3" href="/">
-							<Image
-								alt="Al Rewaya Logo"
-								className="h-16 w-auto object-contain"
-								height={64}
-								src="/logo.png"
-								width={260}
-							/>
-							<div className="hidden flex-col leading-none xl:flex">
-								<span className="font-bold text-3xl text-secondary tracking-tight">
-									Al Rewaya
-								</span>
-								<span className="font-bold text-primary text-sm uppercase tracking-widest">
-									Book World
-								</span>
-							</div>
+						<Link href="/">
+							<Logo />
 						</Link>
 
-						{/* Reduced Noon-style Search Bar */}
-						<div className="relative mx-auto hidden max-w-xl grow md:block">
-							<div className="group relative">
-								<Search
-									className="absolute top-1/2 left-4 -translate-y-1/2 text-stone-400 transition-colors group-focus-within:text-primary"
-									size={22}
-								/>
-								<input
-									className="w-full rounded-lg border border-stone-100 bg-stone-50 py-4 pr-4 pl-12 text-base outline-none transition-all placeholder:text-stone-300 focus:border-primary/30 focus:bg-white"
-									onChange={(e) => setSearchQuery(e.target.value)}
-									placeholder="What are you looking for?"
-									type="text"
-									value={searchQuery}
-								/>
-							</div>
-						</div>
+						<SearchInput className="relative mx-auto hidden max-w-xl grow md:inline-flex" />
 
-						{/* Right Icons */}
 						<div className="ml-auto flex items-center gap-1 text-secondary md:gap-2">
-							{/* Language Toggle (Ghost Style to match others) */}
-							<Button
-								className="flex h-10 gap-2 px-3 hover:text-primary"
-								variant="ghost"
-							>
-								<svg
-									className="text-secondary"
-									fill="none"
-									height="20"
-									stroke="currentColor"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="1.5"
-									viewBox="0 0 24 24"
-									width="20"
-								>
-									<path d="m5 8 6 6" />
-									<path d="m4 14 6-6 2-3" />
-									<path d="M2 5h12" />
-									<path d="M7 2h1" />
-									<path d="m22 22-5-10-5 10" />
-									<path d="M14 18h6" />
-								</svg>
-								<span className="font-bold text-base">العربية</span>
+							<Button variant="ghost">
+								<LanguageIcon />
+								<span className="text-base">العربية</span>
 							</Button>
 
-							<Button
-								className="hover:text-primary md:hidden"
-								size="icon"
-								variant="ghost"
-							>
+							<Button className="md:hidden" size="icon" variant="ghost">
 								<Search size={20} />
 							</Button>
-							<Link href="/login">
-								<Button
-									className="h-10 gap-2 px-3 hover:text-primary"
-									variant="ghost"
-								>
-									<User size={20} strokeWidth={1.5} />
-									<span className="hidden font-bold text-xm xl:block">
-										Sign In
+
+							<Button
+								className="h-10 gap-2 px-3 hover:text-primary"
+								nativeButton={false}
+								render={<Link href="/login" />}
+								variant="ghost"
+							>
+								<User size={20} strokeWidth={1.5} />
+								<span className="hidden text-sm xl:block">Sign In</span>
+							</Button>
+
+							<Button
+								className="relative h-10 gap-2 px-3 hover:text-primary"
+								nativeButton={false}
+								render={<Link href="/cart" />}
+								variant="ghost"
+							>
+								<ShoppingBag size={24} strokeWidth={1.5} />
+								<span className="hidden text-sm xl:block">Cart</span>
+								{cartCount > 0 && (
+									<span className="absolute -top-1 -right-1 flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-primary px-1 font-bold text-white text-xs ring-2 ring-white">
+										{cartCount}
 									</span>
-								</Button>
-							</Link>
-							<Link href="/cart">
-								<Button
-									className="relative h-10 gap-2 px-3 hover:text-primary"
-									variant="ghost"
-								>
-									<ShoppingBag size={24} strokeWidth={1.5} />
-									<span className="hidden font-bold text-sm xl:block">
-										Cart
-									</span>
-									{cartCount > 0 && (
-										<span className="absolute -top-1 -right-1 flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-primary px-1 font-bold text-white text-xs ring-2 ring-white">
-											{cartCount}
-										</span>
-									)}
-								</Button>
-							</Link>
+								)}
+							</Button>
+
 							<Button
 								className="lg:hidden"
 								onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -224,7 +169,7 @@ export function Navbar() {
 				<nav className="relative hidden overflow-visible border-stone-50 border-b bg-white lg:block">
 					<div className="container mx-auto flex h-12 items-center gap-10 px-6">
 						<button
-							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-bold text-secondary text-sm transition-colors hover:text-primary"
+							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-medium text-secondary text-sm transition-colors hover:text-primary"
 							onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
 							onMouseEnter={() => setIsMegaMenuOpen(true)}
 						>
@@ -234,13 +179,13 @@ export function Navbar() {
 								size={12}
 							/>
 						</button>
-						{categories.map((cat) => (
+						{categories.map(({ icon: Icon, ...cat }) => (
 							<Link
-								className="flex items-center gap-2 whitespace-nowrap font-bold text-secondary text-sm transition-colors hover:text-primary"
+								className="flex items-center gap-2 whitespace-nowrap font-medium text-secondary text-sm transition-colors hover:text-primary"
 								href={cat.href}
 								key={cat.name}
 							>
-								{cat.icon}
+								<Icon className="size-4" />
 								{cat.name}
 							</Link>
 						))}
@@ -271,14 +216,14 @@ export function Navbar() {
 										<div className="grid grid-cols-5 gap-12">
 											{megaMenuData.categories.map((group) => (
 												<div className="space-y-6" key={group.name}>
-													<h4 className="border-stone-100 border-b pb-3 font-bold text-secondary text-sm">
+													<h4 className="border-b pb-3 font-bold font-display text-lg text-secondary uppercase">
 														{group.name}
 													</h4>
 													<ul className="space-y-3">
 														{group.items.map((item) => (
 															<li key={item}>
 																<Link
-																	className="group/item flex items-center gap-2 text-base text-secondary transition-colors hover:text-primary"
+																	className="group/item flex items-center gap-2 font-medium text-secondary transition-colors hover:text-primary"
 																	href="/shop"
 																>
 																	<div className="h-1 w-1 rounded-full bg-secondary/30 transition-colors group-hover/item:bg-primary" />
@@ -320,30 +265,30 @@ export function Navbar() {
 										</div>
 
 										{/* Bottom Utility links inside Mega Menu */}
-										<div className="mt-12 flex items-center justify-between border-stone-100 border-t pt-8">
+										<div className="mt-12 flex items-center justify-between border-t pt-8">
 											<div className="flex gap-8">
 												<div className="flex items-center gap-3">
-													<div className="rounded-full bg-stone-50 p-2 text-primary">
-														<BookOpen size={16} />
+													<div className="grid size-9 place-content-center rounded-full bg-muted text-primary">
+														<BookOpen className="size-4" />
 													</div>
 													<div>
-														<p className="font-bold text-secondary text-xm">
+														<p className="font-bold font-display text-secondary">
 															New Releases
 														</p>
-														<p className="text-stone-400 text-xm">
+														<p className="text-muted-foreground text-xs">
 															Updated Daily
 														</p>
 													</div>
 												</div>
 												<div className="flex items-center gap-3">
-													<div className="rounded-full bg-stone-50 p-2 text-secondary">
-														<Star size={16} />
+													<div className="grid size-9 place-content-center rounded-full bg-muted text-secondary">
+														<Star className="size-4" />
 													</div>
 													<div>
-														<p className="font-bold text-secondary text-xm">
+														<p className="font-bold font-display text-secondary">
 															Best Sellers
 														</p>
-														<p className="text-stone-400 text-xm">
+														<p className="text-muted-foreground text-xs">
 															Top 100 Books
 														</p>
 													</div>

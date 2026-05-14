@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/styles/globals.css";
 
 import { inter, playfair } from "@/assets/fonts";
 
@@ -26,7 +26,7 @@ export default function RootLayout({
 			)}
 			lang="en"
 		>
-			<body className="flex min-h-full flex-col">{children}</body>
+			<body className="min-h-screen">{children}</body>
 		</html>
 	);
 }

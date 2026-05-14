@@ -11,7 +11,7 @@ import { allBooks } from "@/features/products/data/products";
 
 export const HomepageView = () => {
 	return (
-		<main className="overflow-hidden pt-20 lg:pt-32">
+		<main className="overflow-hidden">
 			<HeroCarousel />
 			<CategoryStrip />
 
