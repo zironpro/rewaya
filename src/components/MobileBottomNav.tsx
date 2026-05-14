@@ -56,7 +56,7 @@ export function MobileBottomNav() {
 								</div>
 
 								<span
-									className={`mt-2 font-bold text-xm ${isActive ? "text-primary" : "text-stone-300"}`}
+									className={`mt-2 font-bold text-sm ${isActive ? "text-primary" : "text-stone-300"}`}
 								>
 									{item.label}
 								</span>

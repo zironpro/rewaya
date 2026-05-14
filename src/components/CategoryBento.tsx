@@ -48,7 +48,7 @@ export default function CategoryBento() {
 		<section className="bg-white py-32">
 			<div className="container mx-auto px-6">
 				<div className="mb-20 flex flex-col items-center text-center">
-					<span className="mb-4 font-bold text-stone-400 text-xm">
+					<span className="mb-4 font-bold text-sm text-stone-400">
 						Shop by category
 					</span>
 					<h2 className="font-black font-serif text-4xl md:text-5xl">

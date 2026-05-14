@@ -9,7 +9,7 @@ export const PrivacyView = () => {
 				<Breadcrumbs className="mb-12" items={[{ label: "Privacy Policy" }]} />
 
 				<div className="mx-auto max-w-3xl">
-					<span className="mb-6 block font-bold text-stone-400 text-xm uppercase tracking-widest">
+					<span className="mb-6 block font-bold text-sm text-stone-400 uppercase tracking-widest">
 						Legal Information
 					</span>
 					<h1 className="mb-12 font-black font-serif text-5xl md:text-7xl">

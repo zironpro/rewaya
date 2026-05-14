@@ -23,7 +23,7 @@ export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 		<nav
 			aria-label="Breadcrumb"
 			className={cn(
-				"flex items-center gap-2 font-bold text-stone-400 text-xm",
+				"flex items-center gap-2 font-bold text-sm text-stone-400",
 				className
 			)}
 		>

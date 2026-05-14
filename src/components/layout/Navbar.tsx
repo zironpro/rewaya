@@ -247,16 +247,16 @@ export function Navbar() {
 													/>
 													<div className="absolute inset-0 bg-secondary/10 transition-colors group-hover/feat:bg-transparent" />
 													<div className="absolute bottom-4 left-4">
-														<span className="bg-primary px-2 py-1 font-bold text-white text-xm">
+														<span className="bg-primary px-2 py-1 font-bold text-sm text-white">
 															{megaMenuData.featured.tag}
 														</span>
 													</div>
 												</div>
-												<h4 className="mb-2 font-bold text-secondary text-xm">
+												<h4 className="mb-2 font-bold text-secondary text-sm">
 													{megaMenuData.featured.title}
 												</h4>
 												<Link
-													className="font-bold text-primary text-xm hover:underline"
+													className="font-bold text-primary text-sm hover:underline"
 													href="/shop"
 												>
 													Discover Collection
@@ -297,7 +297,7 @@ export function Navbar() {
 											<div className="flex gap-4">
 												<div className="flex items-center gap-2 rounded-lg bg-primary/5 px-4 py-2 text-primary">
 													<Zap fill="currentColor" size={14} />
-													<span className="font-bold text-xm">
+													<span className="font-bold text-sm">
 														Sale: Up to 40% Off
 													</span>
 												</div>

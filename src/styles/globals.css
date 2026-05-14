@@ -8,7 +8,6 @@
 	--color-primary: var(--primary); /* Burgundy from logo */
 	--color-primary-dark: #70143e;
 	--color-secondary: #201e50; /* Dark Blue from logo */
-	--color-accent: #c4a484;
 	--color-paper: #ffffff;
 	--color-ink: #201e50;
 
@@ -26,7 +25,9 @@
 	--color-destructive: var(--destructive);
 	--color-destructive-foreground: var(--destructive-foreground);
 
+	--color-accent: var(--accent);
 	--color-accent-foreground: var(--accent-foreground);
+
 	--color-muted-foreground: var(--muted-foreground);
 	--color-muted: var(--muted);
 	--color-secondary-foreground: var(--secondary-foreground);
@@ -52,7 +53,7 @@
 	--color-info: var(--info);
 }
 
-@utility text-xm {
+@utility text-sm {
 	font-size: 0.9375rem;
 }
 
@@ -69,7 +70,7 @@
 	--secondary-foreground: oklch(0.205 0 0);
 	--muted: oklch(0.97 0 0);
 	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
+	--accent: oklch(0.7392 0.0579 66.73);
 	--accent-foreground: oklch(0.205 0 0);
 	--destructive: oklch(0.577 0.245 27.325);
 	--border: oklch(0.922 0 0);
@@ -92,7 +93,7 @@
 }
 
 .sale-badge {
-	@apply bg-red-600 text-white text-xm font-extrabold px-2 py-0.5;
+	@apply bg-red-600 text-white text-sm font-extrabold px-2 py-0.5;
 }
 
 .book-shadow {

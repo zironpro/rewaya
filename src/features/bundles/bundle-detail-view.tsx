@@ -180,7 +180,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 									<span className="font-bold text-lg text-stone-300 line-through">
 										AED {bundle.originalPrice}
 									</span>
-									<span className="font-black text-green-600 text-xm">
+									<span className="font-black text-green-600 text-sm">
 										You save{" "}
 										{Math.round(
 											(1 - bundle.price / bundle.originalPrice) * 100
@@ -226,10 +226,10 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 								>
 									<div className="text-primary">{spec.icon}</div>
 									<div>
-										<p className="font-bold text-stone-400 text-xm">
+										<p className="font-bold text-sm text-stone-400">
 											{spec.label}
 										</p>
-										<p className="font-bold text-secondary text-xm">
+										<p className="font-bold text-secondary text-sm">
 											{spec.value}
 										</p>
 									</div>
@@ -243,7 +243,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 						<div className="sticky top-28 space-y-6 rounded-[2rem] border-2 border-stone-100 bg-white p-6">
 							<div className="space-y-4">
 								<div className="border-stone-50 border-b pb-4">
-									<span className="font-bold text-stone-400 text-xm">
+									<span className="font-bold text-sm text-stone-400">
 										Bundle contents
 									</span>
 									<h3 className="mt-1 font-black text-secondary text-sm">
@@ -258,10 +258,10 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 												className="group/item flex cursor-pointer items-start gap-3"
 												key={book.id}
 											>
-												<span className="mt-0.5 font-bold text-primary text-xm">
+												<span className="mt-0.5 font-bold text-primary text-sm">
 													0{i + 1}
 												</span>
-												<p className="font-bold text-stone-500 text-xm leading-tight transition-colors group-hover/item:text-primary">
+												<p className="font-bold text-sm text-stone-500 leading-tight transition-colors group-hover/item:text-primary">
 													{book.title}
 												</p>
 											</div>
@@ -273,14 +273,14 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 							</div>
 
 							<div className="space-y-3 pt-6">
-								<Button className="h-14 w-full rounded-2xl bg-secondary font-black text-white text-xm transition-all hover:bg-primary active:scale-[0.98]">
+								<Button className="h-14 w-full rounded-2xl bg-secondary font-black text-sm text-white transition-all hover:bg-primary active:scale-[0.98]">
 									Add to Cart
 								</Button>
 							</div>
 
 							<button className="group w-full pt-6">
 								<div className="flex items-center justify-between border-stone-50 border-t pt-6">
-									<span className="font-bold text-xm transition-colors group-hover:text-primary">
+									<span className="font-bold text-sm transition-colors group-hover:text-primary">
 										Add to wish list
 									</span>
 									<Heart
@@ -297,7 +297,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 				<section className="mt-16 border-stone-100 border-t pt-16">
 					<div className="mb-12 flex items-end justify-between">
 						<div>
-							<span className="mb-2 block font-bold text-primary text-xm">
+							<span className="mb-2 block font-bold text-primary text-sm">
 								The collection archive
 							</span>
 							<h2 className="font-black font-serif text-4xl text-secondary leading-none tracking-tight md:text-5xl">
@@ -336,7 +336,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 												<h4 className="mb-1 font-black text-2xl text-secondary leading-tight tracking-tight transition-colors group-hover:text-primary">
 													{book.title}
 												</h4>
-												<div className="flex items-center gap-2 font-bold text-primary text-xm">
+												<div className="flex items-center gap-2 font-bold text-primary text-sm">
 													<UserIcon size={12} />
 													<span>{book.author}</span>
 												</div>
@@ -348,34 +348,34 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 
 											<div className="mt-auto grid grid-cols-2 gap-x-8 gap-y-4 border-stone-100 border-t pt-6">
 												<div className="flex flex-col">
-													<span className="mb-1 font-bold text-stone-300 text-xm">
+													<span className="mb-1 font-bold text-sm text-stone-300">
 														ISBN
 													</span>
-													<span className="font-bold text-secondary text-xm">
+													<span className="font-bold text-secondary text-sm">
 														{book.isbn}
 													</span>
 												</div>
 												<div className="flex flex-col">
-													<span className="mb-1 font-bold text-stone-300 text-xm">
+													<span className="mb-1 font-bold text-sm text-stone-300">
 														Publisher
 													</span>
-													<span className="font-bold text-secondary text-xm">
+													<span className="font-bold text-secondary text-sm">
 														{book.publisher}
 													</span>
 												</div>
 												<div className="flex flex-col">
-													<span className="mb-1 font-bold text-stone-300 text-xm">
+													<span className="mb-1 font-bold text-sm text-stone-300">
 														Language
 													</span>
-													<span className="font-bold text-secondary text-xm">
+													<span className="font-bold text-secondary text-sm">
 														{book.language}
 													</span>
 												</div>
 												<div className="flex flex-col">
-													<span className="mb-1 font-bold text-stone-300 text-xm">
+													<span className="mb-1 font-bold text-sm text-stone-300">
 														Genre
 													</span>
-													<span className="font-bold text-secondary text-xm">
+													<span className="font-bold text-secondary text-sm">
 														{book.genre}
 													</span>
 												</div>
@@ -397,7 +397,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 					<section className="mt-12 border-stone-100 border-t pt-12">
 						<div className="mb-12 flex items-end justify-between">
 							<div>
-								<span className="mb-2 block font-bold text-primary text-xm">
+								<span className="mb-2 block font-bold text-primary text-sm">
 									Continue exploring
 								</span>
 								<h2 className="font-black font-serif text-4xl text-secondary leading-none tracking-tight md:text-5xl">
@@ -424,7 +424,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 							<div className="flex-1 space-y-4">
 								<div className="flex items-center gap-3">
 									<div className="h-px w-8 bg-primary/30" />
-									<span className="font-bold text-primary text-xm">
+									<span className="font-bold text-primary text-sm">
 										The weekly review
 									</span>
 								</div>
@@ -448,12 +448,12 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 											size={16}
 										/>
 										<input
-											className="h-14 w-full rounded-2xl border border-stone-200 bg-white pr-6 pl-12 font-bold text-secondary text-xm transition-all focus:border-primary focus:outline-none sm:w-[260px]"
+											className="h-14 w-full rounded-2xl border border-stone-200 bg-white pr-6 pl-12 font-bold text-secondary text-sm transition-all focus:border-primary focus:outline-none sm:w-[260px]"
 											placeholder="Email address"
 											type="email"
 										/>
 									</div>
-									<Button className="group h-14 rounded-2xl bg-secondary px-8 font-black text-white text-xm transition-all hover:bg-primary">
+									<Button className="group h-14 rounded-2xl bg-secondary px-8 font-black text-sm text-white transition-all hover:bg-primary">
 										Join now{" "}
 										<ArrowRight
 											className="ml-2 transition-transform group-hover:translate-x-1"
@@ -461,7 +461,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 										/>
 									</Button>
 								</div>
-								<p className="mt-3 text-center text-stone-300 text-xm md:text-left">
+								<p className="mt-3 text-center text-sm text-stone-300 md:text-left">
 									Agreed to our{" "}
 									<Link
 										className="underline transition-colors hover:text-secondary"

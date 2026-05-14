@@ -7,7 +7,7 @@ export const AboutView = () => {
 			<section className="border-stone-100 border-b py-24 md:py-32">
 				<div className="container mx-auto px-6">
 					<div className="max-w-4xl">
-						<span className="mb-8 block font-bold text-stone-400 text-xm">
+						<span className="mb-8 block font-bold text-sm text-stone-400">
 							Our Story
 						</span>
 						<h1 className="mb-12 font-black font-serif text-5xl leading-[0.9] md:text-8xl">
@@ -42,7 +42,7 @@ export const AboutView = () => {
 								<h3 className="mb-6 font-bold font-serif text-3xl">
 									Curated with Purpose
 								</h3>
-								<p className="font-bold text-stone-500 text-xm leading-relaxed">
+								<p className="font-bold text-sm text-stone-500 leading-relaxed">
 									Every title in our collection is hand-selected. We don't just
 									sell books; we offer pathways to reflection, growth, and
 									peace. From classical Islamic texts to modern masterpieces of
@@ -53,7 +53,7 @@ export const AboutView = () => {
 								<h3 className="mb-6 font-bold font-serif text-3xl">
 									A Global Community
 								</h3>
-								<p className="font-bold text-stone-500 text-xm leading-relaxed">
+								<p className="font-bold text-sm text-stone-500 leading-relaxed">
 									Rewaya serves seekers from all walks of life. We bridge the
 									gap between tradition and modernity, creating a space where
 									everyone is welcome to explore the world's most profound
@@ -72,7 +72,7 @@ export const AboutView = () => {
 						<h2 className="mb-12 font-black font-serif text-4xl italic md:text-6xl">
 							The future of reading is reflective.
 						</h2>
-						<p className="text-stone-400 text-xm leading-loose">
+						<p className="text-sm text-stone-400 leading-loose">
 							Join us in our mission to bring back the art of deep reading and
 							thoughtful contemplation. In a world of noise, we choose the
 							melody of silence and the weight of words.

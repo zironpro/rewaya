@@ -16,7 +16,7 @@ export const LoginView = () => {
 				<div className="mb-10 space-y-6">
 					<div className="flex gap-4">
 						<Button
-							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-xm transition-colors hover:bg-stone-50"
+							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
 							variant="outline"
 						>
 							<svg className="size-4" viewBox="0 0 24 24">
@@ -40,7 +40,7 @@ export const LoginView = () => {
 							Google
 						</Button>
 						<Button
-							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-xm transition-colors hover:bg-stone-50"
+							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
 							variant="outline"
 						>
 							<svg className="size-4 fill-[#1877F2]" viewBox="0 0 24 24">
@@ -54,7 +54,7 @@ export const LoginView = () => {
 						<div className="absolute inset-0 flex items-center">
 							<span className="w-full border-stone-100 border-t" />
 						</div>
-						<div className="relative flex justify-center font-bold text-xm">
+						<div className="relative flex justify-center font-bold text-sm">
 							<span className="bg-white px-4 text-secondary/60">
 								Or continue with email
 							</span>
@@ -64,7 +64,7 @@ export const LoginView = () => {
 
 				<form className="space-y-8">
 					<div className="space-y-2">
-						<label className="font-bold text-secondary text-xm">
+						<label className="font-bold text-secondary text-sm">
 							Email Address
 						</label>
 						<Input placeholder="email@example.com" required type="email" />
@@ -72,11 +72,11 @@ export const LoginView = () => {
 
 					<div className="space-y-2">
 						<div className="flex items-center justify-between">
-							<label className="font-bold text-secondary text-xm">
+							<label className="font-bold text-secondary text-sm">
 								Password
 							</label>
 							<Link
-								className="font-bold text-secondary/60 text-xm transition-colors hover:text-primary"
+								className="font-bold text-secondary/60 text-sm transition-colors hover:text-primary"
 								href="#"
 							>
 								Forgot Password?
@@ -89,7 +89,7 @@ export const LoginView = () => {
 						Sign In
 					</Button>
 					<Link
-						className="mt-4 flex items-center justify-center gap-2 font-bold text-secondary text-xm transition-colors hover:text-primary"
+						className="mt-4 flex items-center justify-center gap-2 font-bold text-secondary text-sm transition-colors hover:text-primary"
 						href="/"
 					>
 						Explore without login
@@ -97,7 +97,7 @@ export const LoginView = () => {
 				</form>
 
 				<div className="mt-12 border-stone-100 border-t pt-8 text-center">
-					<p className="font-bold text-secondary/60 text-xm">
+					<p className="font-bold text-secondary/60 text-sm">
 						Don't have an account?{" "}
 						<Link
 							className="ml-2 text-black transition-colors hover:text-primary"
