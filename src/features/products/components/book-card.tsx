@@ -77,14 +77,16 @@ export default function BookCard({
 					>
 						<Heart size={16} strokeWidth={1.5} />
 					</Button>
-					<DialogTrigger asChild>
-						<Button
-							className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm"
-							size="icon"
-							variant="ghost"
-						>
-							<Eye size={16} strokeWidth={1.5} />
-						</Button>
+					<DialogTrigger
+						render={
+							<Button
+								className="h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm"
+								size="icon"
+								variant="ghost"
+							/>
+						}
+					>
+						<Eye size={16} strokeWidth={1.5} />
 					</DialogTrigger>
 				</div>
 
