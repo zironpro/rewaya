@@ -112,10 +112,10 @@ export const ShopView = () => {
 
 	return (
 		<>
-			<main className="grow pt-32">
+			<main className="grow pt-20">
 				{/* Header */}
 				<section className="container mx-auto mb-12 px-6">
-					<Breadcrumbs className="mt-8 mb-8" items={[{ label: "Shop" }]} />
+					<Breadcrumbs className="mb-8" items={[{ label: "Shop" }]} />
 					<div className="text-center">
 						<span className="mb-6 block font-bold text-stone-400 text-xm">
 							Collection

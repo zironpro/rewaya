@@ -108,10 +108,10 @@ export const BundlesView = () => {
 
 	return (
 		<>
-			<main className="min-h-screen grow bg-white pt-32">
+			<main className="min-h-screen grow pt-20">
 				{/* Header */}
 				<section className="container mx-auto mb-12 px-6">
-					<Breadcrumbs className="mt-8 mb-8" items={[{ label: "Bundles" }]} />
+					<Breadcrumbs className="mb-8" items={[{ label: "Bundles" }]} />
 					<div className="text-center">
 						<span className="mb-6 block font-bold text-primary text-xm">
 							Curated Collections

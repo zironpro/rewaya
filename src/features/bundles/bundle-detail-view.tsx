@@ -59,10 +59,10 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 	}, [api]);
 
 	return (
-		<main className="min-h-screen bg-white pt-24 pb-12 font-sans text-secondary">
+		<main className="min-h-screen pt-20 pb-12 font-sans text-secondary">
 			<div className="container mx-auto px-4 md:px-8">
 				<Breadcrumbs
-					className="mt-12 mb-8"
+					className="mb-8"
 					items={[
 						{ label: "Shop", href: "/shop" },
 						{ label: "Bundles", href: "/bundles" },

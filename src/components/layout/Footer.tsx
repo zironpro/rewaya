@@ -178,10 +178,10 @@ export function Footer() {
 				<div className="flex flex-col items-center justify-between gap-4 border-stone-900 border-t pt-8 md:flex-row">
 					<p className="text-xm">© 2024 Rewaya Books. All rights reserved.</p>
 					<div className="flex gap-6 font-bold text-xm">
-						<a className="transition-colors hover:text-white" href="#">
+						<a className="transition-colors hover:text-white" href="/privacy">
 							Privacy Policy
 						</a>
-						<a className="transition-colors hover:text-white" href="#">
+						<a className="transition-colors hover:text-white" href="/terms">
 							Terms of Service
 						</a>
 					</div>

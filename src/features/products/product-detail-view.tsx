@@ -49,17 +49,17 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 	const [quantity, setQuantity] = useState(1);
 
 	return (
-		<main className="pt-24 pb-32">
+		<main className="pt-20 pb-32">
 			<div className="container mx-auto px-6">
 				<Breadcrumbs
-					className="mt-12 mb-12"
+					className="mb-12"
 					items={[{ label: "Shop", href: "/shop" }, { label: product.title }]}
 				/>
 
 				<div className="grid grid-cols-1 gap-20 md:grid-cols-2">
 					{/* Image Gallery Side */}
 					<div className="space-y-6">
-						<div className="group relative aspect-[4/5] overflow-hidden bg-stone-50">
+						<div className="group relative aspect-[3/4] overflow-hidden bg-stone-50">
 							<Image
 								alt={product.title}
 								className="object-cover transition-transform duration-1000 group-hover:scale-105"
