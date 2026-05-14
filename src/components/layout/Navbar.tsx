@@ -131,16 +131,6 @@ export function Navbar() {
 							</Button>
 
 							<Button
-								className="h-10 gap-2 px-3 hover:text-primary"
-								nativeButton={false}
-								render={<Link href="/login" />}
-								variant="ghost"
-							>
-								<User size={20} strokeWidth={1.5} />
-								<span className="hidden text-sm xl:block">Sign In</span>
-							</Button>
-
-							<Button
 								className="relative h-10 gap-2 px-3 hover:text-primary"
 								nativeButton={false}
 								render={<Link href="/wishlist" />}
@@ -168,6 +158,16 @@ export function Navbar() {
 										{cartCount}
 									</span>
 								)}
+							</Button>
+
+							<Button
+								className="h-10 gap-2 px-3 hover:text-primary"
+								nativeButton={false}
+								render={<Link href="/login" />}
+								variant="ghost"
+							>
+								<User size={20} strokeWidth={1.5} />
+								<span className="hidden text-sm xl:block">Sign In</span>
 							</Button>
 
 							<Button
