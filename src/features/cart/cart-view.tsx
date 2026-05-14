@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAtom } from "jotai";
 import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
 
+import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 
 import { CartItem, cartAtom, cartTotalAtom } from "@/lib/store";
@@ -30,8 +31,9 @@ export const CartView = () => {
 	};
 
 	return (
-		<main className="grow pt-32 pb-32">
+		<main className="grow pt-20 pb-32">
 			<div className="container mx-auto px-6">
+				<Breadcrumbs className="mb-8" items={[{ label: "Shopping Bag" }]} />
 				<div className="mb-16">
 					<span className="mb-4 block font-bold text-stone-400 text-xm">
 						Your Selection
