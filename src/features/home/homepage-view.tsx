@@ -3,10 +3,10 @@ import Image from "next/image";
 import BundleSection from "@/components/BundleSection";
 import CategoryStrip from "@/components/CategoryStrip";
 import PolicyCards from "@/components/PolicyCards";
-import ProductStrip from "@/components/ProductStrip";
 import { Button } from "@/components/ui/button";
 
 import HeroCarousel from "@/features/home/components/hero-carousel";
+import ProductStrip from "@/features/products/components/product-strip";
 import { allBooks } from "@/features/products/data/products";
 
 export const HomepageView = () => {

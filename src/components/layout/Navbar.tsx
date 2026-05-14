@@ -111,7 +111,7 @@ export function Navbar() {
 		<>
 			<header className="sticky inset-x-0 top-0 z-40 bg-white shadow-sm">
 				<div className="h-16 border-stone-100 border-b">
-					<div className="container mx-auto flex h-full items-center gap-4 px-6 md:gap-8">
+					<div className="container mx-auto flex h-full items-center gap-4 md:gap-8">
 						<Link href="/">
 							<Logo />
 						</Link>
@@ -167,7 +167,7 @@ export function Navbar() {
 
 				{/* Sub-Nav: Categories */}
 				<nav className="relative hidden overflow-visible border-stone-50 border-b bg-white lg:block">
-					<div className="container mx-auto flex h-12 items-center gap-10 px-6">
+					<div className="container mx-auto flex h-12 items-center gap-10">
 						<button
 							className="flex items-center gap-2 border-stone-100 border-r pr-10 font-medium text-secondary text-sm transition-colors hover:text-primary"
 							onClick={() => setIsMegaMenuOpen(!isMegaMenuOpen)}
@@ -237,7 +237,7 @@ export function Navbar() {
 
 											{/* Featured Section */}
 											<div className="col-span-1 border-stone-100 border-l pl-12">
-												<div className="group/feat relative mb-4 aspect-[3/4] overflow-hidden rounded-lg">
+												<div className="group/feat relative mb-4 aspect-3/4 overflow-hidden rounded-lg">
 													<Image
 														alt="Featured"
 														className="object-cover transition-transform duration-700 group-hover/feat:scale-110"

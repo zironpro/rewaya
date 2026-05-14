@@ -9,6 +9,8 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import { cn } from "@/lib/utils";
+
 import { BANNERS } from "../data/banners";
 
 export default function HeroCarousel() {
@@ -17,7 +19,7 @@ export default function HeroCarousel() {
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setCurrent((prev) => (prev === BANNERS.length - 1 ? 0 : prev + 1));
-		}, 6000);
+		}, 5000);
 		return () => clearInterval(timer);
 	}, []);
 
@@ -51,10 +53,13 @@ export default function HeroCarousel() {
 					</div>
 
 					{/* Content */}
-					<div className="container relative mx-auto flex h-full flex-col items-center justify-center px-6 text-center text-white">
+					<div className="container relative mx-auto flex h-full flex-col items-center justify-center text-center text-card">
+						<h1 className="sr-only">
+							Al Rewaya Book world: Your Premier Islamic Bookstore
+						</h1>
 						<motion.span
 							animate={{ opacity: 1, y: 0 }}
-							className="mb-6 font-bold text-base uppercase tracking-widest md:text-lg"
+							className="font-light text-base md:text-xl"
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.2 }}
 						>
@@ -62,7 +67,7 @@ export default function HeroCarousel() {
 						</motion.span>
 						<motion.h2
 							animate={{ opacity: 1, y: 0 }}
-							className="mb-10 font-black font-serif text-5xl leading-none md:text-8xl"
+							className="mb-8 font-black font-serif text-5xl uppercase leading-none md:text-8xl"
 							initial={{ opacity: 0, y: 30 }}
 							transition={{ delay: 0.4 }}
 						>
@@ -80,10 +85,7 @@ export default function HeroCarousel() {
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.6 }}
 						>
-							<Button
-								className="h-14 rounded-none bg-primary px-10 font-bold text-base text-white hover:bg-primary-dark"
-								size="lg"
-							>
+							<Button className="hover:px-6" size="lg">
 								{BANNERS[current].cta} <ArrowRight className="ml-2" size={16} />
 							</Button>
 						</motion.div>
@@ -92,26 +94,35 @@ export default function HeroCarousel() {
 			</AnimatePresence>
 
 			{/* Navigation Arrows */}
-			<div className="absolute right-6 bottom-10 z-10 flex gap-4 md:right-12">
-				<button
-					className="border border-white/30 p-3 text-white transition-all hover:bg-white hover:text-black"
+			<div className="absolute right-6 bottom-10 z-10 flex gap-2 md:right-20">
+				<Button
+					className="text-card"
 					onClick={prev}
+					size="icon-lg"
+					variant="outline"
 				>
 					<ChevronLeft size={24} />
-				</button>
-				<button
-					className="border border-white/30 p-3 text-white transition-all hover:bg-white hover:text-black"
+				</Button>
+				<Button
+					className="text-card"
 					onClick={next}
+					size="icon-lg"
+					variant="outline"
 				>
 					<ChevronRight size={24} />
-				</button>
+				</Button>
 			</div>
 
 			{/* Progress Indicators */}
-			<div className="absolute bottom-10 left-6 z-10 flex gap-3 md:left-12">
+			<div className="absolute bottom-10 left-6 z-10 flex gap-1 md:left-20">
 				{BANNERS.map((_, i) => (
 					<div
-						className={`h-1 cursor-pointer transition-all duration-500 ${current === i ? "w-12 bg-primary" : "w-6 bg-white/30 hover:bg-white/50"}`}
+						className={cn(
+							"h-1 cursor-pointer rounded-full transition-all duration-500",
+							current === i
+								? "w-12 bg-primary"
+								: "w-6 bg-card/30 hover:bg-card/50"
+						)}
 						key={Number(i + 1)}
 						onClick={() => setCurrent(i)}
 					/>

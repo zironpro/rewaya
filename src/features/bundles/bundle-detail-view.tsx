@@ -102,7 +102,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 								</div>
 
 								{/* Main Image */}
-								<div className="flex-grow">
+								<div className="grow">
 									<Carousel
 										className="w-full"
 										opts={{ loop: false }}
@@ -268,7 +268,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 										))}
 									</div>
 									{/* Subtle fade effect at the bottom */}
-									<div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 bg-gradient-to-t from-white to-transparent transition-opacity group-hover/scroll:opacity-0" />
+									<div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 bg-linear-to-t from-white to-transparent transition-opacity group-hover/scroll:opacity-0" />
 								</div>
 							</div>
 
@@ -320,7 +320,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 								>
 									<div className="group relative flex h-full flex-col items-start gap-8 rounded-[2rem] border border-stone-100 bg-stone-50/50 p-8 transition-all hover:border-primary/20 hover:bg-white md:flex-row">
 										{/* Book Image */}
-										<div className="relative aspect-[3/4] w-full shrink-0 transform overflow-hidden rounded-2xl bg-white shadow-sm transition-transform group-hover:scale-105 md:w-44">
+										<div className="relative aspect-3/4 w-full shrink-0 transform overflow-hidden rounded-2xl bg-white shadow-sm transition-transform group-hover:scale-105 md:w-44">
 											<Image
 												alt={book.title}
 												className="h-full w-full object-cover"
