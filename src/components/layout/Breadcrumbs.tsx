@@ -1,53 +1,70 @@
 "use client";
 
-import React from "react";
+import { Fragment } from "react";
 
 import Link from "next/link";
 
-import { ChevronRight } from "lucide-react";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 import { cn } from "@/lib/utils";
 
-interface BreadcrumbItem {
+interface Crumb {
 	label: string;
 	href?: string;
 }
 
 interface BreadcrumbsProps {
-	items: BreadcrumbItem[];
+	items: Crumb[];
 	className?: string;
 }
 
 export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 	return (
-		<nav
-			aria-label="Breadcrumb"
-			className={cn(
-				"flex items-center gap-2 font-bold text-sm text-stone-400",
-				className
-			)}
-		>
-			<Link className="transition-colors hover:text-primary" href="/">
-				Home
-			</Link>
+		<Breadcrumb className={className}>
+			<BreadcrumbList className={cn("text-sm")}>
+				<BreadcrumbItem>
+					<BreadcrumbLink
+						className="transition-colors"
+						render={<Link href="/" />}
+					>
+						Home
+					</BreadcrumbLink>
+				</BreadcrumbItem>
 
-			{items.map((item, index) => (
-				<React.Fragment key={Number(index)}>
-					<ChevronRight className="shrink-0 opacity-50" size={12} />
-					{item.href ? (
-						<Link
-							className="max-w-[120px] truncate transition-colors hover:text-primary md:max-w-[200px]"
-							href={item.href}
-						>
-							{item.label}
-						</Link>
-					) : (
-						<span className="max-w-[120px] truncate text-secondary md:max-w-[300px]">
-							{item.label}
-						</span>
-					)}
-				</React.Fragment>
-			))}
-		</nav>
+				{items.map((item, index) => (
+					<Fragment
+						key={
+							item.href !== undefined
+								? `${item.href}-${String(index)}`
+								: `current-${item.label}-${String(index)}`
+						}
+					>
+						<BreadcrumbSeparator className="opacity-50 [&>svg]:size-3" />
+						<BreadcrumbItem>
+							{item.href ? (
+								<BreadcrumbLink
+									className="truncate transition-colors"
+									href={item.href}
+									render={<Link href={item.href} />}
+								>
+									{item.label}
+								</BreadcrumbLink>
+							) : (
+								<BreadcrumbPage className="truncate text-secondary">
+									{item.label}
+								</BreadcrumbPage>
+							)}
+						</BreadcrumbItem>
+					</Fragment>
+				))}
+			</BreadcrumbList>
+		</Breadcrumb>
 	);
 }
