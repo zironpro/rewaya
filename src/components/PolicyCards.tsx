@@ -10,10 +10,10 @@ const policies = [
 		href: "/terms",
 	},
 	{
-		title: "14-day returns",
+		title: "7-day returns",
 		desc: "Hassle-free return and exchange policy",
 		icon: RotateCcw,
-		href: "/terms",
+		href: "/return",
 	},
 	{
 		title: "Secure payment",
@@ -29,7 +29,7 @@ const policies = [
 	},
 ];
 
-export default function PolicyCards() {
+export function PolicyCards() {
 	return (
 		<section className="border-stone-100 border-y bg-stone-50 py-16">
 			<div className="container mx-auto px-6">

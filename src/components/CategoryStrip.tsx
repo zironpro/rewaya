@@ -47,7 +47,7 @@ const categories = [
 	},
 ];
 
-export default function CategoryStrip() {
+export function CategoryStrip() {
 	return (
 		<section className="container mx-auto w-full py-16">
 			<Carousel

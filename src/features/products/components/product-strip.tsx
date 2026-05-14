@@ -9,7 +9,7 @@ import {
 
 import { CountdownTimer } from "@/features/products/components/timer";
 
-import BookCard, { BookProps } from "./book-card";
+import { BookCard, BookProps } from "./book-card";
 
 const navButtonClass =
 	"static size-11 translate-x-0 translate-y-0 rounded-full border-stone-100 text-stone-400 hover:border-primary hover:bg-stone-50 hover:text-primary disabled:opacity-40";
@@ -20,11 +20,7 @@ interface ProductStripProps {
 	books: BookProps[];
 }
 
-export default function ProductStrip({
-	title,
-	subtitle,
-	books,
-}: ProductStripProps) {
+export function ProductStrip({ title, subtitle, books }: ProductStripProps) {
 	return (
 		<section className="group/strip container mx-auto pb-16">
 			<Carousel

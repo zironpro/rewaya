@@ -43,7 +43,7 @@ const bundles = [
 	},
 ];
 
-export default function BundleSection() {
+export function BundleSection() {
 	return (
 		<section className="relative mb-16 overflow-hidden border-y bg-card py-16">
 			<div className="container relative z-10 mx-auto">

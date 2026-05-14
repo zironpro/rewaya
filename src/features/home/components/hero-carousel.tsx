@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 import { BANNERS } from "../data/banners";
 
-export default function HeroCarousel() {
+export function HeroCarousel() {
 	const [current, setCurrent] = useState(0);
 
 	useEffect(() => {
