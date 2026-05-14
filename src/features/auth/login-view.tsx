@@ -55,7 +55,7 @@ export const LoginView = () => {
 							<span className="w-full border-stone-100 border-t" />
 						</div>
 						<div className="relative flex justify-center font-bold text-xm">
-							<span className="bg-white px-4 text-stone-300">
+							<span className="bg-white px-4 text-secondary/60">
 								Or continue with email
 							</span>
 						</div>
@@ -64,7 +64,7 @@ export const LoginView = () => {
 
 				<form className="space-y-8">
 					<div className="space-y-2">
-						<label className="font-bold text-stone-400 text-xm">
+						<label className="font-bold text-secondary text-xm">
 							Email Address
 						</label>
 						<Input placeholder="email@example.com" required type="email" />
@@ -72,11 +72,11 @@ export const LoginView = () => {
 
 					<div className="space-y-2">
 						<div className="flex items-center justify-between">
-							<label className="font-bold text-stone-400 text-xm">
+							<label className="font-bold text-secondary text-xm">
 								Password
 							</label>
 							<Link
-								className="font-bold text-stone-300 text-xm transition-colors hover:text-primary"
+								className="font-bold text-secondary/60 text-xm transition-colors hover:text-primary"
 								href="#"
 							>
 								Forgot Password?
@@ -88,10 +88,16 @@ export const LoginView = () => {
 					<Button className="h-14 w-full" variant="premium">
 						Sign In
 					</Button>
+					<Link
+						className="mt-4 flex items-center justify-center gap-2 font-bold text-secondary text-xm transition-colors hover:text-primary"
+						href="/"
+					>
+						Explore without login
+					</Link>
 				</form>
 
 				<div className="mt-12 border-stone-100 border-t pt-8 text-center">
-					<p className="font-bold text-stone-400 text-xm">
+					<p className="font-bold text-secondary/60 text-xm">
 						Don't have an account?{" "}
 						<Link
 							className="ml-2 text-black transition-colors hover:text-primary"
