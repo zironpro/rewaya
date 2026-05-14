@@ -108,7 +108,7 @@ export const BundlesView = () => {
 
 	return (
 		<>
-			<main className="min-h-screen grow bg-white pt-20">
+			<main className="min-h-screen grow pt-20">
 				{/* Header */}
 				<section className="container mx-auto mb-12 px-6">
 					<Breadcrumbs className="mb-8" items={[{ label: "Bundles" }]} />
