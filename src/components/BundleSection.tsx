@@ -89,6 +89,7 @@ export default function BundleSection() {
 											alt="Book 3"
 											className="object-cover opacity-60"
 											fill
+											sizes="128px"
 											src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop"
 										/>
 									</div>
@@ -98,6 +99,7 @@ export default function BundleSection() {
 											alt="Book 2"
 											className="object-cover opacity-80"
 											fill
+											sizes="128px"
 											src="https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=300&auto=format&fit=crop"
 										/>
 									</div>
@@ -107,6 +109,7 @@ export default function BundleSection() {
 											alt={bundle.title}
 											className="object-cover"
 											fill
+											sizes="128px"
 											src={bundle.image}
 										/>
 									</div>

@@ -71,6 +71,8 @@ export default function HeroCarousel() {
 							alt={banners[current].title}
 							className="h-full w-full object-cover"
 							fill
+							priority={current === 0}
+							sizes="100vw"
 							src={banners[current].image}
 						/>
 						<div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />

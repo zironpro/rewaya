@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { Footer } from "@/components/layout/Footer";
-import { Navbar } from "@/components/layout/Navbar";
-import MobileBottomNav from "@/components/MobileBottomNav";
-
 import { inter, playfair } from "@/assets/fonts";
 
 import { cn } from "@/lib/utils";
@@ -30,13 +26,7 @@ export default function RootLayout({
 			)}
 			lang="en"
 		>
-			<body className="flex min-h-full flex-col">
-				<Navbar />
-
-				{children}
-				<MobileBottomNav />
-				<Footer />
-			</body>
+			<body className="flex min-h-full flex-col">{children}</body>
 		</html>
 	);
 }

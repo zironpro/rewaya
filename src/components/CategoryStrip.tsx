@@ -61,6 +61,7 @@ export default function CategoryStrip() {
 							alt={cat.name}
 							className="object-cover transition-transform duration-700 group-hover:scale-110"
 							fill
+							sizes="(max-width: 768px) 128px, 192px"
 							src={cat.image}
 						/>
 					</motion.div>

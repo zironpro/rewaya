@@ -75,6 +75,7 @@ export const CartView = () => {
 													alt={item.title}
 													className="h-full w-full object-cover"
 													fill
+													sizes="96px"
 													src={item.image}
 												/>
 											</div>

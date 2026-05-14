@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 export const SignupView = () => {
 	return (
 		<main className="flex grow items-center justify-center px-6 py-32">
-			<div className="w-full max-w-md">
+			<div className="w-full max-w-md rounded-[2.5rem] border border-stone-100 bg-white p-8 shadow-sm md:p-12">
 				<div className="mb-12 text-center">
 					<span className="mb-4 block font-bold text-stone-400 text-xm">
 						Join the Circle

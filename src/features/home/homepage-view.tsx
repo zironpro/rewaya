@@ -39,6 +39,7 @@ export const HomepageView = () => {
 					alt="Promotion"
 					className="h-full w-full object-cover opacity-60"
 					fill
+					sizes="100vw"
 					src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
 				/>
 				<div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center text-white">
@@ -87,6 +88,7 @@ export const HomepageView = () => {
 						alt="Children's Books"
 						className="object-cover transition-transform group-hover:scale-110"
 						fill
+						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 					/>
 					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary/80 p-12 md:p-24">

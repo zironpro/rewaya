@@ -64,6 +64,7 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 								alt={product.title}
 								className="object-cover transition-transform duration-1000 group-hover:scale-105"
 								fill
+								sizes="(max-width: 768px) 100vw, 50vw"
 								src={product.image}
 							/>
 							<button className="absolute top-6 right-6 z-10 rounded-full bg-white/80 p-3 backdrop-blur-md transition-colors hover:bg-primary hover:text-white">
@@ -80,6 +81,7 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 										alt="thumbnail"
 										className="object-cover grayscale"
 										fill
+										sizes="100px"
 										src={product.image}
 									/>
 								</div>

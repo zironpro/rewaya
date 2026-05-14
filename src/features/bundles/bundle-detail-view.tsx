@@ -93,6 +93,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 													alt={`Thumb ${i}`}
 													className="object-cover"
 													fill
+													sizes="56px"
 													src={src}
 												/>
 											</div>
@@ -116,6 +117,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 															alt={bundle.title}
 															className="max-h-[90%] max-w-[90%] object-contain transition-transform duration-700 group-hover:scale-105"
 															fill
+															sizes="(max-width: 1024px) 100vw, 400px"
 															src={src}
 														/>
 													</div>
@@ -323,6 +325,7 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 												alt={book.title}
 												className="h-full w-full object-cover"
 												fill
+												sizes="(max-width: 768px) 100vw, 176px"
 												src={book.image}
 											/>
 										</div>

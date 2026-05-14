@@ -297,6 +297,7 @@ export function Navbar() {
 														alt="Featured"
 														className="object-cover transition-transform duration-700 group-hover/feat:scale-110"
 														fill
+														sizes="(max-width: 1024px) 20vw, 300px"
 														src={megaMenuData.featured.image}
 													/>
 													<div className="absolute inset-0 bg-secondary/10 transition-colors group-hover/feat:bg-transparent" />

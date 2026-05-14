@@ -53,6 +53,8 @@ export default function Hero() {
 						alt="Library"
 						className="object-cover brightness-75 grayscale"
 						fill
+						priority
+						sizes="100vw"
 						src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=2000&auto=format&fit=crop"
 					/>
 					<div className="absolute inset-0 flex items-center justify-center">

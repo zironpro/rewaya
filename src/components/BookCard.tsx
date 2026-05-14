@@ -65,11 +65,15 @@ export default function BookCard({
 			<Dialog>
 				{/* Image Container */}
 				<div className="book-shadow relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
-					<Link href={`/product/${id}`}>
+					<Link
+						className="relative block h-full w-full"
+						href={`/product/${id}`}
+					>
 						<Image
 							alt={title}
 							className="object-cover transition-transform duration-700 group-hover:scale-105"
 							fill
+							sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
 							src={image}
 						/>
 					</Link>
@@ -150,7 +154,13 @@ export default function BookCard({
 				<DialogContent className="max-w-3xl">
 					<div className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
 						<div className="relative aspect-[3/4] overflow-hidden bg-stone-50">
-							<Image alt={title} className="object-cover" fill src={image} />
+							<Image
+								alt={title}
+								className="object-cover"
+								fill
+								sizes="(max-width: 768px) 100vw, 400px"
+								src={image}
+							/>
 						</div>
 						<div className="flex flex-col justify-between py-4">
 							<DialogHeader>

@@ -37,11 +37,12 @@ export default function BundleCard({
 			<Dialog>
 				{/* Image Container */}
 				<div className="book-shadow relative mb-4 aspect-[4/5] overflow-hidden rounded-lg bg-stone-50">
-					<Link href={`/bundle/${id}`}>
+					<Link className="relative block h-full w-full" href={`/bundle/${id}`}>
 						<Image
 							alt={title}
 							className="object-cover transition-transform duration-700 group-hover:scale-105"
 							fill
+							sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
 							src={mainImage}
 						/>
 					</Link>
@@ -120,6 +121,7 @@ export default function BundleCard({
 								alt={title}
 								className="object-cover"
 								fill
+								sizes="(max-width: 768px) 100vw, 400px"
 								src={mainImage}
 							/>
 						</div>

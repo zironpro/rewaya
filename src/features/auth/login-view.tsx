@@ -6,59 +6,14 @@ import { Input } from "@/components/ui/input";
 export const LoginView = () => {
 	return (
 		<main className="flex grow items-center justify-center px-6 py-32">
-			<div className="w-full max-w-md">
+			<div className="w-full max-w-md rounded-[2.5rem] border border-stone-100 bg-white p-8">
 				<div className="mb-12 text-center">
-					<span className="mb-4 block font-bold text-stone-400 text-xm">
-						Welcome Back
-					</span>
-					<h1 className="mb-4 font-black font-serif text-5xl">
+					<h1 className="font-black font-serif text-5xl">
 						Log <span className="font-normal italic">In</span>.
 					</h1>
-					<p className="font-bold text-stone-500 text-xm">
-						Enter your credentials to access your library.
-					</p>
 				</div>
 
-				<form className="space-y-8">
-					<div className="space-y-2">
-						<label className="font-bold text-stone-400 text-xm">
-							Email Address
-						</label>
-						<Input placeholder="EMAIL@EXAMPLE.COM" required type="email" />
-					</div>
-
-					<div className="space-y-2">
-						<div className="flex items-center justify-between">
-							<label className="font-bold text-stone-400 text-xm">
-								Password
-							</label>
-							<Link
-								className="font-bold text-stone-300 text-xm transition-colors hover:text-primary"
-								href="#"
-							>
-								Forgot Password?
-							</Link>
-						</div>
-						<Input placeholder="••••••••" required type="password" />
-					</div>
-
-					<Button className="h-14 w-full" variant="premium">
-						Sign In
-					</Button>
-				</form>
-
-				<div className="mt-8 space-y-6">
-					<div className="relative flex items-center justify-center">
-						<div className="absolute inset-0 flex items-center">
-							<span className="w-full border-stone-100 border-t" />
-						</div>
-						<div className="relative flex justify-center font-bold text-xm">
-							<span className="bg-white px-4 text-stone-300">
-								Or continue with
-							</span>
-						</div>
-					</div>
-
+				<div className="mb-10 space-y-6">
 					<div className="flex gap-4">
 						<Button
 							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-xm transition-colors hover:bg-stone-50"
@@ -94,7 +49,46 @@ export const LoginView = () => {
 							Facebook
 						</Button>
 					</div>
+
+					<div className="relative flex items-center justify-center">
+						<div className="absolute inset-0 flex items-center">
+							<span className="w-full border-stone-100 border-t" />
+						</div>
+						<div className="relative flex justify-center font-bold text-xm">
+							<span className="bg-white px-4 text-stone-300">
+								Or continue with email
+							</span>
+						</div>
+					</div>
 				</div>
+
+				<form className="space-y-8">
+					<div className="space-y-2">
+						<label className="font-bold text-stone-400 text-xm">
+							Email Address
+						</label>
+						<Input placeholder="email@example.com" required type="email" />
+					</div>
+
+					<div className="space-y-2">
+						<div className="flex items-center justify-between">
+							<label className="font-bold text-stone-400 text-xm">
+								Password
+							</label>
+							<Link
+								className="font-bold text-stone-300 text-xm transition-colors hover:text-primary"
+								href="#"
+							>
+								Forgot Password?
+							</Link>
+						</div>
+						<Input placeholder="••••••••" required type="password" />
+					</div>
+
+					<Button className="h-14 w-full" variant="premium">
+						Sign In
+					</Button>
+				</form>
 
 				<div className="mt-12 border-stone-100 border-t pt-8 text-center">
 					<p className="font-bold text-stone-400 text-xm">

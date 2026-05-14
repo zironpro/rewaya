@@ -68,6 +68,7 @@ export default function CategoryBento() {
 								alt={cat.name}
 								className="object-cover transition-all duration-1000 group-hover:scale-105"
 								fill
+								sizes="(max-width: 768px) 100vw, 50vw"
 								src={cat.image}
 							/>
 							<div className="absolute inset-0 bg-white/10 transition-colors duration-500 group-hover:bg-black/40" />
