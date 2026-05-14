@@ -1,5 +1,15 @@
 import { atom } from "jotai";
 
+export interface BookProps {
+	id: number;
+	title: string;
+	author: string;
+	price: number;
+	image: string;
+	category: string;
+	badge?: "new seller" | "new arrival" | "best seller";
+}
+
 export interface CartItem {
 	id: number;
 	title: string;
@@ -19,4 +29,11 @@ export const cartCountAtom = atom((get) => {
 export const cartTotalAtom = atom((get) => {
 	const cart = get(cartAtom);
 	return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+});
+
+export const wishlistAtom = atom<BookProps[]>([]);
+
+export const wishlistCountAtom = atom((get) => {
+	const wishlist = get(wishlistAtom);
+	return wishlist.length;
 });

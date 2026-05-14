@@ -5,7 +5,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { Eye, Heart, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -18,17 +18,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { CartItem, cartAtom } from "@/lib/store";
-
-export interface BookProps {
-	id: number;
-	title: string;
-	author: string;
-	price: number;
-	image: string;
-	category: string;
-	badge?: "new seller" | "new arrival" | "best seller";
-}
+import { BookProps, CartItem, cartAtom, wishlistAtom } from "@/lib/store";
 
 export function BookCard({
 	id,
@@ -40,6 +30,24 @@ export function BookCard({
 	badge,
 }: BookProps) {
 	const setCart = useSetAtom(cartAtom);
+	const [wishlist, setWishlist] = useAtom(wishlistAtom);
+
+	const isWishlisted = wishlist.some((item) => item.id === id);
+
+	const toggleWishlist = (e?: React.MouseEvent) => {
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		if (isWishlisted) {
+			setWishlist((prev) => prev.filter((item) => item.id !== id));
+		} else {
+			setWishlist((prev) => [
+				...prev,
+				{ id, title, author, price, image, category, badge },
+			]);
+		}
+	};
 
 	const addToBag = (e?: React.MouseEvent) => {
 		if (e) e.stopPropagation();
@@ -70,12 +78,22 @@ export function BookCard({
 				{/* Icons Overlay */}
 				<div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
 					<Button
-						className="size-9 rounded-full bg-white/80 backdrop-blur-sm"
+						className={`size-9 rounded-full backdrop-blur-sm transition-colors ${
+							isWishlisted
+								? "bg-primary text-white hover:bg-primary/90"
+								: "bg-white/80 text-stone-900 hover:bg-white"
+						}`}
+						onClick={toggleWishlist}
 						size="icon"
 						variant="ghost"
 					>
-						<Heart size={16} strokeWidth={1.5} />
+						<Heart
+							className={isWishlisted ? "fill-current" : ""}
+							size={16}
+							strokeWidth={1.5}
+						/>
 					</Button>
+
 					<Dialog>
 						<DialogTrigger
 							render={
@@ -124,11 +142,18 @@ export function BookCard({
 												Add to Bag
 											</Button>
 											<Button
-												className="h-14 w-14"
+												className={`h-14 w-14 ${
+													isWishlisted ? "border-primary text-primary" : ""
+												}`}
+												onClick={toggleWishlist}
 												size="icon"
 												variant="outline"
 											>
-												<Heart size={20} strokeWidth={1.5} />
+												<Heart
+													className={isWishlisted ? "fill-current" : ""}
+													size={20}
+													strokeWidth={1.5}
+												/>
 											</Button>
 										</div>
 									</div>

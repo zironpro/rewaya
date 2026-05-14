@@ -12,6 +12,7 @@ import {
 	BookOpen,
 	ChevronDown,
 	Feather,
+	Heart,
 	Menu,
 	Moon,
 	Package,
@@ -29,7 +30,7 @@ import { Button } from "@/components/ui/button";
 import { LanguageIcon } from "@/assets/icons/language";
 import { Logo } from "@/assets/logo";
 
-import { cartCountAtom } from "@/lib/store";
+import { cartCountAtom, wishlistCountAtom } from "@/lib/store";
 
 import { SearchInput } from "./components/search-input";
 
@@ -106,6 +107,7 @@ export function Navbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 	const [cartCount] = useAtom(cartCountAtom);
+	const [wishlistCount] = useAtom(wishlistCountAtom);
 
 	return (
 		<>
@@ -136,6 +138,21 @@ export function Navbar() {
 							>
 								<User size={20} strokeWidth={1.5} />
 								<span className="hidden text-sm xl:block">Sign In</span>
+							</Button>
+
+							<Button
+								className="relative h-10 gap-2 px-3 hover:text-primary"
+								nativeButton={false}
+								render={<Link href="/wishlist" />}
+								variant="ghost"
+							>
+								<Heart size={20} strokeWidth={1.5} />
+								<span className="hidden text-sm xl:block">Wishlist</span>
+								{wishlistCount > 0 && (
+									<span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[10px] text-white ring-2 ring-white">
+										{wishlistCount}
+									</span>
+								)}
 							</Button>
 
 							<Button
@@ -333,26 +350,34 @@ export function Navbar() {
 							initial={{ opacity: 0, y: -20 }}
 						>
 							<div className="flex flex-col gap-6 px-6">
-								{["Shop", "Islamic", "Fiction", "New", "About", "Log In"].map(
-									(item) => (
-										<Link
-											className="nav-link text-xl"
-											href={
-												item === "Log In"
-													? "/login"
-													: item === "Shop"
-														? "/shop"
-														: item === "About"
-															? "/about"
+								{[
+									"Shop",
+									"Islamic",
+									"Fiction",
+									"New",
+									"Wishlist",
+									"About",
+									"Log In",
+								].map((item) => (
+									<Link
+										className="nav-link text-xl"
+										href={
+											item === "Log In"
+												? "/login"
+												: item === "Shop"
+													? "/shop"
+													: item === "About"
+														? "/about"
+														: item === "Wishlist"
+															? "/wishlist"
 															: "#"
-											}
-											key={item}
-											onClick={() => setIsMobileMenuOpen(false)}
-										>
-											{item}
-										</Link>
-									)
-								)}
+										}
+										key={item}
+										onClick={() => setIsMobileMenuOpen(false)}
+									>
+										{item}
+									</Link>
+								))}
 							</div>
 						</motion.div>
 					</>

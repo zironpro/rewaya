@@ -8,8 +8,9 @@ import {
 } from "@/components/ui/carousel";
 
 import { CountdownTimer } from "@/features/products/components/timer";
+import { BookProps } from "@/lib/store";
 
-import { BookCard, BookProps } from "./book-card";
+import { BookCard } from "./book-card";
 
 const navButtonClass =
 	"static size-11 translate-x-0 translate-y-0 rounded-full border-stone-100 text-stone-400 hover:border-primary hover:bg-stone-50 hover:text-primary disabled:opacity-40";

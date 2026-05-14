@@ -9,7 +9,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import BookCard from "@/features/products/components/book-card";
+import { BookCard } from "@/features/products/components/book-card";
 import { allBooks } from "@/features/products/data/products";
 
 const categories = [
