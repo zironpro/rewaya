@@ -15,7 +15,7 @@ interface BundleBuyBoxProps {
 export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 	return (
 		<div className={cn(className)}>
-			<div className="sticky top-28 rounded-xl border bg-card p-6">
+			<div className="rounded-xl border bg-card p-6 lg:sticky lg:top-28">
 				<div>
 					<span className="text-muted-foreground text-xs">Bundle contents</span>
 					<h3 className="font-bold text-secondary text-sm">

@@ -28,7 +28,7 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 	return (
 		<Breadcrumb className={className}>
-			<BreadcrumbList className={cn("text-sm")}>
+			<BreadcrumbList className={cn("min-w-0 text-sm")}>
 				<BreadcrumbItem>
 					<BreadcrumbLink
 						className="transition-colors"

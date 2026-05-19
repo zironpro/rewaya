@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -12,9 +10,15 @@ import { cn } from "@/lib/utils";
 
 const categories = ["All", "Kids", "Educational", "Spiritual", "History"];
 
-export const BundlesFilter = () => {
-	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+interface BundlesFilterProps {
+	onApply?: () => void;
+	showApplyButton?: boolean;
+}
 
+export const BundlesFilter = ({
+	onApply,
+	showApplyButton = false,
+}: BundlesFilterProps) => {
 	return (
 		<div className="space-y-12">
 			<div>
@@ -48,14 +52,14 @@ export const BundlesFilter = () => {
 							<span
 								className={cn(
 									"font-bold text-sm",
-									cat === "ALL" && "text-primary"
+									cat === "All" && "text-primary"
 								)}
 							>
 								{cat}
 							</span>
 							<span className="text-sm text-stone-300 group-hover:text-black">
 								(
-								{cat === "ALL"
+								{cat === "All"
 									? bundles.length
 									: bundles.filter(
 											(b) =>
@@ -91,14 +95,16 @@ export const BundlesFilter = () => {
 				</div>
 			</div>
 
-			<div className="pt-8">
-				<Button
-					className="h-12 w-full bg-primary font-bold text-sm text-white hover:bg-primary-dark"
-					onClick={() => setIsMobileFilterOpen(false)}
-				>
-					Apply Filters
-				</Button>
-			</div>
+			{showApplyButton && (
+				<div className="pt-8">
+					<Button
+						className="h-12 w-full bg-primary font-bold text-sm text-white hover:bg-primary-dark"
+						onClick={onApply}
+					>
+						Apply Filters
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 };

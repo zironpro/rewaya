@@ -28,7 +28,7 @@ export default function RootLayout({
 			)}
 			lang="en"
 		>
-			<body className="min-h-screen">
+			<body>
 				<TooltipProvider delay={0}>{children}</TooltipProvider>
 			</body>
 		</html>

@@ -24,8 +24,8 @@ export const ProfileView = () => {
 	const [activeTab, setActiveTab] = useState("overview");
 
 	return (
-		<main className="grow pt-24 pb-32">
-			<div className="container mx-auto px-6">
+		<main className="grow pt-24 pb-28 md:pb-16">
+			<div className="container">
 				<Breadcrumbs className="mb-12" items={[{ label: "My Profile" }]} />
 
 				<div className="flex flex-col gap-12 lg:flex-row">

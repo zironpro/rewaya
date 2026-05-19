@@ -48,10 +48,10 @@ export const ProfileSidebar = ({
 				</div>
 
 				{/* Nav Links */}
-				<nav className="flex flex-col gap-1">
+				<nav className="flex gap-2 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
 					{tabs.map((tab) => (
 						<button
-							className={`flex items-center gap-4 rounded-2xl px-6 py-4 text-left transition-all duration-300 ${
+							className={`flex shrink-0 items-center gap-4 rounded-2xl px-4 py-3 text-left transition-all duration-300 lg:shrink lg:px-6 lg:py-4 ${
 								activeTab === tab.id
 									? "bg-primary text-white shadow-heavy"
 									: "text-secondary hover:bg-stone-50"

@@ -31,7 +31,7 @@ export function BundleCard({
 		<div className="group relative">
 			<Link className="absolute inset-0 z-10" href={`/bundle/${id}`} />
 
-			<div className="book-shadow relative mb-4 h-[340px] w-full overflow-hidden rounded-lg bg-stone-50">
+			<div className="book-shadow relative mb-4 aspect-4/5 w-full overflow-hidden rounded-lg bg-stone-50 sm:aspect-3/4">
 				<Image
 					alt={title}
 					className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -125,7 +125,7 @@ function BundleQuickViewDialog({
 	return (
 		<DialogContent className="max-w-3xl">
 			<div className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
-				<div className="relative h-[340px] w-full overflow-hidden bg-stone-50">
+				<div className="relative aspect-4/5 w-full overflow-hidden bg-stone-50 sm:aspect-3/4">
 					<Image
 						alt={title}
 						className="object-cover"

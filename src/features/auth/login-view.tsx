@@ -5,16 +5,16 @@ import { Input } from "@/components/ui/input";
 
 export const LoginView = () => {
 	return (
-		<main className="flex grow items-center justify-center px-6 py-32">
+		<main className="flex grow items-center justify-center px-4 py-16 sm:py-24">
 			<div className="w-full max-w-md rounded-[2.5rem] border border-stone-100 bg-white p-8">
 				<div className="mb-12 text-center">
-					<h1 className="font-black font-serif text-5xl">
+					<h1 className="font-black font-serif text-3xl sm:text-4xl md:text-5xl">
 						Log <span className="font-normal italic">In</span>.
 					</h1>
 				</div>
 
 				<div className="mb-10 space-y-6">
-					<div className="flex gap-4">
+					<div className="flex flex-col gap-4 sm:flex-row">
 						<Button
 							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
 							variant="outline"

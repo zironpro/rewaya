@@ -37,7 +37,7 @@ export const AddressesTab = ({ addresses }: AddressesTabProps) => {
 				</Button>
 			</div>
 
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 				{addresses.map((address) => (
 					<Card
 						className={`rounded-[2rem] border-stone-100 shadow-soft transition-all duration-300 hover:shadow-heavy ${

@@ -31,14 +31,14 @@ export const CartView = () => {
 	};
 
 	return (
-		<main className="grow pt-20 pb-32">
-			<div className="container mx-auto px-6">
+		<main className="grow pt-20 pb-28 md:pb-16">
+			<div className="container">
 				<Breadcrumbs className="mb-8" items={[{ label: "Shopping Bag" }]} />
 				<div className="mb-16">
 					<span className="mb-4 block font-bold text-sm text-stone-400">
 						Your Selection
 					</span>
-					<h1 className="font-black font-serif text-5xl md:text-7xl">
+					<h1 className="font-black font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
 						Shopping <span className="font-normal italic">Bag</span>.
 					</h1>
 				</div>
@@ -54,8 +54,7 @@ export const CartView = () => {
 					</div>
 				) : (
 					<div className="flex flex-col gap-20 lg:flex-row">
-						{/* Cart Items List */}
-						<div className="flex-grow space-y-8">
+						<div className="order-1 grow space-y-8">
 							<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-sm text-stone-400 md:grid">
 								<div className="col-span-2">Product</div>
 								<div className="text-center">Quantity</div>
@@ -72,7 +71,7 @@ export const CartView = () => {
 										key={item.id}
 									>
 										<div className="col-span-2 flex gap-6">
-											<div className="relative h-32 w-24 shrink-0 overflow-hidden bg-stone-50">
+											<div className="relative h-24 w-20 shrink-0 overflow-hidden bg-stone-50 sm:h-32 sm:w-24">
 												<Image
 													alt={item.title}
 													className="h-full w-full object-cover"
@@ -127,8 +126,7 @@ export const CartView = () => {
 							</AnimatePresence>
 						</div>
 
-						{/* Order Summary Sidebar */}
-						<aside className="w-full lg:w-96">
+						<aside className="order-2 w-full lg:order-none lg:w-96">
 							<div className="sticky top-32 bg-stone-50 p-8">
 								<h3 className="mb-8 border-stone-200 border-b pb-4 font-bold text-sm">
 									Order Summary

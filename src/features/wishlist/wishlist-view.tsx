@@ -15,22 +15,22 @@ export const WishlistView = () => {
 	const [wishlist] = useAtom(wishlistAtom);
 
 	return (
-		<main className="grow pt-20">
+		<main className="grow pt-20 pb-28 md:pb-16">
 			{/* Header */}
-			<section className="container mx-auto mb-12 px-6">
+			<section className="container mb-12">
 				<Breadcrumbs className="mb-8" items={[{ label: "Wishlist" }]} />
 				<div className="text-center">
 					<span className="mb-6 block font-bold text-sm text-stone-400">
 						Your Collection
 					</span>
-					<h1 className="mb-8 font-black font-serif text-5xl md:text-7xl">
+					<h1 className="mb-8 font-black font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
 						Saved <span className="font-normal italic">Stories</span>.
 					</h1>
 				</div>
 			</section>
 
 			{/* Wishlist Grid */}
-			<section className="container mx-auto mb-32 px-6">
+			<section className="container mb-32">
 				{wishlist.length > 0 ? (
 					<div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 						{wishlist.map((book) => (
@@ -38,7 +38,7 @@ export const WishlistView = () => {
 						))}
 					</div>
 				) : (
-					<div className="mx-auto max-w-lg rounded-[3rem] border border-stone-100 bg-white p-12 text-center shadow-soft md:p-20">
+					<div className="mx-auto max-w-lg rounded-[3rem] border border-stone-100 bg-white p-8 text-center shadow-soft md:p-20">
 						<div className="mx-auto mb-8 flex size-24 items-center justify-center rounded-full bg-stone-50">
 							<Heart className="text-stone-200" size={40} strokeWidth={1} />
 						</div>

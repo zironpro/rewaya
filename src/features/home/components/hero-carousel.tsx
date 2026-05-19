@@ -29,7 +29,7 @@ export function HeroCarousel() {
 		setCurrent((prev) => (prev === 0 ? BANNERS.length - 1 : prev - 1));
 
 	return (
-		<div className="relative h-[70vh] w-full overflow-hidden bg-stone-50 md:h-[calc(100vh-113px)]">
+		<div className="relative h-[60vh] w-full overflow-hidden bg-stone-50 sm:h-[70vh] md:h-[calc(100vh-113px)]">
 			<AnimatePresence mode="wait">
 				<motion.div
 					animate={{ opacity: 1 }}

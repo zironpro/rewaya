@@ -48,7 +48,7 @@ export function BundleProductInfo({
 					</Button>
 				</div>
 
-				<div className="flex items-center gap-4 text-sm">
+				<div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
 					<div className="flex items-center gap-0.5">
 						{[1, 2, 3, 4, 5].map((i) => (
 							<Star
@@ -70,7 +70,7 @@ export function BundleProductInfo({
 				<div className="flex items-center gap-4">
 					<div className="flex items-center">
 						<CurrencyIcon className="mr-1 size-7 text-primary" />
-						<span className="font-bold text-5xl text-primary">
+						<span className="font-bold text-3xl text-primary sm:text-4xl md:text-5xl">
 							{bundle.price}
 						</span>
 					</div>

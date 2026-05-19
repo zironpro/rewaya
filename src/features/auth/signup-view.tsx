@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 
 export const SignupView = () => {
 	return (
-		<main className="flex grow items-center justify-center px-6 py-32">
+		<main className="flex grow items-center justify-center px-4 py-16 sm:py-24">
 			<div className="w-full max-w-md rounded-[2.5rem] border border-stone-100 bg-white p-8 shadow-sm md:p-12">
 				<div className="mb-12 text-center">
 					<span className="mb-4 block font-bold text-secondary text-sm">
 						Join the Circle
 					</span>
-					<h1 className="mb-4 font-black font-serif text-5xl">
+					<h1 className="mb-4 font-black font-serif text-3xl sm:text-4xl md:text-5xl">
 						Sign <span className="font-normal italic">Up</span>.
 					</h1>
 					<p className="font-bold text-secondary/60 text-sm">

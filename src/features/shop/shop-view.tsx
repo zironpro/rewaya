@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { MobileFilterDrawer } from "@/components/layout/mobile-filter-drawer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -24,8 +24,19 @@ const categories = [
 export const ShopView = () => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-	const FilterContent = () => (
+	const FilterContent = ({ onClose }: { onClose?: () => void }) => (
 		<div className="space-y-12">
+			<div className="lg:hidden">
+				<h3 className="mb-4 border-stone-100 border-b pb-4 font-bold text-sm">
+					Sort by
+				</h3>
+				<select className="h-12 w-full cursor-pointer border border-stone-100 bg-stone-50 px-4 font-bold text-sm outline-none">
+					<option>Newest first</option>
+					<option>Price: Low to high</option>
+					<option>Price: High to low</option>
+				</select>
+			</div>
+
 			<div>
 				<h3 className="mb-8 border-stone-100 border-b pb-4 font-bold text-sm">
 					Categories
@@ -40,7 +51,7 @@ export const ShopView = () => {
 							<span className="text-sm">{cat}</span>
 							<span className="text-[8px] text-stone-300 group-hover:text-black">
 								(
-								{cat === "ALL"
+								{cat === "All"
 									? allBooks.length
 									: allBooks.filter(
 											(b) => b.category.toLowerCase() === cat.toLowerCase()
@@ -98,10 +109,10 @@ export const ShopView = () => {
 				</div>
 			</div>
 
-			<div className="pt-8">
+			<div className="pt-8 lg:hidden">
 				<Button
 					className="h-12 w-full text-sm"
-					onClick={() => setIsMobileFilterOpen(false)}
+					onClick={onClose}
 					variant="outline"
 				>
 					Apply Filters
@@ -112,22 +123,20 @@ export const ShopView = () => {
 
 	return (
 		<>
-			<main className="grow pt-20">
-				{/* Header */}
-				<section className="container mx-auto mb-12 px-6">
-					<Breadcrumbs className="mb-8" items={[{ label: "Shop" }]} />
+			<main className="grow pt-6 pb-28 md:pb-16">
+				<section className="container md:mb-12">
+					<Breadcrumbs className="mb-4 md:mb-8" items={[{ label: "Shop" }]} />
 					<div className="text-center">
-						<span className="mb-6 block font-bold text-sm text-stone-400">
+						<span className="mb-2 block font-medium text-muted-foreground text-xs sm:text-sm">
 							Collection
 						</span>
-						<h1 className="mb-8 font-black font-serif text-5xl md:text-7xl">
+						<h1 className="mb-4 font-black font-serif text-4xl sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
 							The <span className="font-normal italic">Library</span>.
 						</h1>
 					</div>
 				</section>
 
-				{/* Mobile Filter Toggle */}
-				<section className="container mx-auto mb-8 flex gap-4 px-6 lg:hidden">
+				<section className="container mb-8 flex gap-4 lg:hidden">
 					<Button
 						className="h-12 flex-1 border-stone-100 font-bold text-sm"
 						onClick={() => setIsMobileFilterOpen(true)}
@@ -137,15 +146,12 @@ export const ShopView = () => {
 					</Button>
 				</section>
 
-				{/* Main Content Area */}
-				<section className="container mx-auto mb-32 px-6">
+				<section className="container mb-32">
 					<div className="flex flex-col gap-16 lg:flex-row">
-						{/* Sidebar Filters (Desktop Only) */}
 						<aside className="scrollbar-thin sticky top-32 hidden h-fit max-h-[calc(100vh-160px)] w-64 shrink-0 space-y-12 overflow-y-auto pr-4 lg:block">
 							<FilterContent />
 						</aside>
 
-						{/* Product Grid Area */}
 						<div className="grow">
 							<div className="mb-12 hidden items-center justify-between border-stone-100 border-b pb-4 lg:flex">
 								<p className="font-bold text-sm text-stone-400">
@@ -163,7 +169,7 @@ export const ShopView = () => {
 								</div>
 							</div>
 
-							<div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 xl:grid-cols-3">
+							<div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
 								{allBooks.map((book) => (
 									<BookCard key={book.id} {...book} />
 								))}
@@ -173,36 +179,12 @@ export const ShopView = () => {
 				</section>
 			</main>
 
-			{/* Mobile Filter Drawer */}
-			<AnimatePresence>
-				{isMobileFilterOpen && (
-					<>
-						<motion.div
-							animate={{ opacity: 1 }}
-							className="fixed inset-0 z-100 bg-black/40 backdrop-blur-sm lg:hidden"
-							exit={{ opacity: 0 }}
-							initial={{ opacity: 0 }}
-							onClick={() => setIsMobileFilterOpen(false)}
-						/>
-						<motion.div
-							animate={{ y: 0 }}
-							className="fixed right-0 bottom-0 left-0 z-101 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-8 shadow-heavy lg:hidden"
-							exit={{ y: "100%" }}
-							initial={{ y: "100%" }}
-							transition={{ type: "spring", damping: 25, stiffness: 200 }}
-						>
-							<div className="mb-10 flex items-center justify-between border-stone-100 border-b pb-4">
-								<h2 className="font-bold text-sm">Refine selection</h2>
-								<button onClick={() => setIsMobileFilterOpen(false)}>
-									<X className="text-stone-400" size={20} />
-								</button>
-							</div>
-							<FilterContent />
-							<div className="h-20" /> {/* Extra space for mobile nav */}
-						</motion.div>
-					</>
-				)}
-			</AnimatePresence>
+			<MobileFilterDrawer
+				onOpenChange={setIsMobileFilterOpen}
+				open={isMobileFilterOpen}
+			>
+				<FilterContent onClose={() => setIsMobileFilterOpen(false)} />
+			</MobileFilterDrawer>
 		</>
 	);
 };

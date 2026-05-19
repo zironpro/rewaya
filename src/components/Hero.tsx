@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export default function Hero() {
 	return (
 		<div className="relative flex min-h-screen items-center overflow-hidden bg-white pt-16">
-			<div className="container mx-auto px-6 py-10">
+			<div className="container py-10">
 				<div className="mb-10 flex flex-col items-center text-center">
 					<motion.h1
 						animate={{ opacity: 1, y: 0 }}

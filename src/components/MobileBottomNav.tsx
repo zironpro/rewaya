@@ -5,26 +5,54 @@ import { usePathname } from "next/navigation";
 
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { Grid, Home, ShoppingBag, User } from "lucide-react";
+import { Grid, Home, type LucideIcon, ShoppingBag, User } from "lucide-react";
 
 import { cartCountAtom } from "@/lib/store";
+import { cn } from "@/lib/utils";
+
+type NavItem = {
+	label: string;
+	icon: LucideIcon;
+	href: string;
+	badge?: number;
+	activePrefixes?: string[];
+};
+
+function isNavItemActive(pathname: string, item: NavItem): boolean {
+	const prefixes = item.activePrefixes ?? [item.href];
+
+	return prefixes.some((prefix) => {
+		if (prefix === "/") return pathname === "/";
+		return pathname === prefix || pathname.startsWith(`${prefix}/`);
+	});
+}
 
 export function MobileBottomNav() {
 	const pathname = usePathname();
 	const [cartCount] = useAtom(cartCountAtom);
 
-	const navItems = [
+	const navItems: NavItem[] = [
 		{ label: "Home", icon: Home, href: "/" },
-		{ label: "Shop", icon: Grid, href: "/shop" },
+		{
+			label: "Shop",
+			icon: Grid,
+			href: "/shop",
+			activePrefixes: ["/shop", "/product", "/bundle", "/bundles"],
+		},
 		{ label: "Cart", icon: ShoppingBag, href: "/cart", badge: cartCount },
-		{ label: "Profile", icon: User, href: "/login" },
+		{
+			label: "Profile",
+			icon: User,
+			href: "/login",
+			activePrefixes: ["/login", "/signup", "/profile"],
+		},
 	];
 
 	return (
-		<div className="fixed right-0 bottom-0 left-0 z-50 border-stone-100 border-t bg-white/80 pb-safe backdrop-blur-lg md:hidden">
+		<div className="fixed right-0 bottom-0 left-0 z-50 border-stone-100 border-t bg-card/95 backdrop-blur-lg md:hidden">
 			<div className="flex h-16 items-center justify-around px-2">
 				{navItems.map((item) => {
-					const isActive = pathname === item.href;
+					const isActive = isNavItemActive(pathname, item);
 					const Icon = item.icon;
 
 					return (
@@ -35,7 +63,7 @@ export function MobileBottomNav() {
 						>
 							{isActive && (
 								<motion.div
-									className="absolute top-0 h-[2px] w-8 bg-primary"
+									className="absolute -top-1 size-1 rounded-full bg-primary"
 									layoutId="activeTab"
 									transition={{ type: "spring", stiffness: 500, damping: 30 }}
 								/>
@@ -44,19 +72,22 @@ export function MobileBottomNav() {
 							<div className="flex flex-col items-center">
 								<div className="relative">
 									<Icon
-										className={isActive ? "text-primary" : "text-stone-400"}
-										size={24}
+										className={cn(isActive ? "text-primary" : "text-stone-400")}
+										size={20}
 										strokeWidth={isActive ? 2 : 1.2}
 									/>
-									{item.label === "Cart" && item.badge && item.badge > 0 && (
+									{/* {item.label === "Cart" && item.badge && item.badge > 0 && (
 										<span className="absolute -top-2 -right-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[9px] text-white ring-2 ring-white">
 											{item.badge}
 										</span>
-									)}
+									)} */}
 								</div>
 
 								<span
-									className={`mt-2 font-bold text-sm ${isActive ? "text-primary" : "text-stone-300"}`}
+									className={cn(
+										"mt-0.5 font-medium text-xs",
+										isActive ? "text-primary" : "text-muted-foreground"
+									)}
 								>
 									{item.label}
 								</span>

@@ -4,15 +4,15 @@ import { Input } from "@/components/ui/input";
 export const ContactView = () => {
 	return (
 		<main className="grow pt-32">
-			<div className="container mx-auto px-6">
-				<div className="mb-32 grid grid-cols-1 gap-32 lg:grid-cols-2">
+			<div className="container">
+				<div className="mb-32 grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-32">
 					{/* Contact Info */}
 					<div className="flex flex-col justify-between py-12">
 						<div>
 							<span className="mb-12 block font-bold text-sm text-stone-400">
 								Get in touch
 							</span>
-							<h1 className="mb-16 font-black font-serif text-6xl leading-[0.85] md:text-8xl">
+							<h1 className="mb-16 font-black font-serif text-4xl leading-[0.85] sm:text-5xl md:text-6xl lg:text-8xl">
 								Let's <br />
 								<span className="font-normal text-stone-300 italic">
 									connect.
@@ -72,7 +72,7 @@ export const ContactView = () => {
 					</div>
 
 					{/* Contact Form */}
-					<div className="bg-stone-50 p-12 md:p-20">
+					<div className="bg-stone-50 p-6 sm:p-10 md:p-16 lg:p-20">
 						<form className="space-y-12">
 							<div className="space-y-2">
 								<label className="font-bold text-sm text-stone-400">

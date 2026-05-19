@@ -43,7 +43,7 @@ export const PaymentTab = ({ paymentMethods }: PaymentTabProps) => {
 				</Button>
 			</div>
 
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
 				{paymentMethods.map((method) => (
 					<Card
 						className={`group relative overflow-hidden rounded-[2rem] border-stone-100 shadow-soft transition-all duration-300 hover:shadow-heavy ${

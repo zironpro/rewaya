@@ -14,8 +14,8 @@ export function Footer() {
 
 	return (
 		<footer className="mt-12 border-t bg-foreground py-20 text-muted/80">
-			<div className="container mx-auto px-6">
-				<div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-4">
+			<div className="container">
+				<div className="mb-16 grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
 					<div className="col-span-1 md:col-span-1">
 						<div className="mb-8">
 							<Image

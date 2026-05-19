@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { BundleBuyBox } from "@/features/bundles/components/bundle-detail/bundle-buy-box";
 import { BundleImageGallery } from "@/features/bundles/components/bundle-detail/bundle-image-gallery";
 import { BundleIncludedVolumes } from "@/features/bundles/components/bundle-detail/bundle-included-volumes";
+import { BundleMobileBuyBar } from "@/features/bundles/components/bundle-detail/bundle-mobile-buy-bar";
 import { BundleNewsletterCta } from "@/features/bundles/components/bundle-detail/bundle-newsletter-cta";
 import { BundleProductInfo } from "@/features/bundles/components/bundle-detail/bundle-product-info";
 import { BundleRelatedBooks } from "@/features/bundles/components/bundle-detail/bundle-related-books";
@@ -43,30 +44,41 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 	);
 
 	return (
-		<main className="container mx-auto pt-6">
-			<Breadcrumbs
-				className="mb-8"
-				items={[
-					{ label: "Shop", href: "/shop" },
-					{ label: "Bundles", href: "/bundles" },
-					{ label: bundle.title },
-				]}
-			/>
+		<>
+			<main className="container pt-6 pb-28 md:pb-16">
+				<Breadcrumbs
+					className="mb-8"
+					items={[
+						{ label: "Shop", href: "/shop" },
+						{ label: "Bundles", href: "/bundles" },
+						{ label: bundle.title },
+					]}
+				/>
 
-			<div className="mb-20 grid grid-cols-1 items-start gap-10 lg:grid-cols-12">
-				<div className="lg:col-span-5">
-					<BundleImageGallery bundle={bundle} />
+				<div className="mb-20 grid grid-cols-1 items-start gap-10 md:grid-cols-2 lg:grid-cols-12">
+					<div className="lg:col-span-5">
+						<BundleImageGallery bundle={bundle} />
+					</div>
+
+					<BundleProductInfo bundle={bundle} className="lg:col-span-4" />
+
+					<BundleBuyBox
+						bundle={bundle}
+						className="hidden md:col-span-2 md:block lg:col-span-3"
+					/>
 				</div>
 
-				<BundleProductInfo bundle={bundle} className="lg:col-span-4" />
-				<BundleBuyBox bundle={bundle} className="lg:col-span-3" />
-			</div>
-			<BundleIncludedVolumes books={bundle.books} />
-			<Separator />
-			<BundleRelatedBundles bundles={relatedBundles} />
-			<BundleRelatedBooks books={randomBooks} />
-			<BundleNewsletterCta />
-			<PolicyCards />
-		</main>
+				<BundleIncludedVolumes books={bundle.books} />
+
+				<Separator />
+
+				<BundleRelatedBundles bundles={relatedBundles} />
+				<BundleRelatedBooks books={randomBooks} />
+				<BundleNewsletterCta />
+				<PolicyCards />
+			</main>
+
+			<BundleMobileBuyBar bundle={bundle} />
+		</>
 	);
 };

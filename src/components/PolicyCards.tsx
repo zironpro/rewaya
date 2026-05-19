@@ -31,7 +31,7 @@ const policies = [
 
 export function PolicyCards() {
 	return (
-		<section className="container mx-auto rounded-xl border border-stone-100 bg-stone-100 px-6 py-16">
+		<section className="container rounded-xl border border-stone-100 bg-stone-100 py-16">
 			<div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
 				{policies.map((policy) => {
 					const Icon = policy.icon;

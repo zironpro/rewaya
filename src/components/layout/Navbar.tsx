@@ -222,7 +222,7 @@ export function Navbar() {
 									initial={{ opacity: 0, y: -20 }}
 									onMouseLeave={() => setIsMegaMenuOpen(false)}
 								>
-									<div className="container mx-auto px-6 py-12">
+									<div className="container py-12">
 										<div className="grid grid-cols-5 gap-12">
 											{megaMenuData.categories.map((group) => (
 												<div className="space-y-6" key={group.name}>

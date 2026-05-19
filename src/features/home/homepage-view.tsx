@@ -80,7 +80,7 @@ export const HomepageView = () => {
 			/>
 
 			{/* INTERSTITIAL BANNER 2 */}
-			<section className="container mx-auto mb-12 pb-16">
+			<section className="container mb-12 pb-16">
 				<div className="group relative overflow-hidden rounded-2xl shadow-2xl">
 					<Image
 						alt="Children's Books"
@@ -89,7 +89,7 @@ export const HomepageView = () => {
 						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 					/>
-					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary p-12 md:p-20">
+					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary p-6 sm:p-10 md:p-16 lg:p-20">
 						<Badge variant="secondary">Special Release</Badge>
 						<h3 className="mt-2 mb-9 max-w-2xl font-serif text-4xl text-white leading-tight md:text-6xl">
 							Nurturing the

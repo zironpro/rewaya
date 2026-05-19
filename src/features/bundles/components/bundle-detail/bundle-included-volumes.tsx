@@ -40,11 +40,11 @@ export function BundleIncludedVolumes({ books }: BundleIncludedVolumesProps) {
 				<CarouselContent className="-ml-6">
 					{books.map((book) => (
 						<CarouselItem
-							className="pl-6 md:basis-1/2 lg:basis-2/3 xl:basis-1/2"
+							className="basis-full pl-6 sm:basis-1/2 lg:basis-1/2 xl:basis-1/3"
 							key={book.id}
 						>
 							<div className="group relative flex h-full flex-col items-start gap-8 rounded-lg border bg-secondary-foreground p-6 transition-all hover:border-primary/20 hover:bg-white md:flex-row">
-								<div className="relative aspect-square shrink-0 transform overflow-hidden rounded-md bg-white shadow-sm transition-transform group-hover:scale-105 md:w-60">
+								<div className="relative aspect-square w-full shrink-0 transform overflow-hidden rounded-md bg-white shadow-sm transition-transform group-hover:scale-105 sm:w-48 md:w-56">
 									<Image
 										alt={book.title}
 										className="object-cover"
@@ -81,8 +81,15 @@ export function BundleIncludedVolumes({ books }: BundleIncludedVolumesProps) {
 					))}
 				</CarouselContent>
 
-				<CarouselPrevious />
-				<CarouselNext />
+				{/* Mobile: static controls below slides */}
+				<div className="mt-4 flex items-center justify-center gap-3 md:hidden">
+					<CarouselPrevious className="static top-auto left-auto size-10 translate-x-0 translate-y-0" />
+					<CarouselNext className="static top-auto right-auto size-10 translate-x-0 translate-y-0" />
+				</div>
+
+				{/* Desktop: absolute side controls */}
+				<CarouselPrevious className="hidden md:inline-flex" />
+				<CarouselNext className="hidden md:inline-flex" />
 			</Carousel>
 		</section>
 	);
