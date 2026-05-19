@@ -7,9 +7,9 @@
 @theme inline {
 	--color-primary: var(--primary); /* Burgundy from logo */
 	--color-primary-dark: #70143e;
-	--color-secondary: #201e50; /* Dark Blue from logo */
+	--color-secondary: var(--secondary); /* Dark Blue from logo */
 	--color-paper: #ffffff;
-	--color-ink: #201e50;
+	--color-ink: var(--secondary);
 
 	--font-serif: var(--font-display);
 	--font-display: var(--font-display);
@@ -54,20 +54,27 @@
 }
 
 :root {
-	--primary: oklch(0.4395 0.1561 358.62);
 	--background: oklch(0.99 0.0027 360);
 	--foreground: oklch(0.145 0 0);
+
 	--card: oklch(1 0 0);
 	--card-foreground: oklch(0.145 0 0);
+
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
+
+	--primary: oklch(0.4395 0.1561 358.62);
 	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
+
+	--secondary: oklch(0.2699 0.0889 280.41);
+	--secondary-foreground: oklch(0.9647 0.0159 280.41);
+
 	--muted: oklch(0.97 0 0);
 	--muted-foreground: oklch(0.556 0 0);
+
 	--accent: oklch(0.7392 0.0579 66.73);
 	--accent-foreground: oklch(0.205 0 0);
+
 	--destructive: oklch(0.577 0.245 27.325);
 	--border: oklch(0.922 0 0);
 	--input: oklch(98.5% 0.001 106.423);

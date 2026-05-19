@@ -131,7 +131,6 @@ export function Navbar() {
 							</Button>
 
 							<Button
-								className="relative h-10 gap-2 px-3 hover:text-primary"
 								nativeButton={false}
 								render={<Link href="/wishlist" />}
 								variant="ghost"
@@ -146,7 +145,6 @@ export function Navbar() {
 							</Button>
 
 							<Button
-								className="relative h-10 gap-2 px-3 hover:text-primary"
 								nativeButton={false}
 								render={<Link href="/cart" />}
 								variant="ghost"
@@ -160,12 +158,7 @@ export function Navbar() {
 								)}
 							</Button>
 
-							<Button
-								className="h-10 gap-2 px-3 hover:text-primary"
-								nativeButton={false}
-								render={<Link href="/login" />}
-								variant="ghost"
-							>
+							<Button nativeButton={false} render={<Link href="/login" />}>
 								<User size={20} strokeWidth={1.5} />
 								<span className="hidden text-sm xl:block">Sign In</span>
 							</Button>
