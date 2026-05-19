@@ -40,7 +40,7 @@ export function BundleIncludedVolumes({ books }: BundleIncludedVolumesProps) {
 				<CarouselContent className="-ml-6">
 					{books.map((book) => (
 						<CarouselItem
-							className="basis-full pl-6 sm:basis-1/2 lg:basis-1/2 xl:basis-1/3"
+							className="basis-full pl-6 sm:basis-1/2 lg:basis-1/2"
 							key={book.id}
 						>
 							<div className="group relative flex h-full flex-col items-start gap-8 rounded-lg border bg-secondary-foreground p-6 transition-all hover:border-primary/20 hover:bg-white md:flex-row">
