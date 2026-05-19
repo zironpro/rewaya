@@ -31,30 +31,28 @@ const policies = [
 
 export function PolicyCards() {
 	return (
-		<section className="border-stone-100 border-y bg-stone-50 py-16">
-			<div className="container mx-auto px-6">
-				<div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
-					{policies.map((policy) => {
-						const Icon = policy.icon;
-						const content = (
-							<div className="group flex flex-col items-center text-center">
-								<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm transition-all duration-500 group-hover:bg-primary group-hover:text-white">
-									<Icon size={28} strokeWidth={1.2} />
-								</div>
-								<h3 className="mb-2 font-bold text-base">{policy.title}</h3>
-								<p className="text-sm text-stone-400 leading-relaxed">
-									{policy.desc}
-								</p>
+		<section className="container mx-auto rounded-xl border border-stone-100 bg-stone-100 px-6 py-16">
+			<div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+				{policies.map((policy) => {
+					const Icon = policy.icon;
+					const content = (
+						<div className="group flex flex-col items-center text-center">
+							<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm transition-all duration-500 group-hover:bg-primary group-hover:text-white">
+								<Icon size={28} strokeWidth={1.2} />
 							</div>
-						);
+							<h3 className="mb-2 font-bold text-base">{policy.title}</h3>
+							<p className="text-sm text-stone-400 leading-relaxed">
+								{policy.desc}
+							</p>
+						</div>
+					);
 
-						return (
-							<Link className="block" href={policy.href} key={policy.title}>
-								{content}
-							</Link>
-						);
-					})}
-				</div>
+					return (
+						<Link className="block" href={policy.href} key={policy.title}>
+							{content}
+						</Link>
+					);
+				})}
 			</div>
 		</section>
 	);

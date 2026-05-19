@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { PolicyCards } from "@/components/PolicyCards";
 import { Separator } from "@/components/ui/separator";
 
 import { BundleBuyBox } from "@/features/bundles/components/bundle-detail/bundle-buy-box";
@@ -16,12 +17,14 @@ import { allBooks } from "@/features/products/data/products";
 import { bundles } from "@/lib/bundles-data";
 import type { BookProps } from "@/lib/store";
 
-function pickRandomBooks(books: BookProps[], count: number, seed: string): BookProps[] {
+function pickRandomBooks(
+	books: BookProps[],
+	count: number,
+	seed: string
+): BookProps[] {
 	const shuffled = [...books].sort((a, b) => {
 		const hash = (id: number) =>
-			(seed + id)
-				.split("")
-				.reduce((acc, char) => acc + char.charCodeAt(0), 0);
+			(seed + id).split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
 		return (hash(a.id) % 10) - (hash(b.id) % 10);
 	});
 	return shuffled.slice(0, count);
@@ -40,31 +43,30 @@ export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
 	);
 
 	return (
-		<main className="min-h-screen pt-6 font-sans text-secondary">
-			<div className="container mx-auto px-4 md:px-8">
-				<Breadcrumbs
-					className="mb-8"
-					items={[
-						{ label: "Shop", href: "/shop" },
-						{ label: "Bundles", href: "/bundles" },
-						{ label: bundle.title },
-					]}
-				/>
+		<main className="container mx-auto pt-6">
+			<Breadcrumbs
+				className="mb-8"
+				items={[
+					{ label: "Shop", href: "/shop" },
+					{ label: "Bundles", href: "/bundles" },
+					{ label: bundle.title },
+				]}
+			/>
 
-				<div className="mb-20 grid grid-cols-1 items-start gap-10 lg:grid-cols-12">
-					<div className="lg:col-span-5">
-						<BundleImageGallery bundle={bundle} />
-					</div>
-
-					<BundleProductInfo bundle={bundle} className="lg:col-span-4" />
-					<BundleBuyBox bundle={bundle} className="lg:col-span-3" />
+			<div className="mb-20 grid grid-cols-1 items-start gap-10 lg:grid-cols-12">
+				<div className="lg:col-span-5">
+					<BundleImageGallery bundle={bundle} />
 				</div>
-				<BundleIncludedVolumes books={bundle.books} />
-				<Separator />
-				<BundleRelatedBundles bundles={relatedBundles} />
-				<BundleRelatedBooks books={randomBooks} />
-				<BundleNewsletterCta />
+
+				<BundleProductInfo bundle={bundle} className="lg:col-span-4" />
+				<BundleBuyBox bundle={bundle} className="lg:col-span-3" />
 			</div>
+			<BundleIncludedVolumes books={bundle.books} />
+			<Separator />
+			<BundleRelatedBundles bundles={relatedBundles} />
+			<BundleRelatedBooks books={randomBooks} />
+			<BundleNewsletterCta />
+			<PolicyCards />
 		</main>
 	);
 };

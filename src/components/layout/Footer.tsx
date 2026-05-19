@@ -13,7 +13,7 @@ export function Footer() {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer className="mt-20 border-t bg-foreground py-20 text-muted/80">
+		<footer className="mt-12 border-t bg-foreground py-20 text-muted/80">
 			<div className="container mx-auto px-6">
 				<div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-4">
 					<div className="col-span-1 md:col-span-1">

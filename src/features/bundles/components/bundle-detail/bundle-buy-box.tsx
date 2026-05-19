@@ -15,13 +15,14 @@ interface BundleBuyBoxProps {
 export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 	return (
 		<div className={cn(className)}>
-			<div className="sticky top-28 rounded-[2rem] border-2 border-stone-100 bg-white p-6">
-				<div className="border-stone-50 border-b pb-3">
+			<div className="sticky top-28 rounded-xl border bg-card p-6">
+				<div>
 					<span className="text-muted-foreground text-xs">Bundle contents</span>
 					<h3 className="font-bold text-secondary text-sm">
 						{bundle.count} Essential volumes
 					</h3>
 				</div>
+				<Separator className="my-3" />
 				<ScrollArea className="mb-4 max-h-[280px]">
 					<div className="space-y-3 pr-2">
 						{bundle.books.map((book, i) => (
@@ -29,7 +30,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 								className="group/item flex cursor-pointer items-start"
 								key={book.id}
 							>
-								<span className="mt-0.5 w-8 shrink-0 font-bold text-muted-foreground text-xs">
+								<span className="mt-0.5 w-6 shrink-0 text-muted-foreground/50 text-xs">
 									{(i + 1).toString().padStart(2, "0")}
 								</span>
 								<p className="font-bold text-sm text-stone-500 leading-tight transition-colors group-hover/item:text-primary">
