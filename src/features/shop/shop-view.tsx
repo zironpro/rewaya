@@ -130,8 +130,8 @@ export const ShopView = () => {
 						<span className="mb-2 block font-medium text-muted-foreground text-xs sm:text-sm">
 							Collection
 						</span>
-						<h1 className="mb-4 font-black font-serif text-4xl sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
-							The <span className="font-normal italic">Library</span>.
+						<h1 className="mb-4 font-bold font-display text-4xl text-secondary sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl">
+							The <span className="text-primary italic">Library.</span>
 						</h1>
 					</div>
 				</section>
