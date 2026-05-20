@@ -26,11 +26,7 @@ export const NewsletterForm = () => {
 					type="email"
 				/>
 			</div>
-			<Button
-				className="rounded-full shadow-soft"
-				type="submit"
-				variant="default"
-			>
+			<Button type="submit" variant="default">
 				Subscribe
 				<ArrowRight aria-hidden className="size-3.5" />
 			</Button>

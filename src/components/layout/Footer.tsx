@@ -4,14 +4,9 @@ import { Leaf, RotateCcw, ShieldCheck } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
-import {
-	FacebookIcon,
-	InstagramIcon,
-	PinterestIcon,
-	TikTokIcon,
-} from "@/assets/icons/brands";
 import { Logo } from "@/assets/logo";
 
+import { SOCIAL_LINKS } from "@/constants/site-config";
 import { cn } from "@/lib/utils";
 
 import { NewsletterForm } from "./components/newsletter-form";
@@ -39,29 +34,6 @@ function FooterNavLinks({ links }: { links: FooterNavLink[] }) {
 		</div>
 	);
 }
-
-const socialLinks = [
-	{
-		href: "https://www.instagram.com",
-		label: "Follow us on Instagram",
-		Icon: InstagramIcon,
-	},
-	{
-		href: "https://www.facebook.com",
-		label: "Follow us on Facebook",
-		Icon: FacebookIcon,
-	},
-	{
-		href: "https://www.pinterest.com",
-		label: "Follow us on Pinterest",
-		Icon: PinterestIcon,
-	},
-	{
-		href: "https://www.tiktok.com",
-		label: "Follow us on TikTok",
-		Icon: TikTokIcon,
-	},
-] as const;
 
 export function Footer() {
 	const year = new Date().getFullYear();
@@ -110,12 +82,12 @@ export function Footer() {
 							for every stage of life chosen with care for readers everywhere.
 						</p>
 						<div className="mt-6 flex flex-wrap gap-3">
-							{socialLinks.map(({ href, label, Icon }) => (
+							{SOCIAL_LINKS.map(({ href, label, Icon }) => (
 								<Link
 									aria-label={label}
 									className={cn(
-										"inline-flex size-9 items-center justify-center rounded-sm border border-border/30 text-muted-foreground transition-colors duration-200",
-										"hover:border-accent/50 hover:text-accent"
+										"inline-flex size-9 items-center justify-center rounded-sm border border-muted-foreground text-muted-foreground transition-colors duration-200",
+										"hover:bg-accent hover:text-accent-foreground"
 									)}
 									href={href}
 									key={label}
