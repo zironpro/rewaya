@@ -2,6 +2,10 @@ import { atom } from "jotai";
 
 export interface BookProps {
 	id: number;
+	/** Wix Stores product ID for headless cart */
+	wixProductId?: string;
+	/** URL slug from Wix catalog */
+	slug?: string;
 	title: string;
 	author: string;
 	price: number;

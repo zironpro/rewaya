@@ -30,7 +30,8 @@ import { Button } from "@/components/ui/button";
 import { LanguageIcon } from "@/assets/icons/language";
 import { Logo } from "@/assets/logo";
 
-import { cartCountAtom, wishlistCountAtom } from "@/lib/store";
+import { useCartCount } from "@/hooks/use-cart-count";
+import { wishlistCountAtom } from "@/lib/store";
 
 import { SearchInput } from "./components/search-input";
 
@@ -106,7 +107,7 @@ const categories = [
 export function Navbar() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-	const [cartCount] = useAtom(cartCountAtom);
+	const wixCartCount = useCartCount();
 	const [wishlistCount] = useAtom(wishlistCountAtom);
 
 	return (
@@ -151,9 +152,9 @@ export function Navbar() {
 							>
 								<ShoppingBag size={24} strokeWidth={1.5} />
 								<span className="hidden text-sm xl:block">Cart</span>
-								{cartCount > 0 && (
+								{wixCartCount > 0 && (
 									<span className="absolute -top-1 -right-1 flex h-[20px] min-w-[20px] items-center justify-center rounded-full bg-primary px-1 font-bold text-white text-xs ring-2 ring-white">
-										{cartCount}
+										{wixCartCount}
 									</span>
 								)}
 							</Button>

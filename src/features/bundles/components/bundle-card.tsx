@@ -29,7 +29,7 @@ export function BundleCard({
 }: Bundle) {
 	return (
 		<div className="group relative">
-			<Link className="absolute inset-0 z-10" href={`/bundle/${id}`} />
+			<Link className="absolute inset-0 z-10" href={`/bundles/${id}`} />
 
 			<div className="book-shadow relative mb-4 aspect-4/5 w-full overflow-hidden rounded-lg bg-stone-50 sm:aspect-3/4">
 				<Image

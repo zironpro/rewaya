@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
+import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import type { Bundle } from "@/lib/bundles-data";
 import { cn } from "@/lib/utils";
 
@@ -41,10 +42,23 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 					</div>
 				</ScrollArea>
 
-				<Button className="w-full gap-3" size="lg" variant="secondary">
-					<ShoppingBagIcon />
-					Add to Cart
-				</Button>
+				{bundle.wixProductId ? (
+					<AddToCartButton
+						className="w-full gap-3"
+						productId={bundle.wixProductId}
+						productName={bundle.title}
+						size="lg"
+						variant="secondary"
+					>
+						<ShoppingBagIcon />
+						Add to Cart
+					</AddToCartButton>
+				) : (
+					<Button className="w-full gap-3" size="lg" variant="secondary">
+						<ShoppingBagIcon />
+						Add to Cart
+					</Button>
+				)}
 
 				<Separator className="my-4" />
 

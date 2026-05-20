@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
+import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import type { Bundle } from "@/lib/bundles-data";
 
 interface BundleMobileBuyBarProps {
@@ -20,10 +21,23 @@ export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 						{bundle.price}
 					</span>
 				</div>
-				<Button className="shrink-0 gap-2" size="lg" variant="secondary">
-					<ShoppingBagIcon size={18} />
-					Add to Cart
-				</Button>
+				{bundle.wixProductId ? (
+					<AddToCartButton
+						className="shrink-0 gap-2"
+						productId={bundle.wixProductId}
+						productName={bundle.title}
+						size="lg"
+						variant="secondary"
+					>
+						<ShoppingBagIcon size={18} />
+						Add to Cart
+					</AddToCartButton>
+				) : (
+					<Button className="shrink-0 gap-2" size="lg" variant="secondary">
+						<ShoppingBagIcon size={18} />
+						Add to Cart
+					</Button>
+				)}
 			</div>
 		</div>
 	);

@@ -8,7 +8,10 @@ const nextConfig: NextConfig = {
 	},
 
 	images: {
-		remotePatterns: [{ hostname: "images.unsplash.com" }],
+		remotePatterns: [
+			{ hostname: "images.unsplash.com" },
+			{ hostname: "static.wixstatic.com" },
+		],
 	},
 };
 

@@ -11,9 +11,13 @@ import { Button } from "@/components/ui/button";
 import { BundleCard } from "@/features/bundles/components/bundle-card";
 import { BundlesFilter } from "@/features/bundles/components/bundles-filter";
 import { BundlesSortSelect } from "@/features/bundles/components/bundles-sort-select";
-import { bundles } from "@/lib/bundles-data";
+import type { Bundle } from "@/lib/bundles-data";
 
-export const BundlesView = () => {
+interface BundlesViewProps {
+	bundles: Bundle[];
+}
+
+export const BundlesView = ({ bundles }: BundlesViewProps) => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
 	return (

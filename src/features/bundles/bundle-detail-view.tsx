@@ -14,8 +14,7 @@ import { BundleNewsletterCta } from "@/features/bundles/components/bundle-detail
 import { BundleProductInfo } from "@/features/bundles/components/bundle-detail/bundle-product-info";
 import { BundleRelatedBooks } from "@/features/bundles/components/bundle-detail/bundle-related-books";
 import { BundleRelatedBundles } from "@/features/bundles/components/bundle-detail/bundle-related-bundles";
-import { allBooks } from "@/features/products/data/products";
-import { bundles } from "@/lib/bundles-data";
+import type { Bundle } from "@/lib/bundles-data";
 import type { BookProps } from "@/lib/store";
 
 function pickRandomBooks(
@@ -33,15 +32,34 @@ function pickRandomBooks(
 
 interface BundleDetailViewProps {
 	id: string;
+	bundle: Bundle | null;
+	allBundles: Bundle[];
+	relatedBooks: BookProps[];
 }
 
-export const BundleDetailView = ({ id }: BundleDetailViewProps) => {
-	const bundle = bundles.find((b) => b.id === id) ?? bundles[0];
-	const relatedBundles = bundles.filter((b) => b.id !== bundle.id);
+export const BundleDetailView = ({
+	id,
+	bundle: initialBundle,
+	allBundles,
+	relatedBooks,
+}: BundleDetailViewProps) => {
+	const bundle = initialBundle ?? allBundles[0];
+	const relatedBundles = allBundles.filter((b) => b.id !== bundle?.id);
 	const randomBooks = useMemo(
-		() => pickRandomBooks(allBooks, 4, bundle.id),
-		[bundle.id]
+		() =>
+			relatedBooks.length > 0
+				? relatedBooks.slice(0, 4)
+				: pickRandomBooks([], 4, bundle?.id ?? id),
+		[relatedBooks, bundle?.id, id]
 	);
+
+	if (!bundle) {
+		return (
+			<main className="container py-32 text-center">
+				<p className="text-stone-500">Bundle not found.</p>
+			</main>
+		);
+	}
 
 	return (
 		<>

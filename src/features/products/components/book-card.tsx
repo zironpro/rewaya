@@ -18,10 +18,13 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import { BookProps, CartItem, cartAtom, wishlistAtom } from "@/lib/store";
 
 export function BookCard({
 	id,
+	wixProductId,
+	slug,
 	title,
 	author,
 	price,
@@ -29,6 +32,7 @@ export function BookCard({
 	category,
 	badge,
 }: BookProps) {
+	const productHref = `/product/${slug ?? id}`;
 	const setCart = useSetAtom(cartAtom);
 	const [wishlist, setWishlist] = useAtom(wishlistAtom);
 
@@ -64,7 +68,7 @@ export function BookCard({
 
 	return (
 		<div className="group relative">
-			<Link className="absolute inset-0" href={`/product/${id}`} />
+			<Link className="absolute inset-0" href={productHref} />
 			{/* Image Container */}
 			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
 				<Image
@@ -134,9 +138,20 @@ export function BookCard({
 											collection.
 										</p>
 										<div className="flex gap-4">
-											<Button onClick={() => addToBag()} variant="premium">
-												Add to Bag
-											</Button>
+											{wixProductId ? (
+												<AddToCartButton
+													className="h-14 flex-1"
+													productId={wixProductId}
+													productName={title}
+													variant="default"
+												>
+													Add to Bag
+												</AddToCartButton>
+											) : (
+												<Button onClick={() => addToBag()} variant="premium">
+													Add to Bag
+												</Button>
+											)}
 											<Button
 												className={`h-14 w-14 ${
 													isWishlisted ? "border-primary text-primary" : ""
@@ -161,13 +176,24 @@ export function BookCard({
 
 				{/* Quick Add (Bottom) */}
 				<div className="absolute right-0 bottom-0 left-0 z-10 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
-					<Button
-						className="w-full p-6 text-white hover:text-white"
-						onClick={addToBag}
-						variant="ghost"
-					>
-						<Plus className="mr-2" size={14} /> Add to Bag
-					</Button>
+					{wixProductId ? (
+						<AddToCartButton
+							className="h-auto w-full rounded-none p-6 text-white hover:text-white"
+							productId={wixProductId}
+							productName={title}
+							variant="ghost"
+						>
+							<Plus className="mr-2" size={14} /> Add to Bag
+						</AddToCartButton>
+					) : (
+						<Button
+							className="w-full p-6 text-white hover:text-white"
+							onClick={addToBag}
+							variant="ghost"
+						>
+							<Plus className="mr-2" size={14} /> Add to Bag
+						</Button>
+					)}
 				</div>
 
 				{/* Status Badges */}

@@ -16,11 +16,12 @@ import {
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
+import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import { ProductMobileBuyBar } from "@/features/products/components/product-mobile-buy-bar";
+import type { BookProps } from "@/lib/store";
 
-// Mock data fetch for a single product
-const getProduct = (id: string) => ({
-	id: Number.parseInt(id, 10),
+const getMockProduct = (id: string) => ({
+	id: Number.parseInt(id, 10) || 1,
 	title:
 		id === "1"
 			? "The Sealed Nectar"
@@ -33,7 +34,7 @@ const getProduct = (id: string) => ({
 	image:
 		"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1200&auto=format&fit=crop",
 	description:
-		"A comprehensive and authoritative biography of the Prophet Muhammad (PBUH). This book is considered one of the most reliable sources on the life of the Prophet, winner of the worldwide competition on the biography of the Prophet Muhammad held by the Muslim World League.",
+		"A comprehensive and authoritative biography of the Prophet Muhammad (PBUH).",
 	details: [
 		{ label: "Language", value: "English" },
 		{ label: "Format", value: "Hardcover" },
@@ -42,12 +43,23 @@ const getProduct = (id: string) => ({
 	],
 });
 
+export type ProductDetailData = BookProps & {
+	description: string;
+	details: Array<{ label: string; value: string }>;
+};
+
 interface ProductDetailViewProps {
 	id: string;
+	product: ProductDetailData | null;
 }
 
-export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
-	const product = getProduct(id);
+export const ProductDetailView = ({ id, product: wixProduct }: ProductDetailViewProps) => {
+	const mock = getMockProduct(id);
+	const product = wixProduct ?? {
+		...mock,
+		wixProductId: undefined,
+		slug: undefined,
+	};
 	const [quantity, setQuantity] = useState(1);
 
 	return (
@@ -60,7 +72,6 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 					/>
 
 					<div className="grid grid-cols-1 gap-20 md:grid-cols-2">
-						{/* Image Gallery Side */}
 						<div className="space-y-6">
 							<div className="group relative aspect-3/4 overflow-hidden bg-stone-50">
 								<Image
@@ -70,29 +81,15 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 									sizes="(max-width: 768px) 100vw, 50vw"
 									src={product.image}
 								/>
-								<button className="absolute top-6 right-6 z-10 rounded-full bg-white/80 p-3 backdrop-blur-md transition-colors hover:bg-primary hover:text-white">
+								<button
+									className="absolute top-6 right-6 z-10 rounded-full bg-white/80 p-3 backdrop-blur-md transition-colors hover:bg-primary hover:text-white"
+									type="button"
+								>
 									<Heart size={20} />
 								</button>
 							</div>
-							<div className="no-scrollbar flex gap-2 overflow-x-auto sm:grid sm:grid-cols-5 sm:gap-4 sm:overflow-visible">
-								{[1, 2, 3, 4].map((i) => (
-									<div
-										className="relative aspect-square w-16 shrink-0 cursor-pointer overflow-hidden bg-stone-50 opacity-50 transition-opacity hover:opacity-100 sm:w-auto"
-										key={i}
-									>
-										<Image
-											alt="thumbnail"
-											className="object-cover grayscale"
-											fill
-											sizes="100px"
-											src={product.image}
-										/>
-									</div>
-								))}
-							</div>
 						</div>
 
-						{/* Content Side */}
 						<div className="flex flex-col">
 							<span className="mb-4 font-bold text-primary text-sm">
 								{product.category}
@@ -112,13 +109,13 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 								{product.description}
 							</p>
 
-							{/* Action Section */}
 							<div className="mb-16 space-y-8">
 								<div className="flex flex-wrap items-center gap-4 sm:gap-8">
 									<div className="flex items-center border border-stone-100 px-4 py-2">
 										<button
 											className="p-2 transition-colors hover:text-primary"
 											onClick={() => setQuantity(Math.max(1, quantity - 1))}
+											type="button"
 										>
 											<Minus size={14} />
 										</button>
@@ -128,21 +125,39 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 										<button
 											className="p-2 transition-colors hover:text-primary"
 											onClick={() => setQuantity(quantity + 1)}
+											type="button"
 										>
 											<Plus size={14} />
 										</button>
 									</div>
-									<button className="flex items-center gap-2 font-bold text-sm transition-colors hover:text-primary">
+									<button
+										className="flex items-center gap-2 font-bold text-sm transition-colors hover:text-primary"
+										type="button"
+									>
 										<Share2 size={14} /> Share
 									</button>
 								</div>
 
-								<button className="hidden w-full bg-primary py-6 font-bold text-sm text-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:bg-secondary hover:shadow-2xl active:scale-[0.98] md:block">
-									Add to Collection
-								</button>
+								{product.wixProductId ? (
+									<AddToCartButton
+										className="hidden w-full md:flex"
+										productId={product.wixProductId}
+										productName={product.title}
+										quantity={quantity}
+										variant="default"
+									>
+										Add to Collection
+									</AddToCartButton>
+								) : (
+									<button
+										className="hidden w-full bg-primary py-6 font-bold text-sm text-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:bg-secondary hover:shadow-2xl active:scale-[0.98] md:block"
+										type="button"
+									>
+										Add to Collection
+									</button>
+								)}
 							</div>
 
-							{/* Details & Shipping */}
 							<div className="space-y-6 border-stone-100 border-t pt-12">
 								<div className="grid grid-cols-2 gap-y-4">
 									{product.details.map((detail, i) => (
@@ -161,21 +176,15 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 								<div className="flex flex-col gap-4 pt-6">
 									<div className="flex items-center gap-4 text-sm">
 										<Truck className="text-primary" size={18} />
-										<span className="text-sm">
-											Express Shipping Available (2-3 Days)
-										</span>
+										<span>Express Shipping Available (2-3 Days)</span>
 									</div>
 									<div className="flex items-center gap-4 text-sm">
 										<RefreshCcw className="text-primary" size={18} />
-										<span className="text-sm">
-											30-Day Spiritual Reflection Returns
-										</span>
+										<span>30-Day Spiritual Reflection Returns</span>
 									</div>
 									<div className="flex items-center gap-4 text-sm">
 										<ShieldCheck className="text-primary" size={18} />
-										<span className="text-sm">
-											100% Authentic Edition Guarantee
-										</span>
+										<span>100% Authentic Edition Guarantee</span>
 									</div>
 								</div>
 							</div>
@@ -184,7 +193,12 @@ export const ProductDetailView = ({ id }: ProductDetailViewProps) => {
 				</div>
 			</main>
 
-			<ProductMobileBuyBar price={product.price} />
+			<ProductMobileBuyBar
+				price={product.price}
+				productId={product.wixProductId}
+				productName={product.title}
+				quantity={quantity}
+			/>
 		</>
 	);
 };

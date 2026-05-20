@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { inter, playfair } from "@/assets/fonts";
 
 import { cn } from "@/lib/utils";
+import { WixProvider } from "@/lib/wix/provider";
 
 export const metadata: Metadata = {
 	title: "Al Rewaya Book World | Your Premier Islamic Bookstore",
@@ -29,7 +30,9 @@ export default function RootLayout({
 			lang="en"
 		>
 			<body>
-				<TooltipProvider delay={0}>{children}</TooltipProvider>
+				<WixProvider>
+					<TooltipProvider delay={0}>{children}</TooltipProvider>
+				</WixProvider>
 			</body>
 		</html>
 	);

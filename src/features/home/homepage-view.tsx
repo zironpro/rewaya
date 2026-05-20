@@ -8,9 +8,14 @@ import { Button } from "@/components/ui/button";
 
 import { HeroCarousel } from "@/features/home/components/hero-carousel";
 import { ProductStrip } from "@/features/products/components/product-strip";
-import { allBooks } from "@/features/products/data/products";
+import type { BookProps } from "@/lib/store";
 
-export const HomepageView = () => {
+interface HomepageViewProps {
+	books: BookProps[];
+}
+
+export const HomepageView = ({ books }: HomepageViewProps) => {
+	const featured = [...books, ...books];
 	return (
 		<main className="overflow-hidden">
 			<HeroCarousel />
@@ -18,7 +23,7 @@ export const HomepageView = () => {
 
 			{/* 1. RECOMMENDED FOR YOU */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book) => ({
+				books={featured.map((book) => ({
 					...book,
 				}))}
 				subtitle="Based on your taste"
@@ -27,7 +32,7 @@ export const HomepageView = () => {
 
 			{/* 2. TODAY'S DEALS */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book) => ({
+				books={featured.map((book) => ({
 					...book,
 				}))}
 				subtitle="Limited Time"
@@ -58,7 +63,7 @@ export const HomepageView = () => {
 
 			{/* 2. NEW SELLERS */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book) => ({
+				books={featured.map((book) => ({
 					...book,
 					badge: "new seller",
 				}))}
@@ -71,7 +76,7 @@ export const HomepageView = () => {
 
 			{/* 3. BEST SELLERS */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book) => ({
+				books={featured.map((book) => ({
 					...book,
 					badge: "best seller",
 				}))}
@@ -105,7 +110,7 @@ export const HomepageView = () => {
 
 			{/* 4. CHILDREN'S COLLECTION */}
 			<ProductStrip
-				books={[...allBooks, ...allBooks].map((book) => ({
+				books={featured.map((book) => ({
 					...book,
 					badge: "new arrival",
 				}))}

@@ -1,3 +1,7 @@
+/**
+ * Static fallback catalog when WIX_CLIENT_ID is unset or CMS bundles are not seeded.
+ * Live catalog: Wix Stores V1 + CMS collection `BundleDetails`.
+ */
 export interface Book {
 	id: string;
 	title: string;
@@ -21,6 +25,8 @@ export interface Bundle {
 	tag: string;
 	mainImage: string;
 	books: Book[];
+	/** Wix Stores product ID for checkout */
+	wixProductId?: string;
 }
 
 export const bundles: Bundle[] = [

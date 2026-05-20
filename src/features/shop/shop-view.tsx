@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { BookCard } from "@/features/products/components/book-card";
-import { allBooks } from "@/features/products/data/products";
+import type { BookProps } from "@/lib/store";
 
 const categories = [
 	"All",
@@ -21,7 +21,11 @@ const categories = [
 	"Spirituality",
 ];
 
-export const ShopView = () => {
+interface ShopViewProps {
+	books: BookProps[];
+}
+
+export const ShopView = ({ books }: ShopViewProps) => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
 	const FilterContent = ({ onClose }: { onClose?: () => void }) => (
@@ -52,8 +56,8 @@ export const ShopView = () => {
 							<span className="text-[8px] text-stone-300 group-hover:text-black">
 								(
 								{cat === "All"
-									? allBooks.length
-									: allBooks.filter(
+									? books.length
+									: books.filter(
 											(b) => b.category.toLowerCase() === cat.toLowerCase()
 										).length}
 								)
@@ -155,7 +159,7 @@ export const ShopView = () => {
 						<div className="grow">
 							<div className="mb-12 hidden items-center justify-between border-stone-100 border-b pb-4 lg:flex">
 								<p className="font-bold text-sm text-stone-400">
-									Showing {allBooks.length} results
+									Showing {books.length} results
 								</p>
 								<div className="flex items-center gap-6">
 									<span className="font-bold text-sm text-stone-400">
@@ -170,7 +174,7 @@ export const ShopView = () => {
 							</div>
 
 							<div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-								{allBooks.map((book) => (
+								{books.map((book) => (
 									<BookCard key={book.id} {...book} />
 								))}
 							</div>

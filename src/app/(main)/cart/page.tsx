@@ -1,5 +1,5 @@
-import { CartView } from "@/features/cart/cart-view";
+import { WixCartView } from "@/features/cart/wix-cart-view";
 
 export default function CartPage() {
-	return <CartView />;
+	return <WixCartView />;
 }
