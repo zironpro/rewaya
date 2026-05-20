@@ -13,7 +13,9 @@ export function useCartCount() {
 
 		const refresh = async () => {
 			try {
-				const { cart } = await wixClient.currentCart.getCurrentCart();
+				const cart = (await wixClient.currentCart.getCurrentCart()) as {
+					lineItems?: { quantity?: number | null }[];
+				};
 				const total =
 					cart?.lineItems?.reduce(
 						(sum, item) => sum + (item.quantity ?? 0),

@@ -1,11 +1,11 @@
 import {
-	ProductDetailView,
 	type ProductDetailData,
+	ProductDetailView,
 } from "@/features/products/product-detail-view";
-import { getWixProductBySlug, getWixProductById } from "@/lib/wix/products";
 import { isWixCatalogEnabled } from "@/lib/wix/constants";
-import { mapWixProductToBookProps } from "@/lib/wix/types";
+import { getWixProductById, getWixProductBySlug } from "@/lib/wix/products";
 import type { WixCatalogProduct } from "@/lib/wix/types";
+import { mapWixProductToBookProps } from "@/lib/wix/types";
 
 export const dynamic = "force-dynamic";
 
@@ -31,9 +31,13 @@ export default async function ProductDetailPage({
 
 	let product = null;
 	if (isWixCatalogEnabled()) {
-		product =
-			(await getWixProductBySlug(id)) ?? (await getWixProductById(id));
+		product = (await getWixProductBySlug(id)) ?? (await getWixProductById(id));
 	}
 
-	return <ProductDetailView id={id} product={product ? toDetailProduct(product) : null} />;
+	return (
+		<ProductDetailView
+			id={id}
+			product={product ? toDetailProduct(product) : null}
+		/>
+	);
 }

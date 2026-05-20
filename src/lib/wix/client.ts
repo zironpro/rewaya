@@ -1,14 +1,12 @@
-import { createClient, OAuthStrategy, type IOAuthStrategy } from "@wix/sdk";
 import { items } from "@wix/data";
 import { currentCart } from "@wix/ecom";
-import {
-	catalogVersioning,
-	products,
-	productsV3,
-	type CatalogVersion,
-} from "@wix/stores";
+import { createClient, type IOAuthStrategy, OAuthStrategy } from "@wix/sdk";
+import { catalogVersioning, products, productsV3 } from "@wix/stores";
 
 import { WIX_SITE_ID } from "./constants";
+
+/** Resolved catalog mode from Wix (e.g. `V3_CATALOG`). */
+export type CatalogVersion = string;
 
 let cachedClient: ReturnType<typeof createWixClient> | null = null;
 let cachedCatalogVersion: CatalogVersion | null = null;
@@ -50,6 +48,7 @@ export async function getCatalogVersion(): Promise<CatalogVersion> {
 
 	const client = getWixClient();
 	const { catalogVersion } = await client.catalogVersioning.getCatalogVersion();
-	cachedCatalogVersion = catalogVersion;
-	return catalogVersion;
+	const resolved = catalogVersion ?? "V1_CATALOG";
+	cachedCatalogVersion = resolved;
+	return resolved;
 }

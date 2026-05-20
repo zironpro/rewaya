@@ -39,10 +39,7 @@ export function Footer() {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer
-			className="mt-12 bg-tertiary text-tertiary-foreground"
-			role="contentinfo"
-		>
+		<footer className="bg-tertiary text-tertiary-foreground" role="contentinfo">
 			<section
 				aria-labelledby="footer-newsletter-heading"
 				className="border-border/20 border-b bg-secondary/20 py-14"

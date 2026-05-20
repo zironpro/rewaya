@@ -9,7 +9,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+
+import { cn } from "@/lib/utils";
 import { useWixClient } from "@/lib/wix/provider";
 
 interface CartLineItem {
@@ -19,6 +21,20 @@ interface CartLineItem {
 	price?: { formattedConvertedAmount?: string };
 	image?: string;
 	url?: string | { relativePath?: string; url?: string };
+}
+
+interface CartSnapshot {
+	_id?: string | null;
+	lineItems?: CartLineItem[];
+	subtotal?: {
+		formattedConvertedAmount?: string;
+		amount?: string;
+	};
+}
+
+/** Wix SDK typings omit expanded cart fields present at runtime. */
+function asCartSnapshot(cart: unknown): CartSnapshot {
+	return cart as CartSnapshot;
 }
 
 function resolveCartImage(image: string | undefined): string | undefined {
@@ -55,7 +71,7 @@ export function WixCartView() {
 		}
 
 		try {
-			const { cart } = await wixClient.currentCart.getCurrentCart();
+			const cart = asCartSnapshot(await wixClient.currentCart.getCurrentCart());
 			setLineItems((cart?.lineItems as CartLineItem[]) ?? []);
 			setSubtotal(
 				cart?.subtotal?.formattedConvertedAmount ??
@@ -95,7 +111,7 @@ export function WixCartView() {
 		if (!wixClient) return;
 		setCheckoutLoading(true);
 		try {
-			const { cart } = await wixClient.currentCart.getCurrentCart();
+			const cart = asCartSnapshot(await wixClient.currentCart.getCurrentCart());
 			if (!cart?._id) return;
 
 			const redirect = await wixClient.redirects.createRedirectSession({
@@ -118,9 +134,8 @@ export function WixCartView() {
 			<main className="grow pt-20 pb-28 md:pb-16">
 				<div className="container py-32 text-center">
 					<p className="text-stone-500">
-						Configure{" "}
-						<code className="text-sm">NEXT_PUBLIC_WIX_CLIENT_ID</code> to enable
-						checkout.
+						Configure <code className="text-sm">NEXT_PUBLIC_WIX_CLIENT_ID</code>{" "}
+						to enable checkout.
 					</p>
 				</div>
 			</main>
@@ -147,9 +162,15 @@ export function WixCartView() {
 						<p className="mb-8 text-sm text-stone-400">
 							Your bag is currently empty.
 						</p>
-						<Button asChild variant="premium">
-							<Link href="/shop">Continue Shopping</Link>
-						</Button>
+						<Link
+							className={cn(
+								buttonVariants({ variant: "premium", size: "lg" }),
+								"inline-flex no-underline hover:no-underline"
+							)}
+							href="/shop"
+						>
+							Continue Shopping
+						</Link>
 					</div>
 				) : (
 					<div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
@@ -201,10 +222,7 @@ export function WixCartView() {
 														<button
 															className="text-stone-400 hover:text-primary"
 															onClick={() =>
-																updateQuantity(
-																	lineId,
-																	(item.quantity ?? 1) - 1
-																)
+																updateQuantity(lineId, (item.quantity ?? 1) - 1)
 															}
 															type="button"
 														>
@@ -216,10 +234,7 @@ export function WixCartView() {
 														<button
 															className="text-stone-400 hover:text-primary"
 															onClick={() =>
-																updateQuantity(
-																	lineId,
-																	(item.quantity ?? 1) + 1
-																)
+																updateQuantity(lineId, (item.quantity ?? 1) + 1)
 															}
 															type="button"
 														>

@@ -11,7 +11,7 @@ import {
 	type WixCatalogProduct,
 } from "./types";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Wix SDK typings omit expanded product fields present at runtime.
 type V1Product = Record<string, any>;
 
 function getInfoSection(product: V1Product, title: string): string | undefined {
@@ -46,7 +46,7 @@ function mapV1Product(product: V1Product): WixCatalogProduct {
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Wix SDK typings omit expanded product fields present at runtime.
 function mapV3Product(product: Record<string, any>): WixCatalogProduct {
 	const variant = product.variantsInfo?.variants?.[0];
 	const price = variant?.price?.actualPrice?.amount;
@@ -90,16 +90,16 @@ export async function queryWixProducts(options?: {
 		return items.map(mapV3Product);
 	}
 
-	let query = client.products.queryProducts().eq("visible", true);
+	let query = client.products.queryProducts();
 
 	if (options?.slugs?.length === 1) {
 		query = query.eq("slug", options.slugs[0]);
 	} else if (options?.ids?.length) {
-		query = query.in("id", options.ids);
+		query = query.in("_id", options.ids);
 	}
 
 	const { items } = await query.limit(limit).skip(offset).find();
-	return items.map(mapV1Product);
+	return items.map(mapV1Product).filter((product) => product.visible !== false);
 }
 
 export async function getWixProductBySlug(
