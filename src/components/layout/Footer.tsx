@@ -1,154 +1,223 @@
-import Image from "next/image";
 import Link from "next/link";
 
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Leaf, RotateCcw, ShieldCheck } from "lucide-react";
+
+import { Separator } from "@/components/ui/separator";
 
 import {
 	FacebookIcon,
 	InstagramIcon,
-	TwitterIcon,
+	PinterestIcon,
+	TikTokIcon,
 } from "@/assets/icons/brands";
+import { Logo } from "@/assets/logo";
+
+import { cn } from "@/lib/utils";
+
+import { NewsletterForm } from "./components/newsletter-form";
+import {
+	FOOTER_LEGAL_LINKS,
+	FOOTER_LINK_COLUMNS,
+	FOOTER_STORE,
+	type FooterNavLink,
+} from "./data/FooterLinks";
+
+const linkClass =
+	"block py-0.5 font-sans text-muted-foreground text-sm transition-all duration-150 hover:text-secondary-foreground hover:translate-x-0.5";
+
+const columnTitleClass =
+	"mb-5 font-heading font-semibold text-accent text-xs uppercase tracking-widest";
+
+function FooterNavLinks({ links }: { links: FooterNavLink[] }) {
+	return (
+		<div className="flex flex-col gap-1">
+			{links.map((item) => (
+				<Link className={linkClass} href={item.href} key={item.label}>
+					{item.label}
+				</Link>
+			))}
+		</div>
+	);
+}
+
+const socialLinks = [
+	{
+		href: "https://www.instagram.com",
+		label: "Follow us on Instagram",
+		Icon: InstagramIcon,
+	},
+	{
+		href: "https://www.facebook.com",
+		label: "Follow us on Facebook",
+		Icon: FacebookIcon,
+	},
+	{
+		href: "https://www.pinterest.com",
+		label: "Follow us on Pinterest",
+		Icon: PinterestIcon,
+	},
+	{
+		href: "https://www.tiktok.com",
+		label: "Follow us on TikTok",
+		Icon: TikTokIcon,
+	},
+] as const;
 
 export function Footer() {
 	const year = new Date().getFullYear();
 
 	return (
-		<footer className="mt-12 border-t bg-foreground py-20 text-muted/80">
-			<div className="container">
-				<div className="mb-16 grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-4">
-					<div className="col-span-1 md:col-span-1">
-						<div className="mb-8">
-							<Image
-								alt="Al Rewaya Logo"
-								className="h-16 w-auto object-contain"
-								height={64}
-								src="/logo.png"
-								width={260}
-							/>
+		<footer
+			className="mt-12 bg-tertiary text-tertiary-foreground"
+			role="contentinfo"
+		>
+			<section
+				aria-labelledby="footer-newsletter-heading"
+				className="border-border/20 border-b bg-secondary/20 py-14"
+			>
+				<div className="container mx-auto">
+					<div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+						<div>
+							<h2
+								className="font-display text-3xl text-secondary-foreground"
+								id="footer-newsletter-heading"
+							>
+								A new chapter begins in your inbox.
+							</h2>
+							<p className="mt-2 max-w-md font-sans text-muted-foreground text-sm italic">
+								New arrivals, reading guides & exclusive offers — weekly.
+							</p>
 						</div>
-						<p className="mb-6 text-sm leading-relaxed">
-							Rewaya is more than just a bookstore. It's a gateway to knowledge,
-							imagination, and spiritual growth. Founded in the heart of the
-							UAE, serving the global reader.
-						</p>
-						<div className="flex gap-4">
-							<Link
-								className="flex h-10 w-10 items-center justify-center rounded-full border border-stone-800 text-stone-400 transition-all hover:border-primary hover:bg-primary hover:text-white"
-								href="#"
-							>
-								<InstagramIcon size={18} />
-							</Link>
-							<Link
-								className="flex h-10 w-10 items-center justify-center rounded-full border border-stone-800 text-stone-400 transition-all hover:border-primary hover:bg-primary hover:text-white"
-								href="#"
-							>
-								<TwitterIcon size={18} />
-							</Link>
-							<Link
-								className="flex h-10 w-10 items-center justify-center rounded-full border border-stone-800 text-stone-400 transition-all hover:border-primary hover:bg-primary hover:text-white"
-								href="#"
-							>
-								<FacebookIcon size={18} />
-							</Link>
+						<div className="w-full max-w-md shrink-0 lg:max-w-sm">
+							<NewsletterForm />
 						</div>
-					</div>
-
-					<div>
-						<h4 className="mb-6 font-bold text-primary">Quick Links</h4>
-						<ul className="flex flex-col gap-4 text-sm">
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Our Story
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Track Order
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Shipping Policy
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Return Policy
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Contact Us
-								</Link>
-							</li>
-						</ul>
-					</div>
-
-					<div>
-						<h4 className="mb-6 font-bold text-primary">Categories</h4>
-						<ul className="flex flex-col gap-4 text-sm">
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Islamic Books
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Personal Development
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Biographies
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									Children's Books
-								</Link>
-							</li>
-							<li>
-								<Link className="transition-colors hover:text-primary" href="#">
-									New Releases
-								</Link>
-							</li>
-						</ul>
-					</div>
-
-					<div>
-						<h4 className="mb-6 font-bold text-primary">Store Info</h4>
-						<ul className="flex flex-col gap-4 text-sm">
-							<li className="flex items-start gap-3">
-								<MapPin className="mt-1 text-primary" size={18} />
-								<span>
-									Dubai Design District, Building 4, Office 302, Dubai, UAE
-								</span>
-							</li>
-							<li className="flex items-center gap-3">
-								<Phone className="text-primary" size={18} />
-								<span>+971 4 123 4567</span>
-							</li>
-							<li className="flex items-center gap-3">
-								<Mail className="text-primary" size={18} />
-								<span>hello@rewayabooks.com</span>
-							</li>
-						</ul>
 					</div>
 				</div>
+			</section>
 
-				<div className="flex flex-col items-center justify-between gap-4 border-stone-900 border-t pt-8 md:flex-row">
-					<p className="text-sm">© {year} Rewaya Books. All rights reserved.</p>
-					<div className="flex gap-6 font-medium text-xs">
-						<Link
-							className="transition-colors hover:text-white"
-							href="/privacy"
-						>
-							Privacy Policy
+			<div className="container mx-auto py-16">
+				<div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12">
+					<div className="sm:col-span-2 lg:col-span-3">
+						<Link href="/" title="Rewaya Books">
+							<Logo />
 						</Link>
-						<Link className="transition-colors hover:text-white" href="/terms">
-							Terms of Service
-						</Link>
+						<div aria-hidden className="mt-3 mb-4 h-0.5 w-8 bg-accent" />
+						<p className="font-display text-lg text-muted italic">
+							Curated reads for curious minds.
+						</p>
+						<p className="mt-4 text-balance font-sans text-muted-foreground text-sm leading-relaxed">
+							We bring together Islamic scholarship, world literature, and books
+							for every stage of life chosen with care for readers everywhere.
+						</p>
+						<div className="mt-6 flex flex-wrap gap-3">
+							{socialLinks.map(({ href, label, Icon }) => (
+								<Link
+									aria-label={label}
+									className={cn(
+										"inline-flex size-9 items-center justify-center rounded-sm border border-border/30 text-muted-foreground transition-colors duration-200",
+										"hover:border-accent/50 hover:text-accent"
+									)}
+									href={href}
+									key={label}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									<Icon size={18} />
+								</Link>
+							))}
+						</div>
 					</div>
+
+					{FOOTER_LINK_COLUMNS.map((column) => {
+						return (
+							<div className="lg:col-span-2" key={column.id}>
+								<nav aria-label={column.ariaLabel}>
+									<p className={columnTitleClass}>{column.title}</p>
+									<FooterNavLinks links={column.links} />
+								</nav>
+							</div>
+						);
+					})}
+
+					<div className="sm:col-span-2 lg:col-span-3">
+						<nav aria-label="Visit us">
+							<p className={columnTitleClass}>Visit Us</p>
+							<address className="not-italic">
+								{FOOTER_STORE.addressLines.map((line) => (
+									<p
+										className="font-sans text-muted-foreground text-sm"
+										key={line}
+									>
+										{line}
+									</p>
+								))}
+								<p className="mt-3 font-sans text-muted-foreground text-sm">
+									{FOOTER_STORE.hours}
+								</p>
+								<p className="mt-3 font-sans text-muted-foreground text-sm">
+									<Link
+										className="underline-offset-2 transition-colors hover:text-secondary-foreground hover:underline"
+										href={`tel:${FOOTER_STORE.phoneTel}`}
+									>
+										{FOOTER_STORE.phoneDisplay}
+									</Link>
+								</p>
+							</address>
+							<div className="mt-6 flex flex-col gap-2">
+								<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
+									<ShieldCheck
+										aria-hidden
+										className="size-3.5 shrink-0 text-accent"
+									/>
+									Secure checkout
+								</p>
+								<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
+									<RotateCcw
+										aria-hidden
+										className="size-3.5 shrink-0 text-accent"
+									/>
+									Free returns
+								</p>
+								<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
+									<Leaf aria-hidden className="size-3.5 shrink-0 text-accent" />
+									Carbon neutral shipping
+								</p>
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+			<Separator className="opacity-20" />
+
+			<div className="container mx-auto py-6">
+				<div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
+					<p className="font-sans text-muted-foreground text-xs lg:order-1">
+						© {year} Rewaya Books. All rights reserved.
+					</p>
+					{/* <div className="flex w-full flex-1 justify-center lg:order-2">
+						<PaymentBadgeRow />
+					</div> */}
+					<nav
+						aria-label="Legal"
+						className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-muted-foreground text-xs lg:order-3"
+					>
+						{FOOTER_LEGAL_LINKS.map((item, index) => (
+							<span className="inline-flex items-center gap-3" key={item.label}>
+								{index > 0 ? (
+									<span aria-hidden className="text-muted-foreground/40">
+										·
+									</span>
+								) : null}
+								<Link
+									className="transition-colors hover:text-secondary-foreground"
+									href={item.href}
+								>
+									{item.label}
+								</Link>
+							</span>
+						))}
+					</nav>
 				</div>
 			</div>
 		</footer>

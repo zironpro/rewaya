@@ -12,7 +12,7 @@ import {
 	mapWixProductToBook,
 } from "./types";
 
-const BUNDLE_DETAILS_COLLECTION = "BundleDetails";
+const BUNDLE_DETAILS_COLLECTION = "Bundles";
 
 export async function getBundleDetailsFromCms(): Promise<
 	BundleDetailsCmsItem[]
@@ -24,6 +24,8 @@ export async function getBundleDetailsFromCms(): Promise<
 		.query(BUNDLE_DETAILS_COLLECTION)
 		.limit(100)
 		.find();
+
+	console.log(result.items);
 
 	return result.items.map((item) => {
 		const rawIds = item.data?.includedBookIds;

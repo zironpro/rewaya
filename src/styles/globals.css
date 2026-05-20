@@ -31,6 +31,8 @@
 	--color-muted-foreground: var(--muted-foreground);
 	--color-muted: var(--muted);
 	--color-secondary-foreground: var(--secondary-foreground);
+	--color-tertiary: var(--tertiary);
+	--color-tertiary-foreground: var(--tertiary-foreground);
 	--color-primary-foreground: var(--primary-foreground);
 	--color-popover-foreground: var(--popover-foreground);
 	--color-popover: var(--popover);
@@ -68,6 +70,9 @@
 
 	--secondary: oklch(0.2699 0.0889 280.41);
 	--secondary-foreground: oklch(0.9647 0.0159 280.41);
+
+	--tertiary: oklch(0.138 0.0423 280.41);
+	--tertiary-foreground: oklch(0.9647 0.0159 280.41);
 
 	--muted: oklch(0.97 0 0);
 	--muted-foreground: oklch(0.556 0 0);
@@ -156,4 +161,8 @@
 	html {
 		@apply font-sans;
 	}
+}
+
+.dark {
+	--destructive-foreground: var(--color-red-400);
 }
