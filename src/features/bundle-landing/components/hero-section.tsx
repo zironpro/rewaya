@@ -24,8 +24,9 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 			className="relative min-h-[calc(100svh-(--spacing(16)))] overflow-hidden"
 			id="bundle-hero"
 		>
-			<div className="container relative gap-8 px-4 pt-10 pb-16 md:items-center md:gap-12 md:px-8 md:pt-16 md:pb-20">
-				<div className="order-2 flex flex-col items-center justify-center md:order-1">
+			<div className="container relative flex flex-col gap-8 px-4 pt-10 pb-16 md:min-h-[calc(100svh-(--spacing(16)))] md:items-center md:gap-12 md:px-8 md:pt-16 md:pb-20">
+				<BookMosaic />
+				<div className="relative z-10 flex flex-col items-center justify-center">
 					<CountdownTimer slug={bundle.slug} />
 
 					<h1 className="mt-3 font-bold font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.08] tracking-tight">
@@ -66,7 +67,6 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 						/>
 					</div>
 				</div>
-				<BookMosaic />
 			</div>
 		</section>
 	);
