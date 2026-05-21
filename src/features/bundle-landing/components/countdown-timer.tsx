@@ -45,18 +45,18 @@ export function CountdownTimer({
 				</p>
 			) : (
 				<div className="flex items-center justify-center gap-1.5 tabular-nums">
-					<span className={cn("rounded px-1.5 py-0.5 font-semibold", box)}>
+					<span className={cn("rounded px-1.5 py-0.5 font-bold", box)}>
 						{parts.h}
 					</span>
-					<span className="colon-blink font-semibold">:</span>
-					<span className={cn("rounded px-1.5 py-0.5 font-semibold", box)}>
+					<span className="colon-blink font-bold">:</span>
+					<span className={cn("rounded px-1.5 py-0.5 font-bold", box)}>
 						{parts.m}
 					</span>
-					<span className="colon-blink font-semibold">:</span>
-					<span className={cn("rounded px-1.5 py-0.5 font-semibold", box)}>
+					<span className="colon-blink font-bold">:</span>
+					<span className={cn("rounded px-1.5 py-0.5 font-bold", box)}>
 						{parts.s}
 					</span>
-					<span className="ml-2 hidden text-[11px] opacity-80 sm:inline">
+					<span className="ml-2 hidden text-xs opacity-80 sm:inline">
 						left at this price
 					</span>
 				</div>

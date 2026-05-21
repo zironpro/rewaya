@@ -63,7 +63,7 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 							alt="Bundle Hero"
 							className="object-cover"
 							fill
-							src="/bundles/creative-brain-booster-pack.webp"
+							src={bundle.coverImage}
 						/>
 					</div>
 				</div>

@@ -23,7 +23,7 @@ export interface Bundle {
 	price: number;
 	originalPrice: number;
 	tag: string;
-	mainImage: string;
+	coverImage: string;
 	books: Book[];
 	/** Wix Stores product ID for checkout */
 	wixProductId?: string;
@@ -31,13 +31,13 @@ export interface Bundle {
 
 export const bundles: Bundle[] = [
 	{
-		id: "bundle-1",
-		title: "Quran & Salah Essentials",
+		id: "creative-brain-booster-pack",
+		title: "Creative Brain Booster Fun Pack",
 		count: 5,
 		price: 149,
 		originalPrice: 165,
-		tag: "Kids Favorite",
-		mainImage: "/bundle_kids_essentials_1778661036870.png",
+		tag: "Best Seller",
+		coverImage: "/bundles/creative-brain-booster-pack.webp",
 		books: [
 			{
 				id: "b1-1",
@@ -117,13 +117,13 @@ export const bundles: Bundle[] = [
 		],
 	},
 	{
-		id: "bundle-2",
-		title: "Kids Activity & Stories",
+		id: "little-learner-activity-pack",
+		title: "Little Learner Activity Pack",
 		count: 5,
 		price: 115,
 		originalPrice: 130,
-		tag: "Best Seller",
-		mainImage: "/bundle_kids_activities_1778661057672.png",
+		tag: "Top Value",
+		coverImage: "/bundles/little-learner-activity.webp",
 		books: [
 			{
 				id: "b2-1",
@@ -134,8 +134,7 @@ export const bundles: Bundle[] = [
 				language: "English",
 				genre: "Supplications",
 				overview: "A collection of daily Duas every Muslim child should know.",
-				image:
-					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
+				image: "/products/book-1.webp",
 				retailPrice: 10.0,
 				costPrice: 4.0,
 			},
@@ -199,13 +198,13 @@ export const bundles: Bundle[] = [
 		],
 	},
 	{
-		id: "bundle-3",
-		title: "Learning & Fun Archive",
+		id: "little-muslim-starter-pack",
+		title: "Little Muslim Starter Pack",
 		count: 5,
 		price: 85,
 		originalPrice: 95,
 		tag: "Top Value",
-		mainImage: "/bundle_learning_fun_1778661083188.png",
+		coverImage: "/bundles/little-muslim-starter.webp",
 		books: [
 			{
 				id: "b3-1",
@@ -281,13 +280,13 @@ export const bundles: Bundle[] = [
 		],
 	},
 	{
-		id: "bundle-4",
-		title: "Knowledge & Adventure",
+		id: "play-and-learn-pack",
+		title: "Play & Learn Pack",
 		count: 5,
 		price: 149,
 		originalPrice: 168,
 		tag: "Premium Set",
-		mainImage: "/bundle_knowledge_adventure_1778661106586.png",
+		coverImage: "/bundles/play-and-learn.webp",
 		books: [
 			{
 				id: "b4-1",
@@ -358,89 +357,6 @@ export const bundles: Bundle[] = [
 					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
 				retailPrice: 40.0,
 				costPrice: 11.5,
-			},
-		],
-	},
-	{
-		id: "bundle-5",
-		title: "Prophet & Quran Stories",
-		count: 5,
-		price: 125,
-		originalPrice: 145,
-		tag: "Best Seller",
-		mainImage: "/bundle_prophet_stories_1778661132026.png",
-		books: [
-			{
-				id: "b5-1",
-				title: "The Story of Animals in the Quran-Zebra",
-				isbn: "9555832905623",
-				publisher: "Nature Press",
-				author: "Islamic Authors",
-				language: "English",
-				genre: "Quran Stories",
-				overview:
-					"Learn about the animal kingdom through the lens of revelation.",
-				image:
-					"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 35.0,
-				costPrice: 10.5,
-			},
-			{
-				id: "b5-2",
-				title: "25 Blessed Prophets",
-				isbn: "97889670618135",
-				publisher: "Prophet Series",
-				author: "History Team",
-				language: "English",
-				genre: "Prophets",
-				overview:
-					"Short, engaging biographies of the 25 prophets mentioned in the Quran.",
-				image:
-					"https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 60.0,
-				costPrice: 17.0,
-			},
-			{
-				id: "b5-3",
-				title: "Test Your IQ World Search-Electrifying",
-				isbn: "97889673643141",
-				publisher: "Puzzle Master",
-				author: "Game Design Team",
-				language: "English",
-				genre: "Logic",
-				overview: "Challenging word searches to test your focus.",
-				image:
-					"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.0,
-				costPrice: 4.25,
-			},
-			{
-				id: "b5-4",
-				title: "Sudoku Difficult Puzzle",
-				isbn: "9555832900864",
-				publisher: "Puzzle Master",
-				author: "Game Design Team",
-				language: "English",
-				genre: "Logic",
-				overview: "Hardcore Sudoku for advanced puzzle lovers.",
-				image:
-					"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 15.0,
-				costPrice: 4.15,
-			},
-			{
-				id: "b5-5",
-				title: "My Quran Stories - Amazing Stories From The Quran",
-				isbn: "9555832906606",
-				publisher: "Storyhouse",
-				author: "Islamic Authors",
-				language: "English",
-				genre: "Quran Stories",
-				overview: "A treasury of miracles and lessons from the Quran.",
-				image:
-					"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-				retailPrice: 20.0,
-				costPrice: 5.41,
 			},
 		],
 	},

@@ -37,7 +37,7 @@ const books: BookCell[] = [
 		gridClass: "col-start-1 row-start-1",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
-		src: "/products/book-1.jpg",
+		src: "/products/book-1.webp",
 		hidden: {
 			opacity: 0,
 			y: 48,
@@ -53,7 +53,7 @@ const books: BookCell[] = [
 		gridClass: "col-start-2 row-start-1 md:col-start-3",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
-		src: "/products/book-2.jpg",
+		src: "/products/book-2.webp",
 		hidden: {
 			opacity: 0,
 			y: -40,
@@ -69,7 +69,7 @@ const books: BookCell[] = [
 		gridClass: "col-start-1 row-start-2 md:row-start-2",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
-		src: "/products/book-3.jpg",
+		src: "/products/book-3.webp",
 		hidden: {
 			opacity: 0,
 			y: 20,
@@ -85,7 +85,7 @@ const books: BookCell[] = [
 		gridClass: "col-start-2 row-start-2 md:col-start-3 md:row-start-2",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
-		src: "/products/book-4.jpg",
+		src: "/products/book-4.webp",
 		hidden: {
 			opacity: 0,
 			y: 44,

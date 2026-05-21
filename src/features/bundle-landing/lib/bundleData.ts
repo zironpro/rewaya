@@ -1,25 +1,26 @@
 import type { BundleData } from "../types/bundle";
 
 const COVERS = {
-	sealedNectar: "/products/book-1.jpg",
-	atomicHabits: "/products/book-2.jpg",
-	alchemist: "/products/book-3.jpg",
-	fortress: "/products/book-4.jpg",
-	reclaimYourHeart: "/products/flash-card-1.jpg",
+	sealedNectar: "/products/book-1.webp",
+	atomicHabits: "/products/book-2.webp",
+	alchemist: "/products/book-3.webp",
+	fortress: "/products/book-4.webp",
+	reclaimYourHeart: "/products/flash-card-1.webp",
 } as const;
 
 const essentialIslamicLibrary: BundleData = {
-	slug: "essential-islamic-library",
+	slug: "creative-brain-booster-pack",
 	name: "Essential Islamic Library",
 	tagline: "Five cornerstone reads for faith, habit, and reflection",
 	description:
-		"A curated shelf of classics and modern essentials — biography, devotion, fiction with meaning, and practical spirituality — at one special bundle price.",
+		"A curated shelf of classics and modern essentials: biography, devotion, fiction with meaning, and practical spirituality — at one special bundle price.",
 	longDescription:
 		"Whether you are building a home library or gifting someone their next season of reading, this set balances depth with readability. Each title stands alone; together they map a thoughtful path through seerah, daily worship, narrative wisdom, and heart-centered renewal.",
 	price: 299,
 	originalPrice: 419,
 	savingsAmount: 120,
 	wixProductId: undefined,
+	coverImage: "/bundles/creative-brain-booster-pack.webp",
 	books: [
 		{
 			id: "eil-1",
