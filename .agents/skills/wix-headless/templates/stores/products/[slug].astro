@@ -1,24 +1,17 @@
 ---
-// SSR only — productsV3 SDK needs request-context auth (tenant resolution,
-// site headers). `export const prerender = true` / `getStaticPaths()` builds
-// at compile time with no request, and `.queryProducts().limit()` short-
-// circuits to "is not a function". Keep this page server-rendered; do NOT
-// add prerender=true or getStaticPaths.
-import Layout from "../../layouts/Layout.astro";
-import ProductPurchase from "../../components/ProductPurchase.tsx";
-import SeoTags from "../../components/SeoTags.astro";
-import { productsV3, inventoryItemsV3 } from "@wix/stores";
-import { resolveWixImageUrl } from "../../utils/wix-image";
+import { inventoryItemsV3, productsV3 } from "@wix/stores";
+
 import { getBackInStockEnabled } from "../../utils/back-in-stock";
+import { resolveWixImageUrl } from "../../utils/wix-image";
 
 // Tell Wix platform this route is the Stores "product" sub-page.
 // Drives sitemap, dashboard SEO editor, deep links.
 export const wixMetadata = {
-  appDefId: "1380b703-ce81-ff05-f115-39571d94dfcd",
-  pageIdentifier: "wix.stores.sub_pages.product",
-  identifiers: {
-    slug: "STORES.PRODUCT.SLUG",
-  },
+	appDefId: "1380b703-ce81-ff05-f115-39571d94dfcd",
+	pageIdentifier: "wix.stores.sub_pages.product",
+	identifiers: {
+		slug: "STORES.PRODUCT.SLUG",
+	},
 };
 
 const { slug } = Astro.params;
@@ -26,12 +19,12 @@ const { slug } = Astro.params;
 // Wrap the SSR await; a throw here aborts the response stream.
 let product: any = null;
 try {
-  const result = await productsV3.getProductBySlug(slug!, {
-    fields: ["CURRENCY", "PLAIN_DESCRIPTION"],
-  });
-  product = result.product;
+	const result = await productsV3.getProductBySlug(slug!, {
+		fields: ["CURRENCY", "PLAIN_DESCRIPTION"],
+	});
+	product = result.product;
 } catch (err) {
-  console.error("[product-detail] getProductBySlug failed:", err);
+	console.error("[product-detail] getProductBySlug failed:", err);
 }
 
 if (!product) return Astro.redirect("/404");
@@ -40,22 +33,26 @@ if (!product) return Astro.redirect("/404");
 // truth for OOS gating. productsV3's variantsInfo[].inventoryStatus.inStock is
 // a stale cached flag that does NOT reflect real-time stock changes; don't
 // trust it for the add-to-cart gate. See SHARED_WIRING.md § "Variant OOS gate".
-interface VariantStock { quantity: number; trackQuantity: boolean; preorderEnabled: boolean }
+interface VariantStock {
+	quantity: number;
+	trackQuantity: boolean;
+	preorderEnabled: boolean;
+}
 const inventoryByVariant: Record<string, VariantStock> = {};
 try {
-  const inv: any = await inventoryItemsV3.queryInventoryItems({
-    filter: { productId: product._id },
-  });
-  for (const item of (inv?.items ?? inv?.inventoryItems ?? []) as any[]) {
-    if (!item.variantId) continue;
-    inventoryByVariant[item.variantId] = {
-      quantity: Number(item.quantity ?? 0),
-      trackQuantity: item.trackQuantity === true,
-      preorderEnabled: item.preorderInfo?.enabled === true,
-    };
-  }
+	const inv: any = await inventoryItemsV3.queryInventoryItems({
+		filter: { productId: product._id },
+	});
+	for (const item of (inv?.items ?? inv?.inventoryItems ?? []) as any[]) {
+		if (!item.variantId) continue;
+		inventoryByVariant[item.variantId] = {
+			quantity: Number(item.quantity ?? 0),
+			trackQuantity: item.trackQuantity === true,
+			preorderEnabled: item.preorderInfo?.enabled === true,
+		};
+	}
 } catch (err) {
-  console.error("[product-detail] inventory query failed:", err);
+	console.error("[product-detail] inventory query failed:", err);
 }
 
 const imageUrl = resolveWixImageUrl(product.media?.main?.image, 800, 1066);
@@ -75,11 +72,11 @@ const seoTags = product.seoData?.tags ?? [];
 const hasSeoTags = seoTags.some((t: any) => !t.disabled);
 
 const viewContentPayload = {
-  id: product._id,
-  name: product.name,
-  price: priceAmount,
-  currency,
-  origin: "Product Page",
+	id: product._id,
+	name: product.name,
+	price: priceAmount,
+	currency,
+	origin: "Product Page",
 };
 ---
 

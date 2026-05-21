@@ -21,11 +21,11 @@ import type { Bundle } from "@/lib/bundles-data";
 export function BundleCard({
 	id,
 	title,
-	count,
 	price,
 	originalPrice,
 	coverImage,
 	tag,
+	books,
 }: Bundle) {
 	return (
 		<div className="group relative">
@@ -62,7 +62,7 @@ export function BundleCard({
 							<Eye size={16} strokeWidth={1.5} />
 						</DialogTrigger>
 						<BundleQuickViewDialog
-							count={count}
+							books={books}
 							coverImage={coverImage}
 							originalPrice={originalPrice}
 							price={price}
@@ -83,7 +83,7 @@ export function BundleCard({
 				<div className="absolute top-4 left-4 z-10 flex flex-wrap items-start gap-3">
 					{tag && <Badge size="lg">{tag}</Badge>}
 					<Badge size="lg" variant="outline">
-						{count} Book Set
+						{books.length} Book Set
 					</Badge>
 				</div>
 			</div>
@@ -112,12 +112,12 @@ export function BundleCard({
 
 type BundleQuickViewDialogProps = Pick<
 	Bundle,
-	"title" | "count" | "price" | "originalPrice" | "coverImage"
+	"title" | "books" | "price" | "originalPrice" | "coverImage"
 >;
 
 function BundleQuickViewDialog({
 	title,
-	count,
+	books,
 	price,
 	originalPrice,
 	coverImage,
@@ -139,7 +139,7 @@ function BundleQuickViewDialog({
 						<DialogDescription>Bundle Collection</DialogDescription>
 						<DialogTitle className="mt-2 text-4xl">{title}</DialogTitle>
 						<p className="mt-2 text-sm text-stone-400">
-							Exclusive {count}-Book Anthology
+							Exclusive {books.length}-Book Anthology
 						</p>
 					</DialogHeader>
 
@@ -154,8 +154,8 @@ function BundleQuickViewDialog({
 						</div>
 						<p className="text-base text-stone-500 leading-relaxed">
 							Experience the full spectrum of this curated theme. This bundle
-							includes {count} essential volumes carefully selected to provide a
-							comprehensive journey through {title}.
+							includes {books.length} essential volumes carefully selected to
+							provide a comprehensive journey through {title}.
 						</p>
 						<div className="flex gap-4">
 							<Button className="h-14 flex-1" variant="premium">

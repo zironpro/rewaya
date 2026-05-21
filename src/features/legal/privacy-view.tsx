@@ -2,7 +2,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 export const PrivacyView = () => {
 	return (
-		<main className="grow pb-28 pt-20 md:pb-16">
+		<main className="grow pt-20 pb-28 md:pb-16">
 			<div className="container">
 				<Breadcrumbs className="mb-12" items={[{ label: "Privacy Policy" }]} />
 

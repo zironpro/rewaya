@@ -42,8 +42,8 @@ export function mapWixProductToBook(product: WixCatalogProduct): Book {
 		genre: product.genre ?? "Books",
 		overview: product.description ?? "",
 		image: product.imageUrl ?? "",
-		retailPrice: product.price ?? 0,
-		costPrice: 0,
+		price: product.price ?? 0,
+		originalPrice: 0,
 	};
 }
 
@@ -89,5 +89,9 @@ export function mapToBundle(
 		coverImage: storeProduct.imageUrl ?? "",
 		books: includedBooks,
 		wixProductId: storeProduct.id,
+		tagline: "",
+		description: "",
+		longDescription: "",
+		faqs: [],
 	};
 }

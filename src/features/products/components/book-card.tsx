@@ -62,7 +62,10 @@ export function BookCard({
 					item.id === id ? { ...item, quantity: item.quantity + 1 } : item
 				);
 			}
-			return [...prev, { id, title, author, price, image, quantity: 1 }];
+			return [
+				...prev,
+				{ id, title, author: author ?? "", price, image, quantity: 1 },
+			];
 		});
 	};
 

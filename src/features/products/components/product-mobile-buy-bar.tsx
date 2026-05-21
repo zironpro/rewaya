@@ -2,8 +2,9 @@
 
 import { ShoppingBagIcon } from "lucide-react";
 
-import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import { Button } from "@/components/ui/button";
+
+import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 
 interface ProductMobileBuyBarProps {
 	price: number;

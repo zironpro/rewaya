@@ -1,10 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { AnimatePresence, motion } from "framer-motion";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { Button } from "@/components/ui/button";
+
+import { useWixAuth } from "@/lib/wix/provider";
 
 import { AddressesTab } from "./components/addresses-tab";
 import { EmptyTab } from "./components/empty-tab";
@@ -21,7 +27,54 @@ import {
 } from "./data/profile-data";
 
 export const ProfileView = () => {
+	const router = useRouter();
 	const [activeTab, setActiveTab] = useState("overview");
+	const {
+		isReady,
+		isLoggedIn,
+		isPending,
+		memberDisplayName,
+		memberEmail,
+		memberAvatar,
+		logout,
+	} = useWixAuth();
+
+	useEffect(() => {
+		if (isReady && !isLoggedIn) {
+			router.replace("/login?returnUrl=/profile");
+		}
+	}, [isReady, isLoggedIn, router]);
+
+	if (!isReady) {
+		return (
+			<main className="grow pt-24 pb-28 md:pb-16">
+				<div className="container">
+					<p className="font-bold text-secondary text-sm">Loading profile…</p>
+				</div>
+			</main>
+		);
+	}
+
+	if (!isLoggedIn) {
+		return (
+			<main className="grow pt-24 pb-28 md:pb-16">
+				<div className="container text-center">
+					<p className="mb-6 font-bold text-secondary">
+						Sign in to view your profile.
+					</p>
+					<Button nativeButton={false} render={<Link href="/login" />}>
+						Log in
+					</Button>
+				</div>
+			</main>
+		);
+	}
+
+	const user = {
+		name: memberDisplayName,
+		email: memberEmail || mockUser.email,
+		avatar: memberAvatar,
+	};
 
 	return (
 		<main className="grow pt-24 pb-28 md:pb-16">
@@ -31,9 +84,11 @@ export const ProfileView = () => {
 				<div className="flex flex-col gap-12 lg:flex-row">
 					<ProfileSidebar
 						activeTab={activeTab}
+						isLoggingOut={isPending}
+						onLogout={logout}
 						onTabChange={setActiveTab}
 						tabs={tabs}
-						user={mockUser}
+						user={user}
 					/>
 
 					<section className="grow">

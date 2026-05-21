@@ -53,7 +53,10 @@ interface ProductDetailViewProps {
 	product: ProductDetailData | null;
 }
 
-export const ProductDetailView = ({ id, product: wixProduct }: ProductDetailViewProps) => {
+export const ProductDetailView = ({
+	id,
+	product: wixProduct,
+}: ProductDetailViewProps) => {
 	const mock = getMockProduct(id);
 	const product = wixProduct ?? {
 		...mock,

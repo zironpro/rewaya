@@ -1,30 +1,32 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import { currentCart } from "@wix/ecom";
 import { redirects } from "@wix/redirects";
+
 import { trackEvent } from "../utils/analytics";
 
 // ── Types ──
 
 interface DescriptionLine {
-  name?: { translated?: string };
-  plainText?: { translated?: string };
-  colorInfo?: { translated?: string; code?: string };
+	name?: { translated?: string };
+	plainText?: { translated?: string };
+	colorInfo?: { translated?: string; code?: string };
 }
 
 interface Availability {
-  status?: string;       // "AVAILABLE" | "NOT_AVAILABLE" | "NOT_FOUND" | "PARTIALLY_AVAILABLE"
-  quantityAvailable?: number;
+	status?: string; // "AVAILABLE" | "NOT_AVAILABLE" | "NOT_FOUND" | "PARTIALLY_AVAILABLE"
+	quantityAvailable?: number;
 }
 
 interface Modifier {
-  label?: { translated?: string };
-  quantity?: number;
-  price?: { formattedConvertedAmount?: string };
+	label?: { translated?: string };
+	quantity?: number;
+	price?: { formattedConvertedAmount?: string };
 }
 
 interface ModifierGroup {
-  name?: { translated?: string };
-  modifiers?: Modifier[];
+	name?: { translated?: string };
+	modifiers?: Modifier[];
 }
 
 // Local structural type. The SDK's lineItem types use `string | null` for
@@ -32,28 +34,28 @@ interface ModifierGroup {
 // destructuring and use `as unknown as LineItem[]` at SDK boundaries.
 // Narrowing is safe because we null-check each field at the use site.
 interface LineItem {
-  _id?: string | null;
-  productName?: { translated?: string };
-  quantity?: number;
-  price?: { amount?: string; formattedConvertedAmount?: string };
-  fullPrice?: { formattedConvertedAmount?: string };
-  lineItemPrice?: { amount?: string; formattedConvertedAmount?: string };
-  image?: string;  // "wix:image://v1/<mediaId>/..." — always a string, NOT an object
-  catalogReference?: { catalogItemId?: string };
-  descriptionLines?: DescriptionLine[];
-  availability?: Availability;
-  modifierGroups?: ModifierGroup[];
-  // The SDK returns `url` as an absolute URL string (e.g.
-  // "https://<site>.wixsite.com/<name>/product-page/<slug>"); REST returns
-  // an object `{ relativePath, url }`. Handle both in `resolveProductHref`.
-  url?: string | { relativePath?: string; url?: string };
+	_id?: string | null;
+	productName?: { translated?: string };
+	quantity?: number;
+	price?: { amount?: string; formattedConvertedAmount?: string };
+	fullPrice?: { formattedConvertedAmount?: string };
+	lineItemPrice?: { amount?: string; formattedConvertedAmount?: string };
+	image?: string; // "wix:image://v1/<mediaId>/..." — always a string, NOT an object
+	catalogReference?: { catalogItemId?: string };
+	descriptionLines?: DescriptionLine[];
+	availability?: Availability;
+	modifierGroups?: ModifierGroup[];
+	// The SDK returns `url` as an absolute URL string (e.g.
+	// "https://<site>.wixsite.com/<name>/product-page/<slug>"); REST returns
+	// an object `{ relativePath, url }`. Handle both in `resolveProductHref`.
+	url?: string | { relativePath?: string; url?: string };
 }
 
 interface CartSummary {
-  subtotal?: string;
-  discount?: string;
-  total?: string;
-  discountNames: string[];
+	subtotal?: string;
+	discount?: string;
+	total?: string;
+	discountNames: string[];
 }
 
 // No server-side props — cart is per-visitor and must not break SSR caching.
@@ -68,10 +70,10 @@ interface CartSummary {
  * Renders as "Title: Value", or just the title/value if one is missing.
  */
 function formatDescriptionLine(line: DescriptionLine): string {
-  const title = line.name?.translated;
-  const value = line.plainText?.translated ?? line.colorInfo?.translated;
-  if (title && value) return `${title}: ${value}`;
-  return title ?? value ?? "";
+	const title = line.name?.translated;
+	const value = line.plainText?.translated ?? line.colorInfo?.translated;
+	if (title && value) return `${title}: ${value}`;
+	return title ?? value ?? "";
 }
 
 /**
@@ -80,22 +82,26 @@ function formatDescriptionLine(line: DescriptionLine): string {
  * (NOT an object { url } despite what the REST docs say).
  * Parse it to a Wix static CDN URL with resizing.
  */
-function resolveCartImage(image: string | undefined, width: number, height: number): string | undefined {
-  if (!image) return undefined;
-  if (image.startsWith("wix:image://")) {
-    const match = image.match(/wix:image:\/\/v1\/([^/]+)/);
-    if (match) {
-      return `https://static.wixstatic.com/media/${match[1]}/v1/fill/w_${width},h_${height},al_c,q_80/${match[1]}`;
-    }
-  }
-  // Direct CDN URL — use as-is
-  return image;
+function resolveCartImage(
+	image: string | undefined,
+	width: number,
+	height: number
+): string | undefined {
+	if (!image) return undefined;
+	if (image.startsWith("wix:image://")) {
+		const match = image.match(/wix:image:\/\/v1\/([^/]+)/);
+		if (match) {
+			return `https://static.wixstatic.com/media/${match[1]}/v1/fill/w_${width},h_${height},al_c,q_80/${match[1]}`;
+		}
+	}
+	// Direct CDN URL — use as-is
+	return image;
 }
 
 /** Whether a line item is unavailable (out of stock, deleted, or not found) */
 function isItemUnavailable(item: LineItem): boolean {
-  const status = item.availability?.status;
-  return status === "NOT_AVAILABLE" || status === "NOT_FOUND";
+	const status = item.availability?.status;
+	return status === "NOT_AVAILABLE" || status === "NOT_FOUND";
 }
 
 /**
@@ -111,12 +117,12 @@ function isItemUnavailable(item: LineItem): boolean {
  * absent or doesn't follow the Stores route pattern.
  */
 function resolveProductHref(item: LineItem): string | undefined {
-  const url = item.url;
-  if (!url) return undefined;
-  const str = typeof url === "string" ? url : (url.relativePath ?? url.url);
-  if (!str) return undefined;
-  const match = str.match(/\/product-page\/([^/?#]+)/);
-  return match ? `/products/${match[1]}` : undefined;
+	const url = item.url;
+	if (!url) return undefined;
+	const str = typeof url === "string" ? url : (url.relativePath ?? url.url);
+	if (!str) return undefined;
+	const match = str.match(/\/product-page\/([^/?#]+)/);
+	return match ? `/products/${match[1]}` : undefined;
 }
 
 // Cached cart snapshot so re-navigation to /cart renders the previous state
@@ -127,25 +133,25 @@ const CART_CACHE_KEY = "cart:last-snapshot";
 type CartSnapshot = { lineItems: LineItem[]; summary: CartSummary };
 
 function readCartSnapshot(): CartSnapshot | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.sessionStorage.getItem(CART_CACHE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed?.lineItems)) return null;
-    return parsed as CartSnapshot;
-  } catch {
-    return null;
-  }
+	if (typeof window === "undefined") return null;
+	try {
+		const raw = window.sessionStorage.getItem(CART_CACHE_KEY);
+		if (!raw) return null;
+		const parsed = JSON.parse(raw);
+		if (!Array.isArray(parsed?.lineItems)) return null;
+		return parsed as CartSnapshot;
+	} catch {
+		return null;
+	}
 }
 
 function writeCartSnapshot(snapshot: CartSnapshot): void {
-  if (typeof window === "undefined") return;
-  try {
-    window.sessionStorage.setItem(CART_CACHE_KEY, JSON.stringify(snapshot));
-  } catch {
-    /* storage full / denied — ignore, fall back to fetch-only */
-  }
+	if (typeof window === "undefined") return;
+	try {
+		window.sessionStorage.setItem(CART_CACHE_KEY, JSON.stringify(snapshot));
+	} catch {
+		/* storage full / denied — ignore, fall back to fetch-only */
+	}
 }
 
 /**
@@ -166,325 +172,373 @@ function writeCartSnapshot(snapshot: CartSnapshot): void {
  * `lineItemPrice.amount` × rows. Shows something instead of a blank slot.
  */
 function extractSummary(
-  // `lineItems` is `any[]` — the SDK's LineItem shape (string | null on
-  // translated fields) is structurally incompatible with our narrower local
-  // LineItem. We only read `lineItemPrice.amount` here, which is loose anyway.
-  cart: { priceSummary?: any; appliedDiscounts?: any[]; lineItems?: any[]; currency?: string } | undefined,
+	// `lineItems` is `any[]` — the SDK's LineItem shape (string | null on
+	// translated fields) is structurally incompatible with our narrower local
+	// LineItem. We only read `lineItemPrice.amount` here, which is loose anyway.
+	cart:
+		| {
+				priceSummary?: any;
+				appliedDiscounts?: any[];
+				lineItems?: any[];
+				currency?: string;
+		  }
+		| undefined
 ): CartSummary {
-  const ps = cart?.priceSummary;
-  let subtotal = ps?.subtotal?.formattedConvertedAmount as string | undefined;
-  const discount = ps?.discount?.formattedConvertedAmount as string | undefined;
-  const total = ps?.total?.formattedConvertedAmount as string | undefined;
+	const ps = cart?.priceSummary;
+	let subtotal = ps?.subtotal?.formattedConvertedAmount as string | undefined;
+	const discount = ps?.discount?.formattedConvertedAmount as string | undefined;
+	const total = ps?.total?.formattedConvertedAmount as string | undefined;
 
-  // Fallback subtotal from line items when priceSummary is empty.
-  if (!subtotal && cart?.lineItems?.length) {
-    const sum = cart.lineItems.reduce((acc, item) => {
-      const amt = item.lineItemPrice?.amount;
-      return amt ? acc + Number(amt) : acc;
-    }, 0);
-    if (sum > 0) {
-      try {
-        subtotal = new Intl.NumberFormat(undefined, {
-          style: "currency",
-          currency: cart.currency ?? "USD",
-        }).format(sum);
-      } catch {
-        subtotal = sum.toFixed(2);
-      }
-    }
-  }
+	// Fallback subtotal from line items when priceSummary is empty.
+	if (!subtotal && cart?.lineItems?.length) {
+		const sum = cart.lineItems.reduce((acc, item) => {
+			const amt = item.lineItemPrice?.amount;
+			return amt ? acc + Number(amt) : acc;
+		}, 0);
+		if (sum > 0) {
+			try {
+				subtotal = new Intl.NumberFormat(undefined, {
+					style: "currency",
+					currency: cart.currency ?? "USD",
+				}).format(sum);
+			} catch {
+				subtotal = sum.toFixed(2);
+			}
+		}
+	}
 
-  const discountNames = (cart?.appliedDiscounts ?? [])
-    .map((d: any) => d?.discountName || d?.coupon?.name || d?.merchantDiscount?.discountName)
-    .filter(Boolean);
+	const discountNames = (cart?.appliedDiscounts ?? [])
+		.map(
+			(d: any) =>
+				d?.discountName || d?.coupon?.name || d?.merchantDiscount?.discountName
+		)
+		.filter(Boolean);
 
-  return { subtotal, discount, total, discountNames };
+	return { subtotal, discount, total, discountNames };
 }
 
 // ── Component ──
 
 export default function CartView() {
-  // Hydrate from the last cart snapshot so re-navigating to /cart renders the
-  // previous state immediately — no empty/loading flash. The authoritative
-  // fetch in useEffect below reconciles shortly after.
-  const cached = typeof window !== "undefined" ? readCartSnapshot() : null;
-  const [items, setItems] = useState<LineItem[]>(cached?.lineItems ?? []);
-  const [summary, setSummary] = useState<CartSummary>(
-    cached?.summary ?? { discountNames: [] },
-  );
-  // `loading` is only true when there's no cached snapshot to render from.
-  const [loading, setLoading] = useState(!cached);
-  const [checkingOut, setCheckingOut] = useState(false);
-  const qtyTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
+	// Hydrate from the last cart snapshot so re-navigating to /cart renders the
+	// previous state immediately — no empty/loading flash. The authoritative
+	// fetch in useEffect below reconciles shortly after.
+	const cached = typeof window !== "undefined" ? readCartSnapshot() : null;
+	const [items, setItems] = useState<LineItem[]>(cached?.lineItems ?? []);
+	const [summary, setSummary] = useState<CartSummary>(
+		cached?.summary ?? { discountNames: [] }
+	);
+	// `loading` is only true when there's no cached snapshot to render from.
+	const [loading, setLoading] = useState(!cached);
+	const [checkingOut, setCheckingOut] = useState(false);
+	const qtyTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
 
-  useEffect(() => {
-    loadCart();
-  }, []);
+	useEffect(() => {
+		loadCart();
+	}, []);
 
-  // getCurrentCart() returns the cart object directly — NOT wrapped in { cart }.
-  // Totals + applied discounts all live under priceSummary + appliedDiscounts.
-  const loadCart = async () => {
-    try {
-      const cart = await currentCart.getCurrentCart();
-      const lineItems = (cart.lineItems as unknown as LineItem[]) ?? [];
-      const nextSummary = extractSummary(cart);
-      setItems(lineItems);
-      setSummary(nextSummary);
-      writeCartSnapshot({ lineItems, summary: nextSummary });
-    } catch {
-      // Leave any cached state in place on transient errors.
-      if (!cached) {
-        setItems([]);
-        setSummary({ discountNames: [] });
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+	// getCurrentCart() returns the cart object directly — NOT wrapped in { cart }.
+	// Totals + applied discounts all live under priceSummary + appliedDiscounts.
+	const loadCart = async () => {
+		try {
+			const cart = await currentCart.getCurrentCart();
+			const lineItems = (cart.lineItems as unknown as LineItem[]) ?? [];
+			const nextSummary = extractSummary(cart);
+			setItems(lineItems);
+			setSummary(nextSummary);
+			writeCartSnapshot({ lineItems, summary: nextSummary });
+		} catch {
+			// Leave any cached state in place on transient errors.
+			if (!cached) {
+				setItems([]);
+				setSummary({ discountNames: [] });
+			}
+		} finally {
+			setLoading(false);
+		}
+	};
 
-  const handleUpdateQuantity = (itemId: string, quantity: number) => {
-    // Optimistic: update local state immediately
-    setItems((prev) =>
-      prev.map((it) => (it._id === itemId ? { ...it, quantity } : it))
-    );
+	const handleUpdateQuantity = (itemId: string, quantity: number) => {
+		// Optimistic: update local state immediately
+		setItems((prev) =>
+			prev.map((it) => (it._id === itemId ? { ...it, quantity } : it))
+		);
 
-    // Debounce API call — rapid clicks coalesce into one request
-    const prev = qtyTimers.current.get(itemId);
-    if (prev) clearTimeout(prev);
-    qtyTimers.current.set(
-      itemId,
-      setTimeout(async () => {
-        qtyTimers.current.delete(itemId);
-        try {
-          const { cart } = await currentCart.updateCurrentCartLineItemQuantity([
-            { _id: itemId, quantity },
-          ]);
-          if (!cart) return;
-          window.dispatchEvent(new CustomEvent("cart-updated", { detail: { cart } }));
-          const nextItems = (cart.lineItems as unknown as LineItem[]) ?? [];
-          const nextSummary = extractSummary(cart);
-          setItems(nextItems);
-          setSummary(nextSummary);
-          writeCartSnapshot({ lineItems: nextItems, summary: nextSummary });
-        } catch {
-          await loadCart();
-        }
-      }, 300)
-    );
-  };
+		// Debounce API call — rapid clicks coalesce into one request
+		const prev = qtyTimers.current.get(itemId);
+		if (prev) clearTimeout(prev);
+		qtyTimers.current.set(
+			itemId,
+			setTimeout(async () => {
+				qtyTimers.current.delete(itemId);
+				try {
+					const { cart } = await currentCart.updateCurrentCartLineItemQuantity([
+						{ _id: itemId, quantity },
+					]);
+					if (!cart) return;
+					window.dispatchEvent(
+						new CustomEvent("cart-updated", { detail: { cart } })
+					);
+					const nextItems = (cart.lineItems as unknown as LineItem[]) ?? [];
+					const nextSummary = extractSummary(cart);
+					setItems(nextItems);
+					setSummary(nextSummary);
+					writeCartSnapshot({ lineItems: nextItems, summary: nextSummary });
+				} catch {
+					await loadCart();
+				}
+			}, 300)
+		);
+	};
 
-  const handleRemoveItem = async (itemId: string) => {
-    const removed = items.find((item) => item._id === itemId);
-    if (removed) {
-      trackEvent("RemoveFromCart", {
-        id: removed.catalogReference?.catalogItemId ?? removed._id,
-        name: removed.productName?.translated,
-        price: removed.price?.amount ? Number(removed.price.amount) : undefined,
-        quantity: removed.quantity,
-        origin: "Cart",
-      });
-    }
+	const handleRemoveItem = async (itemId: string) => {
+		const removed = items.find((item) => item._id === itemId);
+		if (removed) {
+			trackEvent("RemoveFromCart", {
+				id: removed.catalogReference?.catalogItemId ?? removed._id,
+				name: removed.productName?.translated,
+				price: removed.price?.amount ? Number(removed.price.amount) : undefined,
+				quantity: removed.quantity,
+				origin: "Cart",
+			});
+		}
 
-    // Optimistic: remove from local state immediately
-    setItems((prev) => prev.filter((it) => it._id !== itemId));
+		// Optimistic: remove from local state immediately
+		setItems((prev) => prev.filter((it) => it._id !== itemId));
 
-    try {
-      const { cart } = await currentCart.removeLineItemsFromCurrentCart([itemId]);
-      if (!cart) return;
-      window.dispatchEvent(new CustomEvent("cart-updated", { detail: { cart } }));
-      const nextItems = (cart.lineItems as unknown as LineItem[]) ?? [];
-      const nextSummary = extractSummary(cart);
-      setItems(nextItems);
-      setSummary(nextSummary);
-      writeCartSnapshot({ lineItems: nextItems, summary: nextSummary });
-    } catch {
-      await loadCart();
-    }
-  };
+		try {
+			const { cart } = await currentCart.removeLineItemsFromCurrentCart([
+				itemId,
+			]);
+			if (!cart) return;
+			window.dispatchEvent(
+				new CustomEvent("cart-updated", { detail: { cart } })
+			);
+			const nextItems = (cart.lineItems as unknown as LineItem[]) ?? [];
+			const nextSummary = extractSummary(cart);
+			setItems(nextItems);
+			setSummary(nextSummary);
+			writeCartSnapshot({ lineItems: nextItems, summary: nextSummary });
+		} catch {
+			await loadCart();
+		}
+	};
 
-  const handleCheckout = async () => {
-    setCheckingOut(true);
-    try {
-      trackEvent("InitiateCheckout", {
-        contents: items.map((item) => ({
-          id: item.catalogReference?.catalogItemId ?? item._id,
-          name: item.productName?.translated,
-          price: item.price?.amount ? Number(item.price.amount) : undefined,
-          quantity: item.quantity,
-        })),
-        origin: "Cart",
-      });
+	const handleCheckout = async () => {
+		setCheckingOut(true);
+		try {
+			trackEvent("InitiateCheckout", {
+				contents: items.map((item) => ({
+					id: item.catalogReference?.catalogItemId ?? item._id,
+					name: item.productName?.translated,
+					price: item.price?.amount ? Number(item.price.amount) : undefined,
+					quantity: item.quantity,
+				})),
+				origin: "Cart",
+			});
 
-      const { checkoutId } = await currentCart.createCheckoutFromCurrentCart({
-        channelType: currentCart.ChannelType.WEB,
-      });
+			const { checkoutId } = await currentCart.createCheckoutFromCurrentCart({
+				channelType: currentCart.ChannelType.WEB,
+			});
 
-      const { redirectSession } = await redirects.createRedirectSession({
-        ecomCheckout: { checkoutId },
-        callbacks: {
-          postFlowUrl: window.location.origin,
-          thankYouPageUrl: `${window.location.origin}/thank-you`,
-          cartPageUrl: `${window.location.origin}/cart`,
-        },
-      });
+			const { redirectSession } = await redirects.createRedirectSession({
+				ecomCheckout: { checkoutId },
+				callbacks: {
+					postFlowUrl: window.location.origin,
+					thankYouPageUrl: `${window.location.origin}/thank-you`,
+					cartPageUrl: `${window.location.origin}/cart`,
+				},
+			});
 
-      if (redirectSession?.fullUrl) {
-        window.location.href = redirectSession.fullUrl;
-      }
-    } catch {
-      setCheckingOut(false);
-    }
-  };
+			if (redirectSession?.fullUrl) {
+				window.location.href = redirectSession.fullUrl;
+			}
+		} catch {
+			setCheckingOut(false);
+		}
+	};
 
-  // ── Render ──
+	// ── Render ──
 
-  if (loading) {
-    return <p className="cart-empty">Loading cart...</p>;
-  }
+	if (loading) {
+		return <p className="cart-empty">Loading cart...</p>;
+	}
 
-  if (items.length === 0) {
-    return (
-      <div className="cart-empty">
-        <p>Your cart is empty.</p>
-        <a href="/products" className="checkout-btn">Browse Products</a>
-      </div>
-    );
-  }
+	if (items.length === 0) {
+		return (
+			<div className="cart-empty">
+				<p>Your cart is empty.</p>
+				<a className="checkout-btn" href="/products">
+					Browse Products
+				</a>
+			</div>
+		);
+	}
 
-  const hasUnavailable = items.some(isItemUnavailable);
+	const hasUnavailable = items.some(isItemUnavailable);
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_22rem] gap-2xl md:gap-3xl md:items-start">
-      {/* ── Left column: line items ── */}
-      <div className="flex flex-col gap-lg">
-        {items.map((item) => {
-          const unavailable = isItemUnavailable(item);
-          const maxQty = item.availability?.quantityAvailable ?? 99;
-          const hasDiscount =
-            item.fullPrice?.formattedConvertedAmount &&
-            item.fullPrice.formattedConvertedAmount !== item.price?.formattedConvertedAmount;
+	return (
+		<div className="grid grid-cols-1 gap-2xl md:grid-cols-[1fr_22rem] md:items-start md:gap-3xl">
+			{/* ── Left column: line items ── */}
+			<div className="flex flex-col gap-lg">
+				{items.map((item) => {
+					const unavailable = isItemUnavailable(item);
+					const maxQty = item.availability?.quantityAvailable ?? 99;
+					const hasDiscount =
+						item.fullPrice?.formattedConvertedAmount &&
+						item.fullPrice.formattedConvertedAmount !==
+							item.price?.formattedConvertedAmount;
 
-          return (
-            <div
-              key={item._id}
-              className={`flex gap-lg pb-lg border-b border-rule last:border-0${unavailable ? " unavailable" : ""}`}
-            >
-              {/* Product image + name link back to the product detail page
+					return (
+						<div
+							className={`flex gap-lg border-rule border-b pb-lg last:border-0${unavailable ? "unavailable" : ""}`}
+							key={item._id}
+						>
+							{/* Product image + name link back to the product detail page
                   for available items. Unavailable lines render as plain text. */}
-              {(() => {
-                const productHref = !unavailable ? resolveProductHref(item) : undefined;
-                const imgSrc = resolveCartImage(item.image, 160, 160);
-                const imageNode = imgSrc ? (
-                  <img src={imgSrc} alt={item.productName?.translated ?? ""} className="cart-item-image" />
-                ) : (
-                  <div className="cart-item-image cart-item-image-placeholder" aria-hidden="true" />
-                );
-                return productHref ? (
-                  <a href={productHref} className="cart-item-image-link" aria-label={item.productName?.translated ?? "Product"}>
-                    {imageNode}
-                  </a>
-                ) : imageNode;
-              })()}
+							{(() => {
+								const productHref = !unavailable
+									? resolveProductHref(item)
+									: undefined;
+								const imgSrc = resolveCartImage(item.image, 160, 160);
+								const imageNode = imgSrc ? (
+									<img
+										alt={item.productName?.translated ?? ""}
+										className="cart-item-image"
+										src={imgSrc}
+									/>
+								) : (
+									<div
+										aria-hidden="true"
+										className="cart-item-image cart-item-image-placeholder"
+									/>
+								);
+								return productHref ? (
+									<a
+										aria-label={item.productName?.translated ?? "Product"}
+										className="cart-item-image-link"
+										href={productHref}
+									>
+										{imageNode}
+									</a>
+								) : (
+									imageNode
+								);
+							})()}
 
-              <div className="cart-item-info">
-                <h3 className="cart-item-name">
-                  {(() => {
-                    const productHref = !unavailable ? resolveProductHref(item) : undefined;
-                    return productHref ? (
-                      <a href={productHref} className="cart-item-name-link">
-                        {item.productName?.translated}
-                      </a>
-                    ) : item.productName?.translated;
-                  })()}
-                </h3>
+							<div className="cart-item-info">
+								<h3 className="cart-item-name">
+									{(() => {
+										const productHref = !unavailable
+											? resolveProductHref(item)
+											: undefined;
+										return productHref ? (
+											<a className="cart-item-name-link" href={productHref}>
+												{item.productName?.translated}
+											</a>
+										) : (
+											item.productName?.translated
+										);
+									})()}
+								</h3>
 
-                {/* Description lines — option selections (Size, Color, etc.)
+								{/* Description lines — option selections (Size, Color, etc.)
                     Both plainText and colorInfo types are handled by formatDescriptionLine. */}
-                {(item.descriptionLines ?? []).map((line, i) => {
-                  const text = formatDescriptionLine(line);
-                  return text ? (
-                    <p key={i} className="cart-item-option">{text}</p>
-                  ) : null;
-                })}
+								{(item.descriptionLines ?? []).map((line, i) => {
+									const text = formatDescriptionLine(line);
+									return text ? (
+										<p className="cart-item-option" key={i}>
+											{text}
+										</p>
+									) : null;
+								})}
 
-                {/* Modifier groups — extras/add-ons */}
-                {(item.modifierGroups ?? []).map((group, gi) => (
-                  <div key={gi} className="cart-item-modifiers">
-                    {(group.modifiers ?? []).map((mod, mi) => (
-                      <p key={mi} className="cart-item-option">
-                        {mod.label?.translated}
-                        {mod.quantity && mod.quantity > 1 ? ` ×${mod.quantity}` : ""}
-                        {mod.price?.formattedConvertedAmount
-                          ? ` (+${mod.price.formattedConvertedAmount})`
-                          : ""}
-                      </p>
-                    ))}
-                  </div>
-                ))}
+								{/* Modifier groups — extras/add-ons */}
+								{(item.modifierGroups ?? []).map((group, gi) => (
+									<div className="cart-item-modifiers" key={gi}>
+										{(group.modifiers ?? []).map((mod, mi) => (
+											<p className="cart-item-option" key={mi}>
+												{mod.label?.translated}
+												{mod.quantity && mod.quantity > 1
+													? ` ×${mod.quantity}`
+													: ""}
+												{mod.price?.formattedConvertedAmount
+													? ` (+${mod.price.formattedConvertedAmount})`
+													: ""}
+											</p>
+										))}
+									</div>
+								))}
 
-                {/* Quantity selector or unavailable label */}
-                {unavailable ? (
-                  <p className="cart-item-unavailable">
-                    {item.availability?.status === "NOT_FOUND"
-                      ? "This item is no longer available"
-                      : "Out of Stock"}
-                  </p>
-                ) : (
-                  <div className="cart-item-qty">
-                    <button
-                      className="qty-btn"
-                      disabled={!item.quantity || item.quantity <= 1}
-                      onClick={() =>
-                        item._id && handleUpdateQuantity(item._id, (item.quantity ?? 1) - 1)
-                      }
-                    >
-                      −
-                    </button>
-                    <span className="qty-value">{item.quantity}</span>
-                    <button
-                      className="qty-btn"
-                      disabled={(item.quantity ?? 0) >= maxQty}
-                      onClick={() =>
-                        item._id && handleUpdateQuantity(item._id, (item.quantity ?? 1) + 1)
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                )}
-              </div>
+								{/* Quantity selector or unavailable label */}
+								{unavailable ? (
+									<p className="cart-item-unavailable">
+										{item.availability?.status === "NOT_FOUND"
+											? "This item is no longer available"
+											: "Out of Stock"}
+									</p>
+								) : (
+									<div className="cart-item-qty">
+										<button
+											className="qty-btn"
+											disabled={!item.quantity || item.quantity <= 1}
+											onClick={() =>
+												item._id &&
+												handleUpdateQuantity(item._id, (item.quantity ?? 1) - 1)
+											}
+										>
+											−
+										</button>
+										<span className="qty-value">{item.quantity}</span>
+										<button
+											className="qty-btn"
+											disabled={(item.quantity ?? 0) >= maxQty}
+											onClick={() =>
+												item._id &&
+												handleUpdateQuantity(item._id, (item.quantity ?? 1) + 1)
+											}
+										>
+											+
+										</button>
+									</div>
+								)}
+							</div>
 
-              {/* Price display — THREE fields, each with a different meaning:
+							{/* Price display — THREE fields, each with a different meaning:
                   - fullPrice: per-unit price BEFORE discount (strikethrough when discounted)
                   - price:     per-unit price AFTER discount (the actual unit price)
                   - lineItemPrice: total for the line (price × quantity)
                   Show fullPrice and price side by side (both per-unit).
                   Show lineItemPrice below ONLY when qty > 1 (otherwise it equals price). */}
-              <div className="cart-item-actions">
-                <div className="cart-item-prices">
-                  {hasDiscount && (
-                    <span className="cart-item-full-price">{item.fullPrice!.formattedConvertedAmount}</span>
-                  )}
-                  <span className="cart-item-unit-price">{item.price?.formattedConvertedAmount}</span>
-                </div>
-                {(item.quantity ?? 1) > 1 && (
-                  <p className="cart-item-line-total">
-                    {item.lineItemPrice?.formattedConvertedAmount}
-                  </p>
-                )}
-                <button
-                  onClick={() => item._id && handleRemoveItem(item._id)}
-                  className="cart-item-remove"
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+							<div className="cart-item-actions">
+								<div className="cart-item-prices">
+									{hasDiscount && (
+										<span className="cart-item-full-price">
+											{item.fullPrice!.formattedConvertedAmount}
+										</span>
+									)}
+									<span className="cart-item-unit-price">
+										{item.price?.formattedConvertedAmount}
+									</span>
+								</div>
+								{(item.quantity ?? 1) > 1 && (
+									<p className="cart-item-line-total">
+										{item.lineItemPrice?.formattedConvertedAmount}
+									</p>
+								)}
+								<button
+									className="cart-item-remove"
+									onClick={() => item._id && handleRemoveItem(item._id)}
+								>
+									Remove
+								</button>
+							</div>
+						</div>
+					);
+				})}
+			</div>
 
-      {/* ── Right column: order summary ──
+			{/* ── Right column: order summary ──
           Always render `Subtotal`. Three ways discounts surface — all values
           come from the API, we don't compute amounts client-side:
             1. Cart-level discount with amount (coupons, cart-level promos) →
@@ -498,46 +552,51 @@ export default function CartView() {
             3. No discount → no row.
           Render `Total` when it differs from subtotal.
           See extractSummary() above. */}
-      <div className="cart-summary">
-        <div className="flex justify-between items-baseline">
-          <span>Subtotal</span>
-          <span>{summary.subtotal}</span>
-        </div>
-        {summary.discount ? (
-          <div className="cart-discount">
-            <span>
-              Discount
-              {summary.discountNames.length > 0 && (
-                <span className="cart-discount-name"> · {summary.discountNames.join(", ")}</span>
-              )}
-            </span>
-            <span className="cart-discount-amount">−{summary.discount}</span>
-          </div>
-        ) : summary.discountNames.length > 0 ? (
-          <div className="cart-applied-discounts">
-            <span>Applied discount</span>
-            <span className="cart-applied-discounts-name">{summary.discountNames.join(", ")}</span>
-          </div>
-        ) : null}
-        {summary.total && summary.total !== summary.subtotal && (
-          <div className="cart-total">
-            <span>Total</span>
-            <span>{summary.total}</span>
-          </div>
-        )}
-        {hasUnavailable && (
-          <p className="cart-item-unavailable">
-            Remove unavailable items before checking out.
-          </p>
-        )}
-        <button
-          onClick={handleCheckout}
-          disabled={checkingOut || hasUnavailable}
-          className="checkout-btn"
-        >
-          {checkingOut ? "Redirecting to checkout..." : "Proceed to Checkout"}
-        </button>
-      </div>
-    </div>
-  );
+			<div className="cart-summary">
+				<div className="flex items-baseline justify-between">
+					<span>Subtotal</span>
+					<span>{summary.subtotal}</span>
+				</div>
+				{summary.discount ? (
+					<div className="cart-discount">
+						<span>
+							Discount
+							{summary.discountNames.length > 0 && (
+								<span className="cart-discount-name">
+									{" "}
+									· {summary.discountNames.join(", ")}
+								</span>
+							)}
+						</span>
+						<span className="cart-discount-amount">−{summary.discount}</span>
+					</div>
+				) : summary.discountNames.length > 0 ? (
+					<div className="cart-applied-discounts">
+						<span>Applied discount</span>
+						<span className="cart-applied-discounts-name">
+							{summary.discountNames.join(", ")}
+						</span>
+					</div>
+				) : null}
+				{summary.total && summary.total !== summary.subtotal && (
+					<div className="cart-total">
+						<span>Total</span>
+						<span>{summary.total}</span>
+					</div>
+				)}
+				{hasUnavailable && (
+					<p className="cart-item-unavailable">
+						Remove unavailable items before checking out.
+					</p>
+				)}
+				<button
+					className="checkout-btn"
+					disabled={checkingOut || hasUnavailable}
+					onClick={handleCheckout}
+				>
+					{checkingOut ? "Redirecting to checkout..." : "Proceed to Checkout"}
+				</button>
+			</div>
+		</div>
+	);
 }

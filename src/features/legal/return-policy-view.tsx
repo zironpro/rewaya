@@ -2,7 +2,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 export const ReturnPolicyView = () => {
 	return (
-		<main className="grow pb-28 pt-6 md:pb-16">
+		<main className="grow pt-6 pb-28 md:pb-16">
 			<div className="container">
 				<Breadcrumbs className="mb-6" items={[{ label: "Return Policy" }]} />
 

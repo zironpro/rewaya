@@ -1,14 +1,84 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import { VerificationForm } from "@/features/auth/verification-form";
+import { useWixAuth } from "@/lib/wix/provider";
+
 export const LoginView = () => {
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const returnUrl = searchParams.get("returnUrl") ?? "/profile";
+
+	const {
+		isReady,
+		isLoggedIn,
+		isPending,
+		error,
+		needsVerification,
+		clearError,
+		loginWithEmail,
+		verifyEmail,
+		startWixLogin,
+		sendPasswordReset,
+	} = useWixAuth();
+
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [resetSent, setResetSent] = useState(false);
+
+	useEffect(() => {
+		if (isReady && isLoggedIn) {
+			router.replace(returnUrl);
+		}
+	}, [isReady, isLoggedIn, returnUrl, router]);
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		clearError();
+		const result = await loginWithEmail(email.trim(), password);
+		if (result.status === "success") {
+			router.push(returnUrl);
+		}
+	};
+
+	const handleVerify = async (code: string) => {
+		clearError();
+		const result = await verifyEmail(code);
+		if (result.status === "success") {
+			router.push(returnUrl);
+		}
+	};
+
+	const handleForgotPassword = async () => {
+		if (!email.trim()) {
+			return;
+		}
+		clearError();
+		setResetSent(false);
+		await sendPasswordReset(email.trim());
+		setResetSent(true);
+	};
+
+	if (!isReady) {
+		return (
+			<main className="flex min-h-svh grow items-center justify-center px-4">
+				<p className="font-bold text-secondary text-sm">Loading…</p>
+			</main>
+		);
+	}
+
 	return (
-		<main className="flex grow items-center justify-center px-4 py-16 sm:py-24">
-			<div className="w-full max-w-md rounded-[2.5rem] border border-stone-100 bg-white p-8">
+		<main className="flex min-h-svh grow items-center justify-center px-4">
+			<div className="w-full max-w-md rounded-md border border-stone-100 bg-white p-8">
 				<div className="mb-12 text-center">
-					<h1 className="font-black font-serif text-3xl sm:text-4xl md:text-5xl">
+					<h1 className="font-bold font-serif text-3xl sm:text-4xl">
 						Log <span className="font-normal italic">In</span>.
 					</h1>
 				</div>
@@ -17,6 +87,9 @@ export const LoginView = () => {
 					<div className="flex flex-col gap-4 sm:flex-row">
 						<Button
 							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
+							disabled={isPending}
+							onClick={() => startWixLogin(returnUrl)}
+							type="button"
 							variant="outline"
 						>
 							<svg className="size-4" viewBox="0 0 24 24">
@@ -41,6 +114,9 @@ export const LoginView = () => {
 						</Button>
 						<Button
 							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
+							disabled={isPending}
+							onClick={() => startWixLogin(returnUrl)}
+							type="button"
 							variant="outline"
 						>
 							<svg className="size-4 fill-[#1877F2]" viewBox="0 0 24 24">
@@ -52,49 +128,77 @@ export const LoginView = () => {
 
 					<div className="relative flex items-center justify-center">
 						<div className="absolute inset-0 flex items-center">
-							<span className="w-full border-stone-100 border-t" />
+							<span className="w-full border-t" />
 						</div>
-						<div className="relative flex justify-center font-bold text-sm">
+						<p className="relative flex justify-center font-medium text-xs tracking-tight">
 							<span className="bg-white px-4 text-secondary/60">
 								Or continue with email
 							</span>
-						</div>
+						</p>
 					</div>
 				</div>
 
-				<form className="space-y-8">
-					<div className="space-y-2">
-						<label className="font-bold text-secondary text-sm">
-							Email Address
-						</label>
-						<Input placeholder="email@example.com" required type="email" />
-					</div>
+				{error && (
+					<p className="mb-4 text-center text-red-600 text-sm">{error}</p>
+				)}
+				{resetSent && (
+					<p className="mb-4 text-center text-green-700 text-sm">
+						Password reset email sent. Check your inbox.
+					</p>
+				)}
 
-					<div className="space-y-2">
-						<div className="flex items-center justify-between">
-							<label className="font-bold text-secondary text-sm">
-								Password
-							</label>
-							<Link
-								className="font-bold text-secondary/60 text-sm transition-colors hover:text-primary"
-								href="#"
+				{needsVerification ? (
+					<VerificationForm isPending={isPending} onSubmit={handleVerify} />
+				) : (
+					<form className="space-y-8" onSubmit={handleSubmit}>
+						<div className="space-y-2">
+							<label
+								className="font-bold text-secondary text-sm"
+								htmlFor="login-email"
 							>
-								Forgot Password?
-							</Link>
+								Email Address
+							</label>
+							<Input
+								id="login-email"
+								onChange={(e) => setEmail(e.target.value)}
+								placeholder="email@example.com"
+								required
+								type="email"
+								value={email}
+							/>
 						</div>
-						<Input placeholder="••••••••" required type="password" />
-					</div>
 
-					<Button className="h-14 w-full" variant="premium">
-						Sign In
-					</Button>
-					<Link
-						className="mt-4 flex items-center justify-center gap-2 font-bold text-secondary text-sm transition-colors hover:text-primary"
-						href="/"
-					>
-						Explore without login
-					</Link>
-				</form>
+						<div className="space-y-2">
+							<div className="flex items-center justify-between">
+								<label
+									className="font-bold text-secondary text-sm"
+									htmlFor="login-password"
+								>
+									Password
+								</label>
+								<button
+									className="font-bold text-secondary/60 text-sm transition-colors hover:text-primary"
+									onClick={handleForgotPassword}
+									type="button"
+								>
+									Forgot Password?
+								</button>
+							</div>
+							<Input
+								id="login-password"
+								onChange={(e) => setPassword(e.target.value)}
+								placeholder="••••••••"
+								required
+								type="password"
+								value={password}
+							/>
+						</div>
+
+						<Button className="w-full" disabled={isPending} type="submit">
+							{isPending ? "Signing in…" : "Sign In"}
+						</Button>
+					</form>
+				)}
 
 				<div className="mt-12 border-stone-100 border-t pt-8 text-center">
 					<p className="font-bold text-secondary/60 text-sm">

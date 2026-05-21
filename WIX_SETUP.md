@@ -55,6 +55,24 @@ Then in Wix CMS → **Bundle Details**, set `includedBookIds` for each row to a 
 
 This site uses **Stores Catalog V1**. The code auto-detects version via `catalogVersioning.getCatalogVersion()` and uses `products` (V1) or `productsV3` (V3) accordingly.
 
+## Authentication
+
+Member sign-in uses Wix Headless OAuth (`OAuthStrategy`). Configure these in [OAuth apps settings](https://manage.wix.com/dashboard/835db726-cfca-4ef4-8305-4002f5f62aef/oauth-apps-settings):
+
+1. **Allowed redirect domains** — add your dev and production origins, e.g. `http://localhost:3000` and `https://your-domain.com`.
+2. **Allowed authorization redirect URIs** — add:
+   - `http://localhost:3000/auth/callback`
+   - `https://your-domain.com/auth/callback` (production)
+3. **Password reset redirect** — add `http://localhost:3000/login` (and production `/login`) so “Forgot password” can redirect back after reset.
+
+Routes:
+
+- `/login`, `/signup` — email/password + Google/Facebook (Wix-managed OAuth)
+- `/auth/callback` — OAuth return URL for social login
+- `/profile` — member account (requires login)
+
+If login fails with redirect or token errors, clear the `wix_session` cookie and retry. Confirm `NEXT_PUBLIC_WIX_CLIENT_ID` matches the OAuth app Client ID from `env pull`.
+
 ## Dashboard
 
 [https://manage.wix.com/dashboard/835db726-cfca-4ef4-8305-4002f5f62aef](https://manage.wix.com/dashboard/835db726-cfca-4ef4-8305-4002f5f62aef)

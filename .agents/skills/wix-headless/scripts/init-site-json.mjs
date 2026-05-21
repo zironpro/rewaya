@@ -18,46 +18,60 @@
 //   - Creates .wix/ if it doesn't exist.
 //   - Outputs a JSON summary to stdout.
 
-import { writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const [, , projectDir, brandName, brandDescription, verticalsCsv] = process.argv;
+const [, , projectDir, brandName, brandDescription, verticalsCsv] =
+	process.argv;
 
-if (!projectDir || !brandName || brandDescription === undefined || !verticalsCsv) {
-  console.error("usage: init-site-json.mjs <project-dir> <brand-name> <brand-description> <verticals-csv>");
-  process.exit(2);
+if (
+	!projectDir ||
+	!brandName ||
+	brandDescription === undefined ||
+	!verticalsCsv
+) {
+	console.error(
+		"usage: init-site-json.mjs <project-dir> <brand-name> <brand-description> <verticals-csv>"
+	);
+	process.exit(2);
 }
 
 const verticals = verticalsCsv
-  .split(",")
-  .map((v) => v.trim())
-  .filter(Boolean);
+	.split(",")
+	.map((v) => v.trim())
+	.filter(Boolean);
 
 if (verticals.length === 0) {
-  console.error("init-site-json: <verticals-csv> resolved to zero verticals — cms is always loaded, so this is a bug");
-  process.exit(2);
+	console.error(
+		"init-site-json: <verticals-csv> resolved to zero verticals — cms is always loaded, so this is a bug"
+	);
+	process.exit(2);
 }
 
 const wixDir = join(projectDir, ".wix");
 const sitePath = join(wixDir, "site.json");
 
 if (existsSync(sitePath)) {
-  console.error(`init-site-json: ${sitePath} already exists — refusing to overwrite. Setup should call this exactly once.`);
-  process.exit(2);
+	console.error(
+		`init-site-json: ${sitePath} already exists — refusing to overwrite. Setup should call this exactly once.`
+	);
+	process.exit(2);
 }
 
 mkdirSync(wixDir, { recursive: true });
 
 const site = {
-  brand: {
-    name: brandName,
-    description: brandDescription,
-  },
-  seeded: {},
-  designTokens: {},
-  verticals,
+	brand: {
+		name: brandName,
+		description: brandDescription,
+	},
+	seeded: {},
+	designTokens: {},
+	verticals,
 };
 
 writeFileSync(sitePath, JSON.stringify(site, null, 2) + "\n");
 
-console.log(JSON.stringify({ status: "ok", path: sitePath, verticals }, null, 2));
+console.log(
+	JSON.stringify({ status: "ok", path: sitePath, verticals }, null, 2)
+);

@@ -1,6 +1,6 @@
+import { getBundleReviews } from "@/lib/bundle-reviews-data";
 import type { Bundle } from "@/lib/bundles-data";
 import { bundles as staticBundles } from "@/lib/bundles-data";
-import { getBundleReviews } from "@/lib/bundle-reviews-data";
 import { getBundleBySlug as getWixBundleBySlug } from "@/lib/wix/bundles";
 
 import type { BundleData } from "../types/bundle";

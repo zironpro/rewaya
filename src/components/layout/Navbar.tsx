@@ -14,6 +14,7 @@ import { Logo } from "@/assets/logo";
 
 import { useCartCount } from "@/hooks/use-cart-count";
 import { wishlistCountAtom } from "@/lib/store";
+import { useWixAuth } from "@/lib/wix/provider";
 
 import { CategoriesMenu } from "./components/categories-menu";
 import { MobileNavigationDrawer } from "./components/mobile-navigation-drawer";
@@ -32,6 +33,7 @@ export function Navbar({
 
 	const wixCartCount = useCartCount();
 	const [wishlistCount] = useAtom(wishlistCountAtom);
+	const { isReady, isLoggedIn, memberDisplayName } = useWixAuth();
 
 	return (
 		<header className="sticky inset-x-0 top-0 z-40 bg-white shadow-xs">
@@ -83,9 +85,16 @@ export function Navbar({
 							)}
 						</Button>
 
-						<Button nativeButton={false} render={<Link href="/login" />}>
+						<Button
+							nativeButton={false}
+							render={<Link href={isLoggedIn ? "/profile" : "/login"} />}
+						>
 							<User size={20} strokeWidth={1.5} />
-							<span className="hidden text-sm xl:block">Sign In</span>
+							<span className="hidden text-sm xl:block">
+								{isReady && isLoggedIn
+									? memberDisplayName.split(" ")[0] || "Profile"
+									: "Sign In"}
+							</span>
 						</Button>
 
 						<Button

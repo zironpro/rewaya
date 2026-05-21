@@ -15,6 +15,8 @@ interface ProfileSidebarProps {
 	tabs: Tab[];
 	activeTab: string;
 	onTabChange: (id: string) => void;
+	onLogout?: () => void;
+	isLoggingOut?: boolean;
 	user: {
 		name: string;
 		email: string;
@@ -26,6 +28,8 @@ export const ProfileSidebar = ({
 	tabs,
 	activeTab,
 	onTabChange,
+	onLogout,
+	isLoggingOut = false,
 	user,
 }: ProfileSidebarProps) => {
 	return (
@@ -69,9 +73,16 @@ export const ProfileSidebar = ({
 						</button>
 					))}
 					<div className="mt-4 border-stone-100 border-t pt-4">
-						<button className="flex w-full items-center gap-4 rounded-2xl px-6 py-4 text-left text-red-500 transition-colors hover:bg-red-50">
+						<button
+							className="flex w-full items-center gap-4 rounded-2xl px-6 py-4 text-left text-red-500 transition-colors hover:bg-red-50 disabled:opacity-50"
+							disabled={isLoggingOut}
+							onClick={onLogout}
+							type="button"
+						>
 							<LogOut size={18} />
-							<span className="font-bold text-xm">Sign Out</span>
+							<span className="font-bold text-xm">
+								{isLoggingOut ? "Signing out…" : "Sign Out"}
+							</span>
 						</button>
 					</div>
 				</nav>

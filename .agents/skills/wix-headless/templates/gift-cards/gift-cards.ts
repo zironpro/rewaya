@@ -22,30 +22,41 @@ import { httpClient } from "@wix/essentials";
 export const WIX_GIFT_CARDS_APP_ID = "d80111c5-a0f4-47a8-b63a-65b54d774a27";
 
 export interface GiftCardImage {
-  id?: string;
-  url?: string;
-  height?: number;
-  width?: number;
-  altText?: string;
+	id?: string;
+	url?: string;
+	height?: number;
+	width?: number;
+	altText?: string;
 }
 
 export interface GiftCardPresetVariant {
-  id: string;
-  price: { amount: string; formattedAmount: string; convertedAmount?: string; formattedConvertedAmount?: string };
-  value: { amount: string; formattedAmount: string; convertedAmount?: string; formattedConvertedAmount?: string };
+	id: string;
+	price: {
+		amount: string;
+		formattedAmount: string;
+		convertedAmount?: string;
+		formattedConvertedAmount?: string;
+	};
+	value: {
+		amount: string;
+		formattedAmount: string;
+		convertedAmount?: string;
+		formattedConvertedAmount?: string;
+	};
 }
 
 export interface GiftCardProduct {
-  id: string;
-  revision?: string;
-  name: string;
-  description: string;
-  image?: GiftCardImage;
-  expirationType?: string;
-  presetVariants: GiftCardPresetVariant[];
+	id: string;
+	revision?: string;
+	name: string;
+	description: string;
+	image?: GiftCardImage;
+	expirationType?: string;
+	presetVariants: GiftCardPresetVariant[];
 }
 
-const ENDPOINT = "https://www.wixapis.com/gift-cards/v1/gift-card-products/query";
+const ENDPOINT =
+	"https://www.wixapis.com/gift-cards/v1/gift-card-products/query";
 
 // Module-level memoization. Navigation, the home teaser, and /gift-cards all
 // call getGiftCardProduct() in the same request — coalesce them into one
@@ -53,23 +64,23 @@ const ENDPOINT = "https://www.wixapis.com/gift-cards/v1/gift-card-products/query
 let cached: Promise<GiftCardProduct | null> | null = null;
 
 export async function getGiftCardProduct(): Promise<GiftCardProduct | null> {
-  if (cached) return cached;
-  cached = (async () => {
-    try {
-      const res = await httpClient.fetchWithAuth(ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: { paging: { limit: 1 } } }),
-      });
-      if (!res.ok) return null;
-      const data = await res.json();
-      const products = data?.giftCardProducts;
-      if (!Array.isArray(products) || products.length === 0) return null;
-      return products[0] as GiftCardProduct;
-    } catch (err) {
-      console.error("[gift-cards] queryGiftCardProducts failed:", err);
-      return null;
-    }
-  })();
-  return cached;
+	if (cached) return cached;
+	cached = (async () => {
+		try {
+			const res = await httpClient.fetchWithAuth(ENDPOINT, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ query: { paging: { limit: 1 } } }),
+			});
+			if (!res.ok) return null;
+			const data = await res.json();
+			const products = data?.giftCardProducts;
+			if (!Array.isArray(products) || products.length === 0) return null;
+			return products[0] as GiftCardProduct;
+		} catch (err) {
+			console.error("[gift-cards] queryGiftCardProducts failed:", err);
+			return null;
+		}
+	})();
+	return cached;
 }

@@ -52,8 +52,7 @@ const bundleReviews: Record<string, Review[]> = {
 		},
 		{
 			id: "r3",
-			quote:
-				"Arrived well packed. Nice mix of learning and fun for ages 4–8.",
+			quote: "Arrived well packed. Nice mix of learning and fun for ages 4–8.",
 			name: "Nadia S.",
 			location: "Abu Dhabi",
 			rating: 4,

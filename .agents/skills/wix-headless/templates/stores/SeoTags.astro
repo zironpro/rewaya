@@ -1,11 +1,13 @@
 ---
 interface SeoTag {
-  type?: string;
-  props?: Record<string, any> | null;
-  children?: string;
-  disabled?: boolean;
+	type?: string;
+	props?: Record<string, any> | null;
+	children?: string;
+	disabled?: boolean;
 }
-interface Props { tags?: SeoTag[]; }
+interface Props {
+	tags?: SeoTag[];
+}
 const { tags = [] } = Astro.props;
 const visibleTags = tags.filter((t) => !t.disabled);
 ---

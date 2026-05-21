@@ -24,7 +24,8 @@ const bundles = [
 		tag: "Kids Favorite",
 		price: 149,
 		originalPrice: 165,
-		description: "<p>Curated kids bundle: Quran stories, Sunnah comics, phonics, and more.</p>",
+		description:
+			"<p>Curated kids bundle: Quran stories, Sunnah comics, phonics, and more.</p>",
 	},
 	{
 		slug: "bundle-2",
@@ -87,7 +88,11 @@ async function ensureBundleDetailsCollection() {
 					{ key: "slug", displayName: "Slug", type: "TEXT", required: true },
 					{ key: "title", displayName: "Title", type: "TEXT" },
 					{ key: "tag", displayName: "Tag", type: "TEXT" },
-					{ key: "originalPrice", displayName: "Original Price", type: "NUMBER" },
+					{
+						key: "originalPrice",
+						displayName: "Original Price",
+						type: "NUMBER",
+					},
 					{
 						key: "bundleProductId",
 						displayName: "Bundle Product ID",

@@ -8,11 +8,11 @@
 import type { StoreCategory } from "../utils/categories";
 
 interface Props {
-  categories: StoreCategory[];
-  // null = "All" view; otherwise the slug of the active category.
-  activeSlug: string | null;
-  prevHref: string | null;
-  nextHref: string | null;
+	categories: StoreCategory[];
+	// null = "All" view; otherwise the slug of the active category.
+	activeSlug: string | null;
+	prevHref: string | null;
+	nextHref: string | null;
 }
 
 const { categories, activeSlug, prevHref, nextHref } = Astro.props;

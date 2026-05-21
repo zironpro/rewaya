@@ -1,56 +1,49 @@
 ---
-// /category/[slug] — server-side filtered, cursor-paginated category
-// landing. Renders the same product grid as /products, but constrained to
-// one category, with breadcrumbs and a category-specific page header.
-//
-// The CategoryRail is shared with /products via transition:persist, so
-// switching categories swaps only the grid and header.
-import Layout from "../../layouts/Layout.astro";
-import ProductCard from "../../components/ProductCard.astro";
-import CategoryRail from "../../components/CategoryRail.astro";
 import {
-  getCategoryBySlug,
-  listProductsInCategory,
-  listStoreCategories,
+	getCategoryBySlug,
+	listProductsInCategory,
+	listStoreCategories,
 } from "../../utils/categories";
 
 const PAGE_SIZE = 24;
 const { slug } = Astro.params;
 
 if (!slug) {
-  return Astro.redirect("/products");
+	return Astro.redirect("/products");
 }
 
 const category = await getCategoryBySlug(slug);
 if (!category) {
-  return new Response("Category not found", { status: 404 });
+	return new Response("Category not found", { status: 404 });
 }
 
 const cursor = Astro.url.searchParams.get("cursor") ?? undefined;
 const page = await listProductsInCategory(category.id, {
-  limit: PAGE_SIZE,
-  cursor,
+	limit: PAGE_SIZE,
+	cursor,
 });
 
 // Drop the Wix Gift Card app's auto-mirror products (DIGITAL stand-ins
 // tagged "Gift Card") — real purchases happen via /gift-cards.
-const productList = page.items.filter((p: any) => p.ribbon?.name !== "Gift Card");
+const productList = page.items.filter(
+	(p: any) => p.ribbon?.name !== "Gift Card"
+);
 
 const allCategories = await listStoreCategories();
 
 const impressionContents = productList.map((p, index) => ({
-  id: p._id,
-  name: p.name,
-  price: Number(p.actualPriceRange?.minValue?.amount ?? 0),
-  currency: p.actualPriceRange?.minValue?.currency ?? undefined,
-  position: index + 1,
+	id: p._id,
+	name: p.name,
+	price: Number(p.actualPriceRange?.minValue?.amount ?? 0),
+	currency: p.actualPriceRange?.minValue?.currency ?? undefined,
+	position: index + 1,
 }));
 
 function pageHref(c: string | null): string | null {
-  if (!c) return null;
-  const params = new URLSearchParams();
-  params.set("cursor", c);
-  return `/category/${category!.slug}?${params.toString()}`;
+	if (!c) return null;
+	const params = new URLSearchParams();
+	params.set("cursor", c);
+	return `/category/${category!.slug}?${params.toString()}`;
 }
 ---
 

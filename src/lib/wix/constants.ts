@@ -6,9 +6,21 @@ export const WIX_SITE_ID =
 	process.env.WIX_SITE_ID ??
 	"835db726-cfca-4ef4-8305-4002f5f62aef";
 
+/** Cookie storing Wix visitor/member OAuth tokens (JSON). */
+export const WIX_SESSION_COOKIE = "wix_session";
+
+/** sessionStorage key for OAuth PKCE data during Wix-managed login redirect. */
+export const WIX_OAUTH_DATA_KEY = "wix_oauth_data";
+
+export const AUTH_CALLBACK_PATH = "/auth/callback";
+
 export function isWixCatalogEnabled(): boolean {
 	return (
 		process.env.USE_WIX_CATALOG !== "false" &&
 		Boolean(process.env.WIX_CLIENT_ID)
 	);
+}
+
+export function isWixAuthEnabled(): boolean {
+	return Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
 }

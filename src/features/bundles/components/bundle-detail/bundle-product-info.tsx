@@ -86,7 +86,7 @@ export function BundleProductInfo({
 				<p className="max-w-lg text-muted-foreground leading-relaxed">
 					The ultimate sequence of literature designed for the profound
 					intellectual and spiritual development of the modern seeker. Includes{" "}
-					{bundle.count} hardcover volumes and exclusive rewards.
+					{bundle.books.length} hardcover volumes and exclusive rewards.
 				</p>
 			</div>
 
