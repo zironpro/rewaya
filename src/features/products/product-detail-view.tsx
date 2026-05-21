@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { Button } from "@/components/ui/button";
 
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import { ProductMobileBuyBar } from "@/features/products/components/product-mobile-buy-bar";
@@ -67,10 +68,10 @@ export const ProductDetailView = ({
 
 	return (
 		<>
-			<main className="pt-20 pb-28 md:pb-16">
+			<main className="pt-4 pb-28 md:pb-16">
 				<div className="container">
 					<Breadcrumbs
-						className="mb-12"
+						className="mb-4"
 						items={[{ label: "Shop", href: "/shop" }, { label: product.title }]}
 					/>
 
@@ -97,7 +98,7 @@ export const ProductDetailView = ({
 							<span className="mb-4 font-bold text-primary text-sm">
 								{product.category}
 							</span>
-							<h1 className="mb-2 font-black font-serif text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+							<h1 className="mb-2 font-bold font-serif text-3xl tracking-tight sm:text-4xl">
 								{product.title}
 							</h1>
 							<p className="mb-8 font-bold text-base text-stone-400">
@@ -152,12 +153,12 @@ export const ProductDetailView = ({
 										Add to Collection
 									</AddToCartButton>
 								) : (
-									<button
-										className="hidden w-full bg-primary py-6 font-bold text-sm text-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:bg-secondary hover:shadow-2xl active:scale-[0.98] md:block"
+									<Button
+										className="hidden w-full max-w-md md:inline-flex"
 										type="button"
 									>
 										Add to Collection
-									</button>
+									</Button>
 								)}
 							</div>
 

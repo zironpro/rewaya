@@ -71,7 +71,7 @@ export function BookCard({
 
 	return (
 		<div className="group relative">
-			<Link className="absolute inset-0" href={productHref} />
+			<Link className="absolute inset-0 z-10" href={productHref} />
 			{/* Image Container */}
 			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
 				<Image
@@ -83,7 +83,7 @@ export function BookCard({
 				/>
 
 				{/* Icons Overlay */}
-				<div className="absolute top-4 right-4 z-10 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
+				<div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
 					<Button
 						className={`size-9 rounded-full backdrop-blur-sm transition-colors ${
 							isWishlisted
@@ -178,7 +178,7 @@ export function BookCard({
 				</div>
 
 				{/* Quick Add (Bottom) */}
-				<div className="absolute right-0 bottom-0 left-0 z-10 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
+				<div className="absolute right-0 bottom-0 left-0 z-20 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
 					{wixProductId ? (
 						<AddToCartButton
 							className="h-auto w-full rounded-none p-6 text-white hover:text-white"
