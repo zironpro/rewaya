@@ -4,6 +4,8 @@ import Image from "next/image";
 
 import { domAnimation, LazyMotion, m, useReducedMotion } from "framer-motion";
 
+import type { BookItem } from "../../types/bundle";
+
 type BookCell = {
 	alt: string;
 	gridClass: string;
@@ -20,9 +22,12 @@ type BookCell = {
 		y: number;
 		rotate: number;
 	};
+	id: string;
 	src: string;
 	tileClass: string;
 };
+
+type BookLayout = Omit<BookCell, "alt" | "id" | "src">;
 
 const hoverTransition = {
 	type: "spring" as const,
@@ -31,13 +36,11 @@ const hoverTransition = {
 	mass: 0.7,
 };
 
-const books: BookCell[] = [
+const mosaicLayouts: BookLayout[] = [
 	{
-		alt: "Book 1",
 		gridClass: "col-start-1 row-start-1",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
-		src: "/products/book-1.webp",
 		hidden: {
 			opacity: 0,
 			y: 48,
@@ -49,11 +52,9 @@ const books: BookCell[] = [
 		hover: { scale: 1.1, y: -10, rotate: -6 },
 	},
 	{
-		alt: "Book 2",
 		gridClass: "col-start-2 row-start-1 md:col-start-3",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
-		src: "/products/book-2.webp",
 		hidden: {
 			opacity: 0,
 			y: -40,
@@ -65,11 +66,9 @@ const books: BookCell[] = [
 		hover: { scale: 1.1, y: -12, rotate: 8 },
 	},
 	{
-		alt: "Book 3",
 		gridClass: "col-start-1 row-start-2 md:row-start-2",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
-		src: "/products/book-3.webp",
 		hidden: {
 			opacity: 0,
 			y: 20,
@@ -81,11 +80,9 @@ const books: BookCell[] = [
 		hover: { scale: 1.1, y: -8, rotate: -5 },
 	},
 	{
-		alt: "Book 4",
 		gridClass: "col-start-2 row-start-2 md:col-start-3 md:row-start-2",
 		tileClass:
 			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
-		src: "/products/book-4.webp",
 		hidden: {
 			opacity: 0,
 			y: 44,
@@ -97,6 +94,15 @@ const books: BookCell[] = [
 		hover: { scale: 1.1, y: -10, rotate: 7 },
 	},
 ];
+
+function buildMosaicBooks(books: BookItem[]): BookCell[] {
+	return books.slice(0, mosaicLayouts.length).map((book, index) => ({
+		...mosaicLayouts[index],
+		id: book.id,
+		alt: book.title,
+		src: book.coverUrl,
+	}));
+}
 
 const containerVariants = {
 	hidden: {},
@@ -161,8 +167,17 @@ function BookTile({
 	);
 }
 
-export const BookMosaic = () => {
+interface BookMosaicProps {
+	books: BookItem[];
+}
+
+export const BookMosaic = ({ books }: BookMosaicProps) => {
 	const prefersReducedMotion = useReducedMotion();
+	const mosaicBooks = buildMosaicBooks(books);
+
+	if (mosaicBooks.length === 0) {
+		return null;
+	}
 
 	return (
 		<LazyMotion features={domAnimation}>
@@ -176,10 +191,10 @@ export const BookMosaic = () => {
 					initial={prefersReducedMotion ? false : "hidden"}
 					variants={prefersReducedMotion ? undefined : containerVariants}
 				>
-					{books.map((book) => (
+					{mosaicBooks.map((book) => (
 						<BookTile
 							book={book}
-							key={book.src}
+							key={book.id}
 							prefersReducedMotion={prefersReducedMotion}
 						/>
 					))}

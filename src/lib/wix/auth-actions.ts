@@ -22,6 +22,16 @@ export type WixMember = {
 	contact?: {
 		firstName?: string;
 		lastName?: string;
+		phones?: Array<{ phone?: string; formattedPhone?: string; primary?: boolean }>;
+		addresses?: Array<{
+			id?: string;
+			addressLine?: string;
+			addressLine2?: string;
+			streetAddress?: { number?: string; name?: string };
+			city?: string;
+			country?: string;
+			postalCode?: string;
+		}>;
 	};
 };
 

@@ -64,13 +64,13 @@ export const SignupView = () => {
 	}
 
 	return (
-		<main className="flex grow items-center justify-center px-4 py-16 sm:py-24">
-			<div className="w-full max-w-md rounded-[2.5rem] border border-stone-100 bg-white p-8 shadow-sm md:p-12">
+		<main className="flex min-h-svh grow items-center justify-center px-4">
+			<div className="w-full max-w-md rounded-md border border-stone-100 bg-white p-8 shadow-sm md:p-6">
 				<div className="mb-12 text-center">
 					<span className="mb-4 block font-bold text-secondary text-sm">
 						Join the Circle
 					</span>
-					<h1 className="mb-4 font-black font-serif text-3xl sm:text-4xl md:text-5xl">
+					<h1 className="mb-4 font-bold font-serif text-3xl sm:text-4xl">
 						Sign <span className="font-normal italic">Up</span>.
 					</h1>
 					<p className="font-bold text-secondary/60 text-sm">
@@ -137,36 +137,13 @@ export const SignupView = () => {
 							/>
 						</div>
 
-						<p className="py-4 text-center text-secondary/60 text-sm leading-relaxed">
-							By creating an account, you agree to our <br />
-							<Link className="underline hover:text-black" href="/terms">
-								Terms of Service
-							</Link>{" "}
-							and{" "}
-							<Link className="underline hover:text-black" href="/privacy">
-								Privacy Policy
-							</Link>
-							.
-						</p>
-
-						<Button
-							className="h-14 w-full"
-							disabled={isPending}
-							type="submit"
-							variant="premium"
-						>
+						<Button className="w-full" disabled={isPending} type="submit">
 							{isPending ? "Creating account…" : "Create Account"}
 						</Button>
-						<Link
-							className="mt-4 flex items-center justify-center gap-2 font-bold text-secondary text-sm transition-colors hover:text-primary"
-							href="/"
-						>
-							Explore without login
-						</Link>
 					</form>
 				)}
 
-				<div className="mt-12 border-stone-100 border-t pt-8 text-center">
+				<div className="mt-9 border-stone-100 border-t pt-8 text-center">
 					<p className="font-bold text-secondary/60 text-sm">
 						Already have an account?{" "}
 						<Link
@@ -175,6 +152,17 @@ export const SignupView = () => {
 						>
 							Log In
 						</Link>
+					</p>
+					<p className="py-4 text-center text-secondary/60 text-xs leading-relaxed">
+						By creating an account, you agree to our <br />
+						<Link className="underline hover:text-black" href="/terms">
+							Terms of Service
+						</Link>{" "}
+						and{" "}
+						<Link className="underline hover:text-black" href="/privacy">
+							Privacy Policy
+						</Link>
+						.
 					</p>
 				</div>
 			</div>

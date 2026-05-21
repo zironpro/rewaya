@@ -69,7 +69,20 @@ Routes:
 
 - `/login`, `/signup` — email/password + Google/Facebook (Wix-managed OAuth)
 - `/auth/callback` — OAuth return URL for social login
-- `/profile` — member account (requires login)
+- `/profile` — account overview (requires login)
+- `/profile/orders` — order history from Wix eCommerce
+- `/profile/addresses` — member contact addresses
+- `/profile/payment` — cards from past orders + checkout CTA
+- `/profile/settings` — profile edit and password reset
+
+### Profile OAuth permissions
+
+In [OAuth apps settings](https://manage.wix.com/dashboard/835db726-cfca-4ef4-8305-4002f5f62aef/oauth-apps-settings), enable permissions for the headless client so logged-in members can load their account data:
+
+- **Read Orders** — `orders.searchOrders` for order history
+- **Read Members** / **Manage Members** — `getCurrentMember`, `updateMember` for profile and addresses
+
+If orders fail to load in the browser, the app falls back to `GET /api/profile/orders` using the `wix_session` cookie.
 
 If login fails with redirect or token errors, clear the `wix_session` cookie and retry. Confirm `NEXT_PUBLIC_WIX_CLIENT_ID` matches the OAuth app Client ID from `env pull`.
 

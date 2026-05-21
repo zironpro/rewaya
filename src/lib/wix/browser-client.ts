@@ -1,5 +1,5 @@
-import { currentCart } from "@wix/ecom";
-import { members } from "@wix/members";
+import { currentCart, orders } from "@wix/ecom";
+import { memberPrivacySettings, members } from "@wix/members";
 import { redirects } from "@wix/redirects";
 import { createClient, OAuthStrategy, type Tokens } from "@wix/sdk";
 import { catalogVersioning, products, productsV3 } from "@wix/stores";
@@ -20,8 +20,10 @@ export function createBrowserClient(initialTokens?: Tokens | null) {
 			productsV3,
 			catalogVersioning,
 			currentCart,
+			orders,
 			redirects,
 			members,
+			memberPrivacySettings,
 		},
 		auth: OAuthStrategy({
 			clientId,

@@ -86,7 +86,7 @@ export const LoginView = () => {
 				<div className="mb-10 space-y-6">
 					<div className="flex flex-col gap-4 sm:flex-row">
 						<Button
-							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
+							className="flex-1 gap-3"
 							disabled={isPending}
 							onClick={() => startWixLogin(returnUrl)}
 							type="button"
@@ -113,7 +113,7 @@ export const LoginView = () => {
 							Google
 						</Button>
 						<Button
-							className="h-12 flex-1 gap-3 rounded-xl border-stone-100 font-bold text-[#1E2147] text-sm transition-colors hover:bg-stone-50"
+							className="flex-1 gap-3"
 							disabled={isPending}
 							onClick={() => startWixLogin(returnUrl)}
 							type="button"

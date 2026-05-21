@@ -1,4 +1,4 @@
-import { ProfileView } from "@/features/profile/profile-view";
+import { OverviewPage } from "@/features/profile/pages/overview-page";
 
 export const metadata = {
 	title: "My Profile | Rewaya",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function ProfilePage() {
-	return <ProfileView />;
+	return <OverviewPage />;
 }
