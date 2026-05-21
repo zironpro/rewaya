@@ -4,6 +4,13 @@ import { notFound } from "next/navigation";
 import { BundleLandingPage } from "@/features/bundle-landing/BundleLandingPage";
 import { getBundleBySlug } from "@/features/bundle-landing/lib/bundleData";
 import { getBundles } from "@/lib/wix/bundles";
+import { getMarketingBundleStaticParams } from "@/lib/wix/static-params";
+
+export const revalidate = 86_400;
+
+export async function generateStaticParams() {
+	return getMarketingBundleStaticParams();
+}
 
 interface BundleSlugPageProps {
 	params: Promise<{ slug: string }>;

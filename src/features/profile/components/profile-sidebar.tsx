@@ -58,7 +58,7 @@ export const ProfileSidebar = ({
 					</div>
 				</div>
 
-				<nav className="flex gap-2.5 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden">
+				<nav className="scrollbar-none flex gap-2.5 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden">
 					{navItems.map((item) => {
 						const active = isNavActive(pathname, item.href);
 						return (

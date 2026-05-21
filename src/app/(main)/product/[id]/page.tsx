@@ -4,10 +4,15 @@ import {
 } from "@/features/products/product-detail-view";
 import { isWixCatalogEnabled } from "@/lib/wix/constants";
 import { getWixProductById, getWixProductBySlug } from "@/lib/wix/products";
+import { getProductStaticParams } from "@/lib/wix/static-params";
 import type { WixCatalogProduct } from "@/lib/wix/types";
 import { mapWixProductToBookProps } from "@/lib/wix/types";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86_400;
+
+export async function generateStaticParams() {
+	return getProductStaticParams();
+}
 
 function toDetailProduct(product: WixCatalogProduct): ProductDetailData {
 	const book = mapWixProductToBookProps(product);

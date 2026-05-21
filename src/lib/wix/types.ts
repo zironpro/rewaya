@@ -38,7 +38,7 @@ export interface BundleDetailsCmsItem {
 
 export function mapWixProductToBook(product: WixCatalogProduct): Book {
 	return {
-		id: product.id,
+		id: product.id ?? product.slug ?? "",
 		title: product.name,
 		isbn: product.sku ?? "",
 		publisher: product.publisher ?? "",
@@ -56,9 +56,10 @@ export function mapWixProductToBookProps(
 	product: WixCatalogProduct,
 	categoryNameMap?: Map<string, string>
 ): BookProps {
+	const wixId = product.id ?? product.slug ?? "";
 	const numericId =
-		Number.parseInt(product.id.replace(/\D/g, "").slice(0, 8), 10) ||
-		Math.abs(hashCode(product.id));
+		Number.parseInt(wixId.replace(/\D/g, "").slice(0, 8), 10) ||
+		Math.abs(hashCode(wixId || product.name || "product"));
 
 	const categoryFromIds = (product.categoryIds ?? product.collectionIds ?? [])
 		.map((id) => categoryNameMap?.get(id))

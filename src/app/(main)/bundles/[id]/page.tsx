@@ -1,8 +1,13 @@
 import { BundleDetailView } from "@/features/bundles/bundle-detail-view";
 import { getBundleBySlug, getBundles } from "@/lib/wix/bundles";
 import { getShopBooks } from "@/lib/wix/products";
+import { getBundleStaticParams } from "@/lib/wix/static-params";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 86_400;
+
+export async function generateStaticParams() {
+	return getBundleStaticParams();
+}
 
 export default async function BundleDetailPage({
 	params,
