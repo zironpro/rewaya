@@ -211,10 +211,10 @@ async function queryV1ProductsViaSdk(options: {
 	let query = client.products.queryProducts();
 
 	if (options.collectionId) {
-		query = query.hasSome("collections.id", [options.collectionId]);
+		query = query.hasSome("collectionIds", [options.collectionId]);
 	}
 	if (options.search?.trim()) {
-		query = query.contains("name", options.search.trim());
+		query = query.startsWith("name", options.search.trim());
 	}
 	if (options.slugs?.length === 1) {
 		query = query.eq("slug", options.slugs[0]);
