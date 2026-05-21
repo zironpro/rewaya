@@ -40,7 +40,7 @@ export default async function Image({
 	params: Promise<{ slug: string }>;
 }) {
 	const { slug } = await params;
-	const bundle = getBundleBySlug(slug);
+	const bundle = await getBundleBySlug(slug);
 
 	if (!bundle) {
 		return fallback();

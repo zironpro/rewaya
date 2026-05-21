@@ -1,3 +1,4 @@
+import type { Bundle } from "@/lib/bundles-data";
 import { cn } from "@/lib/utils";
 
 import type { BundleData } from "./types/bundle";
@@ -17,9 +18,13 @@ import { StickyCheckoutBar } from "./components/sticky-checkout-bar";
 
 interface BundleLandingPageProps {
 	bundle: BundleData;
+	relatedBundles: Bundle[];
 }
 
-export function BundleLandingPage({ bundle }: BundleLandingPageProps) {
+export function BundleLandingPage({
+	bundle,
+	relatedBundles,
+}: BundleLandingPageProps) {
 	const priceLabel = `AED ${bundle.price} · was ${bundle.originalPrice}`;
 
 	return (
@@ -30,7 +35,7 @@ export function BundleLandingPage({ bundle }: BundleLandingPageProps) {
 			<OverviewSection bundle={bundle} />
 			<BooksBreakdownSection bundle={bundle} />
 			<SocialProofSection bundle={bundle} />
-			<RelatedBundlesSection bundle={bundle} />
+			<RelatedBundlesSection bundles={relatedBundles} />
 			<BundleFaqSection bundle={bundle} />
 			<CtaSection bundle={bundle} />
 			<StickyCheckoutBar bundle={bundle} />

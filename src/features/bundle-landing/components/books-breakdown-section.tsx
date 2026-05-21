@@ -31,7 +31,7 @@ function BookRow({
 	return (
 		<div
 			className={cn(
-				"fade-rise grid gap-6 border-gold/10 border-b py-10 md:grid-cols-[120px_minmax(0,1fr)]",
+				"fade-rise grid items-center gap-6 rounded-md border bg-muted p-6 md:grid-cols-[10rem_minmax(0,1fr)]",
 				delayClass,
 				visible && "is-visible"
 			)}
@@ -40,7 +40,7 @@ function BookRow({
 			<div className="relative mx-auto aspect-4/5 w-24 overflow-hidden rounded-sm shadow md:mx-0 md:w-full">
 				<Image
 					alt={book.title}
-					className="object-cover"
+					className="object-contain"
 					fill
 					sizes="120px"
 					src={book.coverUrl}
@@ -65,7 +65,7 @@ function BookRow({
 export function BooksBreakdownSection({ bundle }: BooksBreakdownSectionProps) {
 	return (
 		<section className="bg-[#f3ece4]/55 py-14 md:py-20">
-			<div className="mx-auto max-w-6xl px-4 sm:px-6">
+			<div className="mx-auto max-w-4xl px-4 sm:px-6">
 				<h2 className="font-bold font-display text-2xl text-secondary tracking-tight md:text-3xl">
 					Title by title
 				</h2>
@@ -73,7 +73,7 @@ export function BooksBreakdownSection({ bundle }: BooksBreakdownSectionProps) {
 					A quick tour of what you are bringing home — no spoilers, just why
 					each book earned its place.
 				</p>
-				<div className="mt-4">
+				<div className="mt-4 flex flex-col gap-3">
 					{bundle.books.map((book, index) => (
 						<BookRow book={book} index={index} key={book.id} />
 					))}

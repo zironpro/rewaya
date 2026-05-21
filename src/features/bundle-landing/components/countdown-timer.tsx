@@ -22,13 +22,13 @@ export function CountdownTimer({
 
 	const box =
 		variant === "dark"
-			? "border-white/15 bg-black/25 text-gold"
+			? "border-gold/25 bg-black/25 text-gold"
 			: "border-gold bg-white text-primary";
 
 	return (
 		<div
 			className={cn(
-				"w-fit rounded-md border px-3 py-2 text-sm",
+				"w-fit rounded-sm border p-1 pr-2.5 text-sm",
 				box,
 				className
 			)}

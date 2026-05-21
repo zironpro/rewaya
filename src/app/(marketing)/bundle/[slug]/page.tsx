@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { BundleLandingPage } from "@/features/bundle-landing/BundleLandingPage";
 import { getBundleBySlug } from "@/features/bundle-landing/lib/bundleData";
+import { getBundles } from "@/lib/wix/bundles";
 
 interface BundleSlugPageProps {
 	params: Promise<{ slug: string }>;
@@ -12,7 +13,7 @@ export async function generateMetadata({
 	params,
 }: BundleSlugPageProps): Promise<Metadata> {
 	const { slug } = await params;
-	const bundle = getBundleBySlug(slug);
+	const bundle = await getBundleBySlug(slug);
 	if (!bundle) {
 		return { title: "Bundle" };
 	}
@@ -35,10 +36,16 @@ export async function generateMetadata({
 
 export default async function BundleSlugPage({ params }: BundleSlugPageProps) {
 	const { slug } = await params;
-	const bundle = getBundleBySlug(slug);
+	const [bundle, allBundles] = await Promise.all([
+		getBundleBySlug(slug),
+		getBundles(),
+	]);
 
 	if (!bundle) {
 		notFound();
 	}
-	return <BundleLandingPage bundle={bundle} />;
+
+	const relatedBundles = allBundles.filter((b) => b.id !== slug);
+
+	return <BundleLandingPage bundle={bundle} relatedBundles={relatedBundles} />;
 }

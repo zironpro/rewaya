@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button";
 
 import { HeroCarousel } from "@/features/home/components/hero-carousel";
 import { ProductStrip } from "@/features/products/components/product-strip";
+import type { Bundle } from "@/lib/bundles-data";
 import type { BookProps } from "@/lib/store";
 
 interface HomepageViewProps {
 	books: BookProps[];
+	bundles: Bundle[];
 }
 
-export const HomepageView = ({ books }: HomepageViewProps) => {
+export const HomepageView = ({ books, bundles }: HomepageViewProps) => {
 	const featured = [...books, ...books];
 	return (
 		<main className="overflow-hidden">
@@ -72,7 +74,7 @@ export const HomepageView = ({ books }: HomepageViewProps) => {
 			/>
 
 			{/* BUNDLES SECTION */}
-			<BundleSection />
+			<BundleSection bundles={bundles} />
 
 			{/* 3. BEST SELLERS */}
 			<ProductStrip

@@ -25,8 +25,6 @@ export async function getBundleDetailsFromCms(): Promise<
 		.limit(100)
 		.find();
 
-	console.log(result.items);
-
 	return result.items.map((item) => {
 		const rawIds = item.data?.includedBookIds;
 		let includedBookIds: string[] = [];

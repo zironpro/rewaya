@@ -47,7 +47,9 @@ export function mapWixProductToBook(product: WixCatalogProduct): Book {
 	};
 }
 
-export function mapWixProductToBookProps(product: WixCatalogProduct): BookProps {
+export function mapWixProductToBookProps(
+	product: WixCatalogProduct
+): BookProps {
 	const numericId =
 		Number.parseInt(product.id.replace(/\D/g, "").slice(0, 8), 10) ||
 		Math.abs(hashCode(product.id));
@@ -81,11 +83,10 @@ export function mapToBundle(
 	return {
 		id: details.slug,
 		title: details.title ?? storeProduct.name,
-		count: includedBooks.length,
 		price: storeProduct.price ?? 0,
 		originalPrice: details.originalPrice ?? storeProduct.price ?? 0,
 		tag: details.tag ?? "",
-		mainImage: storeProduct.imageUrl ?? "",
+		coverImage: storeProduct.imageUrl ?? "",
 		books: includedBooks,
 		wixProductId: storeProduct.id,
 	};

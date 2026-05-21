@@ -11,7 +11,7 @@ export function BundleRelatedBooks({ books }: BundleRelatedBooksProps) {
 	if (books.length === 0) return null;
 
 	return (
-		<section className="mt-12 border-stone-100 border-t pt-12">
+		<section className="mt-12">
 			<div className="mb-12 flex items-end justify-between">
 				<BundleSectionHeading
 					eyebrow="You might also like"

@@ -1,57 +1,46 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
 
-import type { BundleData } from "../types/bundle";
+import { ArrowRight } from "lucide-react";
+
+import { BundleSetCard } from "@/components/bundle-set-card";
+import { Button } from "@/components/ui/button";
+
+import type { Bundle } from "@/lib/bundles-data";
 
 interface RelatedBundlesSectionProps {
-	bundle: BundleData;
+	bundles: Bundle[];
 }
 
-export function RelatedBundlesSection({ bundle }: RelatedBundlesSectionProps) {
+export function RelatedBundlesSection({ bundles }: RelatedBundlesSectionProps) {
+	const featured = bundles.slice(0, 2);
+
+	if (featured.length === 0) return null;
+
 	return (
-		<section className="border-gold/15 border-t bg-white/35 py-14 md:py-16">
-			<div className="mx-auto max-w-6xl px-4 sm:px-6">
-				<h2 className="font-display text-(--bundle-ink) text-2xl tracking-tight md:text-3xl">
-					You may also like
-				</h2>
-				<p className="mt-2 text-muted-foreground">
-					Explore more ready-made stacks on the main bundles page.
-				</p>
-				<div className="mt-8 grid gap-6 sm:grid-cols-2">
-					{bundle.relatedBundles.map((rel) => (
-						<Link
-							className="group flex overflow-hidden rounded-lg border border-gold/20 bg-white/80 shadow-sm transition hover:border-gold/50"
-							href={rel.href}
-							key={rel.name}
-						>
-							<div className="relative h-full w-32 shrink-0 sm:w-40">
-								<Image
-									alt=""
-									className="object-cover transition duration-500 group-hover:scale-105"
-									fill
-									sizes="160px"
-									src={rel.imageUrl}
-								/>
-							</div>
-							<div className="flex flex-1 flex-col justify-center p-4">
-								{rel.tag ? (
-									<span className="font-semibold text-[10px] text-gold uppercase tracking-wider">
-										{rel.tag}
-									</span>
-								) : null}
-								<p className="mt-1 font-display text-(--bundle-ink) text-lg">
-									{rel.name}
-								</p>
-								<p className="mt-2 text-muted-foreground text-sm">
-									<span className="font-semibold text-(--bundle-ink)">
-										AED {rel.price}
-									</span>{" "}
-									<span className="line-through">AED {rel.originalPrice}</span>
-								</p>
-							</div>
-						</Link>
+		<section className="border-gold/30 border-y bg-card py-14 md:py-16">
+			<div className="container">
+				<div className="mb-9 flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
+					<div className="max-w-xl">
+						<h2 className="font-display font-semibold text-2xl text-secondary tracking-tight md:text-3xl">
+							You may also like
+						</h2>
+						<p className="mt-2 text-muted-foreground">
+							Explore more ready-made stacks on the main bundles page.
+						</p>
+					</div>
+
+					<Button
+						nativeButton={false}
+						render={<Link href="/bundles" />}
+						variant="ghost"
+					>
+						View All <ArrowRight />
+					</Button>
+				</div>
+
+				<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+					{featured.map((bundle) => (
+						<BundleSetCard bundle={bundle} key={bundle.id} />
 					))}
 				</div>
 			</div>

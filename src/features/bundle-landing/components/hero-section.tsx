@@ -24,6 +24,7 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 			className="relative min-h-[calc(100svh-(--spacing(16)))] overflow-hidden"
 			id="bundle-hero"
 		>
+			<div className="absolute inset-0 bg-[radial-gradient(100%_50%_at_50%_0%,oklch(from_var(--color-gold)_l_c_h/0.25)_0,var(--color-background)_50%,var(--color-background)_100%)] bg-white" />
 			<div className="container relative flex flex-col gap-8 px-4 pt-10 pb-16 md:min-h-[calc(100svh-(--spacing(16)))] md:items-center md:gap-12 md:px-8 md:pt-16 md:pb-20">
 				<BookMosaic />
 				<div className="relative z-10 flex flex-col items-center justify-center">

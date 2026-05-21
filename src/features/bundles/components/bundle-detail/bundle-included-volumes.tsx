@@ -55,25 +55,33 @@ export function BundleIncludedVolumes({ books }: BundleIncludedVolumesProps) {
 								</div>
 
 								<div className="flex h-full grow flex-col py-3">
-									<div className="mb-4">
+									<div>
 										<h4 className="mb-1 font-bold text-2xl text-secondary leading-tight tracking-tight transition-colors group-hover:text-primary">
 											{book.title}
 										</h4>
-										<div className="flex items-center gap-2 font-medium text-primary text-sm">
-											<UserIcon size={14} />
-											<span>{book.author}</span>
-										</div>
+										{book.author && (
+											<div className="flex items-center gap-2 font-medium text-primary text-sm">
+												<UserIcon size={14} />
+												<span>{book.author}</span>
+											</div>
+										)}
+										<p className="mt-4 line-clamp-3 text-muted-foreground tracking-tight">
+											{book.overview}
+										</p>
 									</div>
-
-									<p className="mb-4 line-clamp-3 font-medium text-muted-foreground text-sm tracking-tight">
-										{book.overview}
-									</p>
 
 									<div className="mt-auto grid grid-cols-2 gap-3">
 										<BookMeta label="ISBN" value={book.isbn} />
 										<BookMeta label="Publisher" value={book.publisher} />
-										<BookMeta label="Language" value={book.language} />
-										<BookMeta label="Genre" value={book.genre} />
+										{book.author && (
+											<BookMeta label="Author" value={book.author} />
+										)}
+										{book.language && (
+											<BookMeta label="Language" value={book.language} />
+										)}
+										{book.genre && (
+											<BookMeta label="Genre" value={book.genre} />
+										)}
 									</div>
 								</div>
 							</div>
