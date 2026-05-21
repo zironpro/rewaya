@@ -29,7 +29,6 @@ export function BundleCheckoutCta({
 				productId={bundle.wixProductId}
 				productName={bundle.name}
 				size={size}
-				variant="secondary"
 			>
 				<ShoppingBag className="size-4" />
 				Add bundle to cart
@@ -40,7 +39,7 @@ export function BundleCheckoutCta({
 	return (
 		<Link
 			className={cn(
-				buttonVariants({ variant: "secondary", size }),
+				buttonVariants({ size }),
 				"btn-shimmer inline-flex w-full items-center justify-center gap-2 no-underline hover:no-underline",
 				className
 			)}

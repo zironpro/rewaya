@@ -1,27 +1,39 @@
-import { Lora } from "next/font/google";
-
 import { cn } from "@/lib/utils";
 
-import { BundleLandingClient } from "./BundleLandingClient";
 import type { BundleData } from "./types/bundle";
 
 import "./styles/bundleAnimations.css";
 
-const bundleLora = Lora({
-	variable: "--bundle-lora",
-	subsets: ["latin"],
-	display: "swap",
-	weight: ["400"],
-});
+import { BookGallerySection } from "./components/book-gallery-section";
+import { BooksBreakdownSection } from "./components/books-breakdown-section";
+import { BundleFaqSection } from "./components/bundle-faq-section";
+import { CtaSection } from "./components/cta-section";
+import { HeroSection } from "./components/hero-section";
+import { MinimalNav } from "./components/minimal-nav";
+import { OverviewSection } from "./components/overview-section";
+import { RelatedBundlesSection } from "./components/related-bundles-section";
+import { SocialProofSection } from "./components/social-proof-section";
+import { StickyCheckoutBar } from "./components/sticky-checkout-bar";
 
 interface BundleLandingPageProps {
 	bundle: BundleData;
 }
 
 export function BundleLandingPage({ bundle }: BundleLandingPageProps) {
+	const priceLabel = `AED ${bundle.price} · was ${bundle.originalPrice}`;
+
 	return (
-		<main className={cn(bundleLora.variable, "bundle-page")}>
-			<BundleLandingClient bundle={bundle} />
+		<main className={cn("bundle-page")}>
+			<MinimalNav bundleName={bundle.name} priceLabel={priceLabel} />
+			<HeroSection bundle={bundle} />
+			<BookGallerySection bundle={bundle} />
+			<OverviewSection bundle={bundle} />
+			<BooksBreakdownSection bundle={bundle} />
+			<SocialProofSection bundle={bundle} />
+			<RelatedBundlesSection bundle={bundle} />
+			<BundleFaqSection bundle={bundle} />
+			<CtaSection bundle={bundle} />
+			<StickyCheckoutBar bundle={bundle} />
 		</main>
 	);
 }

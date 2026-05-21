@@ -24,7 +24,7 @@ export const badgeVariants = cva(
 			},
 			variant: {
 				default:
-					"bg-primary text-primary-foreground [button&,a&]:hover:bg-primary/90",
+					"inset-shadow-[0_1px_--theme(--color-white/8%)] bg-primary text-primary-foreground [button&,a&]:hover:bg-primary/90",
 				destructive:
 					"bg-destructive text-white [button&,a&]:hover:bg-destructive/90",
 				error:
@@ -33,7 +33,7 @@ export const badgeVariants = cva(
 				outline:
 					"border-input bg-background text-foreground dark:bg-input/32 [button&,a&]:hover:bg-accent/50 dark:[button&,a&]:hover:bg-input/48",
 				secondary: "bg-card text-primary [button&,a&]:hover:bg-secondary/90",
-				success: "bg-success/8 text-success-foreground dark:bg-success/16",
+				success: "bg-success text-success-foreground dark:bg-success/16",
 				warning: "bg-warning/8 text-warning-foreground dark:bg-warning/16",
 			},
 		},

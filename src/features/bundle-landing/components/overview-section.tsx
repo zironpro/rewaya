@@ -1,5 +1,3 @@
-"use client";
-
 import type { BundleData } from "../types/bundle";
 
 interface OverviewSectionProps {
@@ -12,31 +10,24 @@ export function OverviewSection({ bundle }: OverviewSectionProps) {
 			<div className="mx-auto max-w-6xl px-4 sm:px-6">
 				<div className="grid gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:items-start">
 					<div>
-						<h2 className="font-display text-2xl text-[var(--bundle-ink)] tracking-tight md:text-3xl">
+						<h2 className="font-display text-(--bundle-ink) text-2xl tracking-tight md:text-3xl">
 							Why this shelf works
 						</h2>
-						<p className="mt-4 font-[family-name:var(--font-editorial)] text-[var(--bundle-muted)] text-base leading-relaxed md:text-lg">
+						<p className="mt-4 text-base text-muted-foreground leading-relaxed md:text-lg">
 							{bundle.longDescription}
 						</p>
 					</div>
-					<ul className="space-y-4 rounded-lg border border-[var(--bundle-gold)]/20 bg-white/55 p-6 font-[family-name:var(--font-body)] text-[var(--bundle-ink)] text-sm shadow-sm">
+					<ul className="space-y-4 rounded-lg border border-gold/20 bg-white/55 p-6 text-(--bundle-ink) text-sm shadow-sm">
 						<li className="flex gap-3">
-							<span className="mt-0.5 font-display text-[var(--bundle-gold)]">
-								✦
-							</span>
+							<span className="mt-0.5 font-display text-gold">✦</span>
 							<span>
 								<strong className="font-semibold">Biography & context</strong> —
 								anchor your reading in the life of the Prophet with{" "}
-								<em className="font-[family-name:var(--font-editorial)] not-italic">
-									The Sealed Nectar
-								</em>
-								.
+								<em className="not-italic">The Sealed Nectar</em>.
 							</span>
 						</li>
 						<li className="flex gap-3">
-							<span className="mt-0.5 font-display text-[var(--bundle-gold)]">
-								✦
-							</span>
+							<span className="mt-0.5 font-display text-gold">✦</span>
 							<span>
 								<strong className="font-semibold">Daily worship</strong> —
 								portable duas with Fortress of the Muslim for mornings, travel,
@@ -44,9 +35,7 @@ export function OverviewSection({ bundle }: OverviewSectionProps) {
 							</span>
 						</li>
 						<li className="flex gap-3">
-							<span className="mt-0.5 font-display text-[var(--bundle-gold)]">
-								✦
-							</span>
+							<span className="mt-0.5 font-display text-gold">✦</span>
 							<span>
 								<strong className="font-semibold">Heart & habit</strong> — pair
 								spiritual reflection with small, repeatable routines you can

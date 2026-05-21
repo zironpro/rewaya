@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+export const BUNDLE_HERO_ID = "bundle-hero";
 
 /**
  * When the hero leaves the viewport, sticky chrome (nav + mobile bar) can appear.
  */
 export function useStickyNav() {
-	const heroRef = useRef<HTMLElement | null>(null);
 	const [pastHero, setPastHero] = useState(false);
 
 	useEffect(() => {
-		const hero = heroRef.current;
+		const hero = document.getElementById(BUNDLE_HERO_ID);
 		if (!hero) return;
 
 		const obs = new IntersectionObserver(
@@ -24,5 +25,5 @@ export function useStickyNav() {
 		return () => obs.disconnect();
 	}, []);
 
-	return { heroRef, pastHero };
+	return { pastHero };
 }

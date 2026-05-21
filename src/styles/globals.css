@@ -10,6 +10,7 @@
 	--color-secondary: var(--secondary); /* Dark Blue from logo */
 	--color-paper: #ffffff;
 	--color-ink: var(--secondary);
+	--color-gold: oklch(0.7047 0.1356 89.51);
 
 	--font-serif: var(--font-display);
 	--font-display: var(--font-display);
@@ -53,6 +54,27 @@
 	--color-success: var(--success);
 	--color-info-foreground: var(--info-foreground);
 	--color-info: var(--info);
+
+	--shadow-sm:
+		0 0 0 0.5px --alpha(var(--color-mauve-950) / 9%),
+		0 3px 3px -1.5px --alpha(var(--color-mauve-950) / 9%),
+		0 6px 6px -3px --alpha(var(--color-mauve-950) / 6%),
+		0 12px 12px -6px --alpha(var(--color-mauve-950) / 4%);
+
+	--shadow-md:
+		0 0 0 0.5px --alpha(var(--color-mauve-950) / 9%),
+		0 3px 3px -1.5px --alpha(var(--color-mauve-950) / 9%),
+		0 6px 6px -3px --alpha(var(--color-mauve-950) / 6%),
+		0 12px 12px -6px --alpha(var(--color-mauve-950) / 6%),
+		0 24px 24px -12px --alpha(var(--color-mauve-950) / 4%);
+
+	--shadow-lg:
+		0 48px 48px -24px --alpha(var(--color-mauve-950) / 9%),
+		0 24px 24px -12px --alpha(var(--color-mauve-950) / 10%),
+		0 12px 12px -6px --alpha(var(--color-mauve-950) / 9%),
+		0 6px 6px -3px --alpha(var(--color-mauve-950) / 9%),
+		0 3px 3px -1.5px --alpha(var(--color-mauve-950) / 6%),
+		0 0 0 1px --alpha(var(--color-mauve-950) / 9%);
 }
 
 :root {
@@ -90,7 +112,7 @@
 	--info: var(--color-blue-500);
 	--info-foreground: var(--color-blue-700);
 	--success: var(--color-emerald-500);
-	--success-foreground: var(--color-emerald-700);
+	--success-foreground: var(--color-emerald-50);
 	--warning: var(--color-amber-500);
 	--warning-foreground: var(--color-amber-700);
 }

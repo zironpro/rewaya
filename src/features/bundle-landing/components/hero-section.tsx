@@ -1,144 +1,73 @@
 "use client";
 
-import { forwardRef } from "react";
-
 import Image from "next/image";
+import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import { ShoppingCartIcon } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+import { CurrencyIcon } from "@/assets/icons/currency";
 
 import type { BundleData } from "../types/bundle";
 import { CountdownTimer } from "./countdown-timer";
+import { BookMosaic } from "./ui/book-mosic";
 
 interface HeroSectionProps {
 	bundle: BundleData;
-	/** After mount, reveals fade-rise blocks (avoids SSR/hydration issues). */
-	revealed: boolean;
 }
 
-export const HeroSection = forwardRef<HTMLElement, HeroSectionProps>(
-	function HeroSection({ bundle, revealed }, ref) {
-		const rotations = [
-			"-rotate-6",
-			"rotate-3",
-			"-rotate-2",
-			"rotate-6",
-			"-rotate-3",
-		];
-		const lead = bundle.books[0];
-		const mosaic = bundle.books.slice(0, 5);
+export function HeroSection({ bundle }: HeroSectionProps) {
+	return (
+		<section
+			className="relative min-h-[calc(100svh-(--spacing(16)))] overflow-hidden"
+			id="bundle-hero"
+		>
+			<div className="container relative gap-8 px-4 pt-10 pb-16 md:items-center md:gap-12 md:px-8 md:pt-16 md:pb-20">
+				<div className="order-2 flex flex-col items-center justify-center md:order-1">
+					<CountdownTimer slug={bundle.slug} />
 
-		return (
-			<section
-				className="relative min-h-[calc(100svh-(--spacing(16)))] overflow-hidden"
-				ref={ref}
-			>
-				<div
-					aria-hidden
-					className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(44,36,28,0.06)_0%,transparent_55%)]"
-				/>
-
-				<div className="relative z-1 mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 pt-10 pb-16 md:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] md:items-center md:gap-12 md:px-8 md:pt-16 md:pb-20">
-					<div className="order-2 flex flex-col justify-center md:order-1">
-						<p
-							className={cn(
-								"fade-rise fade-rise-delay-1 font-medium text-(--bundle-muted) text-xs uppercase tracking-[0.2em]",
-								revealed && "is-visible"
-							)}
-						>
-							Limited bundle
-						</p>
-						<h1
-							className={cn(
-								"fade-rise fade-rise-delay-2 mt-3 font-display text-(--bundle-ink) text-[clamp(2rem,5vw,3.25rem)] leading-[1.08] tracking-tight",
-								revealed && "is-visible"
-							)}
-						>
-							{bundle.name}
-						</h1>
-						<p
-							className={cn(
-								"fade-rise fade-rise-delay-3 font-(family-name:--font-editorial) mt-4 max-w-xl text-(--bundle-muted) text-base leading-relaxed sm:text-lg",
-								revealed && "is-visible"
-							)}
-						>
-							{bundle.tagline}
-						</p>
-						<div
-							className={cn(
-								"fade-rise fade-rise-delay-4 mt-6 flex flex-wrap items-center gap-4",
-								revealed && "is-visible"
-							)}
-						>
-							<div className="flex items-baseline gap-2">
-								<span className="font-display font-semibold text-3xl text-[var(--bundle-ink)]">
-									AED {bundle.price}
-								</span>
-								<span className="text-[var(--bundle-muted)] text-lg line-through">
-									{bundle.originalPrice}
-								</span>
-							</div>
-							<span className="rounded-full border border-[var(--bundle-gold)]/40 bg-white/60 px-3 py-1 font-medium text-[var(--bundle-ink)] text-xs">
-								Save AED {bundle.savingsAmount}
+					<h1 className="mt-3 font-bold font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.08] tracking-tight">
+						{bundle.name}
+					</h1>
+					<p className="mt-2 max-w-xl text-base text-muted-foreground leading-relaxed sm:text-lg">
+						{bundle.tagline}
+					</p>
+					<div className="mt-4 mb-6 items-center gap-4">
+						<span className="font-black font-display text-3xl text-primary">
+							AED {bundle.price}
+						</span>
+						<div className="mt-2 flex items-center gap-2">
+							<span className="relative flex items-center gap-1 text-muted-foreground/60 text-sm">
+								<CurrencyIcon className="size-3" /> {bundle.originalPrice}
+								<span className="absolute top-1/2 left-1/2 h-px w-[115%] -translate-x-1/2 -translate-y-1/2 bg-muted-foreground/60" />
 							</span>
-						</div>
-						<div
-							className={cn(
-								"fade-rise fade-rise-delay-4 mt-6 max-w-md",
-								revealed && "is-visible"
-							)}
-						>
-							<CountdownTimer slug={bundle.slug} />
+							<Badge size="sm" variant="success">
+								Save{" "}
+								<span className="font-bold">AED {bundle.savingsAmount}</span>
+							</Badge>
 						</div>
 					</div>
-
-					<div className="order-1 flex min-h-[40vh] items-center justify-center md:order-2 md:min-h-0">
-						<div className="relative mx-auto aspect-4/5 w-full max-w-[320px] sm:max-w-[380px] md:max-w-none">
-							<div className="absolute inset-0 flex items-center justify-center">
-								{mosaic.map((book, i) => {
-									const isLead = book.id === lead?.id;
-									const zLayers = [
-										"z-[12]",
-										"z-[11]",
-										"z-[10]",
-										"z-[9]",
-										"z-[8]",
-									] as const;
-									const z = isLead ? "z-20" : (zLayers[i] ?? "z-[8]");
-									const offset =
-										i === 0
-											? "translate-x-0 translate-y-0"
-											: i === 1
-												? "translate-x-[18%] -translate-y-[6%]"
-												: i === 2
-													? "-translate-x-[20%] translate-y-[8%]"
-													: i === 3
-														? "translate-x-[12%] translate-y-[22%]"
-														: "-translate-x-[8%] -translate-y-[18%]";
-									return (
-										<div
-											className={`absolute ${offset} ${rotations[i] ?? ""} ${z} w-[46%] max-w-[180px] shadow-[0_18px_40px_-12px_rgba(44,36,28,0.45)] transition-transform duration-500 hover:z-30 hover:scale-[1.02]`}
-											key={book.id}
-										>
-											<div
-												className={`relative aspect-2/3 overflow-hidden rounded-sm bg-neutral-200 ${isLead ? "ring-(--bundle-gold) ring-2 ring-offset-2 ring-offset-[#FBF6EE]" : ""}`}
-											>
-												<Image
-													alt={book.title}
-													className="object-cover"
-													fill
-													priority={i < 2}
-													sizes="(max-width: 768px) 45vw, 200px"
-													src={book.coverUrl}
-												/>
-											</div>
-										</div>
-									);
-								})}
-							</div>
-						</div>
+					<Button
+						className="btn-shimmer hover:px-6"
+						nativeButton={false}
+						render={<Link href={`/bundles/${bundle.slug}`} />}
+						size="lg"
+					>
+						Get your bundle now <ShoppingCartIcon className="ml-2 size-4" />
+					</Button>
+					<div className="relative mt-10 aspect-5/3 w-2xl">
+						<Image
+							alt="Bundle Hero"
+							className="rounded-md object-cover"
+							fill
+							src="/bundles/creative-brain-booster-pack.webp"
+						/>
 					</div>
 				</div>
-			</section>
-		);
-	}
-);
+				<BookMosaic />
+			</div>
+		</section>
+	);
+}

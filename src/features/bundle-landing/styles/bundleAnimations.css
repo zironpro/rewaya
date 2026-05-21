@@ -3,7 +3,6 @@
 	--bundle-ink: #2c241c;
 	--bundle-cream: #fbf6ee;
 	--bundle-muted: rgba(44, 36, 28, 0.62);
-	--font-editorial: var(--bundle-lora);
 	background-color: #fbf6ee;
 	color: var(--bundle-ink);
 }
