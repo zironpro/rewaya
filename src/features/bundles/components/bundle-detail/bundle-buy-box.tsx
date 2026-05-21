@@ -19,8 +19,8 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 			<div className="rounded-xl border bg-card p-6 lg:sticky lg:top-28">
 				<div>
 					<span className="text-muted-foreground text-xs">Bundle contents</span>
-					<h3 className="font-bold text-secondary text-sm">
-						{bundle.count} Essential volumes
+					<h3 className="font-bold text-secondary uppercase">
+						{bundle.books.length} Books
 					</h3>
 				</div>
 				<Separator className="my-3" />
@@ -34,7 +34,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 								<span className="mt-0.5 w-6 shrink-0 text-muted-foreground/50 text-xs">
 									{(i + 1).toString().padStart(2, "0")}
 								</span>
-								<p className="font-bold text-sm text-stone-500 leading-tight transition-colors group-hover/item:text-primary">
+								<p className="font-medium text-sm text-stone-500 leading-tight transition-colors group-hover/item:text-primary">
 									{book.title}
 								</p>
 							</div>

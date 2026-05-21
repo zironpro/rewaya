@@ -6,9 +6,9 @@ export const Logo = () => {
 			<Image
 				alt="Al Rewaya Logo"
 				className="h-11 w-auto object-contain"
-				height={64}
+				height={44}
 				src="/logo.png"
-				width={260}
+				width={40}
 			/>
 			<div className="hidden flex-col leading-none xl:flex">
 				<span className="font-bold font-display text-secondary text-xl tracking-tight">

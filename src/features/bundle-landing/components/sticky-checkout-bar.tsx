@@ -25,8 +25,8 @@ export function StickyCheckoutBar({ bundle }: StickyCheckoutBarProps) {
 					<p className="truncate font-display text-(--bundle-ink) text-sm">
 						{bundle.name}
 					</p>
-					<p className="text-[var(--bundle-muted)] text-xs">
-						<span className="font-semibold text-[var(--bundle-ink)]">
+					<p className="text-muted-foreground text-xs">
+						<span className="font-semibold text-secondary">
 							AED {bundle.price}
 						</span>{" "}
 						<span className="line-through">AED {bundle.originalPrice}</span>

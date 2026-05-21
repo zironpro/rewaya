@@ -7,7 +7,7 @@ export interface BookProps {
 	/** URL slug from Wix catalog */
 	slug?: string;
 	title: string;
-	author: string;
+	author?: string;
 	price: number;
 	image: string;
 	category: string;

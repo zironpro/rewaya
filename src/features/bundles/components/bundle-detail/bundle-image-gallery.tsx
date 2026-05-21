@@ -4,6 +4,8 @@ import * as React from "react";
 
 import Image from "next/image";
 
+import Autoplay from "embla-carousel-autoplay";
+
 import {
 	Carousel,
 	type CarouselApi,
@@ -26,9 +28,23 @@ const thumbCarouselOpts = {
 	align: "start" as const,
 };
 
+const AUTOPLAY_DELAY_MS = 5000;
+
 const mainCarouselOpts = {
-	loop: false,
+	loop: true,
 };
+
+function usePrefersReducedMotion() {
+	return React.useSyncExternalStore(
+		(onStoreChange) => {
+			const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+			mq.addEventListener("change", onStoreChange);
+			return () => mq.removeEventListener("change", onStoreChange);
+		},
+		() => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+		() => false
+	);
+}
 
 function useGallerySync(
 	mainApi: CarouselApi | undefined,
@@ -133,6 +149,16 @@ function ThumbnailCarousel({
 }
 
 export function BundleImageGallery({ bundle }: BundleImageGalleryProps) {
+	const prefersReducedMotion = usePrefersReducedMotion();
+	const autoplayPlugin = React.useRef(
+		Autoplay({
+			delay: AUTOPLAY_DELAY_MS,
+			playOnInit: false,
+			stopOnInteraction: true,
+			stopOnMouseEnter: true,
+		})
+	);
+
 	const [mainApi, setMainApi] = React.useState<CarouselApi>();
 	const [mobileThumbsApi, setMobileThumbsApi] = React.useState<CarouselApi>();
 	const [desktopThumbsApi, setDesktopThumbsApi] = React.useState<CarouselApi>();
@@ -153,7 +179,30 @@ export function BundleImageGallery({ bundle }: BundleImageGalleryProps) {
 		[mobileThumbsApi, desktopThumbsApi]
 	);
 
-	const { selectedIndex, onThumbClick } = useGallerySync(mainApi, thumbApis);
+	const { selectedIndex, onThumbClick: scrollToSlide } = useGallerySync(
+		mainApi,
+		thumbApis
+	);
+
+	React.useEffect(() => {
+		if (!mainApi) return;
+		const autoplay = mainApi.plugins()?.autoplay;
+		if (!autoplay) return;
+
+		if (prefersReducedMotion) {
+			autoplay.stop();
+		} else {
+			autoplay.play();
+		}
+	}, [mainApi, prefersReducedMotion]);
+
+	const onThumbClick = React.useCallback(
+		(index: number) => {
+			scrollToSlide(index);
+			mainApi?.plugins()?.autoplay?.reset();
+		},
+		[scrollToSlide, mainApi]
+	);
 
 	const navButtonClass =
 		"top-1/2 size-9 -translate-y-1/2 border-0 bg-white/90 shadow-md backdrop-blur-sm hover:bg-white disabled:opacity-40";
@@ -189,6 +238,7 @@ export function BundleImageGallery({ bundle }: BundleImageGalleryProps) {
 					<Carousel
 						className="w-full"
 						opts={mainCarouselOpts}
+						plugins={[autoplayPlugin.current]}
 						setApi={setMainApi}
 					>
 						<div className="relative aspect-square overflow-hidden rounded-2xl">

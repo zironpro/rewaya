@@ -55,6 +55,12 @@
 	--color-info-foreground: var(--info-foreground);
 	--color-info: var(--info);
 
+	--shadow-xs:
+		0 0 0 0.5px --alpha(var(--color-mauve-950) / 6%),
+		0 2px 2px -1px --alpha(var(--color-mauve-950) / 4%),
+		0 4px 4px -2px --alpha(var(--color-mauve-950) / 2%),
+		0 8px 8px -4px --alpha(var(--color-mauve-950) / 1%);
+
 	--shadow-sm:
 		0 0 0 0.5px --alpha(var(--color-mauve-950) / 9%),
 		0 3px 3px -1.5px --alpha(var(--color-mauve-950) / 9%),
@@ -78,7 +84,7 @@
 }
 
 :root {
-	--background: oklch(0.99 0.0027 360);
+	--background: oklch(0.9659 0.0115 67.83);
 	--foreground: oklch(0.145 0 0);
 
 	--card: oklch(1 0 0);

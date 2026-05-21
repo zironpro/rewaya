@@ -34,7 +34,7 @@ export function Navbar({
 	const [wishlistCount] = useAtom(wishlistCountAtom);
 
 	return (
-		<header className="sticky inset-x-0 top-0 z-40 bg-white shadow-sm">
+		<header className="sticky inset-x-0 top-0 z-40 bg-white shadow-xs">
 			<div className="h-16 border-stone-100 border-b">
 				<div className="container mx-auto flex h-full items-center gap-4 md:gap-8">
 					<Link href="/">

@@ -46,7 +46,7 @@ export const HomepageView = ({ books }: HomepageViewProps) => {
 					className="object-cover opacity-60"
 					fill
 					sizes="100vw"
-					src="https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=2000&auto=format&fit=crop"
+					src="/banners/exhibition-banner.webp"
 				/>
 				<div className="relative z-10 flex flex-col items-center justify-center text-center text-white">
 					<h3 className="mb-4 font-serif text-3xl italic md:text-5xl">
@@ -95,7 +95,9 @@ export const HomepageView = ({ books }: HomepageViewProps) => {
 						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
 					/>
 					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary p-6 sm:p-10 md:p-16 lg:p-20">
-						<Badge variant="secondary">Special Release</Badge>
+						<Badge size="sm" variant="secondary">
+							Special Release
+						</Badge>
 						<h3 className="mt-2 mb-9 max-w-2xl font-serif text-4xl text-white leading-tight md:text-6xl">
 							Nurturing the
 							<span className="font-normal text-accent italic">
@@ -103,7 +105,7 @@ export const HomepageView = ({ books }: HomepageViewProps) => {
 							</span>{" "}
 							of Seekers.
 						</h3>
-						<Button size="lg">Shop Children&apos;s</Button>
+						<Button size="lg">Shop Children books</Button>
 					</div>
 				</div>
 			</section>

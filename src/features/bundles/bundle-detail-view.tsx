@@ -2,6 +2,8 @@
 
 import { useMemo } from "react";
 
+import { notFound } from "next/navigation";
+
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { PolicyCards } from "@/components/PolicyCards";
 import { Separator } from "@/components/ui/separator";
@@ -53,13 +55,7 @@ export const BundleDetailView = ({
 		[relatedBooks, bundle?.id, id]
 	);
 
-	if (!bundle) {
-		return (
-			<main className="container py-32 text-center">
-				<p className="text-stone-500">Bundle not found.</p>
-			</main>
-		);
-	}
+	if (!bundle) return notFound();
 
 	return (
 		<>

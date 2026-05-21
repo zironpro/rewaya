@@ -16,9 +16,9 @@ const essentialIslamicLibrary: BundleData = {
 		"A curated shelf of classics and modern essentials: biography, devotion, fiction with meaning, and practical spirituality — at one special bundle price.",
 	longDescription:
 		"Whether you are building a home library or gifting someone their next season of reading, this set balances depth with readability. Each title stands alone; together they map a thoughtful path through seerah, daily worship, narrative wisdom, and heart-centered renewal.",
-	price: 299,
-	originalPrice: 419,
-	savingsAmount: 120,
+	price: 140,
+	originalPrice: 239,
+	savingsAmount: 140,
 	wixProductId: undefined,
 	coverImage: "/bundles/creative-brain-booster-pack.webp",
 	books: [

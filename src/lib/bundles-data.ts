@@ -19,7 +19,6 @@ export interface Book {
 export interface Bundle {
 	id: string;
 	title: string;
-	count: number;
 	price: number;
 	originalPrice: number;
 	tag: string;
@@ -33,8 +32,7 @@ export const bundles: Bundle[] = [
 	{
 		id: "creative-brain-booster-pack",
 		title: "Creative Brain Booster Fun Pack",
-		count: 5,
-		price: 149,
+		price: 140,
 		originalPrice: 165,
 		tag: "Best Seller",
 		coverImage: "/bundles/creative-brain-booster-pack.webp",
@@ -119,7 +117,6 @@ export const bundles: Bundle[] = [
 	{
 		id: "little-learner-activity-pack",
 		title: "Little Learner Activity Pack",
-		count: 5,
 		price: 115,
 		originalPrice: 130,
 		tag: "Top Value",
@@ -200,7 +197,6 @@ export const bundles: Bundle[] = [
 	{
 		id: "little-muslim-starter-pack",
 		title: "Little Muslim Starter Pack",
-		count: 5,
 		price: 85,
 		originalPrice: 95,
 		tag: "Top Value",
@@ -282,7 +278,6 @@ export const bundles: Bundle[] = [
 	{
 		id: "play-and-learn-pack",
 		title: "Play & Learn Pack",
-		count: 5,
 		price: 149,
 		originalPrice: 168,
 		tag: "Premium Set",
