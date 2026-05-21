@@ -11,7 +11,7 @@ interface CtaSectionProps {
 export function CtaSection({ bundle }: CtaSectionProps) {
 	return (
 		<section
-			className="relative overflow-hidden border-white/10 border-t bg-secondary py-16 text-[var(--bundle-cream)] md:py-24"
+			className="relative overflow-hidden border-white/10 border-t bg-secondary py-16 text-(--bundle-cream) md:py-24"
 			id="checkout"
 		>
 			<div
@@ -19,7 +19,7 @@ export function CtaSection({ bundle }: CtaSectionProps) {
 				className="pointer-events-none absolute inset-0 opacity-[0.07]"
 				style={{
 					backgroundImage:
-						"repeating-linear-gradient(-135deg, transparent, transparent 3px, rgba(255,255,255,0.65) 3px, rgba(255,255,255,0.65) 4px)",
+						"repeating-linear-gradient(-135deg, transparent, transparent 3px, rgba(255,255,255,0.65) 3px, rgWWba(255,255,255,0.65) 4px)",
 				}}
 			/>
 

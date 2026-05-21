@@ -23,7 +23,7 @@ export function CountdownTimer({
 	const box =
 		variant === "dark"
 			? "border-white/15 bg-black/25 text-gold"
-			: "border-gold  bg-white  text-primary";
+			: "border-gold bg-white text-primary";
 
 	return (
 		<div
