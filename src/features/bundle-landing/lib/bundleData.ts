@@ -1,16 +1,11 @@
 import type { BundleData } from "../types/bundle";
 
 const COVERS = {
-	sealedNectar:
-		"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-	atomicHabits:
-		"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop",
-	alchemist:
-		"https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-	fortress:
-		"https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
-	reclaimYourHeart:
-		"https://images.unsplash.com/photo-1589998059171-988d887df646?q=80&w=800&auto=format&fit=crop",
+	sealedNectar: "/products/book-1.jpg",
+	atomicHabits: "/products/book-2.jpg",
+	alchemist: "/products/book-3.jpg",
+	fortress: "/products/book-4.jpg",
+	reclaimYourHeart: "/products/flash-card-1.jpg",
 } as const;
 
 const essentialIslamicLibrary: BundleData = {

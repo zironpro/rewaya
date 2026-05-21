@@ -15,8 +15,20 @@ type BookCell = {
 		scale: number;
 		filter: string;
 	};
+	hover: {
+		scale: number;
+		y: number;
+		rotate: number;
+	};
 	src: string;
 	tileClass: string;
+};
+
+const hoverTransition = {
+	type: "spring" as const,
+	stiffness: 420,
+	damping: 26,
+	mass: 0.7,
 };
 
 const books: BookCell[] = [
@@ -24,7 +36,7 @@ const books: BookCell[] = [
 		alt: "Book 1",
 		gridClass: "col-start-1 row-start-1",
 		tileClass:
-			"place-self-center rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
+			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
 		src: "/products/book-1.jpg",
 		hidden: {
 			opacity: 0,
@@ -34,12 +46,13 @@ const books: BookCell[] = [
 			scale: 0.82,
 			filter: "blur(6px)",
 		},
+		hover: { scale: 1.1, y: -10, rotate: -6 },
 	},
 	{
 		alt: "Book 2",
 		gridClass: "col-start-2 row-start-1 md:col-start-3",
 		tileClass:
-			"place-self-center rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
+			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
 		src: "/products/book-2.jpg",
 		hidden: {
 			opacity: 0,
@@ -49,12 +62,13 @@ const books: BookCell[] = [
 			scale: 0.82,
 			filter: "blur(6px)",
 		},
+		hover: { scale: 1.1, y: -12, rotate: 8 },
 	},
 	{
 		alt: "Book 3",
 		gridClass: "col-start-1 row-start-2 md:row-start-2",
 		tileClass:
-			"place-self-center rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
+			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md",
 		src: "/products/book-3.jpg",
 		hidden: {
 			opacity: 0,
@@ -64,12 +78,13 @@ const books: BookCell[] = [
 			scale: 0.82,
 			filter: "blur(6px)",
 		},
+		hover: { scale: 1.1, y: -8, rotate: -5 },
 	},
 	{
 		alt: "Book 4",
 		gridClass: "col-start-2 row-start-2 md:col-start-3 md:row-start-2",
 		tileClass:
-			"place-self-center rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
+			"place-self-center cursor-pointer rounded-sm shadow-sm transition-[box-shadow] hover:shadow-md md:place-self-end",
 		src: "/products/book-4.jpg",
 		hidden: {
 			opacity: 0,
@@ -79,6 +94,7 @@ const books: BookCell[] = [
 			scale: 0.82,
 			filter: "blur(6px)",
 		},
+		hover: { scale: 1.1, y: -10, rotate: 7 },
 	},
 ];
 
@@ -119,13 +135,18 @@ function BookTile({
 }) {
 	return (
 		<m.div
-			className={`${book.gridClass} ${book.tileClass}`}
+			className={`pointer-events-auto relative z-0 ${book.gridClass} ${book.tileClass}`}
 			custom={book}
+			style={{ transformOrigin: "center bottom" }}
+			transition={hoverTransition}
 			variants={prefersReducedMotion ? undefined : itemVariants}
 			whileHover={
+				prefersReducedMotion ? undefined : { ...book.hover, zIndex: 20 }
+			}
+			whileTap={
 				prefersReducedMotion
 					? undefined
-					: { scale: 1.05, rotate: book.hidden.rotate > 0 ? 2 : -2 }
+					: { scale: 1.04, y: -4, transition: hoverTransition }
 			}
 		>
 			<Image
@@ -147,7 +168,7 @@ export const BookMosaic = () => {
 		<LazyMotion features={domAnimation}>
 			<div
 				aria-hidden
-				className="pointer-events-none relative z-0 mx-auto mb-4 w-full max-w-68 shrink-0 sm:max-w-80 md:absolute md:inset-0 md:mx-0 md:mb-0 md:max-w-none"
+				className="pointer-events-none relative z-0 mx-auto mb-4 w-full max-w-xs shrink-0 sm:max-w-80 md:absolute md:inset-0 md:mx-0 md:mb-0 md:max-w-none"
 			>
 				<m.div
 					animate={prefersReducedMotion ? undefined : "visible"}

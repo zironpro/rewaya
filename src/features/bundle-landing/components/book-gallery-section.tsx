@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 import type { BundleData } from "../types/bundle";
@@ -10,14 +8,14 @@ interface BookGallerySectionProps {
 
 export function BookGallerySection({ bundle }: BookGallerySectionProps) {
 	return (
-		<section className="border-(--bundle-gold)/15 border-y bg-white/40 py-12 md:py-16">
-			<div className="mx-auto max-w-6xl px-4 sm:px-6">
-				<h2 className="font-display text-(--bundle-ink) text-2xl tracking-tight md:text-3xl">
+		<section className="border-gold/30 border-y bg-card py-12 md:py-16">
+			<div className="container">
+				<h2 className="font-bold font-display text-2xl text-secondary tracking-tight sm:text-3xl md:text-5xl">
 					Inside the bundle
 				</h2>
-				<p className="mt-2 max-w-2xl text-(--bundle-muted)">
-					Five physical volumes — mix of seerah, remembrance, reflection, and
-					habits — chosen to read well together.
+				<p className="mt-2 max-w-2xl text-balance font-light text-lg text-muted-foreground">
+					Five physical volumes mix of seerah, remembrance, reflection, and
+					habits chosen to read well together.
 				</p>
 
 				<div className="mt-8 md:hidden">
@@ -27,7 +25,7 @@ export function BookGallerySection({ bundle }: BookGallerySectionProps) {
 								className="w-[42vw] shrink-0 snap-center sm:w-[200px]"
 								key={book.id}
 							>
-								<div className="relative aspect-2/3 overflow-hidden rounded-sm shadow-md">
+								<div className="relative aspect-3/4 overflow-hidden rounded-sm shadow-md">
 									<Image
 										alt={book.title}
 										className="object-cover"
@@ -36,7 +34,7 @@ export function BookGallerySection({ bundle }: BookGallerySectionProps) {
 										src={book.coverUrl}
 									/>
 								</div>
-								<p className="mt-2 font-semibold text-[var(--bundle-ink)] text-xs">
+								<p className="mt-2 font-semibold text-secondary">
 									{book.title}
 								</p>
 							</div>
@@ -47,7 +45,7 @@ export function BookGallerySection({ bundle }: BookGallerySectionProps) {
 				<div className="mt-8 hidden gap-6 md:grid md:grid-cols-5">
 					{bundle.books.map((book) => (
 						<div key={book.id}>
-							<div className="relative aspect-2/3 overflow-hidden rounded-sm shadow-md">
+							<div className="relative aspect-4/5 overflow-hidden rounded-sm shadow-sm">
 								<Image
 									alt={book.title}
 									className="object-cover"
@@ -56,7 +54,7 @@ export function BookGallerySection({ bundle }: BookGallerySectionProps) {
 									src={book.coverUrl}
 								/>
 							</div>
-							<p className="mt-2 font-semibold text-[var(--bundle-ink)] text-xs leading-snug">
+							<p className="mt-2 font-semibold text-secondary leading-snug">
 								{book.title}
 							</p>
 						</div>

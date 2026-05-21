@@ -29,7 +29,7 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 				<div className="relative z-10 flex flex-col items-center justify-center">
 					<CountdownTimer slug={bundle.slug} />
 
-					<h1 className="mt-3 font-bold font-display text-[clamp(2rem,5vw,3.25rem)] leading-[1.08] tracking-tight">
+					<h1 className="mt-3 font-bold font-display text-[clamp(2rem,5vw,3.25rem)] text-secondary leading-[1.08] tracking-tight">
 						{bundle.name}
 					</h1>
 					<p className="mt-2 max-w-xl text-base text-muted-foreground leading-relaxed sm:text-lg">
@@ -58,10 +58,10 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 					>
 						Get your bundle now <ShoppingCartIcon className="ml-2 size-4" />
 					</Button>
-					<div className="relative mt-10 aspect-5/3 w-2xl">
+					<div className="relative mt-10 aspect-5/3 w-2xl overflow-hidden rounded-md border border-card/10 shadow-md">
 						<Image
 							alt="Bundle Hero"
-							className="rounded-md object-cover"
+							className="object-cover"
 							fill
 							src="/bundles/creative-brain-booster-pack.webp"
 						/>
