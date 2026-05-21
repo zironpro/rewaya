@@ -37,7 +37,7 @@ function BookRow({
 			)}
 			ref={ref}
 		>
-			<div className="relative mx-auto aspect-[2/3] w-24 overflow-hidden rounded-sm shadow md:mx-0 md:w-full">
+			<div className="relative mx-auto aspect-4/5 w-24 overflow-hidden rounded-sm shadow md:mx-0 md:w-full">
 				<Image
 					alt={book.title}
 					className="object-cover"
@@ -50,11 +50,11 @@ function BookRow({
 				<p className="font-medium text-gold text-xs uppercase tracking-wider">
 					Volume {(index + 1).toString().padStart(2, "0")}
 				</p>
-				<h3 className="mt-1 font-display text-[var(--bundle-ink)] text-xl">
+				<h3 className="mt-1 font-bold font-display text-2xl text-secondary md:text-3xl">
 					{book.title}
 				</h3>
-				<p className="mt-1 text-[var(--bundle-muted)] text-sm">{book.author}</p>
-				<p className="mt-3 line-clamp-3 text-[var(--bundle-ink)]/90 text-sm leading-relaxed md:line-clamp-none md:text-base">
+				<p className="mt-1 text-muted-foreground text-sm">{book.author}</p>
+				<p className="mt-3 line-clamp-3 text-muted-foreground text-sm leading-relaxed md:line-clamp-none md:text-base">
 					{book.description}
 				</p>
 			</div>
@@ -66,10 +66,10 @@ export function BooksBreakdownSection({ bundle }: BooksBreakdownSectionProps) {
 	return (
 		<section className="bg-[#f3ece4]/55 py-14 md:py-20">
 			<div className="mx-auto max-w-6xl px-4 sm:px-6">
-				<h2 className="font-display text-2xl text-[var(--bundle-ink)] tracking-tight md:text-3xl">
+				<h2 className="font-bold font-display text-2xl text-secondary tracking-tight md:text-3xl">
 					Title by title
 				</h2>
-				<p className="mt-2 max-w-2xl text-[var(--bundle-muted)]">
+				<p className="mt-2 max-w-2xl text-muted-foreground">
 					A quick tour of what you are bringing home — no spoilers, just why
 					each book earned its place.
 				</p>

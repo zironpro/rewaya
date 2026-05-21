@@ -17,11 +17,11 @@ export function OverviewSection({ bundle }: OverviewSectionProps) {
 							{bundle.longDescription}
 						</p>
 					</div>
-					<ul className="space-y-4 rounded-lg border border-gold/20 bg-white/55 p-6 text-(--bundle-ink) text-sm shadow-sm">
+					<ul className="space-y-4 rounded-md border border-gold/20 bg-card p-6 text-(--bundle-ink) text-sm shadow-md">
 						<li className="flex gap-3">
 							<span className="mt-0.5 font-display text-gold">✦</span>
 							<span>
-								<strong className="font-semibold">Biography & context</strong> —
+								<strong className="font-semibold">Biography & context</strong>:
 								anchor your reading in the life of the Prophet with{" "}
 								<em className="not-italic">The Sealed Nectar</em>.
 							</span>
@@ -29,7 +29,7 @@ export function OverviewSection({ bundle }: OverviewSectionProps) {
 						<li className="flex gap-3">
 							<span className="mt-0.5 font-display text-gold">✦</span>
 							<span>
-								<strong className="font-semibold">Daily worship</strong> —
+								<strong className="font-semibold">Daily worship</strong>:
 								portable duas with Fortress of the Muslim for mornings, travel,
 								and quiet moments.
 							</span>
@@ -37,7 +37,7 @@ export function OverviewSection({ bundle }: OverviewSectionProps) {
 						<li className="flex gap-3">
 							<span className="mt-0.5 font-display text-gold">✦</span>
 							<span>
-								<strong className="font-semibold">Heart & habit</strong> — pair
+								<strong className="font-semibold">Heart & habit</strong>: pair
 								spiritual reflection with small, repeatable routines you can
 								actually keep.
 							</span>
