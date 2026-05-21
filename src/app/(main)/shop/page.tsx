@@ -2,7 +2,7 @@ import { ShopView } from "@/features/shop/shop-view";
 import { getStoreCategories } from "@/lib/wix/categories";
 import { getShopBooks } from "@/lib/wix/products";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export default async function ShopPage({
 	searchParams,
