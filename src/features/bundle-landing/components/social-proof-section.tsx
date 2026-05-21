@@ -16,7 +16,7 @@ export function SocialProofSection({ bundle }: SocialProofSectionProps) {
 	const doubled = [...reviews, ...reviews];
 
 	return (
-		<section className="container py-14 md:py-16">
+		<section className="container px-4 py-14 md:py-16">
 			<h2 className="font-display text-2xl text-secondary tracking-tight md:text-3xl">
 				Readers are stacking it
 			</h2>
@@ -25,10 +25,10 @@ export function SocialProofSection({ bundle }: SocialProofSectionProps) {
 			</p>
 
 			<div className="mt-8 md:hidden">
-				<div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2">
+				<div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-2">
 					{reviews.map((r) => (
 						<figure
-							className="w-[min(88vw,360px)] shrink-0 snap-center rounded-lg border border-gold/15 bg-white/70 p-5 shadow-sm"
+							className="w-[min(85vw,360px)] shrink-0 snap-center rounded-lg border border-gold/15 bg-white/70 p-5 shadow-sm"
 							key={r.id}
 						>
 							<div className="flex gap-0.5 text-gold">

@@ -16,7 +16,7 @@ export function StickyCheckoutBar({ bundle }: StickyCheckoutBarProps) {
 		<div
 			className={cn(
 				"fixed inset-x-0 bottom-0 z-40 md:hidden",
-				"border-(--bundle-gold)/25 border-t bg-[#FBF6EE]/95 px-4 py-3 shadow-[0_-8px_30px_rgba(44,36,28,0.12)] backdrop-blur-md transition-transform duration-300 ease-out will-change-transform",
+				"border-(--bundle-gold)/25 border-t bg-[#FBF6EE]/95 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_30px_rgba(44,36,28,0.12)] backdrop-blur-md transition-transform duration-300 ease-out will-change-transform",
 				pastHero ? "translate-y-0" : "translate-y-full"
 			)}
 		>

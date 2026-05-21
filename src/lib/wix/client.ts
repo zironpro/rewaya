@@ -1,7 +1,12 @@
 import { items } from "@wix/data";
 import { currentCart } from "@wix/ecom";
 import { createClient, type IOAuthStrategy, OAuthStrategy } from "@wix/sdk";
-import { catalogVersioning, products, productsV3 } from "@wix/stores";
+import {
+	catalogVersioning,
+	collections,
+	products,
+	productsV3,
+} from "@wix/stores";
 
 import { WIX_SITE_ID } from "./constants";
 
@@ -23,6 +28,7 @@ function createWixClient() {
 		modules: {
 			products,
 			productsV3,
+			collections,
 			catalogVersioning,
 			currentCart,
 			items,

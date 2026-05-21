@@ -19,7 +19,7 @@ export function BookGallerySection({ bundle }: BookGallerySectionProps) {
 				</p>
 
 				<div className="mt-8 md:hidden">
-					<div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2">
+					<div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto overscroll-x-contain px-4 pb-2">
 						{bundle.books.map((book) => (
 							<div
 								className="w-[42vw] shrink-0 snap-center sm:w-[200px]"

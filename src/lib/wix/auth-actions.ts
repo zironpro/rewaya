@@ -22,7 +22,11 @@ export type WixMember = {
 	contact?: {
 		firstName?: string;
 		lastName?: string;
-		phones?: Array<{ phone?: string; formattedPhone?: string; primary?: boolean }>;
+		phones?: Array<{
+			phone?: string;
+			formattedPhone?: string;
+			primary?: boolean;
+		}>;
 		addresses?: Array<{
 			id?: string;
 			addressLine?: string;

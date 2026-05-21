@@ -10,18 +10,24 @@ import { HeroCarousel } from "@/features/home/components/hero-carousel";
 import { ProductStrip } from "@/features/products/components/product-strip";
 import type { Bundle } from "@/lib/bundles-data";
 import type { BookProps } from "@/lib/store";
+import type { StoreCategory } from "@/lib/wix/categories";
 
 interface HomepageViewProps {
 	books: BookProps[];
 	bundles: Bundle[];
+	categories?: StoreCategory[];
 }
 
-export const HomepageView = ({ books, bundles }: HomepageViewProps) => {
+export const HomepageView = ({
+	books,
+	bundles,
+	categories = [],
+}: HomepageViewProps) => {
 	const featured = [...books, ...books];
 	return (
 		<main className="overflow-hidden">
 			<HeroCarousel />
-			<CategoryStrip />
+			<CategoryStrip categories={categories} />
 
 			{/* 1. RECOMMENDED FOR YOU */}
 			<ProductStrip

@@ -268,8 +268,9 @@ export async function updateMemberProfile(
 	member: WixMember,
 	patch: MemberProfilePatch
 ): Promise<WixMember | null> {
-	const membersApi = (client as { members: { updateMember: (p: unknown) => Promise<unknown> } })
-		.members;
+	const membersApi = (
+		client as { members: { updateMember: (p: unknown) => Promise<unknown> } }
+	).members;
 	if (!member._id) return null;
 
 	const phones = patch.phone

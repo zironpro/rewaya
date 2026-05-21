@@ -31,7 +31,7 @@ function BookRow({
 	return (
 		<div
 			className={cn(
-				"fade-rise grid items-center gap-6 rounded-md border bg-muted p-6 md:grid-cols-[10rem_minmax(0,1fr)]",
+				"fade-rise grid items-center gap-6 rounded-md border bg-muted p-4 md:grid-cols-[10rem_minmax(0,1fr)] md:p-6",
 				delayClass,
 				visible && "is-visible"
 			)}
@@ -50,7 +50,7 @@ function BookRow({
 				<p className="font-medium text-gold text-xs uppercase tracking-wider">
 					Volume {(index + 1).toString().padStart(2, "0")}
 				</p>
-				<h3 className="mt-1 font-bold font-display text-2xl text-secondary md:text-3xl">
+				<h3 className="mt-1 font-bold font-display text-secondary text-xl md:text-3xl">
 					{book.title}
 				</h3>
 				<p className="mt-1 text-muted-foreground text-sm">{book.author}</p>

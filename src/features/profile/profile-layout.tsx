@@ -26,10 +26,7 @@ function breadcrumbItems(pathname: string) {
 		settings: "Settings",
 	};
 	const label = labels[segment] ?? "My Profile";
-	return [
-		{ label: "My Profile", href: "/profile" },
-		{ label },
-	];
+	return [{ label: "My Profile", href: "/profile" }, { label }];
 }
 
 export const ProfileLayout = ({ children }: { children: React.ReactNode }) => {

@@ -28,7 +28,7 @@ export function BundleLandingPage({
 	const priceLabel = `AED ${bundle.price} · was ${bundle.originalPrice}`;
 
 	return (
-		<main className={cn("bundle-page")}>
+		<main className={cn("bundle-page pb-20 md:pb-0")}>
 			<MinimalNav bundleName={bundle.name} priceLabel={priceLabel} />
 			<HeroSection bundle={bundle} />
 			<BookGallerySection bundle={bundle} />

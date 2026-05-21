@@ -28,7 +28,7 @@ export function MinimalNav({
 	return (
 		<header
 			className={cn(
-				"fixed inset-x-0 bottom-0 z-50 border-b backdrop-blur-md transition-transform duration-300 ease-out",
+				"fixed inset-x-0 bottom-0 z-50 hidden border-b backdrop-blur-md transition-transform duration-300 ease-out md:block",
 				surface,
 				pastHero ? "translate-y-0" : "translate-y-full"
 			)}

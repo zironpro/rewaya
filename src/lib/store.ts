@@ -11,6 +11,10 @@ export interface BookProps {
 	price: number;
 	image: string;
 	category: string;
+	/** Wix collection/category GUID */
+	categoryId?: string;
+	/** Wix collection/category slug */
+	categorySlug?: string;
 	badge?: "new seller" | "new arrival" | "best seller";
 }
 

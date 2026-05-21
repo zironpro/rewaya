@@ -19,7 +19,7 @@ export function CtaSection({ bundle }: CtaSectionProps) {
 				className="pointer-events-none absolute inset-0 opacity-[0.07]"
 				style={{
 					backgroundImage:
-						"repeating-linear-gradient(-135deg, transparent, transparent 3px, rgba(255,255,255,0.65) 3px, rgWWba(255,255,255,0.65) 4px)",
+						"repeating-linear-gradient(-135deg, transparent, transparent 3px, rgba(255,255,255,0.65) 3px, rgba(255,255,255,0.65) 4px)",
 				}}
 			/>
 
@@ -27,7 +27,7 @@ export function CtaSection({ bundle }: CtaSectionProps) {
 				<p className="font-medium text-gold text-xs uppercase tracking-[0.25em]">
 					Checkout
 				</p>
-				<h2 className="mt-3 font-display text-3xl tracking-tight md:text-4xl">
+				<h2 className="mt-3 font-display text-2xl tracking-tight sm:text-3xl md:text-4xl">
 					Bring home {bundle.name}
 				</h2>
 				<p className="mt-4 text-base text-white/75 leading-relaxed">

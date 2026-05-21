@@ -60,7 +60,10 @@ export const SettingsTab = ({
 		setMessage(
 			ok
 				? { text: "Profile updated successfully.", variant: "success" }
-				: { text: "Could not update profile. Please try again.", variant: "error" }
+				: {
+						text: "Could not update profile. Please try again.",
+						variant: "error",
+					}
 		);
 	};
 
@@ -140,11 +143,7 @@ export const SettingsTab = ({
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-3 border-stone-100 border-t pt-6">
-						<Button
-							disabled={isSaving}
-							onClick={handleSave}
-							variant="premium"
-						>
+						<Button disabled={isSaving} onClick={handleSave} variant="premium">
 							{isSaving ? "Saving…" : "Save changes"}
 						</Button>
 					</div>

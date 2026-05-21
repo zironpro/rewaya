@@ -183,11 +183,11 @@ export const BookMosaic = ({ books }: BookMosaicProps) => {
 		<LazyMotion features={domAnimation}>
 			<div
 				aria-hidden
-				className="pointer-events-none relative z-0 mx-auto mb-4 w-full max-w-xs shrink-0 sm:max-w-80 md:absolute md:inset-0 md:mx-0 md:mb-0 md:max-w-none"
+				className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-40 max-md:hidden sm:opacity-55 md:opacity-100"
 			>
 				<m.div
 					animate={prefersReducedMotion ? undefined : "visible"}
-					className="grid h-full grid-cols-2 place-items-center gap-3 px-2 py-2 sm:gap-4 sm:px-4 md:grid-cols-3 md:gap-8 md:px-8 md:py-12 lg:gap-12 lg:py-16"
+					className="grid h-[50%] scale-90 grid-cols-2 items-start gap-3 px-2 pt-6 sm:scale-95 sm:gap-4 sm:px-4 md:h-full md:scale-100 md:grid-cols-3 md:place-items-center md:gap-8 md:px-8 md:py-12 md:pt-12 lg:gap-12 lg:py-16"
 					initial={prefersReducedMotion ? false : "hidden"}
 					variants={prefersReducedMotion ? undefined : containerVariants}
 				>

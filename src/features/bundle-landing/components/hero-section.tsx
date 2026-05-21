@@ -25,9 +25,9 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 			id="bundle-hero"
 		>
 			<div className="absolute inset-0 bg-[radial-gradient(100%_50%_at_50%_0%,oklch(from_var(--color-gold)_l_c_h/0.25)_0,var(--color-background)_50%,var(--color-background)_100%)] bg-white" />
-			<div className="container relative flex flex-col gap-8 px-4 pt-10 pb-16 md:min-h-[calc(100svh-(--spacing(16)))] md:items-center md:gap-12 md:px-8 md:pt-16 md:pb-20">
+			<div className="container relative flex min-h-[inherit] flex-col items-center justify-center gap-8 px-4 pt-10 pb-24 md:gap-12 md:px-8 md:pt-16 md:pb-20">
 				<BookMosaic books={bundle.books} />
-				<div className="relative z-10 flex flex-col items-center justify-center">
+				<div className="relative z-10 flex w-full max-w-3xl flex-col items-center justify-center rounded-lg text-center md:px-8">
 					<CountdownTimer slug={bundle.slug} />
 
 					<h1 className="mt-3 font-bold font-display text-[clamp(2rem,5vw,3.25rem)] text-secondary leading-[1.08] tracking-tight">
@@ -36,11 +36,11 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 					<p className="mt-2 max-w-xl text-base text-muted-foreground leading-relaxed sm:text-lg">
 						{bundle.tagline}
 					</p>
-					<div className="mt-4 mb-6 items-center gap-4">
+					<div className="mt-4 mb-6 flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
 						<span className="font-black font-display text-3xl text-primary">
 							AED {bundle.price}
 						</span>
-						<div className="mt-2 flex items-center gap-2">
+						<div className="flex items-center gap-2">
 							<span className="relative flex items-center gap-1 text-muted-foreground/60 text-sm">
 								<CurrencyIcon className="size-3" /> {bundle.originalPrice}
 								<span className="absolute top-1/2 left-1/2 h-px w-[115%] -translate-x-1/2 -translate-y-1/2 bg-muted-foreground/60" />
@@ -59,7 +59,7 @@ export function HeroSection({ bundle }: HeroSectionProps) {
 					>
 						Get your bundle now <ShoppingCartIcon className="ml-2 size-4" />
 					</Button>
-					<div className="relative mt-10 aspect-5/3 w-2xl overflow-hidden rounded-md border border-card/10 shadow-md">
+					<div className="relative mt-10 aspect-5/3 w-full max-w-2xl overflow-hidden rounded-md border border-card/10 shadow-md">
 						<Image
 							alt="Bundle Hero"
 							className="object-cover"

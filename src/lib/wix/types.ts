@@ -18,6 +18,11 @@ export interface WixCatalogProduct {
 	publisher?: string;
 	language?: string;
 	genre?: string;
+	collectionIds?: string[];
+	categoryIds?: string[];
+	categoryNames?: string[];
+	primaryCategoryId?: string;
+	primaryCategorySlug?: string;
 	productPagePath?: string;
 }
 
@@ -39,7 +44,7 @@ export function mapWixProductToBook(product: WixCatalogProduct): Book {
 		publisher: product.publisher ?? "",
 		author: product.author ?? "Unknown",
 		language: product.language ?? "English",
-		genre: product.genre ?? "Books",
+		genre: product.categoryNames?.[0] ?? product.genre ?? "Books",
 		overview: product.description ?? "",
 		image: product.imageUrl ?? "",
 		price: product.price ?? 0,
@@ -48,11 +53,22 @@ export function mapWixProductToBook(product: WixCatalogProduct): Book {
 }
 
 export function mapWixProductToBookProps(
-	product: WixCatalogProduct
+	product: WixCatalogProduct,
+	categoryNameMap?: Map<string, string>
 ): BookProps {
 	const numericId =
 		Number.parseInt(product.id.replace(/\D/g, "").slice(0, 8), 10) ||
 		Math.abs(hashCode(product.id));
+
+	const categoryFromIds = (product.categoryIds ?? product.collectionIds ?? [])
+		.map((id) => categoryNameMap?.get(id))
+		.filter((name): name is string => Boolean(name));
+
+	const category =
+		product.categoryNames?.[0] ??
+		categoryFromIds[0] ??
+		product.genre ??
+		"Books";
 
 	return {
 		id: numericId,
@@ -62,7 +78,9 @@ export function mapWixProductToBookProps(
 		author: product.author ?? "Unknown",
 		price: product.price ?? 0,
 		image: product.imageUrl ?? "",
-		category: product.genre ?? "Books",
+		category,
+		categoryId: product.primaryCategoryId ?? product.categoryIds?.[0],
+		categorySlug: product.primaryCategorySlug,
 	};
 }
 

@@ -53,11 +53,7 @@ export const SettingsPage = () => {
 		if (!wixClient || !currentMember) return false;
 		setSaving(true);
 		try {
-			const updated = await updateMemberProfile(
-				wixClient,
-				currentMember,
-				data
-			);
+			const updated = await updateMemberProfile(wixClient, currentMember, data);
 			if (updated) {
 				setCurrentMember(updated);
 				await refreshMember();

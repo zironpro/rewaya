@@ -56,9 +56,7 @@ export function CountdownTimer({
 					<span className={cn("rounded px-1.5 py-0.5 font-bold", box)}>
 						{parts.s}
 					</span>
-					<span className="ml-2 hidden text-xs opacity-80 sm:inline">
-						left at this price
-					</span>
+					<span className="ml-2 text-xs opacity-80">left at this price</span>
 				</div>
 			)}
 		</div>

@@ -30,6 +30,7 @@ export function RelatedBundlesSection({ bundles }: RelatedBundlesSectionProps) {
 					</div>
 
 					<Button
+						className="w-full sm:w-auto"
 						nativeButton={false}
 						render={<Link href="/bundles" />}
 						variant="ghost"

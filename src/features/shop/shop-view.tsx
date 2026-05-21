@@ -1,32 +1,42 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Search } from "lucide-react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { MobileFilterDrawer } from "@/components/layout/mobile-filter-drawer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 
 import { BookCard } from "@/features/products/components/book-card";
 import type { BookProps } from "@/lib/store";
-
-const categories = [
-	"All",
-	"Islamic",
-	"Self-Help",
-	"Fiction",
-	"Philosophy",
-	"Spirituality",
-];
+import type { StoreCategory } from "@/lib/wix/categories";
 
 interface ShopViewProps {
 	books: BookProps[];
+	categories?: StoreCategory[];
+	activeCategory?: string;
+	searchQuery?: string;
 }
 
-export const ShopView = ({ books }: ShopViewProps) => {
+export const ShopView = ({
+	books,
+	categories = [],
+	activeCategory,
+	searchQuery,
+}: ShopViewProps) => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+	const sidebarCategories: Array<
+		| { type: "all"; name: string; count: number }
+		| { type: "wix"; category: StoreCategory }
+	> = [
+		{ type: "all", name: "All", count: books.length },
+		...categories.map((category) => ({ type: "wix" as const, category })),
+	];
 
 	const FilterContent = ({ onClose }: { onClose?: () => void }) => (
 		<div className="space-y-12">
@@ -46,24 +56,36 @@ export const ShopView = ({ books }: ShopViewProps) => {
 					Categories
 				</h3>
 				<div className="flex flex-col gap-2">
-					{categories.map((cat) => (
-						<Button
-							className="h-10 justify-between px-2 hover:bg-stone-50"
-							key={cat}
-							variant="ghost"
-						>
-							<span className="text-sm">{cat}</span>
-							<span className="text-[8px] text-stone-300 group-hover:text-black">
-								(
-								{cat === "All"
-									? books.length
-									: books.filter(
-											(b) => b.category.toLowerCase() === cat.toLowerCase()
-										).length}
-								)
-							</span>
-						</Button>
-					))}
+					{sidebarCategories.map((item) => {
+						if (item.type === "all") {
+							const isActive = !activeCategory;
+							return (
+								<Link
+									className={`inline-flex h-10 w-full items-center justify-between rounded-sm px-2 text-sm transition-colors hover:bg-stone-50 ${isActive ? "bg-stone-50" : ""}`}
+									href="/shop"
+									key="all"
+								>
+									<span>{item.name}</span>
+									<span className="text-[8px] text-stone-300">({item.count})</span>
+								</Link>
+							);
+						}
+
+						const { category } = item;
+						const isActive = activeCategory === category.slug;
+						const count = category.productCount ?? 0;
+
+						return (
+							<Link
+								className={`inline-flex h-10 w-full items-center justify-between rounded-sm px-2 text-sm transition-colors hover:bg-stone-50 ${isActive ? "bg-stone-50" : ""}`}
+								href={category.href}
+								key={category.id}
+							>
+								<span>{category.name}</span>
+								<span className="text-[8px] text-stone-300">({count})</span>
+							</Link>
+						);
+					})}
 				</div>
 			</div>
 
@@ -140,6 +162,32 @@ export const ShopView = ({ books }: ShopViewProps) => {
 					</div>
 				</section>
 
+				<section className="container mb-8">
+					<form action="/shop" className="relative mx-auto max-w-xl" method="get">
+						{activeCategory ? (
+							<input name="category" type="hidden" value={activeCategory} />
+						) : null}
+						<Search
+							className="absolute top-1/2 left-4 -translate-y-1/2 text-stone-400"
+							size={18}
+						/>
+						<Input
+							className="h-12 border-stone-100 bg-stone-50 pr-24 pl-11"
+							defaultValue={searchQuery}
+							name="q"
+							placeholder="Search books..."
+							type="search"
+						/>
+						<Button
+							className="absolute top-1/2 right-1.5 -translate-y-1/2"
+							size="sm"
+							type="submit"
+						>
+							Search
+						</Button>
+					</form>
+				</section>
+
 				<section className="container mb-8 flex gap-4 lg:hidden">
 					<Button
 						className="h-12 flex-1 border-stone-100 font-bold text-sm"
@@ -160,6 +208,10 @@ export const ShopView = ({ books }: ShopViewProps) => {
 							<div className="mb-12 hidden items-center justify-between border-stone-100 border-b pb-4 lg:flex">
 								<p className="font-bold text-sm text-stone-400">
 									Showing {books.length} results
+									{searchQuery ? ` for "${searchQuery}"` : ""}
+									{activeCategory
+										? ` in ${categories.find((c) => c.slug === activeCategory)?.name ?? activeCategory}`
+										: ""}
 								</p>
 								<div className="flex items-center gap-6">
 									<span className="font-bold text-sm text-stone-400">
@@ -173,11 +225,17 @@ export const ShopView = ({ books }: ShopViewProps) => {
 								</div>
 							</div>
 
-							<div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-								{books.map((book) => (
-									<BookCard key={book.id} {...book} />
-								))}
-							</div>
+							{books.length === 0 ? (
+								<p className="py-16 text-center text-muted-foreground">
+									No books found. Try another search or category.
+								</p>
+							) : (
+								<div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+									{books.map((book) => (
+										<BookCard key={book.wixProductId ?? book.id} {...book} />
+									))}
+								</div>
+							)}
 						</div>
 					</div>
 				</section>

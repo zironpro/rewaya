@@ -8,46 +8,60 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
+import type { StoreCategory } from "@/lib/wix/categories";
 
-const categories = [
+const fallbackCategories = [
 	{
 		name: "Islamic",
 		image: "/categories/islamic.png",
-		href: "/#islamic",
+		href: "/shop?category=islamic",
 	},
 	{
 		name: "Children",
 		image: "/categories/children.png",
-		href: "/#children",
+		href: "/shop?category=children",
 	},
 	{
 		name: "Academic",
 		image: "/categories/academic.png",
-		href: "/#academic",
+		href: "/shop?category=academic",
 	},
 	{
 		name: "Fiction",
 		image: "/categories/fiction.png",
-		href: "/#fiction",
+		href: "/shop?category=fiction",
 	},
 	{
 		name: "Self-Help",
 		image: "/categories/selfhelp.png",
-		href: "/#selfhelp",
+		href: "/shop?category=selfhelp",
 	},
 	{
 		name: "History",
 		image: "/categories/history.png",
-		href: "/#history",
+		href: "/shop?category=history",
 	},
 	{
 		name: "Biographies",
 		image: "/categories/biographies.png",
-		href: "/#biographies",
+		href: "/shop?category=biographies",
 	},
 ];
 
-export function CategoryStrip() {
+interface CategoryStripProps {
+	categories?: StoreCategory[];
+}
+
+export function CategoryStrip({ categories = [] }: CategoryStripProps) {
+	const items =
+		categories.length > 0
+			? categories.map((cat) => ({
+					name: cat.name,
+					image: cat.imageUrl ?? "/categories/islamic.png",
+					href: cat.href,
+				}))
+			: fallbackCategories;
+
 	return (
 		<section className="container w-full py-16">
 			<Carousel
@@ -55,10 +69,10 @@ export function CategoryStrip() {
 				opts={{ align: "start", dragFree: true, loop: false }}
 			>
 				<CarouselContent className="-ml-6">
-					{categories.map((cat) => (
+					{items.map((cat) => (
 						<CarouselItem
 							className="basis-[70%] pl-6 sm:basis-[45%] md:basis-1/3 lg:basis-1/5"
-							key={cat.name}
+							key={cat.href}
 						>
 							<Link
 								className="group flex flex-col items-center gap-4"
@@ -71,6 +85,7 @@ export function CategoryStrip() {
 										fill
 										sizes="(max-width: 768px) 128px, 192px"
 										src={cat.image}
+										unoptimized={cat.image.startsWith("http")}
 									/>
 								</div>
 								<span className="text-center font-semibold text-muted-foreground text-sm transition-colors group-hover:text-primary">
