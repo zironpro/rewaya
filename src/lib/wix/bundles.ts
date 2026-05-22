@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cache } from "react";
+
 import { bundles as staticBundles } from "@/lib/bundles-data";
 
 import { getWixClient } from "./client";
@@ -89,7 +91,9 @@ export async function getBundles(): Promise<Bundle[]> {
 	}
 }
 
+export const getCachedBundles = cache(getBundles);
+
 export async function getBundleBySlug(slug: string): Promise<Bundle | null> {
-	const all = await getBundles();
+	const all = await getCachedBundles();
 	return all.find((b) => b.id === slug) ?? null;
 }

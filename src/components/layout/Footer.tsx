@@ -7,14 +7,17 @@ import { Separator } from "@/components/ui/separator";
 import { Logo } from "@/assets/logo";
 
 import { SOCIAL_LINKS } from "@/constants/site-config";
+import { featureFlags } from "@/lib/feature-flags";
 import { cn } from "@/lib/utils";
+import { getCachedBundles } from "@/lib/wix/bundles";
 
 import { NewsletterForm } from "./components/newsletter-form";
 import {
 	FOOTER_LEGAL_LINKS,
-	FOOTER_LINK_COLUMNS,
 	FOOTER_STORE,
+	FOOTER_VIEW_ALL_BUNDLES,
 	type FooterNavLink,
+	getVisibleFooterLinkColumns,
 } from "./data/FooterLinks";
 
 const linkClass =
@@ -35,8 +38,21 @@ function FooterNavLinks({ links }: { links: FooterNavLink[] }) {
 	);
 }
 
-export function Footer() {
+export async function Footer() {
 	const year = new Date().getFullYear();
+	const bundles = await getCachedBundles();
+
+	const footerLinkColumns = getVisibleFooterLinkColumns(
+		featureFlags.footerDiscoverSection
+	);
+
+	const bundleDealLinks: FooterNavLink[] = [
+		...bundles.map((bundle) => ({
+			label: bundle.title,
+			href: `/bundle/${bundle.id}`,
+		})),
+		FOOTER_VIEW_ALL_BUNDLES,
+	];
 
 	return (
 		<footer className="bg-tertiary text-tertiary-foreground" role="contentinfo">
@@ -97,18 +113,22 @@ export function Footer() {
 						</div>
 					</div>
 
-					{FOOTER_LINK_COLUMNS.map((column) => {
-						return (
-							<div className="lg:col-span-2" key={column.id}>
-								<nav aria-label={column.ariaLabel}>
-									<p className={columnTitleClass}>{column.title}</p>
-									<FooterNavLinks links={column.links} />
-								</nav>
-							</div>
-						);
-					})}
+					<div className="grid gap-10 sm:col-span-2 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-3 lg:gap-x-8">
+						{footerLinkColumns.map((column) => (
+							<nav aria-label={column.ariaLabel} key={column.id}>
+								<p className={columnTitleClass}>{column.title}</p>
+								<FooterNavLinks links={column.links} />
+							</nav>
+						))}
+						{bundleDealLinks.length > 1 ? (
+							<nav aria-label="Bundle deals">
+								<p className={columnTitleClass}>Bundle Deals</p>
+								<FooterNavLinks links={bundleDealLinks} />
+							</nav>
+						) : null}
+					</div>
 
-					<div className="sm:col-span-2 lg:col-span-3">
+					<div className="sm:col-span-2">
 						<nav aria-label="Visit us">
 							<p className={columnTitleClass}>Visit Us</p>
 							<address className="not-italic">
@@ -164,9 +184,6 @@ export function Footer() {
 					<p className="font-sans text-muted-foreground text-xs lg:order-1">
 						© {year} Rewaya Books. All rights reserved.
 					</p>
-					{/* <div className="flex w-full flex-1 justify-center lg:order-2">
-						<PaymentBadgeRow />
-					</div> */}
 					<nav
 						aria-label="Legal"
 						className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-muted-foreground text-xs lg:order-3"

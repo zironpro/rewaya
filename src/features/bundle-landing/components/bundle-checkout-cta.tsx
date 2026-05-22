@@ -15,23 +15,27 @@ interface BundleCheckoutCtaProps {
 	bundle: BundleData;
 	className?: string;
 	size?: "default" | "sm" | "lg" | "icon";
+	label?: string;
+	shimmerClass?: string;
 }
 
 export function BundleCheckoutCta({
 	bundle,
 	className,
 	size = "lg",
+	label = "Add bundle to cart",
+	shimmerClass = "btn-shimmer",
 }: BundleCheckoutCtaProps) {
 	if (bundle.wixProductId) {
 		return (
 			<AddToCartButton
-				className={cn("btn-shimmer w-full gap-2", className)}
+				className={cn(shimmerClass, "w-full gap-2", className)}
 				productId={bundle.wixProductId}
 				productName={bundle.name}
 				size={size}
 			>
 				<ShoppingBag className="size-4" />
-				Add bundle to cart
+				{label}
 			</AddToCartButton>
 		);
 	}
@@ -40,13 +44,14 @@ export function BundleCheckoutCta({
 		<Link
 			className={cn(
 				buttonVariants({ size }),
-				"btn-shimmer inline-flex w-full items-center justify-center gap-2 no-underline hover:no-underline",
+				shimmerClass,
+				"inline-flex w-full items-center justify-center gap-2 no-underline hover:no-underline",
 				className
 			)}
 			href="/cart"
 		>
 			<ShoppingBag className="size-4" />
-			Continue to cart
+			{label}
 		</Link>
 	);
 }

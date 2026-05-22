@@ -177,6 +177,88 @@
 			padding-inline: 2rem;
 		}
 	}
+
+	.campaign-gradient-hero {
+		background: radial-gradient(
+			100% 50% at 50% 0%,
+			oklch(from var(--color-gold) l c h / 0.22) 0%,
+			var(--color-background) 50%,
+			var(--color-background) 100%
+		);
+	}
+
+	.campaign-shimmer {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.campaign-shimmer::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		transform: translateX(-120%);
+		background: linear-gradient(
+			105deg,
+			transparent 0%,
+			rgba(255, 255, 255, 0.35) 45%,
+			transparent 70%
+		);
+		animation: campaign-shimmer 2.8s ease-in-out infinite;
+	}
+
+	.campaign-marquee-wrap {
+		overflow: hidden;
+		mask-image: linear-gradient(
+			90deg,
+			transparent,
+			#000 8%,
+			#000 92%,
+			transparent
+		);
+	}
+
+	.campaign-marquee-track {
+		display: flex;
+		width: max-content;
+		animation: campaign-marquee 38s linear infinite;
+	}
+
+	.campaign-colon-blink {
+		animation: campaign-colon 1s step-end infinite;
+	}
+}
+
+@keyframes campaign-shimmer {
+	0% {
+		transform: translateX(-120%);
+	}
+	60%,
+	100% {
+		transform: translateX(120%);
+	}
+}
+
+@keyframes campaign-colon {
+	50% {
+		opacity: 0.35;
+	}
+}
+
+@keyframes campaign-marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.campaign-shimmer::after,
+	.campaign-marquee-track,
+	.campaign-colon-blink {
+		animation: none !important;
+	}
 }
 
 @layer base {

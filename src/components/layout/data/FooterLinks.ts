@@ -21,12 +21,17 @@ export const FOOTER_SHOP_LINKS: FooterNavLink[] = [
 	{ label: "Sale", href: "/shop" },
 ];
 
+export const FOOTER_VIEW_ALL_BUNDLES: FooterNavLink = {
+	label: "View all bundles",
+	href: "/bundles",
+};
+
 export const FOOTER_DISCOVER_LINKS: FooterNavLink[] = [
 	{ label: "Book Club", href: "/about" },
 	{ label: "Reading Guides", href: "/about" },
 	{ label: "Author Interviews", href: "/about" },
 	{ label: "Blog", href: "/about" },
-	{ label: "Gift Guides", href: "/bundles" },
+	{ label: "Curated Sets", href: "/about" },
 	{ label: "Recommended Lists", href: "/shop" },
 	{ label: "Events", href: "/contact" },
 ];
@@ -41,6 +46,7 @@ export const FOOTER_HELP_LINKS: FooterNavLink[] = [
 	{ label: "Accessibility", href: "/contact" },
 ];
 
+/** Discover column is gated by `featureFlags.footerDiscoverSection` (phase 2). */
 export const FOOTER_LINK_COLUMNS: FooterLinkColumn[] = [
 	{
 		id: "shop",
@@ -61,6 +67,14 @@ export const FOOTER_LINK_COLUMNS: FooterLinkColumn[] = [
 		links: FOOTER_HELP_LINKS,
 	},
 ];
+
+export function getVisibleFooterLinkColumns(
+	showDiscover: boolean
+): FooterLinkColumn[] {
+	return FOOTER_LINK_COLUMNS.filter(
+		(column) => column.id !== "discover" || showDiscover
+	);
+}
 
 export const FOOTER_LEGAL_LINKS: FooterNavLink[] = [
 	{ label: "Terms", href: "/terms" },
