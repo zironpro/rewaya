@@ -59,7 +59,7 @@ export function CountdownTimer({
 				<div className="flex flex-wrap items-center justify-center gap-1 tabular-nums sm:gap-1.5">
 					{label ? (
 						<span
-							className={cn("opacity-80", compact ? "text-[10px]" : "text-xs")}
+							className={cn("opacity-90", compact ? "text-[10px]" : "text-xs")}
 						>
 							{label}
 						</span>
@@ -95,7 +95,7 @@ export function CountdownTimer({
 					</span>
 					{suffixText ? (
 						<span
-							className={cn("opacity-80", compact ? "text-[10px]" : "text-xs")}
+							className={cn("opacity-90", compact ? "text-[10px]" : "text-xs")}
 						>
 							{suffixText}
 						</span>

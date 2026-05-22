@@ -27,6 +27,7 @@ interface BundlesCampaignActionsProps {
 	buyLabel?: string;
 	className?: string;
 	buttonSize?: "default" | "sm" | "lg";
+	countdownVariant?: "default" | "dark";
 }
 
 export function BundlesCampaignActions({
@@ -37,6 +38,7 @@ export function BundlesCampaignActions({
 	buyLabel = "Buy the bundle now",
 	className,
 	buttonSize = "lg",
+	countdownVariant = "default",
 }: BundlesCampaignActionsProps) {
 	if (variant === "countdown") {
 		return (
@@ -44,6 +46,7 @@ export function BundlesCampaignActions({
 				className={className}
 				label={OFFER_LABEL}
 				slug={featuredSlug}
+				variant={countdownVariant}
 			/>
 		);
 	}
@@ -55,6 +58,7 @@ export function BundlesCampaignActions({
 				label={OFFER_LABEL}
 				size="compact"
 				slug={featuredSlug}
+				variant={countdownVariant}
 			/>
 		);
 	}

@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-import Image from "next/image";
-
 import AutoScroll from "embla-carousel-auto-scroll";
 
 import {
@@ -14,6 +12,7 @@ import {
 } from "@/components/ui/carousel";
 
 import type { BundleBookSlide } from "../lib/bundlesIndexData";
+import { BookSlideCard } from "./ui/book-slide-card";
 
 interface BundlesBookMarqueeProps {
 	slides: BundleBookSlide[];
@@ -37,25 +36,6 @@ function usePrefersReducedMotion() {
 	);
 }
 
-function BookSlideCard({ slide }: { slide: BundleBookSlide }) {
-	return (
-		<figure className="w-[120px] shrink-0 sm:w-[140px] md:w-[160px]">
-			<div className="book-shadow relative aspect-3/4 overflow-hidden rounded-md">
-				<Image
-					alt={slide.title}
-					className="object-cover"
-					fill
-					sizes="(max-width: 640px) 120px, 160px"
-					src={slide.image}
-				/>
-			</div>
-			<figcaption className="mt-2 line-clamp-2 text-secondary text-xs">
-				{slide.title}
-			</figcaption>
-		</figure>
-	);
-}
-
 export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 	const prefersReducedMotion = usePrefersReducedMotion();
 	const [api, setApi] = React.useState<CarouselApi>();
@@ -65,8 +45,6 @@ export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 			direction: "forward",
 			playOnInit: true,
 			speed: 1.15,
-			stopOnInteraction: true,
-			stopOnMouseEnter: true,
 		})
 	);
 
@@ -87,17 +65,17 @@ export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 			aria-label="Books included in our bundles"
 			className="border-border/60 border-y bg-muted/50 py-10 md:py-12"
 		>
-			<div className="container mb-6 text-center">
+			<div className="mb-6 text-center">
 				<p className="font-medium text-primary text-xs uppercase tracking-[0.2em]">
 					Inside every bundle
 				</p>
-				<h2 className="mt-2 font-display text-secondary text-xl md:text-2xl">
+				<h2 className="mt-1 font-bold font-display text-2xl text-secondary md:text-3xl">
 					Every title you bring home
 				</h2>
 			</div>
 
 			{prefersReducedMotion ? (
-				<div className="container">
+				<div>
 					<div className="flex flex-wrap justify-center gap-4">
 						{slides.map((slide) => (
 							<BookSlideCard key={slide.id} slide={slide} />
@@ -105,14 +83,14 @@ export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 					</div>
 				</div>
 			) : (
-				<div className="container px-0 sm:px-4">
+				<div className="px-0 sm:px-4">
 					<Carousel
 						className="w-full"
 						opts={MARQUEE_CAROUSEL_OPTS}
 						plugins={plugins}
 						setApi={setApi}
 					>
-						<CarouselContent className="-ml-3 md:-ml-4">
+						<CarouselContent className="flex gap-2">
 							{slides.map((slide) => (
 								<CarouselItem
 									className="basis-[120px] pl-3 sm:basis-[140px] md:basis-[160px] md:pl-4"

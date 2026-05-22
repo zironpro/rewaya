@@ -1,4 +1,5 @@
-import { BundleIndexCard } from "@/features/bundle-landing/components/bundle-index-card";
+import { BundleSetCard } from "@/components/bundle-set-card";
+
 import { BundleIndexDetailSection } from "@/features/bundle-landing/components/bundle-index-detail-section";
 import { BundlesBookMarquee } from "@/features/bundle-landing/components/bundles-book-marquee";
 import { BundlesCampaignBanner } from "@/features/bundle-landing/components/bundles-campaign-banner";
@@ -54,13 +55,8 @@ export function BundleLandingPageView({
 				</div>
 
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-					{data.bundleDataList.map((bundle, index) => (
-						<BundleIndexCard
-							bundle={bundle}
-							featured={index === 0}
-							featuredSlug={featuredSlug}
-							key={bundle.slug}
-						/>
+					{data.bundles.map((bundle) => (
+						<BundleSetCard bundle={bundle} key={bundle.id} />
 					))}
 				</div>
 			</section>

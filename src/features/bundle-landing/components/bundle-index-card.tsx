@@ -27,8 +27,8 @@ export function BundleIndexCard({
 		<article
 			className={
 				featured
-					? "flex flex-col overflow-hidden rounded-2xl border border-border bg-card book-shadow md:col-span-2 md:flex-row"
-					: "flex flex-col overflow-hidden rounded-2xl border border-border bg-card book-shadow"
+					? "book-shadow flex flex-col overflow-hidden rounded-2xl border border-border bg-card md:col-span-2 md:flex-row"
+					: "book-shadow flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
 			}
 		>
 			<div
