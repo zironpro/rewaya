@@ -1,4 +1,4 @@
-import { Lock, Package, Truck } from "lucide-react";
+import { Package, ShieldCheckIcon, Truck } from "lucide-react";
 
 const TRUST_ITEMS = [
 	{
@@ -12,7 +12,7 @@ const TRUST_ITEMS = [
 		description: "Hand-picked titles that read well together",
 	},
 	{
-		icon: Lock,
+		icon: ShieldCheckIcon,
 		title: "Secure checkout",
 		description: "Same trusted Rewaya cart and payment",
 	},
@@ -20,21 +20,23 @@ const TRUST_ITEMS = [
 
 export function BundlesIndexTrust() {
 	return (
-		<section className="container py-10 md:py-14">
-			<div className="grid gap-6 sm:grid-cols-3">
-				{TRUST_ITEMS.map(({ icon: Icon, title, description }) => (
-					<div
-						className="flex flex-col items-center rounded-xl border border-border bg-card p-6 text-center"
-						key={title}
-					>
-						<div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-							<Icon className="size-5" />
-						</div>
-						<h3 className="mt-4 font-semibold text-secondary">{title}</h3>
-						<p className="mt-1 text-muted-foreground text-sm">{description}</p>
+		<section className="container grid max-w-3xl gap-4 pb-10 sm:grid-cols-3 md:pb-14">
+			{TRUST_ITEMS.map(({ icon: Icon, title, description }) => (
+				<div
+					className="flex flex-col items-center rounded-xl border border-border bg-card p-4 text-center shadow-sm transition-shadow duration-300 hover:shadow-md"
+					key={title}
+				>
+					<div className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+						<Icon className="size-5" />
 					</div>
-				))}
-			</div>
+					<h3 className="mt-4 font-bold font-display text-lg text-secondary uppercase">
+						{title}
+					</h3>
+					<p className="mt-1 text-balance text-muted-foreground text-sm">
+						{description}
+					</p>
+				</div>
+			))}
 		</section>
 	);
 }

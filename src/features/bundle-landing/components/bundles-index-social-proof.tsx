@@ -28,10 +28,10 @@ export function BundlesIndexSocialProof({
 				</p>
 
 				<div className="mt-8 md:hidden">
-					<div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 pb-2">
+					<div className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto overscroll-x-contain px-4 py-4">
 						{reviews.map((r, i) => (
 							<figure
-								className="book-shadow w-[min(85vw,360px)] shrink-0 snap-center rounded-lg border border-gold/15 bg-card p-5"
+								className="w-[min(85vw,360px)] shrink-0 snap-center rounded-lg border border-gold/15 bg-card p-5 shadow-sm"
 								key={`${r.id}-${Number(i)}`}
 							>
 								<div className="flex gap-0.5 text-gold">
@@ -51,10 +51,10 @@ export function BundlesIndexSocialProof({
 				</div>
 
 				<div className="campaign-marquee-wrap mt-8 hidden md:block">
-					<div className="campaign-marquee-track gap-6 py-3 pr-6">
+					<div className="campaign-marquee-track gap-6 py-4 pr-6">
 						{doubled.map((r, i) => (
 							<figure
-								className="book-shadow w-[340px] shrink-0 rounded-lg border border-gold/15 bg-card p-6"
+								className="w-[340px] shrink-0 rounded-lg border border-gold/15 bg-card p-6 shadow-sm"
 								key={`${r.id}-${Number(i)}`}
 							>
 								<div className="flex gap-0.5 text-gold">
@@ -77,7 +77,7 @@ export function BundlesIndexSocialProof({
 					<Button
 						nativeButton={false}
 						render={<Link href="#bundles" />}
-						variant="ghost"
+						variant="secondary"
 					>
 						Get your bundle
 					</Button>

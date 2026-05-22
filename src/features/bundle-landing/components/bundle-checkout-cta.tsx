@@ -29,7 +29,11 @@ export function BundleCheckoutCta({
 	if (bundle.wixProductId) {
 		return (
 			<AddToCartButton
-				className={cn(shimmerClass, "w-full gap-2", className)}
+				className={cn(
+					shimmerClass,
+					"min-h-11 w-full shrink-0 gap-2",
+					className
+				)}
 				productId={bundle.wixProductId}
 				productName={bundle.name}
 				size={size}
@@ -45,7 +49,7 @@ export function BundleCheckoutCta({
 			className={cn(
 				buttonVariants({ size }),
 				shimmerClass,
-				"inline-flex w-full items-center justify-center gap-2 no-underline hover:no-underline",
+				"inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 no-underline hover:no-underline",
 				className
 			)}
 			href="/cart"

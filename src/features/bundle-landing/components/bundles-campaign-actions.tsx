@@ -66,7 +66,7 @@ export function BundlesCampaignActions({
 	if (variant === "scroll-bundles") {
 		return (
 			<Button
-				className={cn("campaign-shimmer flex-1", className)}
+				className={cn("min-h-11 shrink-0", className)}
 				nativeButton={false}
 				render={<Link href="#bundles" />}
 				size={buttonSize}

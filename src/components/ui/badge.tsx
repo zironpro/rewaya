@@ -18,7 +18,7 @@ export const badgeVariants = cva(
 		variants: {
 			size: {
 				default:
-					"h-5.5 min-w-5.5 px-[calc(--spacing(1.5)-1px)] text-sm sm:h-5 sm:min-w-5 sm:text-xs",
+					"h-5.5 min-w-5.5 px-[calc(--spacing(1.5)-1px)] text-xs sm:h-5 sm:min-w-5",
 				lg: "h-6.5 min-w-6.5 px-[calc(--spacing(1.5)-1px)] text-sm sm:h-5.5 sm:min-w-5.5 sm:text-xs",
 				sm: "h-5 min-w-5 rounded-[.25rem] px-[calc(--spacing(1)-1px)] text-xs sm:h-4 sm:min-w-4 sm:text-[.625rem]",
 			},
@@ -31,8 +31,9 @@ export const badgeVariants = cva(
 					"bg-destructive/8 text-destructive-foreground dark:bg-destructive/16",
 				info: "bg-info/8 text-info-foreground dark:bg-info/16",
 				outline:
-					"border-input bg-background text-foreground dark:bg-input/32 [button&,a&]:hover:bg-accent/50 dark:[button&,a&]:hover:bg-input/48",
-				secondary: "bg-card text-primary [button&,a&]:hover:bg-secondary/90",
+					"border-border bg-background text-muted-foreground dark:bg-input/32 [button&,a&]:hover:bg-accent/50 dark:[button&,a&]:hover:bg-input/48",
+				secondary:
+					"bg-card text-primary shadow-sm [button&,a&]:hover:bg-secondary/90",
 				success: "bg-success text-success-foreground dark:bg-success/16",
 				warning: "bg-warning/8 text-warning-foreground dark:bg-warning/16",
 			},

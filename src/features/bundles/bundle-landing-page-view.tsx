@@ -78,9 +78,9 @@ export function BundleLandingPageView({
 				/>
 			))}
 
-			<BundlesIndexTrust />
 			<BundlesIndexSocialProof reviews={data.reviews} />
 			<BundlesIndexFaqSection faqs={data.faqs} />
+			<BundlesIndexTrust />
 			<BundlesIndexCta
 				featuredBundle={data.featuredBundleData}
 				featuredSlug={featuredSlug}

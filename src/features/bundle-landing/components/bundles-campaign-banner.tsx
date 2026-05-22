@@ -31,10 +31,10 @@ export function BundlesCampaignBanner({
 	return (
 		<div
 			className={cn(
-				"book-shadow relative overflow-hidden rounded-2xl",
+				"relative overflow-hidden rounded-xl shadow-sm",
 				isHero
 					? "aspect-4/3 min-h-[280px] md:min-h-[360px]"
-					: "aspect-21/9 min-h-[200px]",
+					: "min-h-[200px] md:aspect-21/9",
 				className
 			)}
 		>
@@ -46,17 +46,17 @@ export function BundlesCampaignBanner({
 				sizes="(max-width: 1024px) 100vw, 60vw"
 				src={slot.imageSrc}
 			/>
-			<div className="absolute inset-0 bg-linear-to-t from-card/80" />
+			<div className="absolute inset-0 bg-linear-to-t from-10% from-card to-75%" />
 
 			{(slot.title || showOverlayCta) && (
-				<div className="absolute inset-0 flex flex-col items-center justify-end p-6 text-center text-secondary md:p-10">
+				<div className="absolute inset-0 flex max-w-md flex-col items-start justify-end p-6 text-start text-secondary md:p-8">
 					{slot.title ? (
-						<h2 className="font-display font-semibold text-2xl uppercase tracking-tight md:text-4xl">
+						<h2 className="font-bold font-display text-2xl uppercase tracking-tight md:text-4xl">
 							{slot.title}
 						</h2>
 					) : null}
 					{slot.subtitle ? (
-						<p className="mt-2 max-w-lg font-medium text-secondary/85 text-sm md:text-base">
+						<p className="mt-1 max-w-lg font-medium text-secondary/85 text-sm md:text-base">
 							{slot.subtitle}
 						</p>
 					) : null}

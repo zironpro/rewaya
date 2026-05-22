@@ -83,17 +83,17 @@ export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 					</div>
 				</div>
 			) : (
-				<div className="px-0 sm:px-4">
+				<div className="campaign-marquee-wrap">
 					<Carousel
 						className="w-full"
 						opts={MARQUEE_CAROUSEL_OPTS}
 						plugins={plugins}
 						setApi={setApi}
 					>
-						<CarouselContent className="flex gap-2">
+						<CarouselContent className="-ml-4 flex gap-6">
 							{slides.map((slide) => (
 								<CarouselItem
-									className="basis-[120px] pl-3 sm:basis-[140px] md:basis-[160px] md:pl-4"
+									className="basis-[120px] pl-3 sm:basis-[140px] md:basis-[220px] md:pl-6"
 									key={slide.id}
 								>
 									<BookSlideCard slide={slide} />
