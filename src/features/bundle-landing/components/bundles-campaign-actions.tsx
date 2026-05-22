@@ -82,6 +82,7 @@ export function BundlesCampaignActions({
 			<BundleCheckoutCta
 				bundle={featuredBundle}
 				className={className}
+				href={featuredSlug}
 				label={buyLabel}
 				shimmerClass="campaign-shimmer"
 				size={buttonSize}

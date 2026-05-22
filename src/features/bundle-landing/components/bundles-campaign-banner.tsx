@@ -46,10 +46,19 @@ export function BundlesCampaignBanner({
 				sizes="(max-width: 1024px) 100vw, 60vw"
 				src={slot.imageSrc}
 			/>
-			<div className="absolute inset-0 bg-linear-to-t from-10% from-card to-75%" />
+			{isHero && (
+				<div className="absolute inset-0 bg-linear-to-t from-10% from-card to-75%" />
+			)}
 
 			{(slot.title || showOverlayCta) && (
-				<div className="absolute inset-0 flex max-w-md flex-col items-start justify-end p-6 text-start text-secondary md:p-8">
+				<div
+					className={cn(
+						"absolute inset-0 flex flex-col justify-end text-start text-secondary",
+						isHero
+							? "max-w-md items-start p-6 md:p-8"
+							: "max-w-xl items-center py-9"
+					)}
+				>
 					{slot.title ? (
 						<h2 className="font-bold font-display text-2xl uppercase tracking-tight md:text-4xl">
 							{slot.title}

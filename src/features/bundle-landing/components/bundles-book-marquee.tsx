@@ -2,14 +2,7 @@
 
 import * as React from "react";
 
-import AutoScroll from "embla-carousel-auto-scroll";
-
-import {
-	Carousel,
-	type CarouselApi,
-	CarouselContent,
-	CarouselItem,
-} from "@/components/ui/carousel";
+import { CoverFlow, type CoverFlowItem } from "@/components/ui/coverflow";
 
 import type { BundleBookSlide } from "../lib/bundlesIndexData";
 import { BookSlideCard } from "./ui/book-slide-card";
@@ -17,12 +10,6 @@ import { BookSlideCard } from "./ui/book-slide-card";
 interface BundlesBookMarqueeProps {
 	slides: BundleBookSlide[];
 }
-
-const MARQUEE_CAROUSEL_OPTS = {
-	align: "start" as const,
-	dragFree: true,
-	loop: true,
-};
 
 function usePrefersReducedMotion() {
 	return React.useSyncExternalStore(
@@ -36,27 +23,27 @@ function usePrefersReducedMotion() {
 	);
 }
 
+function slidesToCoverFlowItems(slides: BundleBookSlide[]): CoverFlowItem[] {
+	return slides.map((slide) => ({
+		id: slide.id,
+		image: slide.image,
+		title: slide.title,
+		subtitle: slide.bundleTitle,
+	}));
+}
+
 export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 	const prefersReducedMotion = usePrefersReducedMotion();
-	const [api, setApi] = React.useState<CarouselApi>();
 
-	const autoScrollPlugin = React.useRef(
-		AutoScroll({
-			direction: "forward",
-			playOnInit: true,
-			speed: 1.15,
-		})
+	const coverFlowItems = React.useMemo(
+		() => slidesToCoverFlowItems(slides),
+		[slides]
 	);
 
-	const plugins = React.useMemo(
-		() => (prefersReducedMotion ? [] : [autoScrollPlugin.current]),
-		[prefersReducedMotion]
+	const initialIndex = React.useMemo(
+		() => Math.floor(slides.length / 2),
+		[slides.length]
 	);
-
-	React.useEffect(() => {
-		if (!api || prefersReducedMotion) return;
-		api.plugins()?.autoScroll?.play();
-	}, [api, prefersReducedMotion]);
 
 	if (slides.length === 0) return null;
 
@@ -75,32 +62,24 @@ export function BundlesBookMarquee({ slides }: BundlesBookMarqueeProps) {
 			</div>
 
 			{prefersReducedMotion ? (
-				<div>
-					<div className="flex flex-wrap justify-center gap-4">
-						{slides.map((slide) => (
-							<BookSlideCard key={slide.id} slide={slide} />
-						))}
-					</div>
+				<div className="flex flex-wrap justify-center gap-4">
+					{slides.map((slide) => (
+						<BookSlideCard key={slide.id} slide={slide} />
+					))}
 				</div>
 			) : (
-				<div className="campaign-marquee-wrap">
-					<Carousel
-						className="w-full"
-						opts={MARQUEE_CAROUSEL_OPTS}
-						plugins={plugins}
-						setApi={setApi}
-					>
-						<CarouselContent className="-ml-4 flex gap-6">
-							{slides.map((slide) => (
-								<CarouselItem
-									className="basis-[120px] pl-3 sm:basis-[140px] md:basis-[220px] md:pl-6"
-									key={slide.id}
-								>
-									<BookSlideCard slide={slide} />
-								</CarouselItem>
-							))}
-						</CarouselContent>
-					</Carousel>
+				<div className="relative mx-auto h-[min(520px,75vh)] w-full">
+					<CoverFlow
+						centerGap={240}
+						enableReflection={false}
+						initialIndex={initialIndex}
+						itemHeight={340}
+						items={coverFlowItems}
+						itemWidth={280}
+						rotation={60}
+						scrollThreshold={60}
+						stackSpacing={140}
+					/>
 				</div>
 			)}
 		</section>

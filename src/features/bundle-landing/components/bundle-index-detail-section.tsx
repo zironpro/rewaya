@@ -30,8 +30,8 @@ function CompactBookTile({
 }) {
 	return (
 		<li className="w-[min(100%,220px)] shrink-0 snap-start sm:w-[240px] lg:w-full">
-			<div className="group flex items-center gap-3 rounded-xl border border-border/80 bg-card p-3 transition-[scale,box-shadow,border-color] hover:scale-102 hover:border-primary/30 hover:bg-card hover:shadow-md">
-				<div className="relative aspect-3/4 w-20 shrink-0 overflow-hidden rounded-md shadow-sm">
+			<div className="group flex items-center gap-3 rounded-lg border border-border/80 bg-card p-3 transition-[scale,box-shadow,border-color] hover:scale-102 hover:border-primary/30 hover:bg-card hover:shadow-md">
+				<div className="relative aspect-4/5 w-20 shrink-0 overflow-hidden rounded-md shadow-sm md:w-28">
 					<Image
 						alt={book.title}
 						className="object-cover"

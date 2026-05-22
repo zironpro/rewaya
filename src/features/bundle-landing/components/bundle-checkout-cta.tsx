@@ -1,5 +1,6 @@
 "use client";
 
+import type { Route } from "next";
 import Link from "next/link";
 
 import { ShoppingBag } from "lucide-react";
@@ -17,6 +18,7 @@ interface BundleCheckoutCtaProps {
 	size?: "default" | "sm" | "lg" | "icon";
 	label?: string;
 	shimmerClass?: string;
+	href?: Route;
 }
 
 export function BundleCheckoutCta({
@@ -25,6 +27,7 @@ export function BundleCheckoutCta({
 	size = "lg",
 	label = "Add bundle to cart",
 	shimmerClass = "btn-shimmer",
+	href = "/cart",
 }: BundleCheckoutCtaProps) {
 	if (bundle.wixProductId) {
 		return (
@@ -52,7 +55,7 @@ export function BundleCheckoutCta({
 				"inline-flex min-h-11 w-full shrink-0 items-center justify-center gap-2 no-underline hover:no-underline",
 				className
 			)}
-			href="/cart"
+			href={href}
 		>
 			<ShoppingBag className="size-4" />
 			{label}

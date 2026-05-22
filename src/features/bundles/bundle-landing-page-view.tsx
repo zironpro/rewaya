@@ -32,7 +32,7 @@ export function BundleLandingPageView({
 			<BundlesIndexHero
 				bundles={data.bundles}
 				featuredBundle={data.featuredBundleData}
-				featuredSlug={featuredSlug}
+				featuredSlug={"/bundles"}
 				heroBanner={banners.hero}
 				maxSavings={data.maxSavings}
 			/>
@@ -64,7 +64,7 @@ export function BundleLandingPageView({
 			<section className="container py-10 md:py-14">
 				<BundlesCampaignBanner
 					featuredBundle={data.featuredBundleData}
-					featuredSlug={featuredSlug}
+					featuredSlug={"/bundles"}
 					slot={banners.mid}
 				/>
 			</section>
