@@ -20,7 +20,7 @@ export function BundlesUrgencyCallout({
 		<section className="container py-8 md:py-10">
 			<Card className="campaign-shimmer relative rounded-xl bg-secondary shadow-md">
 				<CardContent className="relative z-10 flex flex-col items-center gap-4 p-9 text-center md:flex-row md:justify-between md:text-left">
-					<div className="relative z-20 flex items-center gap-3">
+					<div className="relative z-20 flex flex-col items-center gap-3 md:flex-row">
 						<div className="flex size-24 items-center justify-center rounded-full bg-gold text-card/90">
 							<AlarmClock
 								animateOnView

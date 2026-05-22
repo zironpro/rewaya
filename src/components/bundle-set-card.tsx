@@ -20,38 +20,38 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	].filter(Boolean) as string[];
 
 	return (
-		<div className="group relative flex cursor-pointer flex-col items-center gap-12 rounded-sm border bg-muted p-6 transition-all duration-500 hover:border-primary sm:flex-row md:p-9">
+		<div className="group relative flex cursor-pointer flex-col items-center gap-12 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:p-9">
 			<Link className="absolute inset-0" href={`/bundles/${bundle.id}`} />
-			<div className="relative mb-6 aspect-4/5 w-32 shrink-0 sm:mb-0 md:w-48">
+			<div className="relative mb-6 flex w-full max-w-xs shrink-0 items-end justify-center gap-3 sm:mb-0 sm:block sm:aspect-4/5 sm:w-32 sm:max-w-none md:w-48">
 				{stackImages[0] && (
-					<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden rounded-sm border border-stone-100 bg-stone-200 shadow-lg transition-transform duration-500 group-hover:-rotate-15">
+					<div className="relative aspect-4/5 w-20 shrink-0 -rotate-6 overflow-hidden rounded-sm border border-stone-100 bg-stone-200 shadow-md transition-transform duration-500 sm:absolute sm:inset-0 sm:w-auto sm:translate-x-[-15px] sm:-rotate-12 sm:transform group-hover:sm:-rotate-15">
 						<Image
 							alt=""
 							className="object-cover opacity-60"
 							fill
-							sizes="128px"
+							sizes="(max-width: 640px) 80px, 128px"
 							src={stackImages[0]}
 						/>
 					</div>
 				)}
 
 				{stackImages[1] && (
-					<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden rounded-sm border border-stone-200 bg-stone-100 shadow-xl transition-transform duration-500 group-hover:rotate-12">
+					<div className="relative aspect-4/5 w-20 shrink-0 rotate-3 overflow-hidden rounded-sm border border-stone-200 bg-stone-100 shadow-lg transition-transform duration-500 sm:absolute sm:inset-0 sm:w-auto sm:translate-x-[15px] sm:rotate-6 sm:transform group-hover:sm:rotate-12">
 						<Image
 							alt=""
 							className="object-cover opacity-80"
 							fill
-							sizes="128px"
+							sizes="(max-width: 640px) 80px, 128px"
 							src={stackImages[1]}
 						/>
 					</div>
 				)}
-				<div className="absolute inset-0 rotate-0 transform overflow-hidden rounded-sm border border-stone-300 bg-white shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+				<div className="relative aspect-4/5 w-20 shrink-0 overflow-hidden rounded-sm border border-stone-300 bg-white shadow-sm transition-transform duration-500 sm:absolute sm:inset-0 sm:w-auto sm:rotate-0 sm:transform group-hover:sm:-translate-y-2">
 					<Image
 						alt={bundle.title}
 						className="object-cover"
 						fill
-						sizes="128px"
+						sizes="(max-width: 640px) 80px, 128px"
 						src={stackImages[2] ?? bundle.coverImage}
 					/>
 				</div>
@@ -59,10 +59,10 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 				<Tooltip>
 					<TooltipTrigger
 						render={
-							<span className="absolute -top-3 -right-3 z-20 flex size-8 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-lg" />
+							<span className="absolute -top-3 -right-3 z-20 flex size-8 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-md" />
 						}
 					>
-						<span className="font-bold text-xs leading-none">
+						<span className="-translate-y-0.5 font-bold font-display text-sm leading-none">
 							{bundle.books.length}
 						</span>
 					</TooltipTrigger>

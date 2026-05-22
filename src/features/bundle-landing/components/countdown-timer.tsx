@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-import { useCountdown } from "../hooks/useCountdown";
+import { formatCountdownTime, useCountdown } from "../hooks/useCountdown";
 
 interface CountdownTimerProps {
 	slug: string;
@@ -71,28 +71,9 @@ export function CountdownTimer({
 							box
 						)}
 					>
-						{parts.h}
+						{formatCountdownTime(parts)}
 					</span>
-					<span className="campaign-colon-blink font-bold">:</span>
-					<span
-						className={cn(
-							"rounded font-bold",
-							compact ? "px-1 py-0.5" : "px-1.5 py-0.5",
-							box
-						)}
-					>
-						{parts.m}
-					</span>
-					<span className="campaign-colon-blink font-bold">:</span>
-					<span
-						className={cn(
-							"rounded font-bold",
-							compact ? "px-1 py-0.5" : "px-1.5 py-0.5",
-							box
-						)}
-					>
-						{parts.s}
-					</span>
+
 					{suffixText ? (
 						<span
 							className={cn("opacity-90", compact ? "text-[10px]" : "text-xs")}

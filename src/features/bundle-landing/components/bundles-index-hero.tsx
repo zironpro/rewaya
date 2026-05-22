@@ -25,11 +25,11 @@ export function BundlesIndexHero({
 	heroBanner,
 }: BundlesIndexHeroProps) {
 	return (
-		<section className="relative overflow-hidden bg-card py-12 md:py-20">
+		<section className="relative overflow-hidden bg-card py-6 sm:py-12 md:py-20">
 			<div className="absolute inset-0 bg-[radial-gradient(100%_100%_at_50%_100%,oklch(from_var(--color-gold)_l_c_h/0.25)_0,var(--color-card)_50%,var(--color-card)_100%)] bg-white" />
 			<div className="container relative z-10">
 				<div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
-					<div className="flex flex-col items-start gap-5 lg:col-span-5">
+					<div className="flex flex-col items-start gap-3 md:gap-5 lg:col-span-5">
 						<Badge variant="warning">Limited-time bundle offer</Badge>
 						<h1 className="font-bold font-display text-3xl text-secondary leading-tight tracking-tight md:text-4xl lg:text-5xl">
 							Curated book bundles: One cart, one great price
@@ -60,7 +60,7 @@ export function BundlesIndexHero({
 								variant="scroll-bundles"
 							/>
 						</div>
-						<ul className="flex flex-wrap gap-x-6 gap-y-1 text-muted-foreground text-xs">
+						<ul className="flex flex-wrap gap-x-6 gap-y-1 text-gold text-xs">
 							<li>
 								<TruckIcon className="mr-1 inline size-[2ch]" />
 								UAE delivery

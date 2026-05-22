@@ -10,6 +10,11 @@ export interface CountdownParts {
 	s: string;
 }
 
+/** Compact display with unit labels, e.g. "23h 45m 30s". */
+export function formatCountdownTime({ h, m, s }: CountdownParts) {
+	return `${h}h ${m}m ${s}s`;
+}
+
 function storageKey(slug: string) {
 	return `bundle-offer-end-${slug}`;
 }

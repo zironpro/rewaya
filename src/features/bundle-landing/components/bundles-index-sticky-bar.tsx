@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-import { useCountdown } from "../hooks/useCountdown";
+import { formatCountdownTime, useCountdown } from "../hooks/useCountdown";
 
 interface BundlesIndexStickyBarProps {
 	featuredSlug: string;
@@ -16,18 +16,18 @@ export function BundlesIndexStickyBar({
 	const { parts, mounted } = useCountdown(featuredSlug);
 
 	return (
-		<div className="fixed inset-x-0 bottom-0 z-50 border-border border-t bg-card/95 px-4 py-3 backdrop-blur-md md:hidden">
-			<div className="flex items-center justify-between gap-3">
+		<div className="fixed inset-x-0 bottom-0 z-50 border-border border-t bg-card/95 px-4 py-3 backdrop-blur-md">
+			<div className="container flex items-center justify-between gap-3">
 				<div className="min-w-0">
 					<p className="font-semibold text-secondary text-sm">Buy soon</p>
-					<p className="tabular-nums text-muted-foreground text-xs">
+					<p className="text-muted-foreground text-xs tabular-nums">
 						Offer ending{" "}
 						{mounted ? (
 							<span className="font-bold text-primary">
-								{parts.m}:{parts.s}
+								{formatCountdownTime(parts)}
 							</span>
 						) : (
-							<span>--:--</span>
+							<span>--h --m --s</span>
 						)}
 					</p>
 				</div>
