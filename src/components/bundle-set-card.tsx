@@ -1,9 +1,15 @@
+"use client";
+
+import { useMemo, useSyncExternalStore } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Tag } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { CoverFlow, type CoverFlowItem } from "@/components/ui/coverflow";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
 
 import type { Bundle } from "@/lib/bundles-data";
@@ -12,64 +18,158 @@ interface BundleSetCardProps {
 	bundle: Bundle;
 }
 
+function usePrefersReducedMotion() {
+	return useSyncExternalStore(
+		(onStoreChange) => {
+			const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+			mq.addEventListener("change", onStoreChange);
+			return () => mq.removeEventListener("change", onStoreChange);
+		},
+		() => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+		() => false
+	);
+}
+
+function bundleToCoverFlowItems(bundle: Bundle): CoverFlowItem[] {
+	if (bundle.books.length > 0) {
+		return bundle.books.map((book) => ({
+			id: book.id,
+			image: book.image,
+			title: book.title,
+		}));
+	}
+
+	return [
+		{
+			id: bundle.id,
+			image: bundle.coverImage,
+			title: bundle.title,
+		},
+	];
+}
+
 export function BundleSetCard({ bundle }: BundleSetCardProps) {
+	const router = useRouter();
+	const prefersReducedMotion = usePrefersReducedMotion();
+	const bundleHref = `/bundles/${bundle.id}`;
+
+	const coverFlowItems = useMemo(
+		() => bundleToCoverFlowItems(bundle),
+		[bundle]
+	);
+
+	const initialIndex = useMemo(
+		() => Math.max(0, coverFlowItems.length - 1),
+		[coverFlowItems.length]
+	);
+
 	const stackImages = [
 		bundle.books[2]?.image,
 		bundle.books[1]?.image,
 		bundle.coverImage,
 	].filter(Boolean) as string[];
 
+	const bookCountBadge = (
+		<Tooltip>
+			<TooltipTrigger
+				render={
+					<span className="absolute -top-3 -right-3 z-20 flex size-8 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-md" />
+				}
+			>
+				<span className="-translate-y-0.5 font-bold font-display text-sm leading-none">
+					{bundle.books.length}
+				</span>
+			</TooltipTrigger>
+			<TooltipPopup>{bundle.books.length} Books sets</TooltipPopup>
+		</Tooltip>
+	);
+
 	return (
 		<div className="group relative flex cursor-pointer flex-col items-center gap-12 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:p-9">
-			<Link className="absolute inset-0" href={`/bundles/${bundle.id}`} />
-			<div className="relative mb-6 flex w-full max-w-xs shrink-0 items-end justify-center gap-3 sm:mb-0 sm:block sm:aspect-4/5 sm:w-32 sm:max-w-none md:w-48">
+			<Link
+				aria-label={`View ${bundle.title}`}
+				className="pointer-events-none absolute inset-0 z-0"
+				href={bundleHref}
+			/>
+
+			{/* Mobile: Cover Flow */}
+			<div className="relative z-10 mb-6 h-44 w-full max-w-sm shrink-0 sm:hidden">
+				{prefersReducedMotion ? (
+					<div className="flex items-end justify-center gap-3">
+						{coverFlowItems.map((item) => (
+							<div
+								className="relative aspect-4/5 w-20 shrink-0 overflow-hidden rounded-sm border border-stone-200 bg-white shadow-sm"
+								key={item.id}
+							>
+								<Image
+									alt={item.title}
+									className="object-cover"
+									fill
+									sizes="80px"
+									src={item.image}
+								/>
+							</div>
+						))}
+					</div>
+				) : (
+					<CoverFlow
+						centerGap={72}
+						className="h-full"
+						enableClickToSnap
+						enableReflection={false}
+						enableScroll={coverFlowItems.length > 1}
+						initialIndex={initialIndex}
+						itemHeight={112}
+						items={coverFlowItems}
+						itemWidth={88}
+						onItemClick={() => router.push(bundleHref)}
+						rotation={48}
+						scrollThreshold={40}
+						showCaption={false}
+						stackSpacing={48}
+					/>
+				)}
+				{bookCountBadge}
+			</div>
+
+			{/* Desktop: stacked covers */}
+			<div className="relative mb-6 hidden aspect-4/5 w-32 shrink-0 sm:mb-0 sm:block md:w-48">
 				{stackImages[0] && (
-					<div className="relative aspect-4/5 w-20 shrink-0 -rotate-6 overflow-hidden rounded-sm border border-stone-100 bg-stone-200 shadow-md transition-transform duration-500 sm:absolute sm:inset-0 sm:w-auto sm:translate-x-[-15px] sm:-rotate-12 sm:transform group-hover:sm:-rotate-15">
+					<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden rounded-sm border border-stone-100 bg-stone-200 shadow-md transition-transform duration-500 group-hover:-rotate-15">
 						<Image
 							alt=""
 							className="object-cover opacity-60"
 							fill
-							sizes="(max-width: 640px) 80px, 128px"
+							sizes="128px"
 							src={stackImages[0]}
 						/>
 					</div>
 				)}
 
 				{stackImages[1] && (
-					<div className="relative aspect-4/5 w-20 shrink-0 rotate-3 overflow-hidden rounded-sm border border-stone-200 bg-stone-100 shadow-lg transition-transform duration-500 sm:absolute sm:inset-0 sm:w-auto sm:translate-x-[15px] sm:rotate-6 sm:transform group-hover:sm:rotate-12">
+					<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden rounded-sm border border-stone-200 bg-stone-100 shadow-lg transition-transform duration-500 group-hover:rotate-12">
 						<Image
 							alt=""
 							className="object-cover opacity-80"
 							fill
-							sizes="(max-width: 640px) 80px, 128px"
+							sizes="128px"
 							src={stackImages[1]}
 						/>
 					</div>
 				)}
-				<div className="relative aspect-4/5 w-20 shrink-0 overflow-hidden rounded-sm border border-stone-300 bg-white shadow-sm transition-transform duration-500 sm:absolute sm:inset-0 sm:w-auto sm:rotate-0 sm:transform group-hover:sm:-translate-y-2">
+				<div className="absolute inset-0 rotate-0 transform overflow-hidden rounded-sm border border-stone-300 bg-white shadow-sm transition-transform duration-500 group-hover:-translate-y-2">
 					<Image
 						alt={bundle.title}
 						className="object-cover"
 						fill
-						sizes="(max-width: 640px) 80px, 128px"
+						sizes="128px"
 						src={stackImages[2] ?? bundle.coverImage}
 					/>
 				</div>
-
-				<Tooltip>
-					<TooltipTrigger
-						render={
-							<span className="absolute -top-3 -right-3 z-20 flex size-8 flex-col items-center justify-center rounded-full border-2 border-white bg-primary text-white shadow-md" />
-						}
-					>
-						<span className="-translate-y-0.5 font-bold font-display text-sm leading-none">
-							{bundle.books.length}
-						</span>
-					</TooltipTrigger>
-					<TooltipPopup>{bundle.books.length} Books sets</TooltipPopup>
-				</Tooltip>
+				{bookCountBadge}
 			</div>
-			<div className="flex h-full grow flex-col justify-between">
+
+			<div className="pointer-events-auto relative z-10 flex h-full grow flex-col justify-between">
 				<div>
 					{bundle.tag && (
 						<p className="mb-3 flex w-fit items-center gap-1.5 rounded bg-card px-1.5 py-1 font-medium text-primary text-xs uppercase">
@@ -93,7 +193,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 							AED {bundle.price.toFixed(2)}
 						</span>
 					</div>
-					<Button>Buy Set</Button>
+					<Button render={<Link href={bundleHref} />}>Buy Set</Button>
 				</div>
 			</div>
 		</div>

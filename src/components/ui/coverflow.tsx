@@ -31,6 +31,7 @@ export interface CoverFlowProps {
 	enableScroll?: boolean;
 	scrollThreshold?: number;
 	className?: string;
+	showCaption?: boolean;
 	onItemClick?: (item: CoverFlowItem, index: number) => void;
 	onIndexChange?: (index: number) => void;
 }
@@ -48,6 +49,7 @@ export function CoverFlow({
 	enableScroll = true,
 	scrollThreshold = 100,
 	className,
+	showCaption = true,
 	onItemClick,
 	onIndexChange,
 }: CoverFlowProps) {
@@ -223,24 +225,26 @@ export function CoverFlow({
 				))}
 			</div>
 
-			<div className="pointer-events-none absolute right-0 bottom-2 left-0 z-40 flex flex-col items-center justify-center transition-opacity duration-300">
-				<motion.div
-					animate={{ opacity: 1, y: 0 }}
-					className="text-center"
-					initial={{ opacity: 0, y: 10 }}
-					key={activeIndex}
-					transition={{ duration: 0.4, ease: "easeOut" }}
-				>
-					<h3 className="font-display font-semibold text-2xl text-secondary tracking-tight drop-shadow-md">
-						{items[activeIndex]?.title}
-					</h3>
-					{items[activeIndex]?.subtitle && (
-						<p className="mt-1 font-medium text-foreground/60 text-sm tracking-wide">
-							{items[activeIndex]?.subtitle}
-						</p>
-					)}
-				</motion.div>
-			</div>
+			{showCaption && (
+				<div className="pointer-events-none absolute right-0 bottom-2 left-0 z-40 flex flex-col items-center justify-center transition-opacity duration-300">
+					<motion.div
+						animate={{ opacity: 1, y: 0 }}
+						className="text-center"
+						initial={{ opacity: 0, y: 10 }}
+						key={activeIndex}
+						transition={{ duration: 0.4, ease: "easeOut" }}
+					>
+						<h3 className="font-display font-semibold text-2xl text-secondary tracking-tight drop-shadow-md">
+							{items[activeIndex]?.title}
+						</h3>
+						{items[activeIndex]?.subtitle && (
+							<p className="mt-1 font-medium text-foreground/60 text-sm tracking-wide">
+								{items[activeIndex]?.subtitle}
+							</p>
+						)}
+					</motion.div>
+				</div>
+			)}
 		</motion.div>
 	);
 }

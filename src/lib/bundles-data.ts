@@ -52,7 +52,7 @@ export const bundles: Bundle[] = [
 		id: "creative-brain-booster-pack",
 		title: "Creative Brain Booster Fun Pack",
 		price: 140,
-		originalPrice: 165,
+		originalPrice: 220,
 		tag: "Best Seller",
 		tagline: "Five cornerstone reads for faith, habit, and reflection",
 		description:
