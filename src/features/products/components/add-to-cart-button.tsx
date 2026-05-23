@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
 import { WIX_STORES_APP_ID } from "@/lib/wix/constants";
 import { useWixClient } from "@/lib/wix/provider";
 
@@ -17,11 +18,18 @@ interface AddToCartButtonProps {
 	size?: "default" | "sm" | "lg" | "icon";
 	variant?: "default" | "secondary" | "outline" | "ghost";
 	children?: React.ReactNode;
+	onAdded?: () => void;
+}
+
+function dispatchCartUpdated(cart?: unknown) {
+	window.dispatchEvent(
+		new CustomEvent("cart-updated", { detail: cart ? { cart } : undefined })
+	);
 }
 
 export function AddToCartButton({
 	productId,
-	productName,
+	productName: _productName,
 	variantId,
 	quantity = 1,
 	disabled,
@@ -29,17 +37,17 @@ export function AddToCartButton({
 	size = "lg",
 	variant = "secondary",
 	children,
+	onAdded,
 }: AddToCartButtonProps) {
 	const wixClient = useWixClient();
-	const [status, setStatus] = useState<"idle" | "added" | "error">("idle");
+	const [status, setStatus] = useState<"idle" | "loading" | "added" | "error">(
+		"idle"
+	);
 
 	const handleAddToCart = async () => {
-		if (!wixClient) return;
+		if (!wixClient || !productId) return;
 
-		setStatus("added");
-		window.dispatchEvent(
-			new CustomEvent("cart-updated", { detail: { delta: quantity } })
-		);
+		setStatus("loading");
 
 		try {
 			const catalogOptions: Record<string, unknown> = {};
@@ -61,25 +69,26 @@ export function AddToCartButton({
 				],
 			});
 
-			window.dispatchEvent(
-				new CustomEvent("cart-updated", { detail: { cart } })
-			);
+			if (cart) syncCartFromWixResponse(cart);
+			dispatchCartUpdated(cart);
+			setStatus("added");
+			onAdded?.();
 			setTimeout(() => setStatus("idle"), 2000);
 		} catch {
 			setStatus("error");
-			window.dispatchEvent(
-				new CustomEvent("cart-updated", { detail: { delta: 0 } })
-			);
+			dispatchCartUpdated();
 			setTimeout(() => setStatus("idle"), 2000);
 		}
 	};
 
 	const label =
-		status === "added"
-			? "Added ✓"
-			: status === "error"
-				? "Try again"
-				: (children ?? "Add to Cart");
+		status === "loading"
+			? "Adding…"
+			: status === "added"
+				? "Added ✓"
+				: status === "error"
+					? "Try again"
+					: (children ?? "Add to Cart");
 
 	return (
 		<Button

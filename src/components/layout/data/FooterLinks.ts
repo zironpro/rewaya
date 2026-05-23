@@ -43,7 +43,7 @@ export const FOOTER_HELP_LINKS: FooterNavLink[] = [
 	{ label: "Shipping Info", href: "/terms" },
 	{ label: "FAQs", href: "/contact" },
 	{ label: "Contact Us", href: "/contact" },
-	{ label: "Accessibility", href: "/contact" },
+	{ label: "Accessibility", href: "/accessibility" },
 ];
 
 /** Discover column is gated by `featureFlags.footerDiscoverSection` (phase 2). */
@@ -79,17 +79,19 @@ export function getVisibleFooterLinkColumns(
 export const FOOTER_LEGAL_LINKS: FooterNavLink[] = [
 	{ label: "Terms", href: "/terms" },
 	{ label: "Privacy", href: "/privacy" },
-	{ label: "Cookie Policy", href: "/terms#cookies" },
-	{ label: "Accessibility", href: "/contact" },
+	{ label: "Cookie Policy", href: "/cookies" },
+	{ label: "Accessibility", href: "/accessibility" },
 ];
 
 export const FOOTER_STORE = {
 	addressLines: [
-		"Dubai Design District",
-		"Building 4, Office 302",
-		"Dubai, United Arab Emirates",
+		"Ajman Jurf 2, Shahba Complex Block A Shop No. 6,",
+		"Opposite Habitat School",
+		"Ajman, United Arab Emirates",
 	],
-	hours: "Sat–Thu 10:00–20:00 · Fri 14:00–22:00",
-	phoneDisplay: "+971 4 123 4567",
-	phoneTel: "+97141234567",
+	hours: "Mon-Sat 07:30AM-5:30PM · Fri 07:30AM-12:00PM, 3:00PM-06:00Pm",
+	phone: "+971 58 526 3323",
+	tel: "+971 55 332 6919",
+	accountsEmail: "accounts@alrewaya.com",
+	supportEmail: "basim@alrewaya.com",
 } as const;

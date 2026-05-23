@@ -18,6 +18,14 @@ export interface BookProps {
 	badge?: "new seller" | "new arrival" | "best seller";
 }
 
+/** Stable, unique React list key — avoids collisions between wixProductId and numeric id. */
+export function getBookReactKey(book: BookProps, index?: number): string {
+	if (book.wixProductId) return book.wixProductId;
+	if (book.slug) return `slug:${book.slug}`;
+	if (index !== undefined) return `book:${book.id}:${index}`;
+	return `book-${index}:${book.id}`;
+}
+
 export interface CartItem {
 	id: number;
 	title: string;
@@ -27,6 +35,7 @@ export interface CartItem {
 	quantity: number;
 }
 
+/** @deprecated Local cart removed — use Wix currentCart via AddToCartButton. */
 export const cartAtom = atom<CartItem[]>([]);
 
 export const cartCountAtom = atom((get) => {
@@ -37,11 +46,4 @@ export const cartCountAtom = atom((get) => {
 export const cartTotalAtom = atom((get) => {
 	const cart = get(cartAtom);
 	return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-});
-
-export const wishlistAtom = atom<BookProps[]>([]);
-
-export const wishlistCountAtom = atom((get) => {
-	const wishlist = get(wishlistAtom);
-	return wishlist.length;
 });

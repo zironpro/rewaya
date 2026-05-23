@@ -2,8 +2,6 @@
 
 import { ShoppingBagIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 
 interface ProductMobileBuyBarProps {
@@ -16,7 +14,7 @@ interface ProductMobileBuyBarProps {
 export function ProductMobileBuyBar({
 	price,
 	productId,
-	productName,
+	productName = "Product",
 	quantity = 1,
 }: ProductMobileBuyBarProps) {
 	return (
@@ -25,24 +23,18 @@ export function ProductMobileBuyBar({
 				<span className="min-w-0 flex-1 font-bold text-2xl text-secondary">
 					AED {price.toFixed(2)}
 				</span>
-				{productId && productName ? (
-					<AddToCartButton
-						className="shrink-0 gap-2"
-						productId={productId}
-						productName={productName}
-						quantity={quantity}
-						size="lg"
-						variant="secondary"
-					>
-						<ShoppingBagIcon size={18} />
-						Add to Cart
-					</AddToCartButton>
-				) : (
-					<Button className="shrink-0 gap-2" size="lg" variant="secondary">
-						<ShoppingBagIcon size={18} />
-						Add to Cart
-					</Button>
-				)}
+				<AddToCartButton
+					className="shrink-0 gap-2"
+					disabled={!productId}
+					productId={productId ?? ""}
+					productName={productName}
+					quantity={quantity}
+					size="lg"
+					variant="secondary"
+				>
+					<ShoppingBagIcon size={18} />
+					Add to Cart
+				</AddToCartButton>
 			</div>
 		</div>
 	);

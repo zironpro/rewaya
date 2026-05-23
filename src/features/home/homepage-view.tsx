@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+
+import { MapPin } from "lucide-react";
 
 import { BundleSection } from "@/components/BundleSection";
 import { CategoryStrip } from "@/components/CategoryStrip";
@@ -47,25 +50,47 @@ export const HomepageView = ({
 				title="Today's Deals"
 			/>
 
-			{/* INTERSTITIAL BANNER 1 */}
-			<section className="relative mb-16 overflow-hidden bg-stone-900 py-16">
-				<Image
-					alt="Promotion"
-					className="object-cover opacity-60"
-					fill
-					sizes="100vw"
-					src="/banners/exhibition-banner.webp"
-				/>
-				<div className="relative z-10 flex flex-col items-center justify-center text-center text-white">
-					<h3 className="mb-4 font-serif text-3xl italic md:text-5xl">
-						Explore <span className="font-normal italic">Islamic</span> History
-					</h3>
-					<p className="mb-8 font-medium text-base md:text-lg">
-						Curated collection for the modern seeker
-					</p>
-					<Button size="lg" variant="outline">
-						Shop Now
-					</Button>
+			{/* INTERSTITIAL BANNER 1 — Dubai Book Fair recap */}
+			<section className="container mb-16">
+				<div className="group relative min-h-[300px] overflow-hidden rounded-2xl shadow-lg md:min-h-[360px]">
+					<Image
+						alt="Rewaya Books at the Dubai Book Fair"
+						className="object-cover transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-102"
+						fill
+						sizes="(max-width: 1280px) 100vw, 1280px"
+						src="/banners/book-fair-banner.webp"
+					/>
+					{/* <div className="absolute inset-0 bg-linear-to-r from-stone-950/95 via-stone-950/75 to-stone-950/25 md:to-transparent" /> */}
+					<div className="relative z-10 flex min-h-[300px] flex-col items-start justify-center p-6 text-white sm:p-10 md:min-h-[360px] md:max-w-4xl md:p-12">
+						<Badge
+							className="border-white/20 bg-white/10 text-white tracking-normal backdrop-blur-sm"
+							size="lg"
+							variant="outline"
+						>
+							Event recap
+						</Badge>
+						<h3 className="mt-3 font-bold font-display text-3xl leading-tight md:text-5xl">
+							Rewaya at the{" "}
+							<span className="text-accent italic">Dubai Book Fair</span>
+						</h3>
+						<p className="mt-4 font-light text-base text-white/90">
+							Thank you to everyone who visited our stand. We loved meeting
+							readers, signing books, and sharing stories from across the
+							Islamic world.
+						</p>
+						<p className="mt-3 flex items-center gap-1.5 text-sm text-white/75">
+							<MapPin aria-hidden className="size-4 shrink-0" />
+							Dubai, United Arab Emirates
+						</p>
+						<Button
+							className="mt-8"
+							nativeButton={false}
+							render={<Link href="/shop" />}
+							size="lg"
+						>
+							Browse the collection
+						</Button>
+					</div>
 				</div>
 			</section>
 
@@ -94,24 +119,25 @@ export const HomepageView = ({
 
 			{/* INTERSTITIAL BANNER 2 */}
 			<section className="container mb-12 pb-16">
-				<div className="group relative overflow-hidden rounded-2xl shadow-2xl">
+				<div className="group relative overflow-hidden rounded-2xl shadow-lg">
 					<Image
 						alt="Children's Books"
-						className="object-cover transition-transform group-hover:scale-110"
+						className="object-cover transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-105"
 						fill
 						sizes="(max-width: 1280px) 100vw, 1280px"
-						src="https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?q=80&w=2000&auto=format&fit=crop"
+						src="/banners/kids-banner.webp"
 					/>
-					<div className="relative z-10 flex flex-col items-start justify-center bg-linear-to-r from-secondary p-6 sm:p-10 md:p-16 lg:p-20">
-						<Badge size="sm" variant="secondary">
+					<div className="relative z-10 flex flex-col items-center justify-center p-6 sm:p-10 md:p-16 lg:p-20">
+						<Badge
+							className="bg-secondary px-2 text-secondary-foreground tracking-normal"
+							size="lg"
+						>
 							Special Release
 						</Badge>
-						<h3 className="mt-2 mb-9 max-w-2xl font-serif text-4xl text-white leading-tight md:text-6xl">
+						<h3 className="mt-2 mb-8 max-w-xl text-center font-bold font-display text-4xl text-secondary leading-tight md:text-5xl">
 							Nurturing the
-							<span className="font-normal text-accent italic">
-								Next Generation
-							</span>{" "}
-							of Seekers.
+							<span className="text-accent italic">Next Generation</span> of
+							Seekers.
 						</h3>
 						<Button size="lg">Shop Children books</Button>
 					</div>

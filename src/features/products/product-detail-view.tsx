@@ -2,24 +2,15 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
-
-import {
-	Heart,
-	Minus,
-	Plus,
-	RefreshCcw,
-	Share2,
-	ShieldCheck,
-	Truck,
-} from "lucide-react";
-
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
-import { Button } from "@/components/ui/button";
 
-import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
+import { ProductGallery } from "@/features/products/components/product-gallery";
+import { ProductInfoPanel } from "@/features/products/components/product-info-panel";
 import { ProductMobileBuyBar } from "@/features/products/components/product-mobile-buy-bar";
-import type { BookProps } from "@/lib/store";
+import { ProductPurchasePanel } from "@/features/products/components/product-purchase-panel";
+import type { ProductDetailData } from "@/features/products/types";
+
+export type { ProductDetailData } from "@/features/products/types";
 
 const getMockProduct = (id: string) => ({
 	id: Number.parseInt(id, 10) || 1,
@@ -42,12 +33,20 @@ const getMockProduct = (id: string) => ({
 		{ label: "Pages", value: "588" },
 		{ label: "Publisher", value: "Darussalam Publishing" },
 	],
+	badge: "best seller" as const,
+	images:
+		id === "2"
+			? [
+					"https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=800&auto=format&fit=crop",
+					"https://images.unsplash.com/photo-1512820790811-8f83e314c1e5?q=80&w=800&auto=format&fit=crop",
+				]
+			: undefined,
 });
 
-export type ProductDetailData = BookProps & {
-	description: string;
-	details: Array<{ label: string; value: string }>;
-};
+function getCompareAtPrice(price: number): number | undefined {
+	if (price <= 0) return undefined;
+	return Math.round(price * 1.18 * 100) / 100;
+}
 
 interface ProductDetailViewProps {
 	id: string;
@@ -59,139 +58,56 @@ export const ProductDetailView = ({
 	product: wixProduct,
 }: ProductDetailViewProps) => {
 	const mock = getMockProduct(id);
-	const product = wixProduct ?? {
+	const product: ProductDetailData = wixProduct ?? {
 		...mock,
 		wixProductId: undefined,
 		slug: undefined,
 	};
 	const [quantity, setQuantity] = useState(1);
+	const compareAtPrice = getCompareAtPrice(product.price);
 
+	console.log("product", product);
 	return (
 		<>
-			<main className="pt-4 pb-28 md:pb-16">
+			<main className="bg-background pt-4 pb-28 md:pb-16">
 				<div className="container">
 					<Breadcrumbs
-						className="mb-4"
-						items={[{ label: "Shop", href: "/shop" }, { label: product.title }]}
+						className="mb-6"
+						items={[
+							{ label: "Shop", href: "/shop" },
+							...(product.category
+								? [{ label: product.category, href: "/shop" }]
+								: []),
+							{ label: product.title },
+						]}
 					/>
 
-					<div className="grid grid-cols-1 gap-20 md:grid-cols-2">
-						<div className="space-y-6">
-							<div className="group relative aspect-3/4 overflow-hidden bg-stone-50">
-								<Image
-									alt={product.title}
-									className="object-cover transition-transform duration-1000 group-hover:scale-105"
-									fill
-									sizes="(max-width: 768px) 100vw, 50vw"
-									src={product.image}
-								/>
-								<button
-									className="absolute top-6 right-6 z-10 rounded-full bg-white/80 p-3 backdrop-blur-md transition-colors hover:bg-primary hover:text-white"
-									type="button"
-								>
-									<Heart size={20} />
-								</button>
-							</div>
+					<div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
+						<div className="lg:col-span-4 xl:col-span-5">
+							<ProductGallery
+								image={product.image}
+								images={product.images}
+								title={product.title}
+								wixProductId={product.id}
+							/>
 						</div>
 
-						<div className="flex flex-col">
-							<span className="mb-4 font-bold text-primary text-sm">
-								{product.category}
-							</span>
-							<h1 className="mb-2 font-bold font-serif text-3xl tracking-tight sm:text-4xl">
-								{product.title}
-							</h1>
-							<p className="mb-8 font-bold text-base text-stone-400">
-								{product.author}
-							</p>
+						<div className="lg:col-span-5 xl:col-span-4">
+							<ProductInfoPanel
+								compareAtPrice={compareAtPrice}
+								product={product}
+							/>
+						</div>
 
-							<div className="mb-10 font-bold text-2xl text-secondary">
-								AED {product.price.toFixed(2)}
-							</div>
-
-							<p className="mb-12 max-w-lg text-sm text-stone-500 leading-relaxed">
-								{product.description}
-							</p>
-
-							<div className="mb-16 space-y-8">
-								<div className="flex flex-wrap items-center gap-4 sm:gap-8">
-									<div className="flex items-center border border-stone-100 px-4 py-2">
-										<button
-											className="p-2 transition-colors hover:text-primary"
-											onClick={() => setQuantity(Math.max(1, quantity - 1))}
-											type="button"
-										>
-											<Minus size={14} />
-										</button>
-										<span className="w-12 text-center font-bold text-sm">
-											{quantity}
-										</span>
-										<button
-											className="p-2 transition-colors hover:text-primary"
-											onClick={() => setQuantity(quantity + 1)}
-											type="button"
-										>
-											<Plus size={14} />
-										</button>
-									</div>
-									<button
-										className="flex items-center gap-2 font-bold text-sm transition-colors hover:text-primary"
-										type="button"
-									>
-										<Share2 size={14} /> Share
-									</button>
-								</div>
-
-								{product.wixProductId ? (
-									<AddToCartButton
-										className="hidden w-full md:flex"
-										productId={product.wixProductId}
-										productName={product.title}
-										quantity={quantity}
-										variant="default"
-									>
-										Add to Collection
-									</AddToCartButton>
-								) : (
-									<Button
-										className="hidden w-full max-w-md md:inline-flex"
-										type="button"
-									>
-										Add to Collection
-									</Button>
-								)}
-							</div>
-
-							<div className="space-y-6 border-stone-100 border-t pt-12">
-								<div className="grid grid-cols-2 gap-y-4">
-									{product.details.map((detail, i) => (
-										<div
-											className="flex flex-col"
-											key={`${Number(i)}-${detail.label}`}
-										>
-											<span className="mb-1 font-bold text-sm text-stone-400">
-												{detail.label}
-											</span>
-											<span className="font-bold text-sm">{detail.value}</span>
-										</div>
-									))}
-								</div>
-
-								<div className="flex flex-col gap-4 pt-6">
-									<div className="flex items-center gap-4 text-sm">
-										<Truck className="text-primary" size={18} />
-										<span>Express Shipping Available (2-3 Days)</span>
-									</div>
-									<div className="flex items-center gap-4 text-sm">
-										<RefreshCcw className="text-primary" size={18} />
-										<span>30-Day Spiritual Reflection Returns</span>
-									</div>
-									<div className="flex items-center gap-4 text-sm">
-										<ShieldCheck className="text-primary" size={18} />
-										<span>100% Authentic Edition Guarantee</span>
-									</div>
-								</div>
-							</div>
+						<div className="hidden lg:col-span-3 lg:block xl:col-span-3">
+							<ProductPurchasePanel
+								compareAtPrice={compareAtPrice}
+								onQuantityChange={setQuantity}
+								price={product.price}
+								productId={product.wixProductId}
+								quantity={quantity}
+								title={product.title}
+							/>
 						</div>
 					</div>
 				</div>

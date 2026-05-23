@@ -14,6 +14,9 @@ export const WIX_OAUTH_DATA_KEY = "wix_oauth_data";
 
 export const AUTH_CALLBACK_PATH = "/auth/callback";
 
+/** Wix CMS collection for member wishlist rows (memberId + productId). */
+export const WISHLIST_COLLECTION = "Wishlist";
+
 export function isWixCatalogEnabled(): boolean {
 	return (
 		process.env.USE_WIX_CATALOG !== "false" &&

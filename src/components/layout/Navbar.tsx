@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import Link from "next/link";
 
-import { useAtom } from "jotai";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,7 @@ import { LanguageIcon } from "@/assets/icons/language";
 import { Logo } from "@/assets/logo";
 
 import { useCartCount } from "@/hooks/use-cart-count";
-import { wishlistCountAtom } from "@/lib/store";
+import { useWishlistCount } from "@/hooks/use-wishlist-count";
 import { useWixAuth } from "@/lib/wix/provider";
 
 import { CategoriesMenu } from "./components/categories-menu";
@@ -32,7 +31,7 @@ export function Navbar({
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	const wixCartCount = useCartCount();
-	const [wishlistCount] = useAtom(wishlistCountAtom);
+	const wishlistCount = useWishlistCount();
 	const { isReady, isLoggedIn, memberDisplayName } = useWixAuth();
 
 	return (
@@ -48,7 +47,7 @@ export function Navbar({
 					)}
 
 					<div className="ml-auto flex items-center gap-1 text-secondary md:gap-2">
-						<Button variant="ghost">
+						<Button className="hidden md:inline-flex" variant="ghost">
 							<LanguageIcon />
 							<span className="text-base">العربية</span>
 						</Button>
@@ -58,6 +57,7 @@ export function Navbar({
 						</Button>
 
 						<Button
+							className="hidden md:inline-flex"
 							nativeButton={false}
 							render={<Link href="/wishlist" />}
 							variant="ghost"
@@ -72,6 +72,7 @@ export function Navbar({
 						</Button>
 
 						<Button
+							className="hidden md:inline-flex"
 							nativeButton={false}
 							render={<Link href="/cart" />}
 							variant="ghost"
@@ -86,6 +87,7 @@ export function Navbar({
 						</Button>
 
 						<Button
+							className="hidden md:inline-flex"
 							nativeButton={false}
 							render={<Link href={isLoggedIn ? "/profile" : "/login"} />}
 						>

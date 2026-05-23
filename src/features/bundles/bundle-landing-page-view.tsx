@@ -46,11 +46,11 @@ export function BundleLandingPageView({
 					<p className="font-medium text-primary text-xs uppercase tracking-[0.2em]">
 						Pick your set
 					</p>
-					<h2 className="mt-2 font-bold font-display text-2xl text-secondary md:text-4xl">
+					<h2 className="mt-1 font-bold font-display text-3xl text-secondary md:text-4xl">
 						Bundle deals
 					</h2>
 					<p className="mt-2 max-w-xl text-muted-foreground">
-						Compare curated stacks — add to cart in one tap.
+						Compare curated stacks and add to cart in one tap.
 					</p>
 				</div>
 

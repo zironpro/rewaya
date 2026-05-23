@@ -2,11 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+import { countLineItems, readCartSnapshot } from "@/features/cart/cart-sdk";
 import { useWixClient } from "@/lib/wix/provider";
 
 export function useCartCount() {
 	const wixClient = useWixClient();
-	const [count, setCount] = useState(0);
+	const [count, setCount] = useState(() => {
+		const snapshot = readCartSnapshot();
+		return snapshot ? countLineItems(snapshot.lineItems) : 0;
+	});
 
 	useEffect(() => {
 		if (!wixClient) return;
@@ -23,7 +27,8 @@ export function useCartCount() {
 					) ?? 0;
 				setCount(total);
 			} catch {
-				setCount(0);
+				const snapshot = readCartSnapshot();
+				setCount(snapshot ? countLineItems(snapshot.lineItems) : 0);
 			}
 		};
 

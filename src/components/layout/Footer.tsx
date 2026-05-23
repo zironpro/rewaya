@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Leaf, RotateCcw, ShieldCheck } from "lucide-react";
+import { LeafIcon, RotateCcwIcon, ShieldCheckIcon } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -113,7 +113,7 @@ export async function Footer() {
 						</div>
 					</div>
 
-					<div className="grid gap-10 sm:col-span-2 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-3 lg:gap-x-8">
+					<div className="grid gap-10 sm:col-span-2 sm:grid-cols-2 lg:col-span-6 lg:grid-cols-3 lg:gap-x-8">
 						{footerLinkColumns.map((column) => (
 							<nav aria-label={column.ariaLabel} key={column.id}>
 								<p className={columnTitleClass}>{column.title}</p>
@@ -128,13 +128,13 @@ export async function Footer() {
 						) : null}
 					</div>
 
-					<div className="sm:col-span-2">
+					<div className="sm:col-span-3">
 						<nav aria-label="Visit us">
 							<p className={columnTitleClass}>Visit Us</p>
 							<address className="not-italic">
 								{FOOTER_STORE.addressLines.map((line) => (
 									<p
-										className="font-sans text-muted-foreground text-sm"
+										className="text-balance font-sans text-muted-foreground text-sm"
 										key={line}
 									>
 										{line}
@@ -146,32 +146,36 @@ export async function Footer() {
 								<p className="mt-3 font-sans text-muted-foreground text-sm">
 									<Link
 										className="underline-offset-2 transition-colors hover:text-secondary-foreground hover:underline"
-										href={`tel:${FOOTER_STORE.phoneTel}`}
+										href={`tel:${FOOTER_STORE.phone}`}
 									>
-										{FOOTER_STORE.phoneDisplay}
+										{FOOTER_STORE.phone}
+									</Link>
+								</p>
+								<p className="mt-3 font-sans text-muted-foreground text-sm">
+									<Link
+										className="underline-offset-2 transition-colors hover:text-secondary-foreground hover:underline"
+										href={`tel:${FOOTER_STORE.tel}`}
+									>
+										{FOOTER_STORE.tel}
+									</Link>
+								</p>
+								<p className="mt-3 font-sans text-muted-foreground text-sm">
+									<Link
+										className="underline-offset-2 transition-colors hover:text-secondary-foreground hover:underline"
+										href={`mailto:${FOOTER_STORE.accountsEmail}`}
+									>
+										{FOOTER_STORE.accountsEmail}
+									</Link>
+								</p>
+								<p className="mt-3 font-sans text-muted-foreground text-sm">
+									<Link
+										className="underline-offset-2 transition-colors hover:text-secondary-foreground hover:underline"
+										href={`mailto:${FOOTER_STORE.supportEmail}`}
+									>
+										{FOOTER_STORE.supportEmail}
 									</Link>
 								</p>
 							</address>
-							<div className="mt-6 flex flex-col gap-2">
-								<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
-									<ShieldCheck
-										aria-hidden
-										className="size-3.5 shrink-0 text-accent"
-									/>
-									Secure checkout
-								</p>
-								<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
-									<RotateCcw
-										aria-hidden
-										className="size-3.5 shrink-0 text-accent"
-									/>
-									Free returns
-								</p>
-								<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
-									<Leaf aria-hidden className="size-3.5 shrink-0 text-accent" />
-									Carbon neutral shipping
-								</p>
-							</div>
 						</nav>
 					</div>
 				</div>
@@ -181,17 +185,37 @@ export async function Footer() {
 
 			<div className="container mx-auto py-6">
 				<div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
-					<p className="font-sans text-muted-foreground text-xs lg:order-1">
+					<p className="font-sans text-muted-foreground text-xs">
 						© {year} Rewaya Books. All rights reserved.
 					</p>
+					<div className="flex flex-col items-center gap-4 md:flex-row">
+						<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
+							<ShieldCheckIcon
+								aria-hidden
+								className="size-3.5 shrink-0 text-accent"
+							/>
+							Secure checkout
+						</p>
+						<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
+							<RotateCcwIcon
+								aria-hidden
+								className="size-3.5 shrink-0 text-accent"
+							/>
+							Free returns
+						</p>
+						<p className="flex items-center gap-1.5 font-sans text-muted-foreground text-xs">
+							<LeafIcon aria-hidden className="size-3.5 shrink-0 text-accent" />
+							Carbon neutral shipping
+						</p>
+					</div>
 					<nav
 						aria-label="Legal"
-						className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-muted-foreground text-xs lg:order-3"
+						className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-muted-foreground text-xs"
 					>
 						{FOOTER_LEGAL_LINKS.map((item, index) => (
 							<span className="inline-flex items-center gap-3" key={item.label}>
 								{index > 0 ? (
-									<span aria-hidden className="text-muted-foreground/40">
+									<span aria-hidden className="font-bold text-muted-foreground">
 										·
 									</span>
 								) : null}

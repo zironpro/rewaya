@@ -4,10 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { motion } from "framer-motion";
-import { useAtom } from "jotai";
 import { Grid, Home, type LucideIcon, ShoppingBag, User } from "lucide-react";
 
-import { cartCountAtom } from "@/lib/store";
+import { useCartCount } from "@/hooks/use-cart-count";
 import { cn } from "@/lib/utils";
 
 type NavItem = {
@@ -29,7 +28,7 @@ function isNavItemActive(pathname: string, item: NavItem): boolean {
 
 export function MobileBottomNav() {
 	const pathname = usePathname();
-	const [cartCount] = useAtom(cartCountAtom);
+	const cartCount = useCartCount();
 
 	const navItems: NavItem[] = [
 		{ label: "Home", icon: Home, href: "/" },
@@ -76,11 +75,13 @@ export function MobileBottomNav() {
 										size={20}
 										strokeWidth={isActive ? 2 : 1.2}
 									/>
-									{/* {item.label === "Cart" && item.badge && item.badge > 0 && (
-										<span className="absolute -top-2 -right-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[9px] text-white ring-2 ring-white">
-											{item.badge}
-										</span>
-									)} */}
+									{item.label === "Cart" &&
+										item.badge != null &&
+										item.badge > 0 && (
+											<span className="absolute -top-2 -right-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[9px] text-white ring-2 ring-white">
+												{item.badge}
+											</span>
+										)}
 								</div>
 
 								<span

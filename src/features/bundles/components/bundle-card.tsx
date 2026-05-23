@@ -158,10 +158,8 @@ function BundleQuickViewDialog({
 							provide a comprehensive journey through {title}.
 						</p>
 						<div className="flex gap-4">
-							<Button className="h-14 flex-1" variant="premium">
-								Add to Bag
-							</Button>
-							<Button className="h-14 w-14" size="icon" variant="outline">
+							<Button className="flex-1">Add to Bag</Button>
+							<Button size="icon-lg" variant="outline">
 								<Heart size={20} strokeWidth={1.5} />
 							</Button>
 						</div>

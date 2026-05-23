@@ -1,12 +1,9 @@
 "use client";
 
-import React from "react";
-
 import Image from "next/image";
 import Link from "next/link";
 
-import { useAtom, useSetAtom } from "jotai";
-import { Eye, Heart, Plus } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +16,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
-import { BookProps, CartItem, cartAtom, wishlistAtom } from "@/lib/store";
+import { WishlistToggleButton } from "@/features/wishlist/components/wishlist-toggle-button";
+import type { BookProps } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 export function BookCard({
 	id,
@@ -33,46 +32,10 @@ export function BookCard({
 	badge,
 }: BookProps) {
 	const productHref = `/product/${slug ?? id}`;
-	const setCart = useSetAtom(cartAtom);
-	const [wishlist, setWishlist] = useAtom(wishlistAtom);
-
-	const isWishlisted = wishlist.some((item) => item.id === id);
-
-	const toggleWishlist = (e?: React.MouseEvent) => {
-		if (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
-		if (isWishlisted) {
-			setWishlist((prev) => prev.filter((item) => item.id !== id));
-		} else {
-			setWishlist((prev) => [
-				...prev,
-				{ id, title, author, price, image, category, badge },
-			]);
-		}
-	};
-
-	const addToBag = (e?: React.MouseEvent) => {
-		if (e) e.stopPropagation();
-		setCart((prev: CartItem[]) => {
-			const existing = prev.find((item) => item.id === id);
-			if (existing) {
-				return prev.map((item) =>
-					item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-				);
-			}
-			return [
-				...prev,
-				{ id, title, author: author ?? "", price, image, quantity: 1 },
-			];
-		});
-	};
 
 	return (
 		<div className="group relative">
 			<Link className="absolute inset-0 z-10" href={productHref} />
-			{/* Image Container */}
 			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
 				<Image
 					alt={title}
@@ -82,24 +45,14 @@ export function BookCard({
 					src={image}
 				/>
 
-				{/* Icons Overlay */}
 				<div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-					<Button
-						className={`size-9 rounded-full backdrop-blur-sm transition-colors ${
-							isWishlisted
-								? "bg-primary text-white hover:bg-primary/90"
-								: "bg-white/80 text-stone-900 hover:bg-white"
-						}`}
-						onClick={toggleWishlist}
-						size="icon"
-						variant="ghost"
-					>
-						<Heart
-							className={isWishlisted ? "fill-current" : ""}
-							size={16}
-							strokeWidth={1.5}
-						/>
-					</Button>
+					<WishlistToggleButton
+						className={cn(
+							"size-9 rounded-full backdrop-blur-sm",
+							"bg-white/80 text-stone-900 hover:bg-white"
+						)}
+						productId={wixProductId}
+					/>
 
 					<Dialog>
 						<DialogTrigger
@@ -141,34 +94,20 @@ export function BookCard({
 											collection.
 										</p>
 										<div className="flex gap-4">
-											{wixProductId ? (
-												<AddToCartButton
-													className="h-14 flex-1"
-													productId={wixProductId}
-													productName={title}
-													variant="default"
-												>
-													Add to Bag
-												</AddToCartButton>
-											) : (
-												<Button onClick={() => addToBag()} variant="premium">
-													Add to Bag
-												</Button>
-											)}
-											<Button
-												className={`h-14 w-14 ${
-													isWishlisted ? "border-primary text-primary" : ""
-												}`}
-												onClick={toggleWishlist}
-												size="icon"
-												variant="outline"
+											<AddToCartButton
+												className="h-14 flex-1"
+												disabled={!wixProductId}
+												productId={wixProductId ?? ""}
+												productName={title}
+												variant="default"
 											>
-												<Heart
-													className={isWishlisted ? "fill-current" : ""}
-													size={20}
-													strokeWidth={1.5}
-												/>
-											</Button>
+												Add to Bag
+											</AddToCartButton>
+											<WishlistToggleButton
+												className="h-14 w-14 shrink-0 border"
+												productId={wixProductId}
+												size="md"
+											/>
 										</div>
 									</div>
 								</div>
@@ -177,29 +116,18 @@ export function BookCard({
 					</Dialog>
 				</div>
 
-				{/* Quick Add (Bottom) */}
 				<div className="absolute right-0 bottom-0 left-0 z-20 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
-					{wixProductId ? (
-						<AddToCartButton
-							className="h-auto w-full rounded-none p-6 text-white hover:text-white"
-							productId={wixProductId}
-							productName={title}
-							variant="ghost"
-						>
-							<Plus className="mr-2" size={14} /> Add to Bag
-						</AddToCartButton>
-					) : (
-						<Button
-							className="w-full p-6 text-white hover:text-white"
-							onClick={addToBag}
-							variant="ghost"
-						>
-							<Plus className="mr-2" size={14} /> Add to Bag
-						</Button>
-					)}
+					<AddToCartButton
+						className="h-auto w-full rounded-none p-6 text-white hover:text-white"
+						disabled={!wixProductId}
+						productId={wixProductId ?? ""}
+						productName={title}
+						variant="ghost"
+					>
+						<Plus className="mr-2" size={14} /> Add to Bag
+					</AddToCartButton>
 				</div>
 
-				{/* Status Badges */}
 				<div className="absolute top-4 left-0 z-10 flex flex-col items-start gap-1">
 					{badge === "best seller" && (
 						<span className="bg-secondary px-3 py-1 font-medium text-white text-xs shadow-md">
@@ -224,7 +152,6 @@ export function BookCard({
 				</div>
 			</div>
 
-			{/* Info Container */}
 			<div className="flex cursor-pointer flex-col gap-1 px-1">
 				<div className="flex items-start justify-between gap-4">
 					<h3 className="flex-1 font-semibold text-base text-primary leading-tight transition-colors">

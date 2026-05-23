@@ -1,3 +1,4 @@
+import { items } from "@wix/data";
 import { currentCart, orders } from "@wix/ecom";
 import { memberPrivacySettings, members } from "@wix/members";
 import { redirects } from "@wix/redirects";
@@ -24,6 +25,7 @@ export function createBrowserClient(initialTokens?: Tokens | null) {
 			redirects,
 			members,
 			memberPrivacySettings,
+			items,
 		},
 		auth: OAuthStrategy({
 			clientId,

@@ -59,7 +59,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	);
 
 	const initialIndex = useMemo(
-		() => Math.max(0, coverFlowItems.length - 1),
+		() => Math.max(0, coverFlowItems.length - 3),
 		[coverFlowItems.length]
 	);
 
@@ -85,7 +85,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	);
 
 	return (
-		<div className="group relative flex cursor-pointer flex-col items-center gap-12 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:p-9">
+		<div className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:p-9">
 			<Link
 				aria-label={`View ${bundle.title}`}
 				className="pointer-events-none absolute inset-0 z-0"
@@ -93,7 +93,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 			/>
 
 			{/* Mobile: Cover Flow */}
-			<div className="relative z-10 mb-6 h-44 w-full max-w-sm shrink-0 sm:hidden">
+			<div className="relative z-10 h-52 w-full shrink-0 sm:hidden">
 				{prefersReducedMotion ? (
 					<div className="flex items-end justify-center gap-3">
 						{coverFlowItems.map((item) => (
@@ -113,15 +113,15 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 					</div>
 				) : (
 					<CoverFlow
-						centerGap={72}
+						centerGap={80}
 						className="h-full"
 						enableClickToSnap
 						enableReflection={false}
 						enableScroll={coverFlowItems.length > 1}
 						initialIndex={initialIndex}
-						itemHeight={112}
+						itemHeight={144}
 						items={coverFlowItems}
-						itemWidth={88}
+						itemWidth={112}
 						onItemClick={() => router.push(bundleHref)}
 						rotation={48}
 						scrollThreshold={40}
@@ -193,7 +193,9 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 							AED {bundle.price.toFixed(2)}
 						</span>
 					</div>
-					<Button render={<Link href={bundleHref} />}>Buy Set</Button>
+					<Button nativeButton={false} render={<Link href={bundleHref} />}>
+						Buy bundle
+					</Button>
 				</div>
 			</div>
 		</div>
