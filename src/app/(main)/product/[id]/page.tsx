@@ -38,6 +38,12 @@ export default async function ProductDetailPage({
 		product = (await getWixProductBySlug(id)) ?? (await getWixProductById(id));
 	}
 
+	// const { queryProducts } = (await wixClientServer()).use(products);
+
+	// const {items} = await queryProducts().eq("slug", id).limit(1).find()
+
+	// console
+
 	return (
 		<ProductDetailView
 			id={id}

@@ -222,7 +222,10 @@ async function queryV1ProductsViaSdk(options: {
 		query = query.in("_id", options.ids);
 	}
 
-	const { items } = await query.limit(options.limit).skip(options.offset).find();
+	const { items } = await query
+		.limit(options.limit)
+		.skip(options.offset)
+		.find();
 	return items as V1Product[];
 }
 
