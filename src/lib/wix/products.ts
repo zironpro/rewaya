@@ -4,7 +4,11 @@ import { allBooks as staticBooks } from "@/features/products/data/products";
 import { bundles as staticBundles } from "@/lib/bundles-data";
 import type { BookProps } from "@/lib/store";
 
-import { getCategoryBySlug, getCategoryNameMap } from "./categories";
+import {
+	getCategoryBySlug,
+	getCategoryNameMap,
+	getStoreCategories,
+} from "./categories";
 import { getCatalogVersion, getWixClient } from "./client";
 import { isWixCatalogEnabled } from "./constants";
 import {
@@ -455,6 +459,216 @@ function filterStaticBooks(
 
 	return result;
 }
+
+export interface RelatedShopBooksOptions {
+	wixProductId?: string;
+	slug?: string;
+	categoryId?: string;
+	categorySlug?: string;
+	category?: string;
+	id?: number;
+	limit?: number;
+}
+
+function matchesCategory(
+	book: BookProps,
+	categoryName: string,
+	categoryId?: string
+): boolean {
+	if (categoryId && book.categoryId === categoryId) return true;
+	return book.category.toLowerCase() === categoryName.toLowerCase();
+}
+
+async function resolveRelatedCategoryId(
+	product: RelatedShopBooksOptions
+): Promise<{ categoryId: string; categoryName: string; categorySlug?: string } | null> {
+	if (product.categoryId && product.category) {
+		return {
+			categoryId: product.categoryId,
+			categoryName: product.category,
+			categorySlug: product.categorySlug,
+		};
+	}
+
+	if (product.categorySlug) {
+		const category = await getCategoryBySlug(product.categorySlug);
+		if (category) {
+			return {
+				categoryId: category.id,
+				categoryName: product.category ?? category.name,
+				categorySlug: category.slug,
+			};
+		}
+	}
+
+	if (product.categoryId) {
+		const categoryNameMap = await getCategoryNameMap();
+		const categoryName = categoryNameMap.get(product.categoryId);
+		if (categoryName) {
+			return {
+				categoryId: product.categoryId,
+				categoryName: product.category ?? categoryName,
+				categorySlug: product.categorySlug,
+			};
+		}
+	}
+
+	if (product.category) {
+		const categories = await getStoreCategories();
+		const match = categories.find(
+			(c) => c.name.toLowerCase() === product.category?.toLowerCase()
+		);
+		if (match) {
+			return {
+				categoryId: match.id,
+				categoryName: match.name,
+				categorySlug: match.slug,
+			};
+		}
+	}
+
+	return null;
+}
+
+function resolveStaticCategory(product: RelatedShopBooksOptions): string | undefined {
+	if (product.category) return product.category;
+	if (product.id == null || isWixCatalogEnabled()) return undefined;
+	return staticBooks.find((b) => b.id === product.id)?.category;
+}
+
+function isCurrentProduct(
+	book: BookProps,
+	product: RelatedShopBooksOptions
+): boolean {
+	if (product.wixProductId && book.wixProductId === product.wixProductId) {
+		return true;
+	}
+	if (product.slug && book.slug === product.slug) return true;
+	if (product.id != null && book.id === product.id) return true;
+	return false;
+}
+
+function takeBooks(
+	books: BookProps[],
+	product: RelatedShopBooksOptions,
+	limit: number,
+	exclude?: BookProps[]
+): BookProps[] {
+	const excludedKeys = new Set(
+		(exclude ?? []).map(
+			(book) => book.wixProductId ?? book.slug ?? String(book.id)
+		)
+	);
+
+	return books
+		.filter((book) => {
+			if (isCurrentProduct(book, product)) return false;
+			const key = book.wixProductId ?? book.slug ?? String(book.id);
+			if (excludedKeys.has(key)) return false;
+			return true;
+		})
+		.slice(0, limit);
+}
+
+export async function getSameCategoryShopBooks(
+	product: RelatedShopBooksOptions
+): Promise<BookProps[]> {
+	const limit = product.limit ?? 4;
+	const category = resolveStaticCategory(product);
+
+	if (!category && !product.categoryId && !product.categorySlug) {
+		return [];
+	}
+
+	if (!isWixCatalogEnabled()) {
+		if (!category) return [];
+		const books = filterStaticBooks(staticBooks, undefined).filter((b) =>
+			matchesCategory(b, category, product.categoryId)
+		);
+		return takeBooks(books, product, limit);
+	}
+
+	try {
+		const resolved = await resolveRelatedCategoryId({
+			...product,
+			category,
+		});
+		if (!resolved) return [];
+
+		const categoryNameMap = await getCategoryNameMap();
+		const products = await queryWixProductsByCategory(resolved.categoryId, {
+			limit: limit + 1,
+			categoryNameMap,
+		});
+
+		const books = products
+			.map((p) => mapWixProductToBookProps(p, categoryNameMap))
+			.filter((book) =>
+				matchesCategory(book, resolved.categoryName, resolved.categoryId)
+			);
+
+		return takeBooks(books, product, limit);
+	} catch {
+		if (!category) return [];
+		const books = filterStaticBooks(staticBooks, undefined).filter((b) =>
+			matchesCategory(b, category, product.categoryId)
+		);
+		return takeBooks(books, product, limit);
+	}
+}
+
+export async function getRelatedReadsShopBooks(
+	product: RelatedShopBooksOptions & { excludeBooks?: BookProps[] }
+): Promise<BookProps[]> {
+	const limit = product.limit ?? 4;
+	const category = resolveStaticCategory(product);
+
+	if (!isWixCatalogEnabled()) {
+		const books = filterStaticBooks(staticBooks, undefined).filter((b) => {
+			if (!category) return true;
+			return !matchesCategory(b, category, product.categoryId);
+		});
+		return takeBooks(books, product, limit, product.excludeBooks);
+	}
+
+	try {
+		const categoryNameMap = await getCategoryNameMap();
+		const fetchLimit = limit + (product.excludeBooks?.length ?? 0) + 5;
+
+		const products = await queryWixProducts({
+			limit: fetchLimit,
+			categoryNameMap,
+		});
+
+		const books = products
+			.map((p) => mapWixProductToBookProps(p, categoryNameMap))
+			.filter((book) => {
+				if (!category) return true;
+				return !matchesCategory(book, category, product.categoryId);
+			});
+
+		return takeBooks(books, product, limit, product.excludeBooks);
+	} catch {
+		const books = filterStaticBooks(staticBooks, undefined).filter((b) => {
+			if (!category) return true;
+			return !matchesCategory(b, category, product.categoryId);
+		});
+		return takeBooks(books, product, limit, product.excludeBooks);
+	}
+}
+
+export async function getProductBookSections(product: RelatedShopBooksOptions) {
+	const sameCategory = await getSameCategoryShopBooks(product);
+	const relatedReads = await getRelatedReadsShopBooks({
+		...product,
+		excludeBooks: sameCategory,
+	});
+
+	return { sameCategory, relatedReads };
+}
+
+/** @deprecated Use getSameCategoryShopBooks or getProductBookSections */
+export const getRelatedShopBooks = getSameCategoryShopBooks;
 
 export async function getBookProductsForBundles() {
 	if (!isWixCatalogEnabled()) {

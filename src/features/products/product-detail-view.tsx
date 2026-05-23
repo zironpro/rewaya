@@ -8,7 +8,9 @@ import { ProductGallery } from "@/features/products/components/product-gallery";
 import { ProductInfoPanel } from "@/features/products/components/product-info-panel";
 import { ProductMobileBuyBar } from "@/features/products/components/product-mobile-buy-bar";
 import { ProductPurchasePanel } from "@/features/products/components/product-purchase-panel";
+import { ProductRelatedBooks } from "@/features/products/components/product-related-books";
 import type { ProductDetailData } from "@/features/products/types";
+import type { BookProps } from "@/lib/store";
 
 export type { ProductDetailData } from "@/features/products/types";
 
@@ -51,11 +53,15 @@ function getCompareAtPrice(price: number): number | undefined {
 interface ProductDetailViewProps {
 	id: string;
 	product: ProductDetailData | null;
+	sameCategoryBooks?: BookProps[];
+	relatedReads?: BookProps[];
 }
 
 export const ProductDetailView = ({
 	id,
 	product: wixProduct,
+	sameCategoryBooks = [],
+	relatedReads = [],
 }: ProductDetailViewProps) => {
 	const mock = getMockProduct(id);
 	const product: ProductDetailData = wixProduct ?? {
@@ -66,7 +72,6 @@ export const ProductDetailView = ({
 	const [quantity, setQuantity] = useState(1);
 	const compareAtPrice = getCompareAtPrice(product.price);
 
-	console.log("product", product);
 	return (
 		<>
 			<main className="bg-background pt-4 pb-28 md:pb-16">
@@ -76,7 +81,14 @@ export const ProductDetailView = ({
 						items={[
 							{ label: "Shop", href: "/shop" },
 							...(product.category
-								? [{ label: product.category, href: "/shop" }]
+								? [
+										{
+											label: product.category,
+											href: product.categorySlug
+												? `/shop?category=${encodeURIComponent(product.categorySlug)}`
+												: "/shop",
+										},
+									]
 								: []),
 							{ label: product.title },
 						]}
@@ -110,6 +122,14 @@ export const ProductDetailView = ({
 							/>
 						</div>
 					</div>
+
+					<ProductRelatedBooks
+						books={sameCategoryBooks}
+						category={product.category}
+						categorySlug={product.categorySlug}
+						variant="same-category"
+					/>
+					<ProductRelatedBooks books={relatedReads} variant="related-reads" />
 				</div>
 			</main>
 

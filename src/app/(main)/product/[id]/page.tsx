@@ -2,8 +2,13 @@ import {
 	type ProductDetailData,
 	ProductDetailView,
 } from "@/features/products/product-detail-view";
+import type { BookProps } from "@/lib/store";
 import { isWixCatalogEnabled } from "@/lib/wix/constants";
-import { getWixProductById, getWixProductBySlug } from "@/lib/wix/products";
+import {
+	getProductBookSections,
+	getWixProductById,
+	getWixProductBySlug,
+} from "@/lib/wix/products";
 import type { WixCatalogProduct } from "@/lib/wix/types";
 import { mapWixProductToBookProps } from "@/lib/wix/types";
 
@@ -33,21 +38,31 @@ export default async function ProductDetailPage({
 }) {
 	const { id } = await params;
 
-	let product = null;
+	let product: WixCatalogProduct | null = null;
 	if (isWixCatalogEnabled()) {
 		product = (await getWixProductBySlug(id)) ?? (await getWixProductById(id));
 	}
 
-	// const { queryProducts } = (await wixClientServer()).use(products);
+	const detail = product ? toDetailProduct(product) : null;
 
-	// const {items} = await queryProducts().eq("slug", id).limit(1).find()
-
-	// console
+	const bookSections =
+		detail || !isWixCatalogEnabled()
+			? await getProductBookSections({
+					wixProductId: detail?.wixProductId,
+					slug: detail?.slug,
+					categoryId: detail?.categoryId,
+					categorySlug: detail?.categorySlug,
+					category: detail?.category,
+					id: detail?.id ?? (Number.parseInt(id, 10) || 1),
+				})
+			: { sameCategory: [] as BookProps[], relatedReads: [] as BookProps[] };
 
 	return (
 		<ProductDetailView
 			id={id}
-			product={product ? toDetailProduct(product) : null}
+			product={detail}
+			relatedReads={bookSections.relatedReads}
+			sameCategoryBooks={bookSections.sameCategory}
 		/>
 	);
 }
