@@ -26,11 +26,7 @@ export function BundleIndexDetailSection({
 			className="scroll-mt-24 border-t py-8 md:py-10"
 			id={`bundle-${bundle.slug}`}
 		>
-			<div
-				className={cn(
-					"container flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8"
-				)}
-			>
+			<div className="container flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
 				<div className="min-w-0 flex-1 lg:py-1">
 					<div className="mb-4">
 						<p className="font-medium text-[0.65rem] text-primary uppercase tracking-[0.2em]">

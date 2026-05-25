@@ -394,10 +394,9 @@ export function CartView() {
 									</p>
 								)}
 								<Button
-									className="group h-16 w-full"
 									disabled={checkingOut || hasUnavailable}
 									onClick={handleCheckout}
-									variant="premium"
+									variant="secondary"
 								>
 									{checkingOut ? "Redirecting…" : "Checkout"}
 									<ArrowRight
@@ -405,10 +404,6 @@ export function CartView() {
 										size={16}
 									/>
 								</Button>
-								<p className="mt-6 text-center text-sm text-stone-400 leading-relaxed">
-									Complimentary shipping on all orders. <br /> Returns accepted
-									within 30 days.
-								</p>
 							</div>
 						</aside>
 					</div>

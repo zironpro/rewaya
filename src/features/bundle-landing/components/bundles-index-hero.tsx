@@ -1,6 +1,14 @@
-import { BookOpenCheckIcon, ShieldCheckIcon, TruckIcon } from "lucide-react";
+import Link from "next/link";
+
+import {
+	BookOpenCheckIcon,
+	ShieldCheckIcon,
+	ShoppingBagIcon,
+	TruckIcon,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 import type { Bundle } from "@/lib/bundles-data";
 
@@ -46,13 +54,17 @@ export function BundlesIndexHero({
 							variant="countdown"
 						/>
 						<div className="flex w-full flex-col gap-3 sm:flex-row sm:items-stretch">
-							<BundlesCampaignActions
-								buttonSize="lg"
-								className="w-full shrink-0 sm:flex-1"
-								featuredBundle={featuredBundle}
-								featuredSlug={featuredSlug}
-								variant="buy-featured"
-							/>
+							<Button
+								className="btn-shimmer w-full flex-1"
+								nativeButton={false}
+								render={<Link href={`/bundles/${featuredSlug}`} />}
+								size="lg"
+								variant="secondary"
+							>
+								<ShoppingBagIcon className="mr-2 size-4" />
+								Buy the bundle now
+							</Button>
+
 							<BundlesCampaignActions
 								buttonSize="lg"
 								className="w-full shrink-0 bg-card sm:flex-1"
