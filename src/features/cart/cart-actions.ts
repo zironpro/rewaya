@@ -93,7 +93,17 @@ export async function addBundle(
 	}
 ): Promise<CartActionResult> {
 	const catalogItemId = item.catalogItemId?.trim();
+	console.log("[bundle-cart] addBundle (server action)", {
+		catalogItemId: catalogItemId || "(empty)",
+		catalogAppId: item.catalogAppId ?? "(none)",
+		bundleSlug: item.bundleSlug ?? "(none)",
+		quantity: item.quantity ?? 1,
+	});
+
 	if (!catalogItemId && !item.bundleSlug?.trim()) {
+		console.warn(
+			"[bundle-cart] rejected — missing catalogItemId and bundleSlug"
+		);
 		return {
 			error: "This bundle is not available for purchase.",
 		};
@@ -106,14 +116,20 @@ export async function addBundle(
 			item.catalogAppId,
 			{ bundleSlug: item.bundleSlug?.trim() }
 		);
+		const enriched = await enrichCartResponse(cart);
+		const lineCount =
+			(enriched as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
+		console.log("[bundle-cart] addBundle OK", { lineItems: lineCount });
+		if (lineCount === 0) {
+			return {
+				error:
+					"Bundle was not added to the cart (0 line items). Set bundleProductId on the BookBundles row in Wix.",
+			};
+		}
 		revalidatePath("/", "layout");
-		return { error: null, cart: await enrichCartResponse(cart) };
+		return { error: null, cart: enriched };
 	} catch (e) {
-		console.error(
-			"[cart] addBundle failed:",
-			e,
-			item.bundleSlug ? { bundleSlug: item.bundleSlug } : undefined
-		);
+		console.error("[bundle-cart] addBundle failed:", e);
 		return { error: messageForAddBundleError(e) };
 	}
 }

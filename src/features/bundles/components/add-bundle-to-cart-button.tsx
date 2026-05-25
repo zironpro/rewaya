@@ -47,7 +47,19 @@ export function AddBundleToCartButton({
 	const canAdd = Boolean(checkoutCatalogItemId);
 
 	const handleAddToCart = async () => {
-		if (!canAdd) return;
+		if (!canAdd) {
+			console.warn("[bundle-cart] click ignored — no checkoutCatalogItemId", {
+				bundleSlug,
+			});
+			return;
+		}
+
+		console.log("[bundle-cart] Add to Cart clicked", {
+			bundleSlug,
+			checkoutCatalogItemId,
+			checkoutCatalogAppId,
+			quantity,
+		});
 
 		setStatus("loading");
 		setErrorMessage(null);
@@ -59,7 +71,9 @@ export function AddBundleToCartButton({
 				bundleSlug,
 				quantity,
 			});
+
 			if (error) {
+				console.error("[bundle-cart] server returned error:", error);
 				setErrorMessage(error);
 				setStatus("error");
 				setTimeout(() => {
@@ -68,6 +82,25 @@ export function AddBundleToCartButton({
 				}, 4000);
 				return;
 			}
+			const lineCount =
+				(cart as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
+			console.log("[bundle-cart] success", {
+				lineItems: lineCount,
+				cart,
+			});
+
+			if (lineCount === 0) {
+				setErrorMessage(
+					"Bundle was not added (cart has 0 items). Set bundleProductId in Wix BookBundles."
+				);
+				setStatus("error");
+				setTimeout(() => {
+					setStatus("idle");
+					setErrorMessage(null);
+				}, 4000);
+				return;
+			}
+
 			if (cart) {
 				syncCartFromWixResponse(cart);
 			}
@@ -77,7 +110,7 @@ export function AddBundleToCartButton({
 			onAdded?.();
 			setTimeout(() => setStatus("idle"), 2000);
 		} catch (e) {
-			console.error("[cart] add bundle failed:", e);
+			console.error("[bundle-cart] client exception:", e);
 			setErrorMessage("Could not add bundle to cart. Please try again.");
 			setStatus("error");
 			dispatchCartUpdated();
