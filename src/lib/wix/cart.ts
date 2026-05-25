@@ -5,6 +5,7 @@ import { currentCart } from "@wix/ecom";
 import type { ProductVariant } from "./catalog-types";
 import {
 	buildAddToCartLineItem,
+	buildBundleLineItems,
 	buildCmsCatalogLineItem,
 	isCmsCatalogAppId,
 } from "./purchase-flow";
@@ -31,6 +32,21 @@ export async function addToCartServer(lines: AddToCartLineInput[]) {
 				? buildCmsCatalogLineItem(productId, quantity)
 				: buildAddToCartLineItem(productId, variant, quantity, catalogAppId)
 		),
+	});
+	return cart;
+}
+
+/** Add all Wix Stores products linked to a BookBundles CMS row. */
+export async function addBundleToCartServer(
+	productIds: string[],
+	quantity = 1
+) {
+	if (!productIds.length) {
+		throw new Error("Bundle has no linked Wix Stores products.");
+	}
+	const client = await getWixServerSessionClient();
+	const { cart } = await client.currentCart.addToCurrentCart({
+		lineItems: buildBundleLineItems(productIds, quantity),
 	});
 	return cart;
 }

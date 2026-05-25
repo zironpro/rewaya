@@ -38,10 +38,7 @@ export interface BundleData {
 	books: BookItem[];
 	reviews: Review[];
 	faqs: FAQ[];
-	/** BookBundles CMS catalog item id for add-to-cart */
-	wixProductId?: string;
-	/** CMS catalog app id for bundle checkout */
-	catalogAppId?: string;
-	defaultVariant?: import("@/lib/wix/catalog-types").ProductVariant;
+	/** Wix Stores product IDs from BookBundles `bundleProducts` */
+	storeProductIds: string[];
 	coverImage: string;
 }

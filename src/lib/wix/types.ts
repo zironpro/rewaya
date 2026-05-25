@@ -2,7 +2,6 @@ import type { Book, Bundle, Faq } from "@/lib/catalog/types";
 import type { BookProps } from "@/lib/store";
 
 import type { ProductVariant } from "./catalog-types";
-import { WIX_CMS_CATALOG_APP_ID } from "./constants";
 import type { ProductInfoSection } from "./info-sections";
 import {
 	buildV3VariantsFromCatalog,
@@ -107,8 +106,7 @@ export function mapBookBundleFromCms(
 		longDescription: overview,
 		coverImage: details.coverImage || includedBooks[0]?.image || "",
 		books: includedBooks,
-		wixProductId: details.cmsCatalogItemId,
-		catalogAppId: WIX_CMS_CATALOG_APP_ID,
+		storeProductIds: details.includedBookIds,
 		faqs: [],
 	};
 }

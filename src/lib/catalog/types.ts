@@ -40,9 +40,11 @@ export interface Bundle {
 	longDescription: string;
 	coverImage: string;
 	books: Book[];
-	/** Catalog item id for add-to-cart (CMS BookBundles `_id` or Stores product id) */
+	/** Wix Stores product IDs from CMS `bundleProducts` / `productIds` */
+	storeProductIds: string[];
+	/** @deprecated Bundles checkout via `storeProductIds`, not CMS catalog */
 	wixProductId?: string;
-	/** `catalogReference.appId` — CMS catalog for bundles, Stores for books */
+	/** @deprecated */
 	catalogAppId?: string;
 	/** Default variant for add-to-cart (Stores books only) */
 	defaultVariant?: import("@/lib/wix/catalog-types").ProductVariant;

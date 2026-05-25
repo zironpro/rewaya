@@ -3,7 +3,7 @@ import { ShoppingBagIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
-import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
+import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
 import { WishlistToggleButton } from "@/features/wishlist/components/wishlist-toggle-button";
 import type { Bundle } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
@@ -42,23 +42,25 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 					</div>
 				</ScrollArea>
 
-				<AddToCartButton
-					catalogAppId={bundle.catalogAppId}
+				<AddBundleToCartButton
 					className="w-full gap-3"
-					disabled={!bundle.wixProductId}
-					productId={bundle.wixProductId ?? ""}
-					productName={bundle.title}
-					productVariant={bundle.defaultVariant}
+					disabled={bundle.storeProductIds.length === 0}
+					productIds={bundle.storeProductIds}
 					size="lg"
 					variant="secondary"
 				>
 					<ShoppingBagIcon />
 					Add to Cart
-				</AddToCartButton>
+				</AddBundleToCartButton>
 
 				<Separator className="my-4" />
 
-				<WishlistToggleButton productId={bundle.wixProductId} variant="row" />
+				{bundle.storeProductIds[0] ? (
+					<WishlistToggleButton
+						productId={bundle.storeProductIds[0]}
+						variant="row"
+					/>
+				) : null}
 			</div>
 		</div>
 	);

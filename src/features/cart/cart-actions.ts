@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 import { isAvailableForPurchase } from "@/lib/wix/availability";
 import {
+	addBundleToCartServer,
 	addToCartServer,
 	createCheckoutUrlServer,
 	getCartServer,
@@ -64,6 +65,28 @@ export async function addItem(
 	} catch (e) {
 		console.error("[cart] addItem failed:", e);
 		return { error: "Could not add to cart. Please try again." };
+	}
+}
+
+export async function addBundle(
+	_prevState: unknown,
+	item: { productIds: string[]; quantity?: number }
+): Promise<CartActionResult> {
+	const productIds = (item.productIds ?? []).filter(Boolean);
+	if (!productIds.length) {
+		return {
+			error:
+				"This bundle has no linked products. Link books in the BookBundles collection.",
+		};
+	}
+
+	try {
+		const cart = await addBundleToCartServer(productIds, item.quantity ?? 1);
+		revalidatePath("/", "layout");
+		return { error: null, cart };
+	} catch (e) {
+		console.error("[cart] addBundle failed:", e);
+		return { error: "Could not add bundle to cart. Please try again." };
 	}
 }
 

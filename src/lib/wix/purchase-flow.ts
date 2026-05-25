@@ -58,6 +58,16 @@ export function buildAddToCartLineItem(
 	};
 }
 
+/** One line per Stores product in a BookBundles CMS row. */
+export function buildBundleLineItems(
+	productIds: string[],
+	quantity = 1
+) {
+	return productIds.map((productId) =>
+		buildAddToCartLineItem(productId, undefined, quantity)
+	);
+}
+
 /** BookBundles CMS catalog rows — no Stores variants. */
 export function buildCmsCatalogLineItem(cmsItemId: string, quantity: number) {
 	return {

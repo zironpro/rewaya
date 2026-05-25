@@ -89,6 +89,33 @@ interface ParsedBundleProducts {
 	books: Book[];
 }
 
+/** Text/array `productIds` field (comma-separated or JSON array). */
+function parseProductIdsField(raw: unknown): string[] {
+	if (!raw) return [];
+	if (Array.isArray(raw)) {
+		return raw
+			.map((entry) => (typeof entry === "string" ? entry.trim() : String(entry)))
+			.filter(Boolean);
+	}
+	if (typeof raw === "string") {
+		const trimmed = raw.trim();
+		if (!trimmed) return [];
+		if (trimmed.startsWith("[")) {
+			try {
+				const parsed = JSON.parse(trimmed) as unknown;
+				return parseProductIdsField(parsed);
+			} catch {
+				/* fall through */
+			}
+		}
+		return trimmed
+			.split(/[,;\s]+/)
+			.map((id) => id.trim())
+			.filter(Boolean);
+	}
+	return [];
+}
+
 /** Multi-reference `bundleProducts` — ids and/or expanded Stores product objects. */
 function parseBundleProducts(raw: unknown): ParsedBundleProducts {
 	if (!raw) return { ids: [], books: [] };
@@ -194,8 +221,18 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 				"includedBookIds",
 				"books"
 			);
-			const { ids: includedBookIds, books: includedBooks } =
-				parseBundleProducts(bundleProductsRaw);
+			const productIdsRaw = readCmsField(
+				data,
+				"productIds",
+				"productids",
+				"product_ids"
+			);
+			const parsedRefs = parseBundleProducts(bundleProductsRaw);
+			const explicitIds = parseProductIdsField(productIdsRaw);
+			const includedBookIds = [
+				...new Set([...parsedRefs.ids, ...explicitIds]),
+			];
+			const includedBooks = parsedRefs.books;
 			const price = parseNumber(
 				readCmsField(data, "price", "priceAED")
 			);

@@ -2,7 +2,7 @@ import { ShoppingBagIcon } from "lucide-react";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
-import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
+import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
 import type { Bundle } from "@/lib/catalog/types";
 
 interface BundleMobileBuyBarProps {
@@ -19,19 +19,16 @@ export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 						{bundle.price}
 					</span>
 				</div>
-				<AddToCartButton
-					catalogAppId={bundle.catalogAppId}
+				<AddBundleToCartButton
 					className="shrink-0 gap-2"
-					disabled={!bundle.wixProductId}
-					productId={bundle.wixProductId ?? ""}
-					productName={bundle.title}
-					productVariant={bundle.defaultVariant}
+					disabled={bundle.storeProductIds.length === 0}
+					productIds={bundle.storeProductIds}
 					size="lg"
 					variant="secondary"
 				>
 					<ShoppingBagIcon size={18} />
 					Add to Cart
-				</AddToCartButton>
+				</AddBundleToCartButton>
 			</div>
 		</div>
 	);

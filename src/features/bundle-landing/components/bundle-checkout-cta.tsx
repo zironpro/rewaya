@@ -2,7 +2,7 @@
 
 import { ShoppingBag } from "lucide-react";
 
-import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
+import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
 import { cn } from "@/lib/utils";
 
 import type { BundleData } from "../types/bundle";
@@ -23,17 +23,14 @@ export function BundleCheckoutCta({
 	shimmerClass = "btn-shimmer",
 }: BundleCheckoutCtaProps) {
 	return (
-		<AddToCartButton
-			catalogAppId={bundle.catalogAppId}
+		<AddBundleToCartButton
 			className={cn(shimmerClass, "min-h-11 w-full shrink-0 gap-2", className)}
-			disabled={!bundle.wixProductId}
-			productId={bundle.wixProductId ?? ""}
-			productName={bundle.name}
-			productVariant={bundle.defaultVariant}
+			disabled={bundle.storeProductIds.length === 0}
+			productIds={bundle.storeProductIds}
 			size={size}
 		>
 			<ShoppingBag className="size-4" />
 			{label}
-		</AddToCartButton>
+		</AddBundleToCartButton>
 	);
 }
