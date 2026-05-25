@@ -56,7 +56,7 @@ export function ProductGallery({
 	if (!hasMultiple) {
 		return (
 			<div className={cn("space-y-3", className)}>
-				<div className="group relative aspect-4/3 overflow-hidden rounded-xl border bg-card">
+				<div className="group relative aspect-4/5 overflow-hidden rounded-xl border bg-card">
 					<Image
 						alt={title}
 						className="object-contain transition-transform duration-700 group-hover:scale-[1.02]"

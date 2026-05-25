@@ -2,8 +2,10 @@ import "server-only";
 
 import { cache } from "react";
 
-import { getCmsItemData, readCmsField } from "./cms/record";
+import type { Book } from "@/lib/catalog/types";
+
 import { getWixClient } from "./client";
+import { getCmsItemData, readCmsField } from "./cms/record";
 import { isWixCatalogEnabled } from "./constants";
 import { resolveWixImageUrl } from "./image";
 import { getWixProductById, queryWixProducts } from "./products";
@@ -26,24 +28,97 @@ function parseNumber(value: unknown): number {
 	return 0;
 }
 
-/** Multi-reference field `bundleProducts` → Wix Stores product ids. */
-function parseBundleProductIds(raw: unknown): string[] {
-	if (!raw) return [];
-	if (!Array.isArray(raw)) return [];
+function sectionValue(
+	sections: unknown,
+	title: string
+): string | undefined {
+	if (!Array.isArray(sections)) return undefined;
+	const key = title.toLowerCase();
+	for (const entry of sections) {
+		if (!entry || typeof entry !== "object") continue;
+		const row = entry as { title?: string; description?: unknown };
+		if (row.title?.toLowerCase() !== key) continue;
+		const desc = row.description;
+		return typeof desc === "string" ? desc.trim() : undefined;
+	}
+	return undefined;
+}
+
+/** Map an expanded Stores product object from CMS `bundleProducts` include. */
+function mapCmsReferencedProductToBook(
+	product: Record<string, unknown>
+): Book | null {
+	const id = String(product._id ?? product.id ?? "");
+	if (!id) return null;
+
+	const title = String(product.name ?? "").trim();
+	if (!title) return null;
+
+	const imageRaw =
+		product.mainMedia ??
+		(Array.isArray(product.mediaItems) && product.mediaItems[0]
+			? (product.mediaItems[0] as { src?: string }).src
+			: undefined);
+
+	const image =
+		resolveWixImageUrl(
+			imageRaw as string | { id?: string; url?: string } | undefined,
+			400,
+			500
+		) ?? "";
+
+	const sections = product.additionalInfoSections;
+
+	return {
+		id,
+		title,
+		isbn: String(product.sku ?? ""),
+		publisher: sectionValue(sections, "Publisher") ?? "",
+		author: sectionValue(sections, "Author") ?? "Unknown",
+		language: sectionValue(sections, "Language") ?? "English",
+		genre: "Books",
+		overview: String(product.description ?? ""),
+		image,
+		price: parseNumber(product.price),
+		originalPrice: 0,
+	};
+}
+
+interface ParsedBundleProducts {
+	ids: string[];
+	books: Book[];
+}
+
+/** Multi-reference `bundleProducts` — ids and/or expanded Stores product objects. */
+function parseBundleProducts(raw: unknown): ParsedBundleProducts {
+	if (!raw) return { ids: [], books: [] };
+	if (!Array.isArray(raw)) return { ids: [], books: [] };
 
 	const ids: string[] = [];
+	const books: Book[] = [];
+
 	for (const entry of raw) {
 		if (typeof entry === "string" && entry.length > 0) {
 			ids.push(entry);
 			continue;
 		}
-		if (entry && typeof entry === "object") {
-			const obj = entry as Record<string, unknown>;
-			const id = obj._id ?? obj.id ?? obj.productId;
-			if (id != null) ids.push(String(id));
+		if (!entry || typeof entry !== "object") continue;
+
+		const obj = entry as Record<string, unknown>;
+		if (typeof obj.name === "string") {
+			const book = mapCmsReferencedProductToBook(obj);
+			if (book) {
+				books.push(book);
+				ids.push(book.id);
+			}
+			continue;
 		}
+
+		const id = obj._id ?? obj.id ?? obj.productId;
+		if (id != null) ids.push(String(id));
 	}
-	return [...new Set(ids)];
+
+	return { ids: [...new Set(ids)], books };
 }
 
 function slugifyTitle(title: string): string {
@@ -70,6 +145,29 @@ function resolveBundleSlug(
 	return slug;
 }
 
+async function resolveIncludedBooks(
+	bookIds: string[],
+	cmsBooks: Book[]
+): Promise<Book[]> {
+	const byId = new Map(cmsBooks.map((book) => [book.id, book]));
+	const missingIds = bookIds.filter((id) => !byId.has(id));
+
+	if (missingIds.length > 0) {
+		const fetched = await queryWixProducts({
+			ids: missingIds,
+			limit: missingIds.length,
+		});
+		for (const product of fetched) {
+			const book = mapWixProductToBook(product);
+			byId.set(book.id, book);
+		}
+	}
+
+	return bookIds
+		.map((id) => byId.get(id))
+		.filter((book): book is Book => book != null);
+}
+
 export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 	if (!isWixCatalogEnabled()) return [];
 
@@ -77,6 +175,7 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 		const client = getWixClient();
 		const { items } = await client.items
 			.query(BOOK_BUNDLES_COLLECTION)
+			.include("bundleProducts")
 			.limit(100)
 			.find();
 
@@ -86,35 +185,32 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 		for (const item of items) {
 			const data = getCmsItemData(item as Record<string, unknown>);
 			const title = String(
-				readCmsField(
-					data,
-					"bundleTitle",
-					"title",
-					"name"
-				) ?? "Bundle"
+				readCmsField(data, "bundleTitle", "title", "name") ?? "Bundle"
 			);
-			const includedBookIds = parseBundleProductIds(
-				readCmsField(
-					data,
-					"bundleProducts",
-					"bundleproducts",
-					"includedBookIds",
-					"books"
-				)
+			const bundleProductsRaw = readCmsField(
+				data,
+				"bundleProducts",
+				"bundleproducts",
+				"includedBookIds",
+				"books"
 			);
-			const price = parseNumber(readCmsField(data, "price", "priceAED"));
+			const { ids: includedBookIds, books: includedBooks } =
+				parseBundleProducts(bundleProductsRaw);
+			const price = parseNumber(
+				readCmsField(data, "price", "priceAED")
+			);
 			const originalPrice = parseNumber(
-				readCmsField(data, "originalPrice", "original_price", "price1")
+				readCmsField(
+					data,
+					"originalPrice",
+					"original_price",
+					"price1"
+				)
 			);
 			const overview = String(
 				readCmsField(data, "overview", "description") ?? ""
 			);
-			const imageRaw = readCmsField(
-				data,
-				"bundleImage",
-				"image",
-				"coverImage"
-			);
+			const imageRaw = readCmsField(data, "bundleImage", "image", "coverImage");
 			const coverImage =
 				resolveWixImageUrl(
 					imageRaw as string | { id?: string; url?: string } | undefined,
@@ -125,8 +221,7 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 			if (!title && includedBookIds.length === 0) continue;
 
 			const itemId =
-				(item as { _id?: string })._id ??
-				(data._id as string | undefined);
+				(item as { _id?: string })._id ?? (data._id as string | undefined);
 
 			const slug = resolveBundleSlug(title, itemId, usedSlugs);
 
@@ -142,6 +237,7 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 					readCmsField(data, "quantityAvailable", "quantity")
 				),
 				includedBookIds,
+				includedBooks: includedBooks.length > 0 ? includedBooks : undefined,
 				bundleProductId: includedBookIds[0] ?? "",
 				tag: readCmsField(data, "tag", "ribbon") as string | undefined,
 			});
@@ -167,9 +263,9 @@ export async function getBundles(): Promise<Bundle[]> {
 
 		for (const row of cmsRows) {
 			const bookIds = row.includedBookIds;
-			const includedProducts =
+			const includedBooks =
 				bookIds.length > 0
-					? await queryWixProducts({ ids: bookIds, limit: bookIds.length })
+					? await resolveIncludedBooks(bookIds, row.includedBooks ?? [])
 					: [];
 
 			const checkoutProduct = row.bundleProductId
@@ -179,7 +275,7 @@ export async function getBundles(): Promise<Bundle[]> {
 			bundles.push(
 				mapBookBundleFromCms(
 					row,
-					includedProducts.map(mapWixProductToBook),
+					includedBooks,
 					checkoutProduct
 				)
 			);

@@ -45,6 +45,8 @@ export interface BookBundleCmsItem {
 	coverImage: string;
 	quantityAvailable?: number;
 	includedBookIds: string[];
+	/** Books resolved from expanded `bundleProducts` refs (when query uses `.include()`). */
+	includedBooks?: Book[];
 	/** Stores catalog id used for add-to-cart (first `bundleProducts` ref). */
 	bundleProductId: string;
 	tag?: string;

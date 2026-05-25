@@ -55,7 +55,9 @@ function extractTextFromRichNodes(nodes: unknown[]): string {
 	return parts.join(" ").trim();
 }
 
-function normalizeRawSection(section: RawInfoSection): ProductInfoSection | null {
+function normalizeRawSection(
+	section: RawInfoSection
+): ProductInfoSection | null {
 	const title = (section.title ?? "").trim();
 	const description = extractDescription(
 		section.plainDescription ?? section.description ?? section.value
@@ -107,10 +109,7 @@ export function buildProductDetails(catalog: {
 }): Array<{ label: string; value: string }> {
 	if (catalog.infoSections?.length) {
 		const rows = infoSectionsToDetailRows(catalog.infoSections);
-		if (
-			catalog.sku &&
-			!rows.some((r) => /^(isbn|sku)$/i.test(r.label))
-		) {
+		if (catalog.sku && !rows.some((r) => /^(isbn|sku)$/i.test(r.label))) {
 			rows.push({ label: "ISBN", value: catalog.sku });
 		}
 		return rows;
@@ -118,8 +117,10 @@ export function buildProductDetails(catalog: {
 
 	const rows: Array<{ label: string; value: string }> = [];
 	if (catalog.author) rows.push({ label: "Author", value: catalog.author });
-	if (catalog.language) rows.push({ label: "Language", value: catalog.language });
-	if (catalog.publisher) rows.push({ label: "Publisher", value: catalog.publisher });
+	if (catalog.language)
+		rows.push({ label: "Language", value: catalog.language });
+	if (catalog.publisher)
+		rows.push({ label: "Publisher", value: catalog.publisher });
 	if (catalog.sku) rows.push({ label: "ISBN", value: catalog.sku });
 	return rows;
 }
