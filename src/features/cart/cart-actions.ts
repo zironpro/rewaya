@@ -4,7 +4,10 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { messageForAddBundleError } from "@/features/cart/cart-errors";
+import { enrichCartWithBundles } from "@/features/cart/enrich-cart";
 import { isAvailableForPurchase } from "@/lib/wix/availability";
+import { getCachedBundles } from "@/lib/wix/bundles";
 import {
 	addBundleToCartServer,
 	addToCartServer,
@@ -21,9 +24,20 @@ export type CartActionResult = {
 	cart?: unknown;
 };
 
+async function enrichCartResponse(cart: unknown | null | undefined) {
+	if (!cart) return cart ?? null;
+	try {
+		const bundles = await getCachedBundles();
+		return enrichCartWithBundles(cart, bundles);
+	} catch {
+		return cart;
+	}
+}
+
 export async function fetchCart(): Promise<unknown | null> {
 	try {
-		return (await getCartServer()) ?? null;
+		const cart = await getCartServer();
+		return enrichCartResponse(cart ?? null);
 	} catch (e) {
 		console.error("[cart] fetchCart failed:", e);
 		return null;
@@ -90,10 +104,10 @@ export async function addBundle(
 			item.catalogAppId
 		);
 		revalidatePath("/", "layout");
-		return { error: null, cart };
+		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
 		console.error("[cart] addBundle failed:", e);
-		return { error: "Could not add bundle to cart. Please try again." };
+		return { error: messageForAddBundleError(e) };
 	}
 }
 
@@ -107,7 +121,7 @@ export async function updateItemQuantity(
 				? await removeFromCartServer([payload.lineId])
 				: await updateCartLineQuantityServer(payload.lineId, payload.quantity);
 		revalidatePath("/", "layout");
-		return { error: null, cart };
+		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
 		console.error("[cart] update quantity failed:", e);
 		return { error: "Could not update quantity." };
@@ -121,7 +135,7 @@ export async function removeItem(
 	try {
 		const cart = await removeFromCartServer([lineId]);
 		revalidatePath("/", "layout");
-		return { error: null, cart };
+		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
 		console.error("[cart] remove failed:", e);
 		return { error: "Could not remove item." };

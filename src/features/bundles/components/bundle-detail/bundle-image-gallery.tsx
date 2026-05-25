@@ -241,17 +241,17 @@ export function BundleImageGallery({ bundle }: BundleImageGalleryProps) {
 						plugins={[autoplayPlugin.current]}
 						setApi={setMainApi}
 					>
-						<div className="relative aspect-square overflow-hidden rounded-2xl">
+						<div className="relative aspect-4/5 overflow-hidden rounded-md">
 							<CarouselContent className="ml-0">
 								{galleryImages.map((image, index) => (
 									<CarouselItem
 										className="basis-full pl-0"
 										key={`${image.src}-${image.alt}`}
 									>
-										<div className="group relative aspect-square w-full overflow-hidden">
+										<div className="group relative aspect-4/5 w-full overflow-hidden bg-card">
 											<Image
 												alt={image.alt}
-												className="object-cover transition-transform duration-300 group-hover:scale-105"
+												className="object-contain transition-transform duration-300 group-hover:scale-105"
 												fill
 												priority={index === 0}
 												sizes="(max-width: 1024px) 100vw, 400px"

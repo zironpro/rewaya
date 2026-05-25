@@ -17,10 +17,15 @@ export interface LineItem {
 	fullPrice?: { formattedConvertedAmount?: string };
 	lineItemPrice?: { amount?: string; formattedConvertedAmount?: string };
 	image?: string;
-	catalogReference?: { catalogItemId?: string };
+	catalogReference?: { catalogItemId?: string; appId?: string };
 	descriptionLines?: DescriptionLine[];
 	availability?: Availability;
 	url?: string | { relativePath?: string; url?: string };
+	/** Set server-side when line matches a BookBundles row. */
+	isBundle?: boolean;
+	bundleSlug?: string;
+	/** Rewaya route — `/bundles/{slug}` or `/product/{slug}`. */
+	href?: string;
 }
 
 export interface CartSummary {
@@ -78,6 +83,15 @@ export function resolveProductHref(item: LineItem): string | undefined {
 	if (!str) return undefined;
 	const match = str.match(/\/product-page\/([^/?#]+)/);
 	return match ? `/product/${match[1]}` : undefined;
+}
+
+/** Bundle or book link for cart line title/image. */
+export function resolveLineItemHref(item: LineItem): string | undefined {
+	if (item.href) return item.href;
+	if (item.isBundle && item.bundleSlug) {
+		return `/bundles/${item.bundleSlug}`;
+	}
+	return resolveProductHref(item);
 }
 
 export function readCartSnapshot(): CartSnapshot | null {

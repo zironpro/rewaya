@@ -163,7 +163,7 @@ export function CartView() {
 					<span className="mb-4 block font-medium text-sm text-stone-400">
 						Your Selection
 					</span>
-					<h1 className="font-black font-serif text-3xl text-secondary sm:text-4xl md:text-5xl lg:text-6xl">
+					<h1 className="font-black font-serif text-3xl text-secondary sm:text-4xl md:text-5xl">
 						Shopping <span className="font-normal italic">Bag</span>.
 					</h1>
 				</div>
@@ -186,7 +186,7 @@ export function CartView() {
 
 						<div className="order-1 grow space-y-8">
 							<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-sm text-stone-400 md:grid">
-								<div className="col-span-2">Product</div>
+								<div className="col-span-2">Item</div>
 								<div className="text-center">Quantity</div>
 								<div className="text-right">Total</div>
 							</div>

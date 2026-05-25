@@ -9,6 +9,7 @@ import { getCmsItemData, readCmsField } from "./cms/record";
 import { isWixCatalogEnabled } from "./constants";
 import { resolveWixImageUrl } from "./image";
 import { queryWixProducts } from "./products";
+import { resolveBundleCheckout } from "./purchase-flow";
 import {
 	type BookBundleCmsItem,
 	type Bundle,
@@ -28,10 +29,7 @@ function parseNumber(value: unknown): number {
 	return 0;
 }
 
-function sectionValue(
-	sections: unknown,
-	title: string
-): string | undefined {
+function sectionValue(sections: unknown, title: string): string | undefined {
 	if (!Array.isArray(sections)) return undefined;
 	const key = title.toLowerCase();
 	for (const entry of sections) {
@@ -101,7 +99,8 @@ function parseCmsProductIdField(raw: unknown): string | undefined {
 	}
 	if (typeof raw === "object") {
 		const obj = raw as Record<string, unknown>;
-		const id = obj._id ?? obj.id ?? obj.productId;
+		const id =
+			obj._id ?? obj.id ?? obj.productId ?? obj.catalogItemId ?? obj.itemId;
 		if (id != null) {
 			const s = String(id).trim();
 			return s || undefined;
@@ -110,12 +109,49 @@ function parseCmsProductIdField(raw: unknown): string | undefined {
 	return undefined;
 }
 
+export interface BundleCatalogLookupEntry {
+	slug: string;
+	title: string;
+	coverImage: string;
+	checkoutCatalogItemId: string;
+	checkoutCatalogAppId: string;
+}
+
+/** Map catalog line ids → bundle metadata for cart enrichment. */
+export function buildBundleCatalogLookup(
+	bundles: Bundle[]
+): Map<string, BundleCatalogLookupEntry> {
+	const map = new Map<string, BundleCatalogLookupEntry>();
+
+	for (const bundle of bundles) {
+		const entry: BundleCatalogLookupEntry = {
+			slug: bundle.id,
+			title: bundle.title,
+			coverImage: bundle.coverImage,
+			checkoutCatalogItemId: bundle.checkoutCatalogItemId,
+			checkoutCatalogAppId: bundle.checkoutCatalogAppId,
+		};
+
+		const keys = new Set<string>();
+		if (bundle.checkoutCatalogItemId) keys.add(bundle.checkoutCatalogItemId);
+		if (bundle.bundleProductId) keys.add(bundle.bundleProductId);
+
+		for (const key of keys) {
+			map.set(key, entry);
+		}
+	}
+
+	return map;
+}
+
 /** Text/array `productIds` field (comma-separated or JSON array). */
 function parseProductIdsField(raw: unknown): string[] {
 	if (!raw) return [];
 	if (Array.isArray(raw)) {
 		return raw
-			.map((entry) => (typeof entry === "string" ? entry.trim() : String(entry)))
+			.map((entry) =>
+				typeof entry === "string" ? entry.trim() : String(entry)
+			)
 			.filter(Boolean);
 	}
 	if (typeof raw === "string") {
@@ -250,20 +286,11 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 			);
 			const parsedRefs = parseBundleProducts(bundleProductsRaw);
 			const explicitIds = parseProductIdsField(productIdsRaw);
-			const includedBookIds = [
-				...new Set([...parsedRefs.ids, ...explicitIds]),
-			];
+			const includedBookIds = [...new Set([...parsedRefs.ids, ...explicitIds])];
 			const includedBooks = parsedRefs.books;
-			const price = parseNumber(
-				readCmsField(data, "price", "priceAED")
-			);
+			const price = parseNumber(readCmsField(data, "price", "priceAED"));
 			const originalPrice = parseNumber(
-				readCmsField(
-					data,
-					"originalPrice",
-					"original_price",
-					"price1"
-				)
+				readCmsField(data, "originalPrice", "original_price", "price1")
 			);
 			const overview = String(
 				readCmsField(data, "overview", "description") ?? ""
@@ -311,8 +338,29 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 			});
 		}
 
+		if (process.env.NODE_ENV === "development" && rows.length > 0) {
+			console.log(
+				"[BookBundles] loaded",
+				rows.length,
+				"row(s); first mapped:",
+				{
+					slug: rows[0]?.slug,
+					bundleProductId: rows[0]?.bundleProductId ?? "(none)",
+					cmsCatalogItemId: rows[0]?.cmsCatalogItemId,
+					checkout: resolveBundleCheckout({
+						bundleProductId: rows[0]?.bundleProductId,
+						cmsCatalogItemId: rows[0]?.cmsCatalogItemId ?? "",
+					}),
+					includedBookIds: rows[0]?.includedBookIds?.length ?? 0,
+				}
+			);
+		}
+
 		return rows;
-	} catch {
+	} catch (error) {
+		if (process.env.NODE_ENV === "development") {
+			console.error("[BookBundles] getBookBundlesFromCms failed:", error);
+		}
 		return [];
 	}
 }

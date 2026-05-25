@@ -14,7 +14,7 @@ import {
 	isItemUnavailable,
 	type LineItem,
 	resolveCartImage,
-	resolveProductHref,
+	resolveLineItemHref,
 } from "@/features/cart/cart-sdk";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +32,8 @@ export function CartLineItem({
 	const lineId = item._id ?? "";
 	const unavailable = isItemUnavailable(item);
 	const maxQty = item.availability?.quantityAvailable ?? 99;
-	const href = !unavailable ? resolveProductHref(item) : undefined;
+	const href = !unavailable ? resolveLineItemHref(item) : undefined;
+	const isBundle = Boolean(item.isBundle);
 	const imageUrl = resolveCartImage(item.image, 200, 280);
 	const subtitle = firstDescriptionSubtitle(item);
 	const hasDiscount =
@@ -94,6 +95,11 @@ export function CartLineItem({
 							{item.productName?.translated}
 						</h3>
 					)}
+					{isBundle ? (
+						<Badge className="mt-0.5 w-fit" size="sm" variant="secondary">
+							Bundle
+						</Badge>
+					) : null}
 					{subtitle ? (
 						<p className="text-sm text-stone-400">{subtitle}</p>
 					) : null}

@@ -85,15 +85,15 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	);
 
 	return (
-		<div className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:p-9">
+		<div className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:gap-10 md:p-9 lg:gap-12">
 			<Link
 				aria-label={`View ${bundle.title}`}
-				className="pointer-events-none absolute inset-0 z-0"
+				className="pointer-events-none absolute inset-0 z-10"
 				href={bundleHref}
 			/>
 
 			{/* Mobile: Cover Flow */}
-			<div className="relative z-10 h-52 w-full shrink-0 sm:hidden">
+			<div className="relative z-10 h-52 w-full shrink-0 gap-6 sm:hidden">
 				{prefersReducedMotion ? (
 					<div className="flex items-end justify-center gap-3">
 						{coverFlowItems.map((item) => (
@@ -172,15 +172,15 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 			<div className="pointer-events-auto relative z-10 flex h-full grow flex-col justify-between">
 				<div>
 					{bundle.tag && (
-						<p className="mb-3 flex w-fit items-center gap-1.5 rounded bg-card px-1.5 py-1 font-medium text-primary text-xs uppercase">
+						<p className="mb-1 flex w-fit items-center gap-1.5 rounded bg-card px-1.5 py-1 font-medium text-primary text-xs uppercase">
 							<Tag size={12} />
 							{bundle.tag}
 						</p>
 					)}
-					<h3 className="mb-2 font-semibold font-serif text-secondary text-xl transition-colors group-hover:text-primary sm:text-2xl md:text-3xl">
+					<h3 className="mb-2 font-semibold font-serif text-secondary text-xl transition-colors group-hover:text-primary sm:text-2xl">
 						{bundle.title}
 					</h3>
-					<p className="mb-6 line-clamp-2 font-medium text-muted-foreground">
+					<p className="mb-6 line-clamp-3 text-muted-foreground text-sm">
 						{bundle.books.map((book) => book.title).join(", ")}
 					</p>
 				</div>

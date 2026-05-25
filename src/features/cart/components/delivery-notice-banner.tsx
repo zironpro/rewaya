@@ -9,7 +9,7 @@ export function DeliveryNoticeBanner() {
 
 	return (
 		<div
-			className="mb-8 flex gap-3 rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-amber-900 text-sm"
+			className="mb-8 flex gap-3 rounded-md border border-amber-300 bg-amber-100 px-4 py-3 text-amber-950 text-sm"
 			role="status"
 		>
 			<Truck aria-hidden className="mt-0.5 size-4 shrink-0" />

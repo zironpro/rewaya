@@ -58,9 +58,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 
 				{bundle.bundleProductId || bundle.storeProductIds[0] ? (
 					<WishlistToggleButton
-						productId={
-							bundle.bundleProductId || bundle.storeProductIds[0]!
-						}
+						productId={bundle.bundleProductId || bundle.storeProductIds[0]!}
 						variant="row"
 					/>
 				) : null}

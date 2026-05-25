@@ -39,6 +39,7 @@ export function AddBundleToCartButton({
 	const [status, setStatus] = useState<"idle" | "loading" | "added" | "error">(
 		"idle"
 	);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const canAdd = Boolean(checkoutCatalogItemId);
 
@@ -46,6 +47,7 @@ export function AddBundleToCartButton({
 		if (!canAdd) return;
 
 		setStatus("loading");
+		setErrorMessage(null);
 
 		try {
 			const { error, cart } = await addBundle(null, {
@@ -54,8 +56,12 @@ export function AddBundleToCartButton({
 				quantity,
 			});
 			if (error) {
+				setErrorMessage(error);
 				setStatus("error");
-				setTimeout(() => setStatus("idle"), 2500);
+				setTimeout(() => {
+					setStatus("idle");
+					setErrorMessage(null);
+				}, 4000);
 				return;
 			}
 			if (cart) {
@@ -68,9 +74,13 @@ export function AddBundleToCartButton({
 			setTimeout(() => setStatus("idle"), 2000);
 		} catch (e) {
 			console.error("[cart] add bundle failed:", e);
+			setErrorMessage("Could not add bundle to cart. Please try again.");
 			setStatus("error");
 			dispatchCartUpdated();
-			setTimeout(() => setStatus("idle"), 2500);
+			setTimeout(() => {
+				setStatus("idle");
+				setErrorMessage(null);
+			}, 4000);
 		}
 	};
 
@@ -84,15 +94,22 @@ export function AddBundleToCartButton({
 					: (children ?? "Add to Cart");
 
 	return (
-		<Button
-			className={className}
-			disabled={disabled || !canAdd || status === "added"}
-			onClick={handleAddToCart}
-			size={size}
-			title={!canAdd ? "This bundle is not available for purchase" : undefined}
-			variant={variant}
-		>
-			{label}
-		</Button>
+		<div className="flex w-full flex-col gap-1">
+			<Button
+				className={className}
+				disabled={disabled || !canAdd || status === "added"}
+				onClick={handleAddToCart}
+				size={size}
+				title={
+					!canAdd ? "This bundle is not available for purchase" : undefined
+				}
+				variant={variant}
+			>
+				{label}
+			</Button>
+			{status === "error" && errorMessage ? (
+				<p className="text-destructive text-xs">{errorMessage}</p>
+			) : null}
+		</div>
 	);
 }

@@ -76,9 +76,9 @@ export const HomepageView = ({
 						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="/banners/book-fair-banner.webp"
 					/>
-					<div className="relative z-10 flex min-h-[300px] flex-col items-start justify-center p-6 text-white sm:p-10 md:min-h-[360px] md:max-w-4xl md:p-12">
+					<div className="relative z-10 flex min-h-[300px] flex-col items-start justify-center p-6 text-card sm:p-10 md:min-h-[360px] md:max-w-2xl md:p-12">
 						<Badge
-							className="border-white/20 bg-white/10 text-white tracking-normal backdrop-blur-sm"
+							className="border-card/20 bg-card/10 text-card tracking-normal backdrop-blur-sm"
 							size="lg"
 							variant="outline"
 						>
@@ -86,14 +86,14 @@ export const HomepageView = ({
 						</Badge>
 						<h3 className="mt-3 font-bold font-display text-3xl leading-tight md:text-5xl">
 							Rewaya at the{" "}
-							<span className="text-accent italic">Dubai Book Fair</span>
+							<span className="text-accent italic">Book Fair</span>
 						</h3>
-						<p className="mt-4 font-light text-base text-white/90">
+						<p className="mt-4 font-light text-base text-card/90">
 							Thank you to everyone who visited our stand. We loved meeting
 							readers, signing books, and sharing stories from across the
 							Islamic world.
 						</p>
-						<p className="mt-3 flex items-center gap-1.5 text-sm text-white/75">
+						<p className="mt-3 flex items-center gap-1.5 text-card/75 text-sm">
 							<MapPin aria-hidden className="size-4 shrink-0" />
 							Dubai, United Arab Emirates
 						</p>

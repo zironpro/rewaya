@@ -70,7 +70,7 @@ export async function Footer() {
 								A new chapter begins in your inbox.
 							</h2>
 							<p className="mt-2 max-w-md font-sans text-muted-foreground text-sm italic">
-								New arrivals, reading guides & exclusive offers — weekly.
+								New arrivals, reading guides & exclusive offers weekly.
 							</p>
 						</div>
 						<div className="w-full max-w-md shrink-0 lg:max-w-sm">
