@@ -18,6 +18,7 @@ export function mapBundleToBundleData(bundle: Bundle): BundleData {
 		originalPrice: bundle.originalPrice,
 		savingsAmount: bundle.originalPrice - bundle.price,
 		wixProductId: bundle.wixProductId,
+		catalogAppId: bundle.catalogAppId,
 		defaultVariant: bundle.defaultVariant,
 		coverImage: bundle.coverImage,
 		books: bundle.books.map((book) => ({

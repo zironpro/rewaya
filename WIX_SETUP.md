@@ -100,17 +100,20 @@ In CMS `HomepageSections`, set `categorySlug` to the **slug from Wix** (Dashboar
 
 ### `BookBundles` (CMS ID; dashboard label: **Bundles**)
 
+This collection is a **CMS catalog collection** (CATALOG plugin). Each row is the purchasable bundle SKU.
+
 | Field | Type | Notes |
 |-------|------|-------|
 | `bundleTitle` | Text | Display name; slug generated for URLs |
-| `bundleProducts` | Multi-reference | Wix Stores products included in the bundle |
-| `price` | Number | Bundle price (AED) |
+| `bundleProducts` | Multi-reference | Included Wix Stores books — **display only** (“what’s inside”) |
+| `price` | Number | Bundle price (AED); used by CMS catalog checkout |
 | `originalPrice` | Number | Strikethrough / savings |
 | `overview` | Text | Description |
 | `bundleImage` | Image | Cover art |
+| `offerStart` / `offerEnd` | Date | Optional campaign window |
 | `quantityAvailable` | Number | Optional stock hint |
 
-Add-to-cart uses the **first** `bundleProducts` reference as the Stores `catalogItemId`. Included books are loaded from all references in that field.
+**Add to cart:** `catalogReference.appId` = CMS catalog (`e593b0bd-b783-45b8-97c2-873d42aacaf4`), `catalogItemId` = the BookBundles CMS item `_id`. Do not use Stores product ids from `bundleProducts` for checkout.
 
 ## Purchase flow
 

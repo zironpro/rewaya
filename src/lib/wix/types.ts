@@ -1,6 +1,8 @@
 import type { Book, Bundle, Faq } from "@/lib/catalog/types";
 import type { BookProps } from "@/lib/store";
+
 import type { ProductVariant } from "./catalog-types";
+import { WIX_CMS_CATALOG_APP_ID } from "./constants";
 import type { ProductInfoSection } from "./info-sections";
 import {
 	buildV3VariantsFromCatalog,
@@ -47,8 +49,8 @@ export interface BookBundleCmsItem {
 	includedBookIds: string[];
 	/** Books resolved from expanded `bundleProducts` refs (when query uses `.include()`). */
 	includedBooks?: Book[];
-	/** Stores catalog id used for add-to-cart (first `bundleProducts` ref). */
-	bundleProductId: string;
+	/** BookBundles CMS catalog item id for add-to-cart. */
+	cmsCatalogItemId: string;
 	tag?: string;
 }
 
@@ -83,13 +85,8 @@ export function mapWixProductToBookProps(
 
 export function mapBookBundleFromCms(
 	details: BookBundleCmsItem,
-	includedBooks: Book[],
-	checkoutProduct?: WixCatalogProduct | null
+	includedBooks: Book[]
 ): Bundle {
-	const variants = checkoutProduct
-		? buildV3VariantsFromCatalog(checkoutProduct, checkoutProduct.variantId)
-		: undefined;
-
 	const overview = details.overview.trim();
 	const tagline =
 		overview.length > 120 ? `${overview.slice(0, 117)}…` : overview;
@@ -103,18 +100,10 @@ export function mapBookBundleFromCms(
 		tagline,
 		description: overview,
 		longDescription: overview,
-		coverImage:
-			details.coverImage ||
-			includedBooks[0]?.image ||
-			checkoutProduct?.imageUrl ||
-			"",
+		coverImage: details.coverImage || includedBooks[0]?.image || "",
 		books: includedBooks,
-		wixProductId:
-			details.bundleProductId ||
-			checkoutProduct?.id ||
-			includedBooks[0]?.id,
-		variants,
-		defaultVariant: variants?.[0],
+		wixProductId: details.cmsCatalogItemId,
+		catalogAppId: WIX_CMS_CATALOG_APP_ID,
 		faqs: [],
 	};
 }
@@ -122,8 +111,8 @@ export function mapBookBundleFromCms(
 /** @deprecated Use `mapBookBundleFromCms`. */
 export function mapToBundle(
 	details: BookBundleCmsItem,
-	storeProduct: WixCatalogProduct,
+	_storeProduct: WixCatalogProduct | null,
 	includedBooks: Book[]
 ): Bundle {
-	return mapBookBundleFromCms(details, includedBooks, storeProduct);
+	return mapBookBundleFromCms(details, includedBooks);
 }

@@ -1,5 +1,5 @@
 import { PLACEHOLDER_VARIANT_ID, type ProductVariant } from "./catalog-types";
-import { WIX_STORES_APP_ID } from "./constants";
+import { WIX_CMS_CATALOG_APP_ID, WIX_STORES_APP_ID } from "./constants";
 
 export interface CatalogReferenceOptions {
 	variantId?: string;
@@ -31,11 +31,12 @@ export function buildCatalogReferenceOptions(
 
 export function buildCatalogReference(
 	catalogItemId: string,
-	variant?: ProductVariant
+	variant?: ProductVariant,
+	appId: string = WIX_STORES_APP_ID
 ) {
 	const catalogOptions = buildCatalogReferenceOptions(variant);
 	return {
-		appId: WIX_STORES_APP_ID,
+		appId,
 		catalogItemId,
 		...(catalogOptions ? { options: catalogOptions } : {}),
 	};
@@ -44,10 +45,30 @@ export function buildCatalogReference(
 export function buildAddToCartLineItem(
 	catalogItemId: string,
 	variant: ProductVariant | undefined,
-	quantity: number
+	quantity: number,
+	appId?: string
 ) {
 	return {
-		catalogReference: buildCatalogReference(catalogItemId, variant),
+		catalogReference: buildCatalogReference(
+			catalogItemId,
+			variant,
+			appId ?? WIX_STORES_APP_ID
+		),
 		quantity,
 	};
+}
+
+/** BookBundles CMS catalog rows — no Stores variants. */
+export function buildCmsCatalogLineItem(cmsItemId: string, quantity: number) {
+	return {
+		catalogReference: {
+			appId: WIX_CMS_CATALOG_APP_ID,
+			catalogItemId: cmsItemId,
+		},
+		quantity,
+	};
+}
+
+export function isCmsCatalogAppId(appId?: string): boolean {
+	return appId === WIX_CMS_CATALOG_APP_ID;
 }

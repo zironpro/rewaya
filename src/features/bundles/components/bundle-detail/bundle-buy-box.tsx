@@ -43,6 +43,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 				</ScrollArea>
 
 				<AddToCartButton
+					catalogAppId={bundle.catalogAppId}
 					className="w-full gap-3"
 					disabled={!bundle.wixProductId}
 					productId={bundle.wixProductId ?? ""}

@@ -24,6 +24,7 @@ export function BundleCheckoutCta({
 }: BundleCheckoutCtaProps) {
 	return (
 		<AddToCartButton
+			catalogAppId={bundle.catalogAppId}
 			className={cn(shimmerClass, "min-h-11 w-full shrink-0 gap-2", className)}
 			disabled={!bundle.wixProductId}
 			productId={bundle.wixProductId ?? ""}

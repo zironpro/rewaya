@@ -38,8 +38,10 @@ export interface BundleData {
 	books: BookItem[];
 	reviews: Review[];
 	faqs: FAQ[];
-	/** When set, primary checkout uses Wix add-to-cart */
+	/** BookBundles CMS catalog item id for add-to-cart */
 	wixProductId?: string;
+	/** CMS catalog app id for bundle checkout */
+	catalogAppId?: string;
 	defaultVariant?: import("@/lib/wix/catalog-types").ProductVariant;
 	coverImage: string;
 }

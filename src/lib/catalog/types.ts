@@ -40,9 +40,11 @@ export interface Bundle {
 	longDescription: string;
 	coverImage: string;
 	books: Book[];
-	/** Wix Stores product ID for checkout */
+	/** Catalog item id for add-to-cart (CMS BookBundles `_id` or Stores product id) */
 	wixProductId?: string;
-	/** Default variant for add-to-cart */
+	/** `catalogReference.appId` — CMS catalog for bundles, Stores for books */
+	catalogAppId?: string;
+	/** Default variant for add-to-cart (Stores books only) */
 	defaultVariant?: import("@/lib/wix/catalog-types").ProductVariant;
 	variants?: import("@/lib/wix/catalog-types").ProductVariant[];
 	faqs: Faq[];

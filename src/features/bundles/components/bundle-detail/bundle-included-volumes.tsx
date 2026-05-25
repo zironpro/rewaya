@@ -65,7 +65,7 @@ export function BundleIncludedVolumes({ books }: BundleIncludedVolumesProps) {
 												<span>{book.author}</span>
 											</div>
 										)}
-										<p className="mt-4 line-clamp-3 text-muted-foreground tracking-tight">
+										<p className="mt-3 line-clamp-2 text-muted-foreground text-sm tracking-tight">
 											{book.overview}
 										</p>
 									</div>
@@ -78,9 +78,6 @@ export function BundleIncludedVolumes({ books }: BundleIncludedVolumesProps) {
 										)}
 										{book.language && (
 											<BookMeta label="Language" value={book.language} />
-										)}
-										{book.genre && (
-											<BookMeta label="Genre" value={book.genre} />
 										)}
 									</div>
 								</div>
@@ -107,7 +104,7 @@ function BookMeta({ label, value }: { label: string; value: string }) {
 	return (
 		<div className="flex flex-col">
 			<span className="mb-1 text-muted-foreground/80 text-xs">{label}</span>
-			<span className="font-medium text-secondary text-sm">{value}</span>
+			<span className="font-medium text-secondary text-xs">{value}</span>
 		</div>
 	);
 }

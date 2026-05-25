@@ -29,7 +29,12 @@ export async function fetchCart(): Promise<unknown | null> {
 
 export async function addItem(
 	_prevState: unknown,
-	item: { productId: string; variant?: ProductVariant; quantity?: number }
+	item: {
+		productId: string;
+		variant?: ProductVariant;
+		quantity?: number;
+		catalogAppId?: string;
+	}
 ): Promise<CartActionResult> {
 	if (!item.productId) {
 		return { error: "Missing product" };
@@ -41,6 +46,7 @@ export async function addItem(
 				productId: item.productId,
 				variant: item.variant,
 				quantity: item.quantity ?? 1,
+				catalogAppId: item.catalogAppId,
 			},
 		]);
 		revalidatePath("/", "layout");

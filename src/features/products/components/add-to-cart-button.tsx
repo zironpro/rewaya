@@ -7,10 +7,13 @@ import { Button } from "@/components/ui/button";
 import { addItem } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
+import { isCmsCatalogAppId } from "@/lib/wix/purchase-flow";
 
 interface AddToCartButtonProps {
 	productId: string;
 	productName: string;
+	/** `catalogReference.appId` — CMS catalog for BookBundles, Stores for books */
+	catalogAppId?: string;
 	/** Wix Stores variant / options for catalogReference */
 	productVariant?: ProductVariant;
 	quantity?: number;
@@ -31,6 +34,7 @@ function dispatchCartUpdated(cart?: unknown) {
 export function AddToCartButton({
 	productId,
 	productName: _productName,
+	catalogAppId,
 	productVariant,
 	quantity = 1,
 	disabled,
@@ -44,8 +48,10 @@ export function AddToCartButton({
 		"idle"
 	);
 
+	const isCmsCatalog = isCmsCatalogAppId(catalogAppId);
 	const canAdd =
-		Boolean(productId) && productVariant?.availableForSale !== false;
+		Boolean(productId) &&
+		(isCmsCatalog || productVariant?.availableForSale !== false);
 
 	const handleAddToCart = async () => {
 		if (!productId || !canAdd) return;
@@ -57,6 +63,7 @@ export function AddToCartButton({
 				productId,
 				variant: productVariant,
 				quantity,
+				catalogAppId,
 			});
 			if (error) {
 				setStatus("error");

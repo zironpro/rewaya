@@ -8,7 +8,7 @@ import { getWixClient } from "./client";
 import { getCmsItemData, readCmsField } from "./cms/record";
 import { isWixCatalogEnabled } from "./constants";
 import { resolveWixImageUrl } from "./image";
-import { getWixProductById, queryWixProducts } from "./products";
+import { queryWixProducts } from "./products";
 import {
 	type BookBundleCmsItem,
 	type Bundle,
@@ -218,10 +218,10 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 					1000
 				) ?? "";
 
-			if (!title && includedBookIds.length === 0) continue;
-
 			const itemId =
 				(item as { _id?: string })._id ?? (data._id as string | undefined);
+
+			if (!itemId || (!title && includedBookIds.length === 0)) continue;
 
 			const slug = resolveBundleSlug(title, itemId, usedSlugs);
 
@@ -238,7 +238,7 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 				),
 				includedBookIds,
 				includedBooks: includedBooks.length > 0 ? includedBooks : undefined,
-				bundleProductId: includedBookIds[0] ?? "",
+				cmsCatalogItemId: itemId,
 				tag: readCmsField(data, "tag", "ribbon") as string | undefined,
 			});
 		}
@@ -268,17 +268,7 @@ export async function getBundles(): Promise<Bundle[]> {
 					? await resolveIncludedBooks(bookIds, row.includedBooks ?? [])
 					: [];
 
-			const checkoutProduct = row.bundleProductId
-				? await getWixProductById(row.bundleProductId)
-				: null;
-
-			bundles.push(
-				mapBookBundleFromCms(
-					row,
-					includedBooks,
-					checkoutProduct
-				)
-			);
+			bundles.push(mapBookBundleFromCms(row, includedBooks));
 		}
 
 		return bundles;

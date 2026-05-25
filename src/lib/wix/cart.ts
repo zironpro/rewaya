@@ -3,8 +3,19 @@ import "server-only";
 import { currentCart } from "@wix/ecom";
 
 import type { ProductVariant } from "./catalog-types";
-import { buildAddToCartLineItem } from "./purchase-flow";
+import {
+	buildAddToCartLineItem,
+	buildCmsCatalogLineItem,
+	isCmsCatalogAppId,
+} from "./purchase-flow";
 import { getWixServerSessionClient } from "./server-session-client";
+
+export interface AddToCartLineInput {
+	productId: string;
+	variant?: ProductVariant;
+	quantity: number;
+	catalogAppId?: string;
+}
 
 function isOwnedCartNotFound(error: unknown): boolean {
 	const code = (error as { details?: { applicationError?: { code?: string } } })
@@ -12,13 +23,13 @@ function isOwnedCartNotFound(error: unknown): boolean {
 	return code === "OWNED_CART_NOT_FOUND";
 }
 
-export async function addToCartServer(
-	lines: { productId: string; variant?: ProductVariant; quantity: number }[]
-) {
+export async function addToCartServer(lines: AddToCartLineInput[]) {
 	const client = await getWixServerSessionClient();
 	const { cart } = await client.currentCart.addToCurrentCart({
-		lineItems: lines.map(({ productId, variant, quantity }) =>
-			buildAddToCartLineItem(productId, variant, quantity)
+		lineItems: lines.map(({ productId, variant, quantity, catalogAppId }) =>
+			isCmsCatalogAppId(catalogAppId)
+				? buildCmsCatalogLineItem(productId, quantity)
+				: buildAddToCartLineItem(productId, variant, quantity, catalogAppId)
 		),
 	});
 	return cart;

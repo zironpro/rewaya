@@ -20,6 +20,7 @@ export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 					</span>
 				</div>
 				<AddToCartButton
+					catalogAppId={bundle.catalogAppId}
 					className="shrink-0 gap-2"
 					disabled={!bundle.wixProductId}
 					productId={bundle.wixProductId ?? ""}
