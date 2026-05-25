@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { BundleDetailView } from "@/features/bundles/bundle-detail-view";
-import { getBundleBySlug, getBundles } from "@/lib/wix/bundles";
+import { getBundleBySlug, getBundlesIndex } from "@/lib/wix/bundles";
 import { getShopBooks } from "@/lib/wix/products";
 import { getBundleStaticParams } from "@/lib/wix/static-params";
 
@@ -19,7 +19,7 @@ export default async function BundleDetailPage({
 	const { id } = await params;
 	const [bundle, allBundles, relatedBooks] = await Promise.all([
 		getBundleBySlug(id),
-		getBundles(),
+		getBundlesIndex(),
 		getShopBooks(),
 	]);
 

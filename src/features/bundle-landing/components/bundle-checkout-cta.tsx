@@ -2,13 +2,12 @@
 
 import { ShoppingBag } from "lucide-react";
 
+import type { BundlePresentation } from "@/domain/bundle";
 import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
 import { cn } from "@/lib/utils";
 
-import type { BundleData } from "../types/bundle";
-
 interface BundleCheckoutCtaProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 	className?: string;
 	size?: "default" | "sm" | "lg" | "icon";
 	label?: string;

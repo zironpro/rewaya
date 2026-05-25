@@ -1,5 +1,7 @@
 import { ShoppingBagIcon } from "lucide-react";
 
+import { MobileBuyBar } from "@/components/commerce/mobile-buy-bar";
+
 import { CurrencyIcon } from "@/assets/icons/currency";
 
 import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
@@ -11,19 +13,13 @@ interface BundleMobileBuyBarProps {
 
 export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 	return (
-		<div className="fixed inset-x-0 bottom-16 z-50 border-stone-200 border-t bg-card/95 px-4 py-3 backdrop-blur-md md:hidden">
-			<div className="container flex items-center gap-4">
-				<div className="flex min-w-0 flex-1 items-center gap-1">
-					<CurrencyIcon className="size-5 shrink-0 text-primary" />
-					<span className="font-bold text-2xl text-primary">
-						{bundle.price}
-					</span>
-				</div>
+		<MobileBuyBar
+			actions={
 				<AddBundleToCartButton
 					bundleSlug={bundle.id}
 					checkoutCatalogAppId={bundle.checkoutCatalogAppId}
 					checkoutCatalogItemId={bundle.checkoutCatalogItemId}
-					className="shrink-0 gap-2"
+					className="gap-2"
 					disabled={!bundle.checkoutCatalogItemId}
 					size="lg"
 					variant="secondary"
@@ -31,7 +27,15 @@ export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 					<ShoppingBagIcon size={18} />
 					Add to Cart
 				</AddBundleToCartButton>
-			</div>
-		</div>
+			}
+			priceLabel={
+				<div className="flex items-center gap-1">
+					<CurrencyIcon className="size-5 shrink-0 text-primary" />
+					<span className="font-bold text-2xl text-primary">
+						{bundle.price}
+					</span>
+				</div>
+			}
+		/>
 	);
 }

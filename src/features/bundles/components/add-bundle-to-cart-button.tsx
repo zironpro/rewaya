@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { dispatchCartUpdated } from "@/components/commerce/cart-events";
 import { Button } from "@/components/ui/button";
 
 import { addBundle } from "@/features/cart/cart-actions";
@@ -19,12 +20,6 @@ interface AddBundleToCartButtonProps {
 	variant?: "default" | "secondary" | "outline" | "ghost";
 	children?: React.ReactNode;
 	onAdded?: () => void;
-}
-
-function dispatchCartUpdated(cart?: unknown) {
-	window.dispatchEvent(
-		new CustomEvent("cart-updated", { detail: cart ? { cart } : undefined })
-	);
 }
 
 export function AddBundleToCartButton({
@@ -47,19 +42,7 @@ export function AddBundleToCartButton({
 	const canAdd = Boolean(checkoutCatalogItemId);
 
 	const handleAddToCart = async () => {
-		if (!canAdd) {
-			console.warn("[bundle-cart] click ignored — no checkoutCatalogItemId", {
-				bundleSlug,
-			});
-			return;
-		}
-
-		console.log("[bundle-cart] Add to Cart clicked", {
-			bundleSlug,
-			checkoutCatalogItemId,
-			checkoutCatalogAppId,
-			quantity,
-		});
+		if (!canAdd) return;
 
 		setStatus("loading");
 		setErrorMessage(null);
@@ -73,7 +56,6 @@ export function AddBundleToCartButton({
 			});
 
 			if (error) {
-				console.error("[bundle-cart] server returned error:", error);
 				setErrorMessage(error);
 				setStatus("error");
 				setTimeout(() => {
@@ -84,10 +66,6 @@ export function AddBundleToCartButton({
 			}
 			const lineCount =
 				(cart as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
-			console.log("[bundle-cart] success", {
-				lineItems: lineCount,
-				cart,
-			});
 
 			if (lineCount === 0) {
 				setErrorMessage(
@@ -109,8 +87,7 @@ export function AddBundleToCartButton({
 			setStatus("added");
 			onAdded?.();
 			setTimeout(() => setStatus("idle"), 2000);
-		} catch (e) {
-			console.error("[bundle-cart] client exception:", e);
+		} catch {
 			setErrorMessage("Could not add bundle to cart. Please try again.");
 			setStatus("error");
 			dispatchCartUpdated();

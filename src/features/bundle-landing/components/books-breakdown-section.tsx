@@ -2,22 +2,16 @@
 
 import Image from "next/image";
 
+import type { BundleBookItem, BundlePresentation } from "@/domain/bundle";
 import { cn } from "@/lib/utils";
 
 import { useFadeRise } from "../hooks/useFadeRise";
-import type { BundleData } from "../types/bundle";
 
 interface BooksBreakdownSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
-function BookRow({
-	book,
-	index,
-}: {
-	book: BundleData["books"][number];
-	index: number;
-}) {
+function BookRow({ book, index }: { book: BundleBookItem; index: number }) {
 	const { ref, visible } = useFadeRise<HTMLDivElement>();
 	const delayClass =
 		index % 4 === 0

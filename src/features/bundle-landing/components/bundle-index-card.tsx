@@ -7,11 +7,12 @@ import { Badge } from "@/components/ui/badge";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
+
 import { BundlesCampaignActions } from "./bundles-campaign-actions";
 
 interface BundleIndexCardProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 	featuredSlug: string;
 	featured?: boolean;
 }

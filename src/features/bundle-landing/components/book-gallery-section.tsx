@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
 
 interface BookGallerySectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function BookGallerySection({ bundle }: BookGallerySectionProps) {

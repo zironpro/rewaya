@@ -25,6 +25,19 @@ NEXT_PUBLIC_WIX_SITE_ID=835db726-cfca-4ef4-8305-4002f5f62aef
 USE_WIX_CATALOG=true
 ```
 
+### Environment variables (contract)
+
+| Variable | Used by | Purpose |
+|----------|---------|---------|
+| `WIX_CLIENT_ID` | Server catalog (`lib/wix/client.ts`) | OAuth app credentials for **server-only** product/bundle/CMS reads. Catalog is off when unset or `USE_WIX_CATALOG=false`. |
+| `NEXT_PUBLIC_WIX_CLIENT_ID` | Browser client, session cart, `src/proxy.ts` | Same OAuth app ID exposed to the client for auth, wishlist, and visitor token refresh. |
+| `NEXT_PUBLIC_WIX_SITE_ID` | All Wix clients | Site header `wix-site-id`. |
+| `USE_WIX_CATALOG` | `isWixCatalogEnabled()` | Set to `false` to disable server catalog (fallbacks only). |
+
+**Use the same OAuth client ID** for both `WIX_CLIENT_ID` and `NEXT_PUBLIC_WIX_CLIENT_ID` in normal deployments. Mismatched values cause catalog reads to succeed while cart/session fail (or the reverse).
+
+Do not use a separate `refreshToken` cookie pattern — session uses `wix_session` only (`lib/wix/session-cookie.ts`, refreshed by `src/proxy.ts`).
+
 ## 3. Install dependencies
 
 ```bash
@@ -53,7 +66,7 @@ npm run dev
 3. **Post-checkout / thank-you** — allow `/thank-you` on your headless domain
 4. **Password reset redirect** — `/login` on each origin
 
-Visitor cart uses the `wix_session` cookie (set by middleware). Add-to-cart sends `catalogItemId` plus variant/options per [Wix headless-templates commerce](https://github.com/wix/headless-templates/blob/main/nextjs/commerce/lib/wix/index.ts).
+Visitor cart uses the `wix_session` cookie (refreshed by `src/proxy.ts` on each request when tokens are missing or expired). Add-to-cart sends `catalogItemId` plus variant/options per [Wix headless-templates commerce](https://github.com/wix/headless-templates/blob/main/nextjs/commerce/lib/wix/index.ts).
 
 ## Catalog version
 

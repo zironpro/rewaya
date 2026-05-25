@@ -6,6 +6,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { PolicyCards } from "@/components/PolicyCards";
 import { Separator } from "@/components/ui/separator";
 
+import type { Bundle } from "@/domain/catalog";
 import { BundleBuyBox } from "@/features/bundles/components/bundle-detail/bundle-buy-box";
 import { BundleImageGallery } from "@/features/bundles/components/bundle-detail/bundle-image-gallery";
 import { BundleIncludedVolumes } from "@/features/bundles/components/bundle-detail/bundle-included-volumes";
@@ -14,7 +15,6 @@ import { BundleNewsletterCta } from "@/features/bundles/components/bundle-detail
 import { BundleProductInfo } from "@/features/bundles/components/bundle-detail/bundle-product-info";
 import { BundleRelatedBooks } from "@/features/bundles/components/bundle-detail/bundle-related-books";
 import { BundleRelatedBundles } from "@/features/bundles/components/bundle-detail/bundle-related-bundles";
-import type { Bundle } from "@/lib/bundles-data";
 import type { BookProps } from "@/lib/store";
 
 function pickRandomBooks(

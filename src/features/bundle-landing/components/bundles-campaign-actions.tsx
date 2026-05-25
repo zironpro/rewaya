@@ -4,9 +4,9 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+import type { BundlePresentation } from "@/domain/bundle";
 import { cn } from "@/lib/utils";
 
-import type { BundleData } from "../types/bundle";
 import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { CountdownTimer } from "./countdown-timer";
 
@@ -22,8 +22,8 @@ type CampaignActionsVariant =
 interface BundlesCampaignActionsProps {
 	variant: CampaignActionsVariant;
 	featuredSlug: string;
-	featuredBundle?: BundleData;
-	bundle?: BundleData;
+	featuredBundle?: BundlePresentation;
+	bundle?: BundlePresentation;
 	buyLabel?: string;
 	className?: string;
 	buttonSize?: "default" | "sm" | "lg";

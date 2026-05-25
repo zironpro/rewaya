@@ -1,13 +1,13 @@
 "use client";
 
+import type { BundlePresentation } from "@/domain/bundle";
 import { cn } from "@/lib/utils";
 
 import { useStickyNav } from "../hooks/useStickyNav";
-import type { BundleData } from "../types/bundle";
 import { BundleCheckoutCta } from "./bundle-checkout-cta";
 
 interface StickyCheckoutBarProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function StickyCheckoutBar({ bundle }: StickyCheckoutBarProps) {

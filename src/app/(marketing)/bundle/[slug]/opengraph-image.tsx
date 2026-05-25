@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-import { getBundleBySlug } from "@/features/bundle-landing/lib/bundleData";
+import { getBundlePresentation } from "@/lib/wix/bundles";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -40,7 +40,7 @@ export default async function Image({
 	params: Promise<{ slug: string }>;
 }) {
 	const { slug } = await params;
-	const bundle = await getBundleBySlug(slug);
+	const bundle = await getBundlePresentation(slug);
 
 	if (!bundle) {
 		return fallback();

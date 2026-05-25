@@ -2,6 +2,8 @@
 
 import { ShoppingBagIcon } from "lucide-react";
 
+import { MobileBuyBar } from "@/components/commerce/mobile-buy-bar";
+
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
 
@@ -23,14 +25,11 @@ export function ProductMobileBuyBar({
 	quantity = 1,
 }: ProductMobileBuyBarProps) {
 	return (
-		<div className="fixed inset-x-0 bottom-16 z-50 border-stone-200 border-t bg-white/95 px-4 py-3 backdrop-blur-md md:hidden">
-			<div className="container flex items-center gap-4">
-				<span className="min-w-0 flex-1 font-bold text-2xl text-secondary">
-					AED {price.toFixed(2)}
-				</span>
+		<MobileBuyBar
+			actions={
 				<AddToCartButton
 					availableForSale={availableForSale}
-					className="shrink-0 gap-2"
+					className="gap-2"
 					disabled={!productId}
 					productId={productId ?? ""}
 					productName={productName}
@@ -42,7 +41,12 @@ export function ProductMobileBuyBar({
 					<ShoppingBagIcon size={18} />
 					Add to Cart
 				</AddToCartButton>
-			</div>
-		</div>
+			}
+			priceLabel={
+				<span className="font-bold text-2xl text-secondary">
+					AED {price.toFixed(2)}
+				</span>
+			}
+		/>
 	);
 }

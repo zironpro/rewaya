@@ -13,7 +13,7 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import type { Book } from "@/lib/bundles-data";
+import type { Book } from "@/domain/catalog";
 
 import { BundleSectionHeading } from "./bundle-section-heading";
 

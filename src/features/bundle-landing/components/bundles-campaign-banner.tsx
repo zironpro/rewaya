@@ -3,10 +3,10 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
+import type { BundlePresentation } from "@/domain/bundle";
 import { cn } from "@/lib/utils";
 
 import type { BundleCampaignBannerSlot } from "../data/bundle-campaign-banners";
-import type { BundleData } from "../types/bundle";
 import { BundlesCampaignActions } from "./bundles-campaign-actions";
 
 interface BundlesCampaignBannerProps {
@@ -14,7 +14,7 @@ interface BundlesCampaignBannerProps {
 	priority?: boolean;
 	showOverlayCta?: boolean;
 	featuredSlug?: string;
-	featuredBundle?: BundleData;
+	featuredBundle?: BundlePresentation;
 	className?: string;
 }
 

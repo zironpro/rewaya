@@ -1,12 +1,12 @@
 import Image from "next/image";
 
-import { BundleData } from "../../types/bundle";
+import type { BundleBookItem } from "@/domain/bundle";
 
 export function CompactBookTile({
 	book,
 	index: bookIndex,
 }: {
-	book: BundleData["books"][number];
+	book: BundleBookItem;
 	index: number;
 }) {
 	return (

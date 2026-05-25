@@ -1,7 +1,6 @@
-import type { Bundle } from "@/lib/bundles-data";
+import type { BundlePresentation } from "@/domain/bundle";
+import type { Bundle } from "@/domain/catalog";
 import { cn } from "@/lib/utils";
-
-import type { BundleData } from "./types/bundle";
 
 import "./styles/bundleAnimations.css";
 
@@ -17,7 +16,7 @@ import { SocialProofSection } from "./components/social-proof-section";
 import { StickyCheckoutBar } from "./components/sticky-checkout-bar";
 
 interface BundleLandingPageProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 	relatedBundles: Bundle[];
 }
 

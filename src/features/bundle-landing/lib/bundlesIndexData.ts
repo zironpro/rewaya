@@ -1,9 +1,10 @@
-import type { Review } from "@/lib/bundle-reviews-data";
+import {
+	type BundlePresentation,
+	bundleToPresentation,
+	type Review,
+} from "@/domain/bundle";
+import type { Bundle, Faq } from "@/domain/catalog";
 import { getBundleReviews } from "@/lib/bundle-reviews-data";
-import type { Bundle, Faq } from "@/lib/bundles-data";
-
-import type { BundleData } from "../types/bundle";
-import { mapBundleToBundleData } from "./bundleData";
 
 export interface BundleBookSlide {
 	id: string;
@@ -15,9 +16,9 @@ export interface BundleBookSlide {
 
 export interface BundlesIndexPageData {
 	bundles: Bundle[];
-	bundleDataList: BundleData[];
+	bundlePresentations: BundlePresentation[];
 	featuredBundle: Bundle | null;
-	featuredBundleData: BundleData | null;
+	featuredPresentation: BundlePresentation | null;
 	maxSavings: number;
 	bookSlides: BundleBookSlide[];
 	faqs: Faq[];
@@ -109,15 +110,15 @@ export function buildBundlesIndexPageData(
 	bundles: Bundle[]
 ): BundlesIndexPageData {
 	const featuredBundle = getFeaturedBundle(bundles);
-	const featuredBundleData = featuredBundle
-		? mapBundleToBundleData(featuredBundle)
+	const featuredPresentation = featuredBundle
+		? bundleToPresentation(featuredBundle)
 		: null;
 
 	return {
 		bundles,
-		bundleDataList: bundles.map(mapBundleToBundleData),
+		bundlePresentations: bundles.map(bundleToPresentation),
 		featuredBundle,
-		featuredBundleData,
+		featuredPresentation,
 		maxSavings: getMaxSavings(bundles),
 		bookSlides: getAllBundleBookSlides(bundles),
 		faqs: getAggregatedFaqs(bundles),

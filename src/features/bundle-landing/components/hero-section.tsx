@@ -10,12 +10,13 @@ import { Button } from "@/components/ui/button";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
+
 import { CountdownTimer } from "./countdown-timer";
 import { BookMosaic } from "./ui/book-mosic";
 
 interface HeroSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function HeroSection({ bundle }: HeroSectionProps) {

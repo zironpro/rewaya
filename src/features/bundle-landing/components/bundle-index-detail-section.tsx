@@ -2,14 +2,14 @@
 
 import { Badge } from "@/components/ui/badge";
 
+import type { BundlePresentation } from "@/domain/bundle";
 import { cn } from "@/lib/utils";
 
-import type { BundleData } from "../types/bundle";
 import { CompactBookTile } from "./ui/compact-book-tile";
 import { StickyBundleCard } from "./ui/sticky-bundle-card";
 
 interface BundleIndexDetailSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 	featuredSlug: string;
 	index: number;
 }

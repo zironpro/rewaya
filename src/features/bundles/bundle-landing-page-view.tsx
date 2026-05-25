@@ -43,10 +43,10 @@ export function BundleLandingPageView({
 
 	return (
 		<main className="bg-background pb-24 md:pb-0">
-			{data.featuredBundleData ? (
+			{data.featuredPresentation ? (
 				<BundlesIndexHero
 					bundles={data.bundles}
-					featuredBundle={data.featuredBundleData}
+					featuredBundle={data.featuredPresentation}
 					featuredSlug={featuredSlug}
 					heroBanner={banners.hero}
 					maxSavings={data.maxSavings}
@@ -79,17 +79,17 @@ export function BundleLandingPageView({
 				</div>
 			</section>
 
-			{data.featuredBundleData ? (
+			{data.featuredPresentation ? (
 				<section className="container py-10 md:py-14">
 					<BundlesCampaignBanner
-						featuredBundle={data.featuredBundleData}
+						featuredBundle={data.featuredPresentation}
 						featuredSlug={featuredSlug}
 						slot={banners.mid}
 					/>
 				</section>
 			) : null}
 
-			{data.bundleDataList.map((bundle, index) => (
+			{data.bundlePresentations.map((bundle, index) => (
 				<BundleIndexDetailSection
 					bundle={bundle}
 					featuredSlug={featuredSlug}
@@ -101,9 +101,9 @@ export function BundleLandingPageView({
 			<BundlesIndexSocialProof reviews={data.reviews} />
 			<BundlesIndexFaqSection faqs={data.faqs} />
 			<BundlesIndexTrust />
-			{data.featuredBundleData ? (
+			{data.featuredPresentation ? (
 				<BundlesIndexCta
-					featuredBundle={data.featuredBundleData}
+					featuredBundle={data.featuredPresentation}
 					featuredSlug={featuredSlug}
 				/>
 			) : null}

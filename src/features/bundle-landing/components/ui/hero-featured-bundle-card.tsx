@@ -12,7 +12,7 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 
-import type { BundleData } from "../../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
 
 const motionTransition = {
 	type: "spring" as const,
@@ -112,7 +112,7 @@ const originalPriceVariants = {
 };
 
 type HeroFeaturedBundleCardProps = Pick<
-	BundleData,
+	BundlePresentation,
 	"coverImage" | "name" | "originalPrice" | "price"
 >;
 

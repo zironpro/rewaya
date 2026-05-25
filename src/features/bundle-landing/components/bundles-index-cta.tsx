@@ -1,10 +1,11 @@
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
+
 import { BundlesCampaignActions } from "./bundles-campaign-actions";
 import { CountdownTimer } from "./countdown-timer";
 
 interface BundlesIndexCtaProps {
 	featuredSlug: string;
-	featuredBundle: BundleData;
+	featuredBundle: BundlePresentation;
 }
 
 export function BundlesIndexCta({

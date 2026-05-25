@@ -16,8 +16,18 @@ export function VerificationForm({
 }: VerificationFormProps) {
 	const [code, setCode] = useState("");
 
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const trimmed = code.trim();
+		if (!trimmed || isPending) return;
+		await onSubmit(trimmed);
+	};
+
 	return (
-		<div className="space-y-4 rounded-xl border border-stone-100 bg-stone-50 p-4">
+		<form
+			className="space-y-4 rounded-xl border border-stone-100 bg-stone-50 p-4"
+			onSubmit={handleSubmit}
+		>
 			<p className="font-bold text-secondary text-sm">
 				Enter the verification code sent to your email.
 			</p>
@@ -32,11 +42,10 @@ export function VerificationForm({
 			<Button
 				className="w-full"
 				disabled={isPending || !code.trim()}
-				onClick={() => onSubmit(code.trim())}
-				type="button"
+				type="submit"
 			>
 				{isPending ? "Verifying…" : "Verify email"}
 			</Button>
-		</div>
+		</form>
 	);
 }

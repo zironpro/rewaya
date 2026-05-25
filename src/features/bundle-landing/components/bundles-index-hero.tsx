@@ -10,17 +10,17 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import type { Bundle } from "@/lib/bundles-data";
+import type { BundlePresentation } from "@/domain/bundle";
+import type { Bundle } from "@/domain/catalog";
 
 import type { BundleCampaignBannerSlot } from "../data/bundle-campaign-banners";
-import type { BundleData } from "../types/bundle";
 import { BundlesCampaignActions } from "./bundles-campaign-actions";
 import { BundlesCampaignBanner } from "./bundles-campaign-banner";
 import { HeroFeaturedBundleCard } from "./ui/hero-featured-bundle-card";
 
 interface BundlesIndexHeroProps {
 	featuredSlug: string;
-	featuredBundle: BundleData;
+	featuredBundle: BundlePresentation;
 	maxSavings: number;
 	bundles: Bundle[];
 	heroBanner: BundleCampaignBannerSlot;

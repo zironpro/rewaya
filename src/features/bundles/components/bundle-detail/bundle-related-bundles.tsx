@@ -1,5 +1,5 @@
+import type { Bundle } from "@/domain/catalog";
 import { BundleCard } from "@/features/bundles/components/bundle-card";
-import type { Bundle } from "@/lib/bundles-data";
 
 import { BundleSectionHeading } from "./bundle-section-heading";
 

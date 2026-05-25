@@ -1,9 +1,9 @@
 import { Star } from "lucide-react";
 
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
 
 interface SocialProofSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function SocialProofSection({ bundle }: SocialProofSectionProps) {

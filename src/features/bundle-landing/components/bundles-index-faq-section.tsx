@@ -7,7 +7,7 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import type { Faq } from "@/lib/bundles-data";
+import type { Faq } from "@/domain/catalog";
 
 interface BundlesIndexFaqSectionProps {
 	faqs: Faq[];

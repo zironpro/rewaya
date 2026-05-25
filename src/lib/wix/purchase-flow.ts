@@ -89,13 +89,6 @@ export function buildBundleProductLineItem(
 	return buildAddToCartLineItem(bundleProductId, undefined, quantity);
 }
 
-/** @deprecated Use `buildBundleProductLineItem` — adds N book lines, not bundle price. */
-export function buildBundleLineItems(productIds: string[], quantity = 1) {
-	return productIds.map((productId) =>
-		buildAddToCartLineItem(productId, undefined, quantity)
-	);
-}
-
 /** BookBundles CMS catalog rows — no Stores variants. */
 export function buildCmsCatalogLineItem(cmsItemId: string, quantity: number) {
 	return {

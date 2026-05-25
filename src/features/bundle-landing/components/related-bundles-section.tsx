@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { BundleSetCard } from "@/components/bundle-set-card";
 import { Button } from "@/components/ui/button";
 
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/domain/catalog";
 
 interface RelatedBundlesSectionProps {
 	bundles: Bundle[];

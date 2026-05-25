@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { ArrowRight } from "lucide-react";
 
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/domain/catalog";
 
 import { BundleSetCard } from "./bundle-set-card";
 import { Badge } from "./ui/badge";

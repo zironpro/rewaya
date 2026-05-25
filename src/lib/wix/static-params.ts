@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getBundleDetailsFromCms } from "./bundles";
+import { getBookBundlesFromCms } from "./bundles";
 import { isWixCatalogEnabled } from "./constants";
 import { queryWixProducts } from "./products";
 
@@ -32,7 +32,7 @@ export async function getBundleStaticParamSlugs(): Promise<string[]> {
 	if (!isWixCatalogEnabled()) return [];
 
 	try {
-		const details = await getBundleDetailsFromCms();
+		const details = await getBookBundlesFromCms();
 		return details.map((d) => d.slug).filter(Boolean);
 	} catch {
 		return [];

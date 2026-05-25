@@ -61,9 +61,6 @@ export interface BookBundleCmsItem {
 	tag?: string;
 }
 
-/** @deprecated Use `BookBundleCmsItem`. */
-export type BundleDetailsCmsItem = BookBundleCmsItem;
-
 export function mapWixProductToBook(product: WixCatalogProduct): Book {
 	return {
 		id: product.id ?? product.slug ?? "",
@@ -120,13 +117,4 @@ export function mapBookBundleFromCms(
 		storeProductIds: details.includedBookIds,
 		faqs: [],
 	};
-}
-
-/** @deprecated Use `mapBookBundleFromCms`. */
-export function mapToBundle(
-	details: BookBundleCmsItem,
-	_storeProduct: WixCatalogProduct | null,
-	includedBooks: Book[]
-): Bundle {
-	return mapBookBundleFromCms(details, includedBooks);
 }

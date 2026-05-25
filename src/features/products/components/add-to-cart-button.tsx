@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 
+import { dispatchCartUpdated } from "@/components/commerce/cart-events";
 import { Button } from "@/components/ui/button";
 
+import { isAvailableForPurchase } from "@/domain/product/availability";
 import { addItem } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
-import { isAvailableForPurchase } from "@/lib/wix/availability";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
 import { isCmsCatalogAppId } from "@/lib/wix/purchase-flow";
 
@@ -25,12 +26,6 @@ interface AddToCartButtonProps {
 	variant?: "default" | "secondary" | "outline" | "ghost";
 	children?: React.ReactNode;
 	onAdded?: () => void;
-}
-
-function dispatchCartUpdated(cart?: unknown) {
-	window.dispatchEvent(
-		new CustomEvent("cart-updated", { detail: cart ? { cart } : undefined })
-	);
 }
 
 export function AddToCartButton({

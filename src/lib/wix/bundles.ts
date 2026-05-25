@@ -2,6 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 
+import { type BundlePresentation, bundleToPresentation } from "@/domain/bundle";
 import type { Book } from "@/lib/catalog/types";
 
 import { getWixClient } from "./client";
@@ -413,9 +414,6 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 	}
 }
 
-/** @deprecated Use `getBookBundlesFromCms`. */
-export const getBundleDetailsFromCms = getBookBundlesFromCms;
-
 export async function getBundles(): Promise<Bundle[]> {
 	if (!isWixCatalogEnabled()) return [];
 
@@ -446,4 +444,16 @@ export const getCachedBundles = cache(getBundles);
 export async function getBundleBySlug(slug: string): Promise<Bundle | null> {
 	const all = await getCachedBundles();
 	return all.find((b) => b.id === slug) ?? null;
+}
+
+/** All bundles for index pages (`/bundle`, `/bundles`). */
+export async function getBundlesIndex(): Promise<Bundle[]> {
+	return getCachedBundles();
+}
+
+export async function getBundlePresentation(
+	slug: string
+): Promise<BundlePresentation | null> {
+	const bundle = await getBundleBySlug(slug);
+	return bundle ? bundleToPresentation(bundle) : null;
 }

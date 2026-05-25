@@ -50,10 +50,6 @@ export interface Bundle {
 	checkoutCatalogAppId: string;
 	/** Included book Stores IDs from CMS `bundleProducts` — display only. */
 	storeProductIds: string[];
-	/** @deprecated Use `bundleProductId`. */
-	wixProductId?: string;
-	/** @deprecated */
-	catalogAppId?: string;
 	/** Default variant for add-to-cart (Stores books only) */
 	defaultVariant?: ProductVariant;
 	variants?: ProductVariant[];

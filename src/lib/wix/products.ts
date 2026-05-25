@@ -18,7 +18,11 @@ import {
 	parseV1AdditionalInfoSections,
 	parseV3InfoSections,
 } from "./info-sections";
-import { catalogProductToBookProps, reshapeV1Product } from "./reshape-product";
+import {
+	catalogProductToBookProps,
+	reshapeV1Product,
+	reshapeV3FromCatalog,
+} from "./reshape-product";
 import {
 	mapWixProductToBook,
 	mapWixProductToBookProps,
@@ -419,27 +423,7 @@ export async function getCatalogProductBySlug(
 	if (version === "V3_CATALOG") {
 		const wixProduct = await getWixProductBySlug(slug);
 		if (!wixProduct) return null;
-		const book = mapWixProductToBookProps(wixProduct, categoryNameMap);
-		return {
-			id: wixProduct.id,
-			slug: wixProduct.slug,
-			title: wixProduct.name,
-			description: wixProduct.description,
-			availableForSale: book.availableForSale !== false,
-			price: wixProduct.price ?? 0,
-			currency: wixProduct.currency,
-			image: wixProduct.imageUrl ?? "",
-			category: book.category,
-			categoryId: book.categoryId,
-			categorySlug: book.categorySlug,
-			author: wixProduct.author,
-			publisher: wixProduct.publisher,
-			language: wixProduct.language,
-			infoSections: wixProduct.infoSections,
-			sku: wixProduct.sku,
-			variants: book.variants ?? [],
-			defaultVariant: book.defaultVariant,
-		};
+		return reshapeV3FromCatalog(wixProduct, categoryNameMap);
 	}
 
 	const client = getWixClient();
@@ -459,6 +443,9 @@ export async function getCatalogProductBySlug(
 
 	return reshapeV1Product(item, categoryName, categorySlug, categoryId);
 }
+
+/** Alias — route param is the product slug. */
+export const getProductBySlug = getCatalogProductBySlug;
 
 export async function getProductDetailBySlug(
 	slug: string
@@ -495,12 +482,67 @@ export interface GetShopBooksOptions {
 	offset?: number;
 }
 
+function mapV1ItemsToBookProps(
+	items: V1Product[],
+	categoryNameMap: Map<string, string>,
+	categories: Awaited<ReturnType<typeof getStoreCategories>>
+): BookProps[] {
+	return items.map((item) => {
+		const collectionIds = (item.collectionIds ?? []) as string[];
+		const categoryId = collectionIds[0];
+		const categorySlug = categories.find((c) => c.id === categoryId)?.slug;
+		const catalog = reshapeV1Product(
+			item,
+			categoryId ? categoryNameMap.get(categoryId) : undefined,
+			categorySlug,
+			categoryId
+		);
+		return catalogProductToBookProps(catalog);
+	});
+}
+
+async function queryV1ShopItems(
+	options: GetShopBooksOptions | undefined
+): Promise<V1Product[]> {
+	const limit = options?.limit ?? DEFAULT_LIMIT;
+	const offset = options?.offset ?? 0;
+
+	if (options?.search?.trim()) {
+		return queryV1ProductsViaSdk({
+			limit,
+			offset,
+			search: options.search,
+		});
+	}
+
+	if (options?.categorySlug) {
+		const category = await getCategoryBySlug(options.categorySlug);
+		if (!category) return [];
+		return queryV1ProductsViaSdk({
+			limit,
+			offset,
+			collectionId: category.id,
+		});
+	}
+
+	return queryV1ProductsViaSdk({ limit, offset });
+}
+
 export async function getShopBooks(options?: GetShopBooksOptions) {
 	if (!isWixCatalogEnabled()) return [];
 
 	try {
 		const categoryNameMap = await getCategoryNameMap();
 		const version = await getCatalogVersion();
+
+		if (version !== "V3_CATALOG") {
+			const [items, categories] = await Promise.all([
+				queryV1ShopItems(options),
+				getStoreCategories(),
+			]);
+			return mapV1ItemsToBookProps(items, categoryNameMap, categories);
+		}
+
 		let products: WixCatalogProduct[];
 
 		if (options?.search?.trim()) {
@@ -526,30 +568,6 @@ export async function getShopBooks(options?: GetShopBooksOptions) {
 				limit: options?.limit ?? DEFAULT_LIMIT,
 				offset: options?.offset,
 				categoryNameMap,
-			});
-		}
-
-		if (version !== "V3_CATALOG") {
-			const client = getWixClient();
-			const ids = products.map((p) => p.id);
-			if (ids.length === 0) return [];
-			const { items } = await client.products
-				.queryProducts()
-				.in("_id", ids)
-				.limit(ids.length)
-				.find();
-			const categories = await getStoreCategories();
-			return (items as V1Product[]).map((item) => {
-				const collectionIds = (item.collectionIds ?? []) as string[];
-				const categoryId = collectionIds[0];
-				const categorySlug = categories.find((c) => c.id === categoryId)?.slug;
-				const catalog = reshapeV1Product(
-					item,
-					categoryId ? categoryNameMap.get(categoryId) : undefined,
-					categorySlug,
-					categoryId
-				);
-				return catalogProductToBookProps(catalog);
 			});
 		}
 
@@ -736,9 +754,6 @@ export async function getProductBookSections(product: RelatedShopBooksOptions) {
 
 	return { sameCategory, relatedReads };
 }
-
-/** @deprecated Use getSameCategoryShopBooks or getProductBookSections */
-export const getRelatedShopBooks = getSameCategoryShopBooks;
 
 export async function getBookProductsForBundles() {
 	if (!isWixCatalogEnabled()) return [];

@@ -1,11 +1,12 @@
 "use client";
 
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
+
 import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { CountdownTimer } from "./countdown-timer";
 
 interface CtaSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function CtaSection({ bundle }: CtaSectionProps) {

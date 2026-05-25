@@ -1,5 +1,9 @@
 import { products as storesProducts } from "@wix/stores";
 
+import {
+	isAvailableFromVariants,
+	resolveProductAvailableForSale,
+} from "@/domain/product/availability";
 import type { BookProps } from "@/lib/store";
 
 import {
@@ -107,7 +111,7 @@ export function reshapeV1Product(
 		slug: item.slug ?? "",
 		title: item.name ?? "",
 		description: item.description ?? undefined,
-		availableForSale: variants.some((v) => v.availableForSale !== false),
+		availableForSale: isAvailableFromVariants(variants),
 		price: item.price?.price ?? 0,
 		currency: item.price?.currency,
 		image,
@@ -160,15 +164,40 @@ export function catalogProductToBookProps(product: CatalogProduct): BookProps {
 }
 
 function resolveV3AvailableForSale(product: WixCatalogProduct): boolean {
-	if (product.visible === false) return false;
-	if (product.inventoryStatus === "OUT_OF_STOCK") return false;
-	if (
-		product.variantInStock === false &&
-		product.variantPreorderEnabled !== true
-	) {
-		return false;
-	}
-	return true;
+	return resolveProductAvailableForSale(
+		product.visible,
+		product.inventoryStatus,
+		product.variantInStock,
+		product.variantPreorderEnabled
+	);
+}
+
+/** Full V3 catalog product from a list/search row. */
+export function reshapeV3FromCatalog(
+	product: WixCatalogProduct,
+	categoryNameMap?: Map<string, string>
+): CatalogProduct {
+	const book = wixCatalogToBookProps(product, categoryNameMap);
+	return {
+		id: product.id,
+		slug: product.slug,
+		title: product.name,
+		description: product.description,
+		availableForSale: book.availableForSale !== false,
+		price: product.price ?? 0,
+		currency: product.currency,
+		image: product.imageUrl ?? "",
+		category: book.category,
+		categoryId: book.categoryId,
+		categorySlug: book.categorySlug,
+		author: product.author,
+		publisher: product.publisher,
+		language: product.language,
+		infoSections: product.infoSections,
+		sku: product.sku,
+		variants: book.variants ?? [],
+		defaultVariant: book.defaultVariant,
+	};
 }
 
 export function wixCatalogToBookProps(
@@ -211,14 +240,7 @@ export function wixCatalogToBookProps(
 }
 
 function variantAvailableFromV3(product: WixCatalogProduct): boolean {
-	if (product.inventoryStatus === "OUT_OF_STOCK") return false;
-	if (
-		product.variantInStock === false &&
-		product.variantPreorderEnabled !== true
-	) {
-		return false;
-	}
-	return true;
+	return resolveV3AvailableForSale(product);
 }
 
 export function buildV3VariantsFromCatalog(

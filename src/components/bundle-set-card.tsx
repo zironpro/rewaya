@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { CoverFlow, type CoverFlowItem } from "@/components/ui/coverflow";
 import { Tooltip, TooltipPopup, TooltipTrigger } from "@/components/ui/tooltip";
 
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/domain/catalog";
 
 interface BundleSetCardProps {
 	bundle: Bundle;

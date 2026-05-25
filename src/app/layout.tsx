@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { inter, playfair } from "@/assets/fonts";
 
+import { CartProvider } from "@/features/cart/cart-provider";
 import { WishlistProvider } from "@/features/wishlist/wishlist-provider";
 import { cn } from "@/lib/utils";
 import { WixProvider } from "@/lib/wix/provider";
@@ -32,9 +33,11 @@ export default function RootLayout({
 		>
 			<body>
 				<WixProvider>
-					<WishlistProvider>
-						<TooltipProvider delay={0}>{children}</TooltipProvider>
-					</WishlistProvider>
+					<CartProvider>
+						<WishlistProvider>
+							<TooltipProvider delay={0}>{children}</TooltipProvider>
+						</WishlistProvider>
+					</CartProvider>
 				</WixProvider>
 			</body>
 		</html>

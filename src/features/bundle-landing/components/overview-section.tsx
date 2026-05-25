@@ -1,7 +1,7 @@
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
 
 interface OverviewSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function OverviewSection({ bundle }: OverviewSectionProps) {

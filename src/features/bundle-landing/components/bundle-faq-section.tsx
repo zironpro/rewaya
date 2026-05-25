@@ -7,10 +7,10 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import type { BundleData } from "../types/bundle";
+import type { BundlePresentation } from "@/domain/bundle";
 
 interface BundleFaqSectionProps {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 }
 
 export function BundleFaqSection({ bundle }: BundleFaqSectionProps) {

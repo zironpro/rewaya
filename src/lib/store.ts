@@ -1,5 +1,3 @@
-import { atom } from "jotai";
-
 import type { ProductVariant } from "@/lib/wix/catalog-types";
 
 export interface BookProps {
@@ -30,25 +28,3 @@ export function getBookReactKey(book: BookProps, index?: number): string {
 	if (index !== undefined) return `book:${book.id}:${index}`;
 	return `book-${index}:${book.id}`;
 }
-
-export interface CartItem {
-	id: number;
-	title: string;
-	author: string;
-	price: number;
-	image: string;
-	quantity: number;
-}
-
-/** @deprecated Local cart removed — use Wix currentCart via AddToCartButton. */
-export const cartAtom = atom<CartItem[]>([]);
-
-export const cartCountAtom = atom((get) => {
-	const cart = get(cartAtom);
-	return cart.reduce((acc, item) => acc + item.quantity, 0);
-});
-
-export const cartTotalAtom = atom((get) => {
-	const cart = get(cartAtom);
-	return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-});

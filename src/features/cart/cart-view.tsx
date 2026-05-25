@@ -4,6 +4,11 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 import { AnimatePresence } from "framer-motion";
 
+import {
+	CART_UPDATED_EVENT,
+	dispatchCartUpdated,
+} from "@/components/commerce/cart-events";
+import { StatusBanner } from "@/components/feedback/status-banner";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 import {
@@ -25,12 +30,6 @@ import { CartLoading } from "@/features/cart/components/cart-loading";
 import { CartOrderSummary } from "@/features/cart/components/cart-order-summary";
 import { DeliveryNoticeBanner } from "@/features/cart/components/delivery-notice-banner";
 
-function dispatchCartUpdated(cart?: unknown) {
-	window.dispatchEvent(
-		new CustomEvent("cart-updated", { detail: cart ? { cart } : undefined })
-	);
-}
-
 const cartEnabled = Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
 
 export function CartView() {
@@ -44,6 +43,7 @@ export function CartView() {
 		initialCache?.summary ?? { discountNames: [] }
 	);
 	const [loading, setLoading] = useState(!initialCache);
+	const [actionError, setActionError] = useState<string | null>(null);
 	const [checkingOut, startCheckout] = useTransition();
 	const qtyTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
 
@@ -80,8 +80,8 @@ export function CartView() {
 	useEffect(() => {
 		loadCart();
 		const onUpdate = () => loadCart();
-		window.addEventListener("cart-updated", onUpdate);
-		return () => window.removeEventListener("cart-updated", onUpdate);
+		window.addEventListener(CART_UPDATED_EVENT, onUpdate);
+		return () => window.removeEventListener(CART_UPDATED_EVENT, onUpdate);
 	}, [loadCart]);
 
 	const handleUpdateQuantity = (itemId: string, quantity: number) => {
@@ -103,12 +103,17 @@ export function CartView() {
 						quantity,
 					});
 					if (error || !cart) {
+						setActionError(
+							error ?? "Could not update quantity. Please try again."
+						);
 						await loadCart();
 						return;
 					}
+					setActionError(null);
 					applyCart(cart);
 					dispatchCartUpdated(cart);
 				} catch {
+					setActionError("Could not update quantity. Please try again.");
 					await loadCart();
 				}
 			}, 300)
@@ -123,12 +128,15 @@ export function CartView() {
 		try {
 			const { cart, error } = await removeItem(null, itemId);
 			if (error || !cart) {
+				setActionError(error ?? "Could not remove item. Please try again.");
 				await loadCart();
 				return;
 			}
+			setActionError(null);
 			applyCart(cart);
 			dispatchCartUpdated(cart);
 		} catch {
+			setActionError("Could not remove item. Please try again.");
 			await loadCart();
 		}
 	};
@@ -159,6 +167,11 @@ export function CartView() {
 			<div className="container">
 				<Breadcrumbs className="mb-8" items={[{ label: "Shopping Bag" }]} />
 				<DeliveryNoticeBanner />
+				{actionError ? (
+					<StatusBanner className="mb-6" variant="error">
+						{actionError}
+					</StatusBanner>
+				) : null}
 				<div className="mb-16">
 					<span className="mb-4 block font-medium text-sm text-stone-400">
 						Your Selection

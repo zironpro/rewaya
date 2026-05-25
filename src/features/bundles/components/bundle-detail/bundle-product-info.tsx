@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/domain/catalog";
 import { cn } from "@/lib/utils";
 
 const BUNDLE_SPECS = [

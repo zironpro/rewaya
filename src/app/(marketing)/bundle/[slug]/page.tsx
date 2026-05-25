@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { BundleLandingPage } from "@/features/bundle-landing/BundleLandingPage";
-import { getBundleBySlug } from "@/features/bundle-landing/lib/bundleData";
-import { getBundles } from "@/lib/wix/bundles";
+import { getBundlePresentation, getBundlesIndex } from "@/lib/wix/bundles";
 import { getMarketingBundleStaticParams } from "@/lib/wix/static-params";
 
 export const revalidate = 86_400;
@@ -20,7 +19,7 @@ export async function generateMetadata({
 	params,
 }: BundleSlugPageProps): Promise<Metadata> {
 	const { slug } = await params;
-	const bundle = await getBundleBySlug(slug);
+	const bundle = await getBundlePresentation(slug);
 	if (!bundle) {
 		return { title: "Bundle" };
 	}
@@ -44,8 +43,8 @@ export async function generateMetadata({
 export default async function BundleSlugPage({ params }: BundleSlugPageProps) {
 	const { slug } = await params;
 	const [bundle, allBundles] = await Promise.all([
-		getBundleBySlug(slug),
-		getBundles(),
+		getBundlePresentation(slug),
+		getBundlesIndex(),
 	]);
 
 	if (!bundle) {

@@ -15,7 +15,7 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel";
 
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/domain/catalog";
 import { cn } from "@/lib/utils";
 
 interface BundleImageGalleryProps {

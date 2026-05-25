@@ -1,5 +1,5 @@
 import { HomepageView } from "@/features/home/homepage-view";
-import { getBundles } from "@/lib/wix/bundles";
+import { getBundlesIndex } from "@/lib/wix/bundles";
 import { getHomepageData } from "@/lib/wix/cms/homepage";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
 	const [{ sections, banners, categories }, bundles] = await Promise.all([
 		getHomepageData(),
-		getBundles(),
+		getBundlesIndex(),
 	]);
 
 	return (

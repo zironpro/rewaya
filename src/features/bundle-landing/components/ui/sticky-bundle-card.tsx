@@ -8,16 +8,16 @@ import { Separator } from "@/components/ui/separator";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
+import { BundlePresentation } from "@/domain/bundle";
 import { cn } from "@/lib/utils";
 
-import { BundleData } from "../../types/bundle";
 import { BundlesCampaignActions } from "../bundles-campaign-actions";
 
 export function StickyBundleCard({
 	bundle,
 	featuredSlug,
 }: {
-	bundle: BundleData;
+	bundle: BundlePresentation;
 	featuredSlug: string;
 }) {
 	const stackCovers = bundle.books

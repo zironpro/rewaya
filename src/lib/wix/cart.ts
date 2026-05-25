@@ -30,11 +30,6 @@ function isOwnedCartNotFound(error: unknown): boolean {
 	return code === "OWNED_CART_NOT_FOUND";
 }
 
-function getWixErrorCode(error: unknown): string | undefined {
-	return (error as { details?: { applicationError?: { code?: string } } })
-		?.details?.applicationError?.code;
-}
-
 async function resolveStoresVariant(
 	productId: string
 ): Promise<ProductVariant | undefined> {
@@ -72,7 +67,6 @@ async function addBundleLineToCart(
 	return cart;
 }
 
-/** Fallback when CMS catalog returns an empty cart — adds each included Stores book. */
 async function addIncludedBooksToCart(
 	client: WixSessionClient,
 	productIds: string[],
@@ -114,8 +108,128 @@ export async function addToCartServer(lines: AddToCartLineInput[]) {
 export interface AddBundleToCartOptions {
 	quantity?: number;
 	catalogAppId?: string;
-	/** Re-resolve checkout ids from latest CMS + Stores lookup at click time. */
 	bundleSlug?: string;
+}
+
+interface ResolvedBundleCheckout {
+	catalogItemId: string;
+	catalogAppId?: string;
+}
+
+async function resolveBundleCheckoutIds(
+	catalogItemId: string,
+	catalogAppId: string | undefined,
+	bundleSlug?: string
+): Promise<ResolvedBundleCheckout> {
+	let resolvedItemId = catalogItemId.trim();
+	let resolvedAppId = catalogAppId;
+
+	if (bundleSlug) {
+		const bundle = await getBundleBySlug(bundleSlug);
+		if (bundle?.checkoutCatalogItemId) {
+			resolvedItemId = bundle.checkoutCatalogItemId;
+			resolvedAppId = bundle.checkoutCatalogAppId;
+		}
+	}
+
+	if (!resolvedItemId) {
+		throw new Error("Bundle has no checkout catalog item id.");
+	}
+
+	return { catalogItemId: resolvedItemId, catalogAppId: resolvedAppId };
+}
+
+async function tryAddBundlePrimary(
+	client: WixSessionClient,
+	checkout: ResolvedBundleCheckout,
+	quantity: number
+): Promise<{ cart: unknown; lineItems: number }> {
+	const cart = await addBundleLineToCart(
+		client,
+		checkout.catalogItemId,
+		quantity,
+		checkout.catalogAppId
+	);
+	return { cart, lineItems: countCartLineItems(cart) };
+}
+
+async function tryRefetchCart(
+	client: WixSessionClient
+): Promise<{ cart: unknown; lineItems: number }> {
+	const cart = await client.currentCart.getCurrentCart();
+	return { cart, lineItems: countCartLineItems(cart) };
+}
+
+async function tryStoresBundleProduct(
+	client: WixSessionClient,
+	bundleProductId: string,
+	quantity: number
+): Promise<{ cart: unknown; lineItems: number } | null> {
+	if (!bundleProductId.trim()) return null;
+	const cart = await addBundleLineToCart(
+		client,
+		bundleProductId.trim(),
+		quantity,
+		WIX_STORES_APP_ID
+	);
+	const lineItems = countCartLineItems(cart);
+	return lineItems > 0 ? { cart, lineItems } : null;
+}
+
+async function tryIncludedBooksFallback(
+	client: WixSessionClient,
+	storeProductIds: string[] | undefined,
+	quantity: number
+): Promise<{ cart: unknown; lineItems: number } | null> {
+	if (!storeProductIds?.length) return null;
+	const cart = await addIncludedBooksToCart(client, storeProductIds, quantity);
+	const lineItems = countCartLineItems(cart);
+	return lineItems > 0 ? { cart, lineItems } : null;
+}
+
+async function addBundleWithFallbacks(
+	client: WixSessionClient,
+	checkout: ResolvedBundleCheckout,
+	quantity: number,
+	bundleSlug?: string
+): Promise<unknown> {
+	const bundle = bundleSlug ? await getBundleBySlug(bundleSlug) : null;
+
+	let { cart, lineItems } = await tryAddBundlePrimary(
+		client,
+		checkout,
+		quantity
+	);
+
+	if (lineItems === 0) {
+		({ cart, lineItems } = await tryRefetchCart(client));
+	}
+
+	if (lineItems === 0 && bundle?.bundleProductId) {
+		const retry = await tryStoresBundleProduct(
+			client,
+			bundle.bundleProductId,
+			quantity
+		);
+		if (retry) ({ cart, lineItems } = retry);
+	}
+
+	if (lineItems === 0) {
+		const fallback = await tryIncludedBooksFallback(
+			client,
+			bundle?.storeProductIds,
+			quantity
+		);
+		if (fallback) ({ cart, lineItems } = fallback);
+	}
+
+	if (lineItems === 0) {
+		throw new Error(
+			"Cart add returned no line items. Set bundleProductId on the BookBundles row in Wix, or run scripts/ensure-book-bundles-catalog.mjs."
+		);
+	}
+
+	return cart;
 }
 
 /** Add one bundle line (Stores `bundleProductId` or BookBundles CMS catalog item). */
@@ -125,141 +239,42 @@ export async function addBundleToCartServer(
 	catalogAppId?: string,
 	options?: AddBundleToCartOptions
 ) {
-	let resolvedItemId = catalogItemId?.trim();
-	let resolvedAppId = catalogAppId;
-
-	if (options?.bundleSlug) {
-		const bundle = await getBundleBySlug(options.bundleSlug);
-		if (bundle?.checkoutCatalogItemId) {
-			resolvedItemId = bundle.checkoutCatalogItemId;
-			resolvedAppId = bundle.checkoutCatalogAppId;
-			console.log("[bundle-cart] re-resolved from slug", {
-				bundleSlug: options.bundleSlug,
-				bundleProductId: bundle.bundleProductId || "(none)",
-				checkoutCatalogItemId: resolvedItemId,
-				checkoutCatalogAppId: resolvedAppId,
-				path: isCmsCatalogAppId(resolvedAppId) ? "cms-catalog" : "stores",
-			});
-		}
-	}
-
-	if (!resolvedItemId) {
-		console.error("[bundle-cart] no checkout catalog item id");
-		throw new Error("Bundle has no checkout catalog item id.");
-	}
-
-	console.log("[bundle-cart] calling Wix addToCurrentCart", {
-		catalogItemId: resolvedItemId,
-		catalogAppId: resolvedAppId ?? "(stores default)",
-		quantity,
-		path: isCmsCatalogAppId(resolvedAppId) ? "cms-catalog" : "stores",
-	});
+	const checkout = await resolveBundleCheckoutIds(
+		catalogItemId,
+		catalogAppId,
+		options?.bundleSlug
+	);
 
 	return withWixServerSessionClient(async (client) => {
-		const bundle = options?.bundleSlug
-			? await getBundleBySlug(options.bundleSlug)
-			: null;
-
-		const finish = (cart: unknown, label: string) => {
-			const lineItems = countCartLineItems(cart);
-			console.log(`[bundle-cart] ${label}`, {
-				lineItems,
-				cartId: (cart as { _id?: string })?._id,
-			});
-			return { cart, lineItems };
-		};
-
 		try {
-			let { cart, lineItems } = finish(
-				await addBundleLineToCart(
-					client,
-					resolvedItemId,
-					quantity,
-					resolvedAppId
-				),
-				"Wix addToCurrentCart (primary)"
+			return await addBundleWithFallbacks(
+				client,
+				checkout,
+				quantity,
+				options?.bundleSlug
 			);
-
-			if (lineItems === 0) {
-				const refetched = await client.currentCart.getCurrentCart();
-				({ cart, lineItems } = finish(
-					refetched,
-					"getCurrentCart after empty add"
-				));
-			}
-
-			if (lineItems === 0 && bundle?.bundleProductId?.trim()) {
-				console.warn("[bundle-cart] retrying Stores bundleProductId");
-				({ cart, lineItems } = finish(
-					await addBundleLineToCart(
-						client,
-						bundle.bundleProductId.trim(),
-						quantity,
-						WIX_STORES_APP_ID
-					),
-					"Stores bundleProductId"
-				));
-			}
-
-			if (lineItems === 0 && bundle?.storeProductIds?.length) {
-				console.warn(
-					"[bundle-cart] CMS catalog returned 0 lines — adding included books",
-					{ count: bundle.storeProductIds.length }
-				);
-				({ cart, lineItems } = finish(
-					await addIncludedBooksToCart(
-						client,
-						bundle.storeProductIds,
-						quantity
-					),
-					"included Books (Stores fallback)"
-				));
-			}
-
-			if (lineItems === 0) {
-				console.error("[bundle-cart] cart still empty after all attempts", {
-					bundleProductId: bundle?.bundleProductId || "(none)",
-					includedBooks: bundle?.storeProductIds?.length ?? 0,
-				});
-				throw new Error(
-					"Cart add returned no line items. Set bundleProductId on the BookBundles row in Wix, or run scripts/ensure-book-bundles-catalog.mjs."
-				);
-			}
-
-			return cart;
 		} catch (primaryError) {
-			console.error("[bundle-cart] Wix add failed", {
-				code: getWixErrorCode(primaryError),
-				error: primaryError,
-			});
+			if (!isCmsCatalogAppId(checkout.catalogAppId)) throw primaryError;
 
-			if (!isCmsCatalogAppId(resolvedAppId)) throw primaryError;
+			const bundle = options?.bundleSlug
+				? await getBundleBySlug(options.bundleSlug)
+				: null;
 
-			const storesProductId = bundle?.bundleProductId?.trim();
-			if (storesProductId) {
-				const { cart, lineItems } = finish(
-					await addBundleLineToCart(
-						client,
-						storesProductId,
-						quantity,
-						WIX_STORES_APP_ID
-					),
-					"Stores retry after error"
+			if (bundle?.bundleProductId?.trim()) {
+				const retry = await tryStoresBundleProduct(
+					client,
+					bundle.bundleProductId,
+					quantity
 				);
-				if (lineItems > 0) return cart;
+				if (retry) return retry.cart;
 			}
 
-			if (bundle?.storeProductIds?.length) {
-				const { cart, lineItems } = finish(
-					await addIncludedBooksToCart(
-						client,
-						bundle.storeProductIds,
-						quantity
-					),
-					"included books after error"
-				);
-				if (lineItems > 0) return cart;
-			}
+			const booksFallback = await tryIncludedBooksFallback(
+				client,
+				bundle?.storeProductIds,
+				quantity
+			);
+			if (booksFallback) return booksFallback.cart;
 
 			throw primaryError;
 		}

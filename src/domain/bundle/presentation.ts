@@ -1,13 +1,44 @@
+import type { Review } from "@/lib/bundle-reviews-data";
 import { getBundleReviews } from "@/lib/bundle-reviews-data";
 import type { Bundle } from "@/lib/catalog/types";
-import {
-	getCachedBundles,
-	getBundleBySlug as getWixBundleBySlug,
-} from "@/lib/wix/bundles";
 
-import type { BundleData } from "../types/bundle";
+export type { Review };
 
-export function mapBundleToBundleData(bundle: Bundle): BundleData {
+export interface BundleBookItem {
+	id: string;
+	title: string;
+	author: string;
+	coverUrl: string;
+	description: string;
+}
+
+export interface BundlePresentationFaq {
+	id: string;
+	question: string;
+	answer: string;
+}
+
+/** Marketing / campaign view-model for bundle landing pages. */
+export interface BundlePresentation {
+	slug: string;
+	name: string;
+	tagline: string;
+	description: string;
+	longDescription: string;
+	price: number;
+	originalPrice: number;
+	savingsAmount: number;
+	books: BundleBookItem[];
+	reviews: Review[];
+	faqs: BundlePresentationFaq[];
+	bundleProductId: string;
+	checkoutCatalogItemId: string;
+	checkoutCatalogAppId: string;
+	storeProductIds: string[];
+	coverImage: string;
+}
+
+export function bundleToPresentation(bundle: Bundle): BundlePresentation {
 	return {
 		slug: bundle.id,
 		name: bundle.title,
@@ -32,16 +63,4 @@ export function mapBundleToBundleData(bundle: Bundle): BundleData {
 		reviews: getBundleReviews(bundle.id),
 		faqs: bundle.faqs,
 	};
-}
-
-export async function getBundleBySlug(
-	slug: string
-): Promise<BundleData | null> {
-	const bundle = await getWixBundleBySlug(slug);
-	return bundle ? mapBundleToBundleData(bundle) : null;
-}
-
-export async function getAllBundleSlugs(): Promise<string[]> {
-	const bundles = await getCachedBundles();
-	return bundles.map((b) => b.id);
 }

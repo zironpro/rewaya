@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { domAnimation, LazyMotion, m, useReducedMotion } from "framer-motion";
 
-import type { BookItem } from "../../types/bundle";
+import type { BundleBookItem } from "@/domain/bundle";
 
 type BookCell = {
 	alt: string;
@@ -95,7 +95,7 @@ const mosaicLayouts: BookLayout[] = [
 	},
 ];
 
-function buildMosaicBooks(books: BookItem[]): BookCell[] {
+function buildMosaicBooks(books: BundleBookItem[]): BookCell[] {
 	return books.slice(0, mosaicLayouts.length).map((book, index) => ({
 		...mosaicLayouts[index],
 		id: book.id,
@@ -168,7 +168,7 @@ function BookTile({
 }
 
 interface BookMosaicProps {
-	books: BookItem[];
+	books: BundleBookItem[];
 }
 
 export const BookMosaic = ({ books }: BookMosaicProps) => {
