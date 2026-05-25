@@ -24,6 +24,7 @@ export function BundleCheckoutCta({
 }: BundleCheckoutCtaProps) {
 	return (
 		<AddBundleToCartButton
+			bundleSlug={bundle.slug}
 			checkoutCatalogAppId={bundle.checkoutCatalogAppId}
 			checkoutCatalogItemId={bundle.checkoutCatalogItemId}
 			className={cn(shimmerClass, "min-h-11 w-full shrink-0 gap-2", className)}

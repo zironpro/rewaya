@@ -20,6 +20,7 @@ export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 					</span>
 				</div>
 				<AddBundleToCartButton
+					bundleSlug={bundle.id}
 					checkoutCatalogAppId={bundle.checkoutCatalogAppId}
 					checkoutCatalogItemId={bundle.checkoutCatalogItemId}
 					className="shrink-0 gap-2"

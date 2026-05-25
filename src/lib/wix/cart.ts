@@ -2,14 +2,19 @@ import "server-only";
 
 import { currentCart } from "@wix/ecom";
 
+import { getBundleBySlug } from "./bundles";
 import type { ProductVariant } from "./catalog-types";
+import { getWixProductById } from "./products";
 import {
 	buildAddToCartLineItem,
-	buildBundleProductLineItem,
 	buildCmsCatalogLineItem,
 	isCmsCatalogAppId,
 } from "./purchase-flow";
-import { withWixServerSessionClient } from "./server-session-client";
+import { buildV3VariantsFromCatalog } from "./reshape-product";
+import {
+	getWixServerSessionClient,
+	withWixServerSessionClient,
+} from "./server-session-client";
 
 export interface AddToCartLineInput {
 	productId: string;
@@ -22,6 +27,42 @@ function isOwnedCartNotFound(error: unknown): boolean {
 	const code = (error as { details?: { applicationError?: { code?: string } } })
 		?.details?.applicationError?.code;
 	return code === "OWNED_CART_NOT_FOUND";
+}
+
+function getWixErrorCode(error: unknown): string | undefined {
+	return (error as { details?: { applicationError?: { code?: string } } })
+		?.details?.applicationError?.code;
+}
+
+async function resolveStoresVariant(
+	productId: string
+): Promise<ProductVariant | undefined> {
+	const product = await getWixProductById(productId);
+	if (!product?.id) return undefined;
+	const variants = buildV3VariantsFromCatalog(product, product.variantId);
+	return variants[0];
+}
+
+type WixSessionClient = Awaited<ReturnType<typeof getWixServerSessionClient>>;
+
+async function addBundleLineToCart(
+	client: WixSessionClient,
+	catalogItemId: string,
+	quantity: number,
+	catalogAppId?: string
+) {
+	const lineItem = isCmsCatalogAppId(catalogAppId)
+		? buildCmsCatalogLineItem(catalogItemId, quantity)
+		: buildAddToCartLineItem(
+				catalogItemId,
+				await resolveStoresVariant(catalogItemId),
+				quantity,
+				catalogAppId
+			);
+	const { cart } = await client.currentCart.addToCurrentCart({
+		lineItems: [lineItem],
+	});
+	return cart;
 }
 
 export async function addToCartServer(lines: AddToCartLineInput[]) {
@@ -37,23 +78,62 @@ export async function addToCartServer(lines: AddToCartLineInput[]) {
 	});
 }
 
+export interface AddBundleToCartOptions {
+	quantity?: number;
+	catalogAppId?: string;
+	/** Re-resolve checkout ids from latest CMS + Stores lookup at click time. */
+	bundleSlug?: string;
+}
+
 /** Add one bundle line (Stores `bundleProductId` or BookBundles CMS catalog item). */
 export async function addBundleToCartServer(
 	catalogItemId: string,
 	quantity = 1,
-	catalogAppId?: string
+	catalogAppId?: string,
+	options?: AddBundleToCartOptions
 ) {
-	if (!catalogItemId) {
+	let resolvedItemId = catalogItemId?.trim();
+	let resolvedAppId = catalogAppId;
+
+	if (options?.bundleSlug) {
+		const bundle = await getBundleBySlug(options.bundleSlug);
+		if (bundle?.checkoutCatalogItemId) {
+			resolvedItemId = bundle.checkoutCatalogItemId;
+			resolvedAppId = bundle.checkoutCatalogAppId;
+		}
+	}
+
+	if (!resolvedItemId) {
 		throw new Error("Bundle has no checkout catalog item id.");
 	}
+
 	return withWixServerSessionClient(async (client) => {
-		const lineItem = isCmsCatalogAppId(catalogAppId)
-			? buildCmsCatalogLineItem(catalogItemId, quantity)
-			: buildBundleProductLineItem(catalogItemId, quantity);
-		const { cart } = await client.currentCart.addToCurrentCart({
-			lineItems: [lineItem],
-		});
-		return cart;
+		try {
+			return await addBundleLineToCart(
+				client,
+				resolvedItemId,
+				quantity,
+				resolvedAppId
+			);
+		} catch (primaryError) {
+			if (!isCmsCatalogAppId(resolvedAppId)) throw primaryError;
+
+			const bundle = options?.bundleSlug
+				? await getBundleBySlug(options.bundleSlug)
+				: null;
+			const storesProductId = bundle?.bundleProductId?.trim();
+			if (!storesProductId) throw primaryError;
+
+			if (process.env.NODE_ENV === "development") {
+				console.warn(
+					"[cart] CMS catalog add failed, retrying Stores bundle product:",
+					getWixErrorCode(primaryError),
+					storesProductId
+				);
+			}
+
+			return addBundleLineToCart(client, storesProductId, quantity, undefined);
+		}
 	});
 }
 

@@ -8,7 +8,7 @@ import { getWixClient } from "./client";
 import { getCmsItemData, readCmsField } from "./cms/record";
 import { isWixCatalogEnabled } from "./constants";
 import { resolveWixImageUrl } from "./image";
-import { queryWixProducts } from "./products";
+import { queryWixProducts, searchWixProducts } from "./products";
 import { resolveBundleCheckout } from "./purchase-flow";
 import {
 	type BookBundleCmsItem,
@@ -107,6 +107,47 @@ function parseCmsProductIdField(raw: unknown): string | undefined {
 		}
 	}
 	return undefined;
+}
+
+/** Scan CMS row for product-reference fields (dynamic Wix keys). */
+function findCmsProductReferenceInData(
+	data: Record<string, unknown>
+): string | undefined {
+	const hints = [
+		"bundleproductid",
+		"bundleproduct",
+		"bundle_product",
+		"wixproductid",
+		"wixproduct",
+		"storesproduct",
+	];
+
+	for (const [key, value] of Object.entries(data)) {
+		const normalized = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+		if (normalized === "bundleproducts") continue;
+		if (!hints.some((hint) => normalized.includes(hint))) continue;
+		const id = parseCmsProductIdField(value);
+		if (id) return id;
+	}
+	return undefined;
+}
+
+function normalizeTitleForMatch(title: string): string {
+	return title.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/** Match a Wix Stores product to a BookBundles title when `bundleProductId` is empty. */
+async function findStoresBundleProductIdByTitle(
+	title: string
+): Promise<string | undefined> {
+	const target = normalizeTitleForMatch(title);
+	if (!target) return undefined;
+
+	const products = await searchWixProducts({ query: title.trim(), limit: 12 });
+	if (products.length === 0) return undefined;
+
+	const exact = products.find((p) => normalizeTitleForMatch(p.name) === target);
+	return exact?.id;
 }
 
 export interface BundleCatalogLookupEntry {
@@ -317,7 +358,13 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 				"bundleProduct",
 				"bundle_product"
 			);
-			const bundleProductId = parseCmsProductIdField(bundleProductIdRaw);
+			let bundleProductId =
+				parseCmsProductIdField(bundleProductIdRaw) ??
+				findCmsProductReferenceInData(data);
+
+			if (!bundleProductId) {
+				bundleProductId = await findStoresBundleProductIdByTitle(title);
+			}
 
 			rows.push({
 				_id: itemId,
@@ -339,19 +386,20 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 		}
 
 		if (process.env.NODE_ENV === "development" && rows.length > 0) {
+			const first = rows[0];
 			console.log(
 				"[BookBundles] loaded",
 				rows.length,
 				"row(s); first mapped:",
 				{
-					slug: rows[0]?.slug,
-					bundleProductId: rows[0]?.bundleProductId ?? "(none)",
-					cmsCatalogItemId: rows[0]?.cmsCatalogItemId,
+					slug: first?.slug,
+					bundleProductId: first?.bundleProductId ?? "(none)",
+					cmsCatalogItemId: first?.cmsCatalogItemId,
 					checkout: resolveBundleCheckout({
-						bundleProductId: rows[0]?.bundleProductId,
-						cmsCatalogItemId: rows[0]?.cmsCatalogItemId ?? "",
+						bundleProductId: first?.bundleProductId,
+						cmsCatalogItemId: first?.cmsCatalogItemId ?? "",
 					}),
-					includedBookIds: rows[0]?.includedBookIds?.length ?? 0,
+					includedBookIds: first?.includedBookIds?.length ?? 0,
 				}
 			);
 		}

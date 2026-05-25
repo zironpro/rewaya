@@ -88,10 +88,12 @@ export async function addBundle(
 		catalogItemId: string;
 		catalogAppId?: string;
 		quantity?: number;
+		/** Bundle slug — re-resolves Stores product id before add. */
+		bundleSlug?: string;
 	}
 ): Promise<CartActionResult> {
 	const catalogItemId = item.catalogItemId?.trim();
-	if (!catalogItemId) {
+	if (!catalogItemId && !item.bundleSlug?.trim()) {
 		return {
 			error: "This bundle is not available for purchase.",
 		};
@@ -101,12 +103,17 @@ export async function addBundle(
 		const cart = await addBundleToCartServer(
 			catalogItemId,
 			item.quantity ?? 1,
-			item.catalogAppId
+			item.catalogAppId,
+			{ bundleSlug: item.bundleSlug?.trim() }
 		);
 		revalidatePath("/", "layout");
 		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
-		console.error("[cart] addBundle failed:", e);
+		console.error(
+			"[cart] addBundle failed:",
+			e,
+			item.bundleSlug ? { bundleSlug: item.bundleSlug } : undefined
+		);
 		return { error: messageForAddBundleError(e) };
 	}
 }

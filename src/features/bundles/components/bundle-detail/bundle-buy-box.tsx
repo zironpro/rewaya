@@ -43,6 +43,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 				</ScrollArea>
 
 				<AddBundleToCartButton
+					bundleSlug={bundle.id}
 					checkoutCatalogAppId={bundle.checkoutCatalogAppId}
 					checkoutCatalogItemId={bundle.checkoutCatalogItemId}
 					className="w-full gap-3"

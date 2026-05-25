@@ -10,7 +10,7 @@ export function messageForAddBundleError(error: unknown): string {
 		code === "CATALOG_ITEM_NOT_FOUND" ||
 		code === "INVALID_CATALOG_ITEM"
 	) {
-		return "This bundle is not available for purchase. Check that bundleProductId is set on the BookBundles row in Wix.";
+		return "This bundle cannot be added to cart. In Wix, set bundleProductId on the BookBundles row to a Stores product, or run scripts/ensure-book-bundles-catalog.mjs to enable CMS checkout.";
 	}
 	if (code === "OWNED_CART_NOT_FOUND") {
 		return "Your cart session expired. Refresh the page and try again.";

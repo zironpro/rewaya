@@ -10,6 +10,8 @@ import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
 interface AddBundleToCartButtonProps {
 	checkoutCatalogItemId: string;
 	checkoutCatalogAppId?: string;
+	/** Rewaya bundle slug — server re-resolves checkout ids at click time. */
+	bundleSlug?: string;
 	quantity?: number;
 	disabled?: boolean;
 	className?: string;
@@ -28,6 +30,7 @@ function dispatchCartUpdated(cart?: unknown) {
 export function AddBundleToCartButton({
 	checkoutCatalogItemId,
 	checkoutCatalogAppId,
+	bundleSlug,
 	quantity = 1,
 	disabled,
 	className,
@@ -53,6 +56,7 @@ export function AddBundleToCartButton({
 			const { error, cart } = await addBundle(null, {
 				catalogItemId: checkoutCatalogItemId,
 				catalogAppId: checkoutCatalogAppId,
+				bundleSlug,
 				quantity,
 			});
 			if (error) {
