@@ -22,15 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
 			title,
 			description,
 			type: "website",
-			images:
-				data.featuredBundle?.coverImage ?
-					[
+			images: data.featuredBundle?.coverImage
+				? [
 						{
 							url: data.featuredBundle.coverImage,
 							alt: data.featuredBundle.title,
 						},
 					]
-				:	undefined,
+				: undefined,
 		},
 		twitter: {
 			card: "summary_large_image",

@@ -178,7 +178,9 @@ function mapV3Product(
 	const variantInventory = variant?.inventoryStatus as
 		| { inStock?: boolean; preorderEnabled?: boolean }
 		| undefined;
-	const productStock = product.stock as { inventoryStatus?: string } | undefined;
+	const productStock = product.stock as
+		| { inventoryStatus?: string }
+		| undefined;
 
 	const resolved = resolveCategoryNames(
 		{ categoryIds, categoryNames, genre: undefined },

@@ -2,8 +2,7 @@
 export const WIX_STORES_APP_ID = "215238eb-22a5-4c36-9e7b-e7c08025e04e";
 
 /** Wix CMS CATALOG plugin app id — BookBundles catalog collection checkout */
-export const WIX_CMS_CATALOG_APP_ID =
-	"e593b0bd-b783-45b8-97c2-873d42aacaf4";
+export const WIX_CMS_CATALOG_APP_ID = "e593b0bd-b783-45b8-97c2-873d42aacaf4";
 
 export const WIX_SITE_ID =
 	process.env.NEXT_PUBLIC_WIX_SITE_ID ??

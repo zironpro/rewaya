@@ -20,10 +20,7 @@ export function LegalPageShell({
 	return (
 		<main className="grow pt-6 pb-28 md:pb-16">
 			<div className="container">
-				<Breadcrumbs
-					className="mb-6"
-					items={[{ label: breadcrumbLabel }]}
-				/>
+				<Breadcrumbs className="mb-6" items={[{ label: breadcrumbLabel }]} />
 
 				<div className="mx-auto max-w-3xl">
 					<span className="mb-6 block font-semibold text-muted-foreground text-sm">
@@ -63,7 +60,5 @@ export function LegalSection({
 }
 
 export function LegalParagraph({ children }: { children: ReactNode }) {
-	return (
-		<p className="text-lg text-stone-500 leading-relaxed">{children}</p>
-	);
+	return <p className="text-lg text-stone-500 leading-relaxed">{children}</p>;
 }

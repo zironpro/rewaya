@@ -71,8 +71,8 @@ export const AccessibilityView = () => {
 					>
 						contact page
 					</Link>
-					. We will do our best to provide the information or support you need in
-					a format that works for you.
+					. We will do our best to provide the information or support you need
+					in a format that works for you.
 				</LegalParagraph>
 			</LegalSection>
 		</LegalPageShell>

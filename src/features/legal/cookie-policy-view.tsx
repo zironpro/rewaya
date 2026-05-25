@@ -30,8 +30,8 @@ export const CookiePolicyView = () => {
 				<LegalParagraph>
 					These cookies are required for the site to work. They support features
 					such as keeping you signed in, remembering items in your cart, and
-					processing checkout through our e-commerce provider, Wix. Without them,
-					certain parts of the store may not function correctly.
+					processing checkout through our e-commerce provider, Wix. Without
+					them, certain parts of the store may not function correctly.
 				</LegalParagraph>
 			</LegalSection>
 

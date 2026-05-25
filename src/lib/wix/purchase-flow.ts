@@ -90,10 +90,7 @@ export function buildBundleProductLineItem(
 }
 
 /** @deprecated Use `buildBundleProductLineItem` — adds N book lines, not bundle price. */
-export function buildBundleLineItems(
-	productIds: string[],
-	quantity = 1
-) {
+export function buildBundleLineItems(productIds: string[], quantity = 1) {
 	return productIds.map((productId) =>
 		buildAddToCartLineItem(productId, undefined, quantity)
 	);

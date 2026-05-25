@@ -67,9 +67,7 @@ export function Navbar({
 						{showSearch && (
 							<Button
 								aria-expanded={isMobileSearchOpen}
-								aria-label={
-									isMobileSearchOpen ? "Close search" : "Open search"
-								}
+								aria-label={isMobileSearchOpen ? "Close search" : "Open search"}
 								className="md:hidden"
 								onClick={() => {
 									setIsMobileSearchOpen((open) => {

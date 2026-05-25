@@ -1,6 +1,6 @@
-import { CountdownTimer } from "./countdown-timer";
-import { BundlesCampaignActions } from "./bundles-campaign-actions";
 import type { BundleData } from "../types/bundle";
+import { BundlesCampaignActions } from "./bundles-campaign-actions";
+import { CountdownTimer } from "./countdown-timer";
 
 interface BundlesIndexCtaProps {
 	featuredSlug: string;

@@ -212,7 +212,10 @@ export function wixCatalogToBookProps(
 
 function variantAvailableFromV3(product: WixCatalogProduct): boolean {
 	if (product.inventoryStatus === "OUT_OF_STOCK") return false;
-	if (product.variantInStock === false && product.variantPreorderEnabled !== true) {
+	if (
+		product.variantInStock === false &&
+		product.variantPreorderEnabled !== true
+	) {
 		return false;
 	}
 	return true;

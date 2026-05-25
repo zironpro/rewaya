@@ -27,8 +27,8 @@ export const TermsView = () => {
 				<LegalParagraph>
 					The content, design, and identity of Al Rewaya are the exclusive
 					property of Al Rewaya. You may not reproduce, distribute, or create
-					derivative works from any part of our platform without explicit written
-					permission.
+					derivative works from any part of our platform without explicit
+					written permission.
 				</LegalParagraph>
 			</LegalSection>
 
@@ -52,8 +52,8 @@ export const TermsView = () => {
 			<LegalSection title="5. Limitation of Liability">
 				<LegalParagraph>
 					Al Rewaya shall not be liable for any indirect, incidental, special,
-					consequential, or punitive damages resulting from your access to or use
-					of our platform or products.
+					consequential, or punitive damages resulting from your access to or
+					use of our platform or products.
 				</LegalParagraph>
 			</LegalSection>
 		</LegalPageShell>

@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+
+import Link from "next/link";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -37,11 +38,17 @@ export const ProductDetailView = ({
 	if (!product) {
 		return (
 			<main className="container grow py-32 text-center">
-				<h1 className="font-serif text-3xl text-secondary">Product not found</h1>
+				<h1 className="font-serif text-3xl text-secondary">
+					Product not found
+				</h1>
 				<p className="mt-4 text-muted-foreground">
 					This title is not in the catalog or is no longer available.
 				</p>
-				<Button className="mt-8" nativeButton={false} render={<Link href="/shop" />}>
+				<Button
+					className="mt-8"
+					nativeButton={false}
+					render={<Link href="/shop" />}
+				>
 					Back to shop
 				</Button>
 			</main>

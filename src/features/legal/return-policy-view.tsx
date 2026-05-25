@@ -26,8 +26,8 @@ export const ReturnPolicyView = () => {
 			<LegalSection title="2. Return Policy">
 				<LegalParagraph>
 					All returns must be made within 7 days of receiving your order. All
-					returns must be in the original condition and packaging. All returns must
-					be accompanied by a receipt.
+					returns must be in the original condition and packaging. All returns
+					must be accompanied by a receipt.
 				</LegalParagraph>
 			</LegalSection>
 
@@ -51,8 +51,8 @@ export const ReturnPolicyView = () => {
 			<LegalSection title="5. Limitation of Liability">
 				<LegalParagraph>
 					Al Rewaya shall not be liable for any indirect, incidental, special,
-					consequential, or punitive damages resulting from your access to or use
-					of our platform or products.
+					consequential, or punitive damages resulting from your access to or
+					use of our platform or products.
 				</LegalParagraph>
 			</LegalSection>
 		</LegalPageShell>

@@ -21,8 +21,8 @@ export const PrivacyView = () => {
 				<LegalParagraph>
 					At Al Rewaya, we value your privacy and are committed to protecting
 					your personal data. This Privacy Policy outlines how we collect, use,
-					and safeguard your information when you visit our platform and purchase
-					our curated collections.
+					and safeguard your information when you visit our platform and
+					purchase our curated collections.
 				</LegalParagraph>
 			</LegalSection>
 
@@ -48,10 +48,11 @@ export const PrivacyView = () => {
 					</a>{" "}
 					for website analytics. OpenPanel may collect information such as pages
 					you visit, how you navigate the site, your browser and device type,
-					referral source, and approximate location derived from your IP address.
-					This data helps us understand how our store is used and improve the
-					shopping experience. We do not sell this information for advertising
-					purposes. For more detail on cookies and similar technologies, see our{" "}
+					referral source, and approximate location derived from your IP
+					address. This data helps us understand how our store is used and
+					improve the shopping experience. We do not sell this information for
+					advertising purposes. For more detail on cookies and similar
+					technologies, see our{" "}
 					<Link
 						className="text-secondary underline underline-offset-2 hover:text-secondary/80"
 						href="/cookies"
