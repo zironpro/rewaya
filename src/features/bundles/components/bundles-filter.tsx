@@ -5,17 +5,19 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import { bundles } from "@/lib/bundles-data";
+import type { Bundle } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 
 const categories = ["All", "Kids", "Educational", "Spiritual", "History"];
 
 interface BundlesFilterProps {
+	bundles: Bundle[];
 	onApply?: () => void;
 	showApplyButton?: boolean;
 }
 
 export const BundlesFilter = ({
+	bundles,
 	onApply,
 	showApplyButton = false,
 }: BundlesFilterProps) => {

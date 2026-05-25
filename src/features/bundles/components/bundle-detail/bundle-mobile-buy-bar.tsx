@@ -3,7 +3,7 @@ import { ShoppingBagIcon } from "lucide-react";
 import { CurrencyIcon } from "@/assets/icons/currency";
 
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/lib/catalog/types";
 
 interface BundleMobileBuyBarProps {
 	bundle: Bundle;
@@ -24,6 +24,7 @@ export function BundleMobileBuyBar({ bundle }: BundleMobileBuyBarProps) {
 					disabled={!bundle.wixProductId}
 					productId={bundle.wixProductId ?? ""}
 					productName={bundle.title}
+					productVariant={bundle.defaultVariant}
 					size="lg"
 					variant="secondary"
 				>

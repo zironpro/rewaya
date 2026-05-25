@@ -3,11 +3,13 @@
 import { ShoppingBagIcon } from "lucide-react";
 
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
+import type { ProductVariant } from "@/lib/wix/catalog-types";
 
 interface ProductMobileBuyBarProps {
 	price: number;
 	productId?: string;
 	productName?: string;
+	productVariant?: ProductVariant;
 	quantity?: number;
 }
 
@@ -15,6 +17,7 @@ export function ProductMobileBuyBar({
 	price,
 	productId,
 	productName = "Product",
+	productVariant,
 	quantity = 1,
 }: ProductMobileBuyBarProps) {
 	return (
@@ -28,6 +31,7 @@ export function ProductMobileBuyBar({
 					disabled={!productId}
 					productId={productId ?? ""}
 					productName={productName}
+					productVariant={productVariant}
 					quantity={quantity}
 					size="lg"
 					variant="secondary"

@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import { WishlistToggleButton } from "@/features/wishlist/components/wishlist-toggle-button";
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
 
 interface BundleBuyBoxProps {
@@ -47,6 +47,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 					disabled={!bundle.wixProductId}
 					productId={bundle.wixProductId ?? ""}
 					productName={bundle.title}
+					productVariant={bundle.defaultVariant}
 					size="lg"
 					variant="secondary"
 				>

@@ -4,14 +4,15 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
+import { addItem } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
-import { WIX_STORES_APP_ID } from "@/lib/wix/constants";
-import { useWixClient } from "@/lib/wix/provider";
+import type { ProductVariant } from "@/lib/wix/catalog-types";
 
 interface AddToCartButtonProps {
 	productId: string;
 	productName: string;
-	variantId?: string;
+	/** Wix Stores variant / options for catalogReference */
+	productVariant?: ProductVariant;
 	quantity?: number;
 	disabled?: boolean;
 	className?: string;
@@ -30,7 +31,7 @@ function dispatchCartUpdated(cart?: unknown) {
 export function AddToCartButton({
 	productId,
 	productName: _productName,
-	variantId,
+	productVariant,
 	quantity = 1,
 	disabled,
 	className,
@@ -39,45 +40,42 @@ export function AddToCartButton({
 	children,
 	onAdded,
 }: AddToCartButtonProps) {
-	const wixClient = useWixClient();
 	const [status, setStatus] = useState<"idle" | "loading" | "added" | "error">(
 		"idle"
 	);
 
+	const canAdd =
+		Boolean(productId) && productVariant?.availableForSale !== false;
+
 	const handleAddToCart = async () => {
-		if (!wixClient || !productId) return;
+		if (!productId || !canAdd) return;
 
 		setStatus("loading");
 
 		try {
-			const catalogOptions: Record<string, unknown> = {};
-			if (variantId) catalogOptions.variantId = variantId;
-
-			const { cart } = await wixClient.currentCart.addToCurrentCart({
-				lineItems: [
-					{
-						catalogReference: {
-							appId: WIX_STORES_APP_ID,
-							catalogItemId: productId,
-							options:
-								Object.keys(catalogOptions).length > 0
-									? catalogOptions
-									: undefined,
-						},
-						quantity,
-					},
-				],
+			const { error, cart } = await addItem(null, {
+				productId,
+				variant: productVariant,
+				quantity,
 			});
-
-			if (cart) syncCartFromWixResponse(cart);
+			if (error) {
+				setStatus("error");
+				setTimeout(() => setStatus("idle"), 2500);
+				return;
+			}
+			if (cart) {
+				syncCartFromWixResponse(cart);
+			}
 			dispatchCartUpdated(cart);
+
 			setStatus("added");
 			onAdded?.();
 			setTimeout(() => setStatus("idle"), 2000);
-		} catch {
+		} catch (e) {
+			console.error("[cart] add to cart failed:", e);
 			setStatus("error");
 			dispatchCartUpdated();
-			setTimeout(() => setStatus("idle"), 2000);
+			setTimeout(() => setStatus("idle"), 2500);
 		}
 	};
 
@@ -93,7 +91,7 @@ export function AddToCartButton({
 	return (
 		<Button
 			className={className}
-			disabled={disabled || status === "added"}
+			disabled={disabled || !canAdd || status === "added"}
 			onClick={handleAddToCart}
 			size={size}
 			variant={variant}

@@ -1,8 +1,5 @@
 import "server-only";
 
-import { allBooks as staticBooks } from "@/features/products/data/products";
-import { bundles as staticBundles } from "@/lib/bundles-data";
-
 import { getBundleDetailsFromCms } from "./bundles";
 import { isWixCatalogEnabled } from "./constants";
 import { queryWixProducts } from "./products";
@@ -10,9 +7,7 @@ import { queryWixProducts } from "./products";
 const PAGE_SIZE = 100;
 
 export async function getProductStaticParamIds(): Promise<string[]> {
-	if (!isWixCatalogEnabled()) {
-		return staticBooks.map((book) => String(book.id));
-	}
+	if (!isWixCatalogEnabled()) return [];
 
 	const ids: string[] = [];
 	let offset = 0;
@@ -30,23 +25,18 @@ export async function getProductStaticParamIds(): Promise<string[]> {
 		offset += PAGE_SIZE;
 	}
 
-	return ids.length > 0 ? ids : staticBooks.map((book) => String(book.id));
+	return ids;
 }
 
 export async function getBundleStaticParamSlugs(): Promise<string[]> {
-	if (!isWixCatalogEnabled()) {
-		return staticBundles.map((b) => b.id);
-	}
+	if (!isWixCatalogEnabled()) return [];
 
 	try {
 		const details = await getBundleDetailsFromCms();
-		const slugs = details.map((d) => d.slug).filter(Boolean);
-		if (slugs.length > 0) return slugs;
+		return details.map((d) => d.slug).filter(Boolean);
 	} catch {
-		// fall through to static fallback
+		return [];
 	}
-
-	return staticBundles.map((b) => b.id);
 }
 
 export async function getProductStaticParams(): Promise<{ id: string }[]> {

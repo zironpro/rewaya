@@ -1,7 +1,12 @@
-import type { Book, Bundle } from "@/lib/bundles-data";
+import type { Book, Bundle, Faq } from "@/lib/catalog/types";
 import type { BookProps } from "@/lib/store";
+import type { ProductVariant } from "./catalog-types";
+import {
+	buildV3VariantsFromCatalog,
+	wixCatalogToBookProps,
+} from "./reshape-product";
 
-export type { Book, Bundle };
+export type { Book, Bundle, Faq };
 
 export interface WixCatalogProduct {
 	id: string;
@@ -24,17 +29,27 @@ export interface WixCatalogProduct {
 	primaryCategoryId?: string;
 	primaryCategorySlug?: string;
 	productPagePath?: string;
+	variantId?: string;
 }
 
-export interface BundleDetailsCmsItem {
+/** Row from Wix CMS `BookBundles` collection. */
+export interface BookBundleCmsItem {
 	_id?: string;
 	slug: string;
-	tag?: string;
-	originalPrice?: number;
+	title: string;
+	overview: string;
+	price: number;
+	originalPrice: number;
+	coverImage: string;
+	quantityAvailable?: number;
+	includedBookIds: string[];
+	/** Stores catalog id used for add-to-cart (first `bundleProducts` ref). */
 	bundleProductId: string;
-	includedBookIds?: string[];
-	title?: string;
+	tag?: string;
 }
+
+/** @deprecated Use `BookBundleCmsItem`. */
+export type BundleDetailsCmsItem = BookBundleCmsItem;
 
 export function mapWixProductToBook(product: WixCatalogProduct): Book {
 	return {
@@ -54,63 +69,57 @@ export function mapWixProductToBook(product: WixCatalogProduct): Book {
 
 export function mapWixProductToBookProps(
 	product: WixCatalogProduct,
-	categoryNameMap?: Map<string, string>
+	categoryNameMap?: Map<string, string>,
+	variants?: ProductVariant[]
 ): BookProps {
-	const wixId = product.id ?? product.slug ?? "";
-	const numericId =
-		Number.parseInt(wixId.replace(/\D/g, "").slice(0, 8), 10) ||
-		Math.abs(hashCode(wixId || product.name || "product"));
+	const resolvedVariants =
+		variants ?? buildV3VariantsFromCatalog(product, product.variantId);
+	return wixCatalogToBookProps(product, categoryNameMap, resolvedVariants);
+}
 
-	const categoryFromIds = (product.categoryIds ?? product.collectionIds ?? [])
-		.map((id) => categoryNameMap?.get(id))
-		.filter((name): name is string => Boolean(name));
+export function mapBookBundleFromCms(
+	details: BookBundleCmsItem,
+	includedBooks: Book[],
+	checkoutProduct?: WixCatalogProduct | null
+): Bundle {
+	const variants = checkoutProduct
+		? buildV3VariantsFromCatalog(checkoutProduct, checkoutProduct.variantId)
+		: undefined;
 
-	const category =
-		product.categoryNames?.[0] ??
-		categoryFromIds[0] ??
-		product.genre ??
-		"Books";
+	const overview = details.overview.trim();
+	const tagline =
+		overview.length > 120 ? `${overview.slice(0, 117)}…` : overview;
 
 	return {
-		id: numericId,
-		wixProductId: product.id,
-		slug: product.slug,
-		title: product.name,
-		author: product.author ?? "Unknown",
-		price: product.price ?? 0,
-		image: product.imageUrl ?? "",
-		category,
-		categoryId: product.primaryCategoryId ?? product.categoryIds?.[0],
-		categorySlug: product.primaryCategorySlug,
+		id: details.slug,
+		title: details.title,
+		price: details.price,
+		originalPrice: details.originalPrice,
+		tag: details.tag ?? "Bundle",
+		tagline,
+		description: overview,
+		longDescription: overview,
+		coverImage:
+			details.coverImage ||
+			includedBooks[0]?.image ||
+			checkoutProduct?.imageUrl ||
+			"",
+		books: includedBooks,
+		wixProductId:
+			details.bundleProductId ||
+			checkoutProduct?.id ||
+			includedBooks[0]?.id,
+		variants,
+		defaultVariant: variants?.[0],
+		faqs: [],
 	};
 }
 
-function hashCode(str: string): number {
-	let hash = 0;
-	for (let i = 0; i < str.length; i++) {
-		hash = (hash << 5) - hash + str.charCodeAt(i);
-		hash |= 0;
-	}
-	return hash;
-}
-
+/** @deprecated Use `mapBookBundleFromCms`. */
 export function mapToBundle(
-	details: BundleDetailsCmsItem,
+	details: BookBundleCmsItem,
 	storeProduct: WixCatalogProduct,
 	includedBooks: Book[]
 ): Bundle {
-	return {
-		id: details.slug,
-		title: details.title ?? storeProduct.name,
-		price: storeProduct.price ?? 0,
-		originalPrice: details.originalPrice ?? storeProduct.price ?? 0,
-		tag: details.tag ?? "",
-		coverImage: storeProduct.imageUrl ?? "",
-		books: includedBooks,
-		wixProductId: storeProduct.id,
-		tagline: "",
-		description: "",
-		longDescription: "",
-		faqs: [],
-	};
+	return mapBookBundleFromCms(details, includedBooks, storeProduct);
 }

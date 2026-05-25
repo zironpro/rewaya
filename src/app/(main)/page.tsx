@@ -1,18 +1,21 @@
 import { HomepageView } from "@/features/home/homepage-view";
 import { getBundles } from "@/lib/wix/bundles";
-import { getStoreCategories } from "@/lib/wix/categories";
-import { getShopBooks } from "@/lib/wix/products";
+import { getHomepageData } from "@/lib/wix/cms/homepage";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-	const [books, bundles, categories] = await Promise.all([
-		getShopBooks({ limit: 48 }),
+	const [{ sections, banners, categories }, bundles] = await Promise.all([
+		getHomepageData(),
 		getBundles(),
-		getStoreCategories(),
 	]);
 
 	return (
-		<HomepageView books={books} bundles={bundles} categories={categories} />
+		<HomepageView
+			banners={banners}
+			bundles={bundles}
+			categories={categories}
+			sections={sections}
+		/>
 	);
 }

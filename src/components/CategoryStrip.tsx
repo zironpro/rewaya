@@ -8,59 +8,21 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
-import type { StoreCategory } from "@/lib/wix/categories";
 
-const fallbackCategories = [
-	{
-		name: "Islamic",
-		image: "/categories/islamic.png",
-		href: "/shop?category=islamic",
-	},
-	{
-		name: "Children",
-		image: "/categories/children.png",
-		href: "/shop?category=children",
-	},
-	{
-		name: "Academic",
-		image: "/categories/academic.png",
-		href: "/shop?category=academic",
-	},
-	{
-		name: "Fiction",
-		image: "/categories/fiction.png",
-		href: "/shop?category=fiction",
-	},
-	{
-		name: "Self-Help",
-		image: "/categories/selfhelp.png",
-		href: "/shop?category=selfhelp",
-	},
-	{
-		name: "History",
-		image: "/categories/history.png",
-		href: "/shop?category=history",
-	},
-	{
-		name: "Biographies",
-		image: "/categories/biographies.png",
-		href: "/shop?category=biographies",
-	},
-];
+import type { StoreCategory } from "@/lib/wix/categories";
 
 interface CategoryStripProps {
 	categories?: StoreCategory[];
 }
 
 export function CategoryStrip({ categories = [] }: CategoryStripProps) {
-	const items =
-		categories.length > 0
-			? categories.map((cat) => ({
-					name: cat.name,
-					image: cat.imageUrl ?? "/categories/islamic.png",
-					href: cat.href,
-				}))
-			: fallbackCategories;
+	if (categories.length === 0) return null;
+
+	const items = categories.map((cat) => ({
+		name: cat.name,
+		image: cat.imageUrl ?? "/categories/islamic.png",
+		href: cat.href,
+	}));
 
 	return (
 		<section className="container w-full py-16">
@@ -71,7 +33,7 @@ export function CategoryStrip({ categories = [] }: CategoryStripProps) {
 				<CarouselContent className="-ml-6">
 					{items.map((cat) => (
 						<CarouselItem
-							className="basis-[70%] pl-6 sm:basis-[45%] md:basis-1/3 lg:basis-1/5"
+							className="basis-[70%] pl-6 sm:basis-[45%] md:basis-1/3 lg:basis-1/7"
 							key={cat.href}
 						>
 							<Link

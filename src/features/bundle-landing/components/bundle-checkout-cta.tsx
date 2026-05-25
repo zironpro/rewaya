@@ -28,6 +28,7 @@ export function BundleCheckoutCta({
 			disabled={!bundle.wixProductId}
 			productId={bundle.wixProductId ?? ""}
 			productName={bundle.name}
+			productVariant={bundle.defaultVariant}
 			size={size}
 		>
 			<ShoppingBag className="size-4" />

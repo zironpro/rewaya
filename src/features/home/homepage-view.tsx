@@ -11,46 +11,62 @@ import { Button } from "@/components/ui/button";
 
 import { HeroCarousel } from "@/features/home/components/hero-carousel";
 import { ProductStrip } from "@/features/products/components/product-strip";
-import type { Bundle } from "@/lib/bundles-data";
-import type { BookProps } from "@/lib/store";
-import type { StoreCategory } from "@/lib/wix/categories";
+import type { Bundle } from "@/lib/catalog/types";
+import { findStoreCategory, type StoreCategory } from "@/lib/wix/categories";
+import type { HomeBanner, HomepageSection } from "@/lib/wix/cms/homepage";
 
 interface HomepageViewProps {
-	books: BookProps[];
+	sections: HomepageSection[];
+	banners: HomeBanner[];
 	bundles: Bundle[];
 	categories?: StoreCategory[];
 }
 
+function EmptyStrip({ title }: { title: string }) {
+	return (
+		<section className="container py-8">
+			<h2 className="font-serif text-2xl text-secondary">{title}</h2>
+			<p className="mt-2 text-muted-foreground text-sm">
+				No products in this section yet. Add items to the matching category in
+				Wix Stores.
+			</p>
+		</section>
+	);
+}
+
 export const HomepageView = ({
-	books,
+	sections,
+	banners,
 	bundles,
 	categories = [],
 }: HomepageViewProps) => {
-	const featured = [...books, ...books];
+	const childrenSection = sections.find((s) => s.sectionKey === "children");
+	const childrenCategorySlug =
+		findStoreCategory(categories, {
+			names: ["Children Books"],
+			nameIncludes: ["children book"],
+		})?.slug ?? "children-books";
+
 	return (
 		<main className="overflow-hidden">
-			<HeroCarousel />
+			<HeroCarousel banners={banners} />
 			<CategoryStrip categories={categories} />
 
-			{/* 1. RECOMMENDED FOR YOU */}
-			<ProductStrip
-				books={featured.map((book) => ({
-					...book,
-				}))}
-				subtitle="Based on your taste"
-				title="Recommended for You"
-			/>
+			{sections
+				.filter((s) => s.sectionKey !== "children")
+				.map((section) =>
+					section.books.length > 0 ? (
+						<ProductStrip
+							books={section.books}
+							key={section.sectionKey}
+							subtitle={section.subtitle}
+							title={section.title}
+						/>
+					) : (
+						<EmptyStrip key={section.sectionKey} title={section.title} />
+					)
+				)}
 
-			{/* 2. TODAY'S DEALS */}
-			<ProductStrip
-				books={featured.map((book) => ({
-					...book,
-				}))}
-				subtitle="Limited Time"
-				title="Today's Deals"
-			/>
-
-			{/* INTERSTITIAL BANNER 1 — Dubai Book Fair recap */}
 			<section className="container mb-16">
 				<div className="group relative min-h-[300px] overflow-hidden rounded-2xl shadow-lg md:min-h-[360px]">
 					<Image
@@ -60,7 +76,6 @@ export const HomepageView = ({
 						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="/banners/book-fair-banner.webp"
 					/>
-					{/* <div className="absolute inset-0 bg-linear-to-r from-stone-950/95 via-stone-950/75 to-stone-950/25 md:to-transparent" /> */}
 					<div className="relative z-10 flex min-h-[300px] flex-col items-start justify-center p-6 text-white sm:p-10 md:min-h-[360px] md:max-w-4xl md:p-12">
 						<Badge
 							className="border-white/20 bg-white/10 text-white tracking-normal backdrop-blur-sm"
@@ -94,30 +109,8 @@ export const HomepageView = ({
 				</div>
 			</section>
 
-			{/* 2. NEW SELLERS */}
-			<ProductStrip
-				books={featured.map((book) => ({
-					...book,
-					badge: "new seller",
-				}))}
-				subtitle="Latest Arrivals"
-				title="New Sellers"
-			/>
-
-			{/* BUNDLES SECTION */}
 			<BundleSection bundles={bundles} />
 
-			{/* 3. BEST SELLERS */}
-			<ProductStrip
-				books={featured.map((book) => ({
-					...book,
-					badge: "best seller",
-				}))}
-				subtitle="Top Rated"
-				title="Best Sellers"
-			/>
-
-			{/* INTERSTITIAL BANNER 2 */}
 			<section className="container mb-12 pb-16">
 				<div className="group relative overflow-hidden rounded-2xl shadow-lg">
 					<Image
@@ -139,20 +132,31 @@ export const HomepageView = ({
 							<span className="text-accent italic">Next Generation</span> of
 							Seekers.
 						</h3>
-						<Button size="lg">Shop Children books</Button>
+						<Button
+							nativeButton={false}
+							render={
+								<Link
+									href={`/shop?category=${encodeURIComponent(childrenCategorySlug)}`}
+								/>
+							}
+							size="lg"
+						>
+							Shop Children&apos;s books
+						</Button>
 					</div>
 				</div>
 			</section>
 
-			{/* 4. CHILDREN'S COLLECTION */}
-			<ProductStrip
-				books={featured.map((book) => ({
-					...book,
-					badge: "new arrival",
-				}))}
-				subtitle="For Young Readers"
-				title="Children's Collection"
-			/>
+			{childrenSection &&
+				(childrenSection.books.length > 0 ? (
+					<ProductStrip
+						books={childrenSection.books}
+						subtitle={childrenSection.subtitle}
+						title={childrenSection.title}
+					/>
+				) : (
+					<EmptyStrip title={childrenSection.title} />
+				))}
 
 			<PolicyCards />
 		</main>

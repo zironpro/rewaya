@@ -1,5 +1,7 @@
 import { atom } from "jotai";
 
+import type { ProductVariant } from "@/lib/wix/catalog-types";
+
 export interface BookProps {
 	id: number;
 	/** Wix Stores product ID for headless cart */
@@ -16,6 +18,9 @@ export interface BookProps {
 	/** Wix collection/category slug */
 	categorySlug?: string;
 	badge?: "new seller" | "new arrival" | "best seller";
+	variants?: ProductVariant[];
+	defaultVariant?: ProductVariant;
+	availableForSale?: boolean;
 }
 
 /** Stable, unique React list key — avoids collisions between wixProductId and numeric id. */

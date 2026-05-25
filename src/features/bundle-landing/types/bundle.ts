@@ -40,5 +40,6 @@ export interface BundleData {
 	faqs: FAQ[];
 	/** When set, primary checkout uses Wix add-to-cart */
 	wixProductId?: string;
+	defaultVariant?: import("@/lib/wix/catalog-types").ProductVariant;
 	coverImage: string;
 }

@@ -31,6 +31,7 @@ interface ProductPurchasePanelProps {
 	price: number;
 	compareAtPrice?: number;
 	productId?: string;
+	productVariant?: import("@/lib/wix/catalog-types").ProductVariant;
 	quantity: number;
 	onQuantityChange: (qty: number) => void;
 	className?: string;
@@ -41,6 +42,7 @@ export function ProductPurchasePanel({
 	price,
 	compareAtPrice,
 	productId,
+	productVariant,
 	quantity,
 	onQuantityChange,
 	className,
@@ -128,6 +130,7 @@ export function ProductPurchasePanel({
 						disabled={!productId}
 						productId={productId ?? ""}
 						productName={title}
+						productVariant={productVariant}
 						quantity={quantity}
 						size="lg"
 						variant="secondary"
@@ -142,6 +145,7 @@ export function ProductPurchasePanel({
 						onAdded={() => router.push("/cart")}
 						productId={productId ?? ""}
 						productName={title}
+						productVariant={productVariant}
 						quantity={quantity}
 						size="lg"
 						variant="outline"

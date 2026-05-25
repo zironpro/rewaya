@@ -16,8 +16,8 @@ export interface BundleBookSlide {
 export interface BundlesIndexPageData {
 	bundles: Bundle[];
 	bundleDataList: BundleData[];
-	featuredBundle: Bundle;
-	featuredBundleData: BundleData;
+	featuredBundle: Bundle | null;
+	featuredBundleData: BundleData | null;
 	maxSavings: number;
 	bookSlides: BundleBookSlide[];
 	faqs: Faq[];
@@ -31,9 +31,9 @@ const CAMPAIGN_TIMER_FAQ: Faq = {
 		"This campaign uses a limited window while the countdown runs in your browser session (typically 24 hours from your first visit). Add your bundle to cart before the timer ends to lock in the bundle price shown today.",
 };
 
-export function getFeaturedBundle(bundles: Bundle[]): Bundle {
+export function getFeaturedBundle(bundles: Bundle[]): Bundle | null {
 	if (bundles.length === 0) {
-		throw new Error("getFeaturedBundle requires at least one bundle");
+		return null;
 	}
 
 	let featured = bundles[0];
@@ -109,7 +109,9 @@ export function buildBundlesIndexPageData(
 	bundles: Bundle[]
 ): BundlesIndexPageData {
 	const featuredBundle = getFeaturedBundle(bundles);
-	const featuredBundleData = mapBundleToBundleData(featuredBundle);
+	const featuredBundleData = featuredBundle
+		? mapBundleToBundleData(featuredBundle)
+		: null;
 
 	return {
 		bundles,

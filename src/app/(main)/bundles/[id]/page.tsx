@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import { BundleDetailView } from "@/features/bundles/bundle-detail-view";
 import { getBundleBySlug, getBundles } from "@/lib/wix/bundles";
 import { getShopBooks } from "@/lib/wix/products";
@@ -20,6 +22,8 @@ export default async function BundleDetailPage({
 		getBundles(),
 		getShopBooks(),
 	]);
+
+	if (!bundle) notFound();
 
 	return (
 		<BundleDetailView

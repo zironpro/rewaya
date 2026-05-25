@@ -25,21 +25,39 @@ export function BundleLandingPageView({
 	data,
 	banners,
 }: BundleLandingPageViewProps) {
-	const featuredSlug = data.featuredBundle.id;
+	const featuredSlug = data.featuredBundle?.id ?? "/bundles";
+
+	if (data.bundles.length === 0) {
+		return (
+			<main className="container py-32 text-center">
+				<h1 className="font-bold font-display text-3xl text-secondary">
+					Bundle deals
+				</h1>
+				<p className="mt-4 text-muted-foreground">
+					No bundles are available right now. Check back soon or browse the
+					shop.
+				</p>
+			</main>
+		);
+	}
 
 	return (
 		<main className="bg-background pb-24 md:pb-0">
-			<BundlesIndexHero
-				bundles={data.bundles}
-				featuredBundle={data.featuredBundleData}
-				featuredSlug={"/bundles"}
-				heroBanner={banners.hero}
-				maxSavings={data.maxSavings}
-			/>
+			{data.featuredBundleData ? (
+				<BundlesIndexHero
+					bundles={data.bundles}
+					featuredBundle={data.featuredBundleData}
+					featuredSlug={featuredSlug}
+					heroBanner={banners.hero}
+					maxSavings={data.maxSavings}
+				/>
+			) : null}
 
 			<BundlesBookMarquee slides={data.bookSlides} />
 
-			<BundlesUrgencyCallout featuredSlug={featuredSlug} />
+			{data.featuredBundle ? (
+				<BundlesUrgencyCallout featuredSlug={featuredSlug} />
+			) : null}
 
 			<section className="container scroll-mt-24 py-14 md:py-20" id="bundles">
 				<div className="mb-10 text-center md:text-left">
@@ -61,13 +79,15 @@ export function BundleLandingPageView({
 				</div>
 			</section>
 
-			<section className="container py-10 md:py-14">
-				<BundlesCampaignBanner
-					featuredBundle={data.featuredBundleData}
-					featuredSlug={"/bundles"}
-					slot={banners.mid}
-				/>
-			</section>
+			{data.featuredBundleData ? (
+				<section className="container py-10 md:py-14">
+					<BundlesCampaignBanner
+						featuredBundle={data.featuredBundleData}
+						featuredSlug={featuredSlug}
+						slot={banners.mid}
+					/>
+				</section>
+			) : null}
 
 			{data.bundleDataList.map((bundle, index) => (
 				<BundleIndexDetailSection
@@ -81,11 +101,15 @@ export function BundleLandingPageView({
 			<BundlesIndexSocialProof reviews={data.reviews} />
 			<BundlesIndexFaqSection faqs={data.faqs} />
 			<BundlesIndexTrust />
-			<BundlesIndexCta
-				featuredBundle={data.featuredBundleData}
-				featuredSlug={featuredSlug}
-			/>
-			<BundlesIndexStickyBar featuredSlug={featuredSlug} />
+			{data.featuredBundleData ? (
+				<BundlesIndexCta
+					featuredBundle={data.featuredBundleData}
+					featuredSlug={featuredSlug}
+				/>
+			) : null}
+			{data.featuredBundle ? (
+				<BundlesIndexStickyBar featuredSlug={featuredSlug} />
+			) : null}
 		</main>
 	);
 }

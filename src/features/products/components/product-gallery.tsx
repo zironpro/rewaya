@@ -20,7 +20,7 @@ interface ProductGalleryProps {
 	title: string;
 	image: string;
 	images?: string[];
-	wixProductId?: number;
+	wixProductId?: string;
 	className?: string;
 }
 

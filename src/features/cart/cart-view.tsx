@@ -1,17 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
 
-import { currentCart } from "@wix/ecom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 
+import {
+	fetchCart,
+	redirectToCheckout,
+	removeItem,
+	updateItemQuantity,
+} from "@/features/cart/cart-actions";
 import {
 	type CartSummary,
 	firstDescriptionSubtitle,
@@ -22,7 +27,8 @@ import {
 	resolveProductHref,
 	syncCartFromWixResponse,
 } from "@/features/cart/cart-sdk";
-import { useWixClient } from "@/lib/wix/provider";
+import { DeliveryNoticeBanner } from "@/features/cart/components/delivery-notice-banner";
+import { cn } from "@/lib/utils";
 
 function dispatchCartUpdated(cart?: unknown) {
 	window.dispatchEvent(
@@ -30,8 +36,9 @@ function dispatchCartUpdated(cart?: unknown) {
 	);
 }
 
+const cartEnabled = Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
+
 export function CartView() {
-	const wixClient = useWixClient();
 	const initialCacheRef = useRef(
 		typeof window !== "undefined" ? readCartSnapshot() : null
 	);
@@ -42,7 +49,7 @@ export function CartView() {
 		initialCache?.summary ?? { discountNames: [] }
 	);
 	const [loading, setLoading] = useState(!initialCache);
-	const [checkingOut, setCheckingOut] = useState(false);
+	const [checkingOut, startCheckout] = useTransition();
 	const qtyTimers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
 
 	const applyCart = useCallback((cart: unknown) => {
@@ -52,14 +59,19 @@ export function CartView() {
 	}, []);
 
 	const loadCart = useCallback(async () => {
-		if (!wixClient) {
+		if (!cartEnabled) {
 			setLoading(false);
 			return;
 		}
 
 		try {
-			const cart = await wixClient.currentCart.getCurrentCart();
-			applyCart(cart);
+			const cart = await fetchCart();
+			if (cart) {
+				applyCart(cart);
+			} else if (!initialCacheRef.current) {
+				setItems([]);
+				setSummary({ discountNames: [] });
+			}
 		} catch {
 			if (!initialCacheRef.current) {
 				setItems([]);
@@ -68,7 +80,7 @@ export function CartView() {
 		} finally {
 			setLoading(false);
 		}
-	}, [wixClient, applyCart]);
+	}, [applyCart]);
 
 	useEffect(() => {
 		loadCart();
@@ -78,7 +90,7 @@ export function CartView() {
 	}, [loadCart]);
 
 	const handleUpdateQuantity = (itemId: string, quantity: number) => {
-		if (!wixClient || quantity < 1) return;
+		if (!cartEnabled || quantity < 1) return;
 
 		setItems((prev) =>
 			prev.map((it) => (it._id === itemId ? { ...it, quantity } : it))
@@ -91,11 +103,14 @@ export function CartView() {
 			setTimeout(async () => {
 				qtyTimers.current.delete(itemId);
 				try {
-					const { cart } =
-						await wixClient.currentCart.updateCurrentCartLineItemQuantity([
-							{ _id: itemId, quantity },
-						]);
-					if (!cart) return;
+					const { cart, error } = await updateItemQuantity(null, {
+						lineId: itemId,
+						quantity,
+					});
+					if (error || !cart) {
+						await loadCart();
+						return;
+					}
 					applyCart(cart);
 					dispatchCartUpdated(cart);
 				} catch {
@@ -106,14 +121,16 @@ export function CartView() {
 	};
 
 	const handleRemoveItem = async (itemId: string) => {
-		if (!wixClient) return;
+		if (!cartEnabled) return;
 
 		setItems((prev) => prev.filter((it) => it._id !== itemId));
 
 		try {
-			const { cart } =
-				await wixClient.currentCart.removeLineItemsFromCurrentCart([itemId]);
-			if (!cart) return;
+			const { cart, error } = await removeItem(null, itemId);
+			if (error || !cart) {
+				await loadCart();
+				return;
+			}
 			applyCart(cart);
 			dispatchCartUpdated(cart);
 		} catch {
@@ -121,37 +138,15 @@ export function CartView() {
 		}
 	};
 
-	const handleCheckout = async () => {
-		if (!wixClient) return;
-		setCheckingOut(true);
-		try {
-			const { checkoutId } =
-				await wixClient.currentCart.createCheckoutFromCurrentCart({
-					channelType: currentCart.ChannelType.WEB,
-				});
-
-			const origin = window.location.origin;
-			const { redirectSession } =
-				await wixClient.redirects.createRedirectSession({
-					ecomCheckout: { checkoutId },
-					callbacks: {
-						postFlowUrl: `${origin}/cart`,
-						cartPageUrl: `${origin}/cart`,
-					},
-				});
-
-			if (redirectSession?.fullUrl) {
-				window.location.href = redirectSession.fullUrl;
-			}
-		} catch {
-			setCheckingOut(false);
-		}
+	const handleCheckout = () => {
+		if (!cartEnabled) return;
+		startCheckout(() => redirectToCheckout());
 	};
 
 	const hasUnavailable = items.some(isItemUnavailable);
 	const displayTotal = summary.total ?? summary.subtotal;
 
-	if (!wixClient) {
+	if (!cartEnabled) {
 		return (
 			<main className="grow pt-20 pb-28 md:pb-16">
 				<div className="container py-32 text-center">
@@ -165,33 +160,30 @@ export function CartView() {
 	}
 
 	return (
-		<main className="grow pt-20 pb-28 md:pb-16">
+		<main className="grow pt-4 pb-28 md:pb-16">
 			<div className="container">
 				<Breadcrumbs className="mb-8" items={[{ label: "Shopping Bag" }]} />
+				<DeliveryNoticeBanner />
 				<div className="mb-16">
-					<span className="mb-4 block font-bold text-sm text-stone-400">
+					<span className="mb-4 block font-medium text-sm text-stone-400">
 						Your Selection
 					</span>
-					<h1 className="font-black font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+					<h1 className="font-black font-serif text-3xl text-secondary sm:text-4xl md:text-5xl lg:text-6xl">
 						Shopping <span className="font-normal italic">Bag</span>.
 					</h1>
 				</div>
 
 				{loading ? (
-					<p className="border-stone-100 border-y py-32 text-center text-sm text-stone-400">
+					<p className="border-stone-100 border-y py-20 text-center text-sm text-stone-400">
 						Loading your bag…
 					</p>
 				) : items.length === 0 ? (
-					<div className="border-stone-100 border-y py-32 text-center">
+					<div className="border-stone-100 border-y py-20 text-center">
 						<p className="mb-8 text-sm text-stone-400">
 							Your bag is currently empty.
 						</p>
 
-						<Button
-							nativeButton={false}
-							render={<Link href="/shop" />}
-							variant="premium"
-						>
+						<Button nativeButton={false} render={<Link href="/shop" />}>
 							Explore the Library
 						</Button>
 					</div>
@@ -222,7 +214,10 @@ export function CartView() {
 									return (
 										<motion.div
 											animate={{ opacity: 1, y: 0 }}
-											className={`grid grid-cols-1 items-center gap-8 border-stone-50 border-b py-8 md:grid-cols-4${unavailable ? "opacity-60" : ""}`}
+											className={cn(
+												"grid grid-cols-1 items-center gap-8 border-stone-50 border-b py-8 md:grid-cols-4",
+												unavailable && "opacity-60"
+											)}
 											exit={{ opacity: 0, x: -20 }}
 											initial={{ opacity: 0, y: 20 }}
 											key={lineId}

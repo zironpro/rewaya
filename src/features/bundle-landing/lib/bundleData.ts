@@ -1,7 +1,9 @@
 import { getBundleReviews } from "@/lib/bundle-reviews-data";
-import type { Bundle } from "@/lib/bundles-data";
-import { bundles as staticBundles } from "@/lib/bundles-data";
-import { getBundleBySlug as getWixBundleBySlug } from "@/lib/wix/bundles";
+import type { Bundle } from "@/lib/catalog/types";
+import {
+	getCachedBundles,
+	getBundleBySlug as getWixBundleBySlug,
+} from "@/lib/wix/bundles";
 
 import type { BundleData } from "../types/bundle";
 
@@ -16,6 +18,7 @@ export function mapBundleToBundleData(bundle: Bundle): BundleData {
 		originalPrice: bundle.originalPrice,
 		savingsAmount: bundle.originalPrice - bundle.price,
 		wixProductId: bundle.wixProductId,
+		defaultVariant: bundle.defaultVariant,
 		coverImage: bundle.coverImage,
 		books: bundle.books.map((book) => ({
 			id: book.id,
@@ -36,6 +39,7 @@ export async function getBundleBySlug(
 	return bundle ? mapBundleToBundleData(bundle) : null;
 }
 
-export function getAllBundleSlugs(): string[] {
-	return staticBundles.map((b) => b.id);
+export async function getAllBundleSlugs(): Promise<string[]> {
+	const bundles = await getCachedBundles();
+	return bundles.map((b) => b.id);
 }

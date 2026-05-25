@@ -12,7 +12,6 @@ import { LanguageIcon } from "@/assets/icons/language";
 import { Logo } from "@/assets/logo";
 
 import { useCartCount } from "@/hooks/use-cart-count";
-import { useWishlistCount } from "@/hooks/use-wishlist-count";
 import { useWixAuth } from "@/lib/wix/provider";
 
 import { CategoriesMenu } from "./components/categories-menu";
@@ -31,7 +30,6 @@ export function Navbar({
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	const wixCartCount = useCartCount();
-	const wishlistCount = useWishlistCount();
 	const { isReady, isLoggedIn, memberDisplayName } = useWixAuth();
 
 	return (
@@ -64,11 +62,6 @@ export function Navbar({
 						>
 							<Heart size={20} strokeWidth={1.5} />
 							<span className="hidden text-sm xl:block">Wishlist</span>
-							{wishlistCount > 0 && (
-								<span className="absolute -top-1 -right-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-primary px-1 font-bold text-[10px] text-white ring-2 ring-white">
-									{wishlistCount}
-								</span>
-							)}
 						</Button>
 
 						<Button

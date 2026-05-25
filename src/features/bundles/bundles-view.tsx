@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { BundleCard } from "@/features/bundles/components/bundle-card";
 import { BundlesFilter } from "@/features/bundles/components/bundles-filter";
 import { BundlesSortSelect } from "@/features/bundles/components/bundles-sort-select";
-import type { Bundle } from "@/lib/bundles-data";
+import type { Bundle } from "@/lib/catalog/types";
 
 interface BundlesViewProps {
 	bundles: Bundle[];
@@ -51,7 +51,7 @@ export const BundlesView = ({ bundles }: BundlesViewProps) => {
 				<section className="container mb-32">
 					<div className="flex flex-col gap-16 lg:flex-row">
 						<aside className="scrollbar-thin sticky top-32 hidden h-fit max-h-[calc(100vh-160px)] w-64 shrink-0 space-y-12 overflow-y-auto pr-4 lg:block">
-							<BundlesFilter />
+							<BundlesFilter bundles={bundles} />
 						</aside>
 
 						<div className="grow">
@@ -89,6 +89,7 @@ export const BundlesView = ({ bundles }: BundlesViewProps) => {
 						<BundlesSortSelect />
 					</div>
 					<BundlesFilter
+						bundles={bundles}
 						onApply={() => setIsMobileFilterOpen(false)}
 						showApplyButton
 					/>

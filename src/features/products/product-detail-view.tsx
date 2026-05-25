@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { Button } from "@/components/ui/button";
 
 import { ProductGallery } from "@/features/products/components/product-gallery";
 import { ProductInfoPanel } from "@/features/products/components/product-info-panel";
@@ -14,62 +16,38 @@ import type { BookProps } from "@/lib/store";
 
 export type { ProductDetailData } from "@/features/products/types";
 
-const getMockProduct = (id: string) => ({
-	id: Number.parseInt(id, 10) || 1,
-	title:
-		id === "1"
-			? "The Sealed Nectar"
-			: id === "2"
-				? "Atomic Habits"
-				: "Classic Literature",
-	author: id === "1" ? "Safiur Rahman Mubarakpuri" : "Various Authors",
-	price: 85.0,
-	category: "Islamic",
-	image:
-		"https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1200&auto=format&fit=crop",
-	description:
-		"A comprehensive and authoritative biography of the Prophet Muhammad (PBUH).",
-	details: [
-		{ label: "Language", value: "English" },
-		{ label: "Format", value: "Hardcover" },
-		{ label: "Pages", value: "588" },
-		{ label: "Publisher", value: "Darussalam Publishing" },
-	],
-	badge: "best seller" as const,
-	images:
-		id === "2"
-			? [
-					"https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=800&auto=format&fit=crop",
-					"https://images.unsplash.com/photo-1512820790811-8f83e314c1e5?q=80&w=800&auto=format&fit=crop",
-				]
-			: undefined,
-});
-
 function getCompareAtPrice(price: number): number | undefined {
 	if (price <= 0) return undefined;
 	return Math.round(price * 1.18 * 100) / 100;
 }
 
 interface ProductDetailViewProps {
-	id: string;
 	product: ProductDetailData | null;
 	sameCategoryBooks?: BookProps[];
 	relatedReads?: BookProps[];
 }
 
 export const ProductDetailView = ({
-	id,
-	product: wixProduct,
+	product,
 	sameCategoryBooks = [],
 	relatedReads = [],
 }: ProductDetailViewProps) => {
-	const mock = getMockProduct(id);
-	const product: ProductDetailData = wixProduct ?? {
-		...mock,
-		wixProductId: undefined,
-		slug: undefined,
-	};
 	const [quantity, setQuantity] = useState(1);
+
+	if (!product) {
+		return (
+			<main className="container grow py-32 text-center">
+				<h1 className="font-serif text-3xl text-secondary">Product not found</h1>
+				<p className="mt-4 text-muted-foreground">
+					This title is not in the catalog or is no longer available.
+				</p>
+				<Button className="mt-8" nativeButton={false} render={<Link href="/shop" />}>
+					Back to shop
+				</Button>
+			</main>
+		);
+	}
+
 	const compareAtPrice = getCompareAtPrice(product.price);
 
 	return (
@@ -100,7 +78,7 @@ export const ProductDetailView = ({
 								image={product.image}
 								images={product.images}
 								title={product.title}
-								wixProductId={product.id}
+								wixProductId={product.wixProductId}
 							/>
 						</div>
 
@@ -117,6 +95,7 @@ export const ProductDetailView = ({
 								onQuantityChange={setQuantity}
 								price={product.price}
 								productId={product.wixProductId}
+								productVariant={product.defaultVariant}
 								quantity={quantity}
 								title={product.title}
 							/>
@@ -137,6 +116,7 @@ export const ProductDetailView = ({
 				price={product.price}
 				productId={product.wixProductId}
 				productName={product.title}
+				productVariant={product.defaultVariant}
 				quantity={quantity}
 			/>
 		</>

@@ -30,6 +30,7 @@ export function BookCard({
 	image,
 	category,
 	badge,
+	defaultVariant,
 }: BookProps) {
 	const productHref = `/product/${slug ?? id}`;
 
@@ -99,6 +100,7 @@ export function BookCard({
 												disabled={!wixProductId}
 												productId={wixProductId ?? ""}
 												productName={title}
+												productVariant={defaultVariant}
 												variant="default"
 											>
 												Add to Bag
@@ -122,6 +124,7 @@ export function BookCard({
 						disabled={!wixProductId}
 						productId={wixProductId ?? ""}
 						productName={title}
+						productVariant={defaultVariant}
 						variant="ghost"
 					>
 						<Plus className="mr-2" size={14} /> Add to Bag

@@ -11,7 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
 	const bundles = await getBundles();
 	const data = buildBundlesIndexPageData(bundles);
 	const title = "Bundle deals · Rewaya Book world";
-	const description = `Curated book bundles from AED ${data.featuredBundle.price}. Save up to AED ${data.maxSavings} — limited-time offer. UAE delivery.`;
+	const description = data.featuredBundle
+		? `Curated book bundles from AED ${data.featuredBundle.price}. Save up to AED ${data.maxSavings} — limited-time offer. UAE delivery.`
+		: "Curated book bundles and limited-time offers. UAE delivery.";
 
 	return {
 		title,
@@ -20,14 +22,15 @@ export async function generateMetadata(): Promise<Metadata> {
 			title,
 			description,
 			type: "website",
-			images: data.featuredBundle.coverImage
-				? [
+			images:
+				data.featuredBundle?.coverImage ?
+					[
 						{
 							url: data.featuredBundle.coverImage,
 							alt: data.featuredBundle.title,
 						},
 					]
-				: undefined,
+				:	undefined,
 		},
 		twitter: {
 			card: "summary_large_image",

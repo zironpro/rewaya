@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
@@ -10,23 +11,50 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
+import type { HomeBanner } from "@/lib/wix/cms/homepage";
 
-import { BANNERS } from "../data/banners";
+import { BANNERS as FALLBACK_BANNERS } from "../data/banners";
 
-export function HeroCarousel() {
+interface HeroCarouselProps {
+	banners?: HomeBanner[];
+}
+
+export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
+	const slides =
+		banners.length > 0
+			? banners.map((b) => ({
+					title: b.title,
+					subtitle: b.subtitle ?? "",
+					cta: b.ctaLabel ?? "Shop now",
+					href: b.ctaHref ?? "/shop",
+					image: b.image,
+				}))
+			: FALLBACK_BANNERS.map((b) => ({
+					title: b.title,
+					subtitle: b.subtitle,
+					cta: b.cta,
+					href: "/shop",
+					image: b.image,
+				}));
+
 	const [current, setCurrent] = useState(0);
 
 	useEffect(() => {
+		if (slides.length <= 1) return;
 		const timer = setInterval(() => {
-			setCurrent((prev) => (prev === BANNERS.length - 1 ? 0 : prev + 1));
+			setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
 		}, 5000);
 		return () => clearInterval(timer);
-	}, []);
+	}, [slides.length]);
+
+	if (slides.length === 0) return null;
 
 	const next = () =>
-		setCurrent((prev) => (prev === BANNERS.length - 1 ? 0 : prev + 1));
+		setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
 	const prev = () =>
-		setCurrent((prev) => (prev === 0 ? BANNERS.length - 1 : prev - 1));
+		setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+
+	const slide = slides[current];
 
 	return (
 		<div className="relative h-[60vh] w-full overflow-hidden bg-stone-50 sm:h-[70vh] md:h-[calc(100vh-113px)]">
@@ -39,20 +67,18 @@ export function HeroCarousel() {
 					key={current}
 					transition={{ duration: 1 }}
 				>
-					{/* Background Image with Overlay */}
 					<div className="absolute inset-0">
 						<Image
-							alt={BANNERS[current].title}
+							alt={slide.title}
 							className="h-full w-full object-cover"
 							fill
 							priority={current === 0}
 							sizes="100vw"
-							src={BANNERS[current].image}
+							src={slide.image}
 						/>
 						<div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />
 					</div>
 
-					{/* Content */}
 					<div className="container relative mx-auto flex h-full flex-col items-center justify-center text-center text-card">
 						<h1 className="sr-only">
 							Al Rewaya Book world: Your Premier Islamic Bookstore
@@ -63,7 +89,7 @@ export function HeroCarousel() {
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.2 }}
 						>
-							{BANNERS[current].subtitle}
+							{slide.subtitle}
 						</motion.span>
 						<motion.h2
 							animate={{ opacity: 1, y: 0 }}
@@ -71,7 +97,7 @@ export function HeroCarousel() {
 							initial={{ opacity: 0, y: 30 }}
 							transition={{ delay: 0.4 }}
 						>
-							{BANNERS[current].title.split(" ").map((word, i) => (
+							{slide.title.split(" ").map((word, i) => (
 								<span
 									className={i % 2 !== 0 ? "font-normal italic" : ""}
 									key={Number(i + 1)}
@@ -85,49 +111,56 @@ export function HeroCarousel() {
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.6 }}
 						>
-							<Button className="hover:px-6" size="lg">
-								{BANNERS[current].cta} <ArrowRight className="ml-2" size={16} />
+							<Button
+								className="hover:px-6"
+								nativeButton={false}
+								render={<Link href={slide.href} />}
+								size="lg"
+							>
+								{slide.cta} <ArrowRight className="ml-2" size={16} />
 							</Button>
 						</motion.div>
 					</div>
 				</motion.div>
 			</AnimatePresence>
 
-			{/* Navigation Arrows */}
-			<div className="absolute right-6 bottom-10 z-10 flex gap-2 md:right-20">
-				<Button
-					className="text-card"
-					onClick={prev}
-					size="icon-lg"
-					variant="outline"
-				>
-					<ChevronLeft size={24} />
-				</Button>
-				<Button
-					className="text-card"
-					onClick={next}
-					size="icon-lg"
-					variant="outline"
-				>
-					<ChevronRight size={24} />
-				</Button>
-			</div>
+			{slides.length > 1 && (
+				<>
+					<div className="absolute right-6 bottom-10 z-10 flex gap-2 md:right-20">
+						<Button
+							className="text-card"
+							onClick={prev}
+							size="icon-lg"
+							variant="outline"
+						>
+							<ChevronLeft size={24} />
+						</Button>
+						<Button
+							className="text-card"
+							onClick={next}
+							size="icon-lg"
+							variant="outline"
+						>
+							<ChevronRight size={24} />
+						</Button>
+					</div>
 
-			{/* Progress Indicators */}
-			<div className="absolute bottom-10 left-6 z-10 flex gap-1 md:left-20">
-				{BANNERS.map((_, i) => (
-					<div
-						className={cn(
-							"h-1 cursor-pointer rounded-full transition-all duration-500",
-							current === i
-								? "w-12 bg-primary"
-								: "w-6 bg-card/30 hover:bg-card/50"
-						)}
-						key={Number(i + 1)}
-						onClick={() => setCurrent(i)}
-					/>
-				))}
-			</div>
+					<div className="absolute bottom-10 left-6 z-10 flex gap-1 md:left-20">
+						{slides.map((_, i) => (
+							<div
+								className={cn(
+									"h-1 cursor-pointer rounded-full transition-all duration-500",
+									current === i
+										? "w-12 bg-primary"
+										: "w-6 bg-card/30 hover:bg-card/50"
+								)}
+								key={Number(i + 1)}
+								onClick={() => setCurrent(i)}
+							/>
+						))}
+					</div>
+				</>
+			)}
 		</div>
 	);
 }

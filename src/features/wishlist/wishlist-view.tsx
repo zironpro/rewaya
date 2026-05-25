@@ -50,14 +50,14 @@ export const WishlistView = () => {
 	const loading = wishlistLoading || productsLoading;
 
 	return (
-		<main className="grow pt-20 pb-28 md:pb-16">
+		<main className="grow pt-4 pb-28 md:pb-16">
 			<section className="container mb-12">
-				<Breadcrumbs className="mb-8" items={[{ label: "Wishlist" }]} />
+				<Breadcrumbs className="mb-4" items={[{ label: "Wishlist" }]} />
 				<div className="text-center">
-					<span className="mb-6 block font-bold text-sm text-stone-400">
+					<span className="mb-4 block font-medium text-sm text-stone-400">
 						Your Collection
 					</span>
-					<h1 className="mb-8 font-black font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+					<h1 className="mb-8 font-black font-serif text-3xl text-secondary sm:text-4xl md:text-5xl lg:text-6xl">
 						Saved <span className="font-normal italic">Stories</span>.
 					</h1>
 					{!isLoggedIn && productIds.length > 0 && (
@@ -83,7 +83,7 @@ export const WishlistView = () => {
 						))}
 					</div>
 				) : (
-					<div className="mx-auto max-w-lg rounded-[3rem] border border-stone-100 bg-white p-8 text-center shadow-soft md:p-20">
+					<div className="mx-auto max-w-lg rounded-md border border-stone-100 bg-white p-8 text-center shadow-soft md:p-20">
 						<div className="mx-auto mb-8 flex size-24 items-center justify-center rounded-full bg-stone-50">
 							<Heart className="text-stone-200" size={40} strokeWidth={1} />
 						</div>
@@ -92,12 +92,11 @@ export const WishlistView = () => {
 							Save your favorite books to your wishlist and they&apos;ll appear
 							here. Start exploring our curated collection today.
 						</p>
-						<Link href="/shop">
-							<Button className="h-14 px-10 text-base" variant="premium">
-								<ShoppingBag className="mr-2" size={18} />
-								Continue Shopping
-							</Button>
-						</Link>
+
+						<Button nativeButton={false} render={<Link href="/shop" />}>
+							<ShoppingBag className="mr-2" size={18} />
+							Continue Shopping
+						</Button>
 					</div>
 				)}
 			</section>

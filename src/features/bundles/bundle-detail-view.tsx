@@ -2,8 +2,6 @@
 
 import { useMemo } from "react";
 
-import { notFound } from "next/navigation";
-
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { PolicyCards } from "@/components/PolicyCards";
 import { Separator } from "@/components/ui/separator";
@@ -45,17 +43,25 @@ export const BundleDetailView = ({
 	allBundles,
 	relatedBooks,
 }: BundleDetailViewProps) => {
-	const bundle = initialBundle ?? allBundles[0];
-	const relatedBundles = allBundles.filter((b) => b.id !== bundle?.id);
+	const bundleId = initialBundle?.id ?? id;
 	const randomBooks = useMemo(
 		() =>
 			relatedBooks.length > 0
 				? relatedBooks.slice(0, 4)
-				: pickRandomBooks([], 4, bundle?.id ?? id),
-		[relatedBooks, bundle?.id, id]
+				: pickRandomBooks([], 4, bundleId),
+		[relatedBooks, bundleId]
 	);
 
-	if (!bundle) return notFound();
+	if (!initialBundle) {
+		return (
+			<main className="container py-32 text-center">
+				<p className="text-muted-foreground">Bundle not found.</p>
+			</main>
+		);
+	}
+
+	const bundle = initialBundle;
+	const relatedBundles = allBundles.filter((b) => b.id !== bundle.id);
 
 	return (
 		<>

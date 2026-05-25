@@ -51,9 +51,7 @@ export function ProductRelatedBooks({
 			<div className="mb-12 flex flex-wrap items-end justify-between gap-4">
 				<BundleSectionHeading
 					eyebrow={heading.eyebrow}
-					highlight={
-						isSameCategory && category ? category : heading.highlight
-					}
+					highlight={isSameCategory && category ? category : heading.highlight}
 					title={heading.title}
 				/>
 				<Link
@@ -66,7 +64,7 @@ export function ProductRelatedBooks({
 				</Link>
 			</div>
 
-			<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+			<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
 				{books.map((book, index) => (
 					<BookCard key={getBookReactKey(book, index)} {...book} />
 				))}

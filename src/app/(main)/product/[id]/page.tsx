@@ -1,35 +1,17 @@
-import {
-	type ProductDetailData,
-	ProductDetailView,
-} from "@/features/products/product-detail-view";
-import type { BookProps } from "@/lib/store";
+import { notFound } from "next/navigation";
+
+import { ProductDetailView } from "@/features/products/product-detail-view";
 import { isWixCatalogEnabled } from "@/lib/wix/constants";
 import {
 	getProductBookSections,
-	getWixProductById,
-	getWixProductBySlug,
+	getProductDetailBySlug,
 } from "@/lib/wix/products";
-import { getProductStaticParams } from "@/lib/wix/static-params";
-import type { WixCatalogProduct } from "@/lib/wix/types";
-import { mapWixProductToBookProps } from "@/lib/wix/types";
-
 export const revalidate = 86_400;
+export const dynamicParams = true;
 
+/** On-demand ISR — pre-rendering the full Wix catalog at build exceeds timeouts. */
 export async function generateStaticParams() {
-	return getProductStaticParams();
-}
-
-function toDetailProduct(product: WixCatalogProduct): ProductDetailData {
-	const book = mapWixProductToBookProps(product);
-	return {
-		...book,
-		description: product.description ?? "",
-		details: [
-			{ label: "Language", value: product.language ?? "—" },
-			{ label: "Publisher", value: product.publisher ?? "—" },
-			{ label: "ISBN", value: product.sku ?? "—" },
-		],
-	};
+	return [];
 }
 
 export default async function ProductDetailPage({
@@ -39,28 +21,26 @@ export default async function ProductDetailPage({
 }) {
 	const { id } = await params;
 
-	let product: WixCatalogProduct | null = null;
-	if (isWixCatalogEnabled()) {
-		product = (await getWixProductBySlug(id)) ?? (await getWixProductById(id));
+	if (!isWixCatalogEnabled()) {
+		notFound();
 	}
 
-	const detail = product ? toDetailProduct(product) : null;
+	const detail = await getProductDetailBySlug(id);
+	if (!detail) {
+		notFound();
+	}
 
-	const bookSections =
-		detail || !isWixCatalogEnabled()
-			? await getProductBookSections({
-					wixProductId: detail?.wixProductId,
-					slug: detail?.slug,
-					categoryId: detail?.categoryId,
-					categorySlug: detail?.categorySlug,
-					category: detail?.category,
-					id: detail?.id ?? (Number.parseInt(id, 10) || 1),
-				})
-			: { sameCategory: [] as BookProps[], relatedReads: [] as BookProps[] };
+	const bookSections = await getProductBookSections({
+		wixProductId: detail.wixProductId,
+		slug: detail.slug,
+		categoryId: detail.categoryId,
+		categorySlug: detail.categorySlug,
+		category: detail.category,
+		id: detail.id,
+	});
 
 	return (
 		<ProductDetailView
-			id={id}
 			product={detail}
 			relatedReads={bookSections.relatedReads}
 			sameCategoryBooks={bookSections.sameCategory}
