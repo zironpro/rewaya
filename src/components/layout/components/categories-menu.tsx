@@ -3,8 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { BookOpen, ChevronDown, Menu, Star, Zap } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { CATEGORIES, MEGA_MENU_DATA } from "../data";
 

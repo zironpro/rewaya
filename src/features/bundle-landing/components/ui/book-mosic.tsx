@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { domAnimation, LazyMotion, m, useReducedMotion } from "framer-motion";
+import { domAnimation, LazyMotion, m, useReducedMotion } from "motion/react";
 
 import type { BundleBookItem } from "@/domain/bundle";
 

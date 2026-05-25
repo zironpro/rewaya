@@ -8,7 +8,7 @@ import {
 	LazyMotion,
 	m,
 	useReducedMotion,
-} from "framer-motion";
+} from "motion/react";
 
 import { Badge } from "@/components/ui/badge";
 

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { motion } from "framer-motion";
 import { Grid, Home, type LucideIcon, ShoppingBag, User } from "lucide-react";
 
 import { useCartCount } from "@/hooks/use-cart-count";
@@ -60,14 +59,6 @@ export function MobileBottomNav() {
 							href={item.href}
 							key={item.label}
 						>
-							{isActive && (
-								<motion.div
-									className="absolute -top-1 size-1 rounded-full bg-primary"
-									layoutId="activeTab"
-									transition={{ type: "spring", stiffness: 500, damping: 30 }}
-								/>
-							)}
-
 							<div className="flex flex-col items-center">
 								<div className="relative">
 									<Icon
