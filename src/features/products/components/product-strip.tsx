@@ -13,7 +13,7 @@ import { BookProps } from "@/lib/store";
 import { BookCard } from "./book-card";
 
 const navButtonClass =
-	"static size-11 translate-x-0 translate-y-0 rounded-full border-stone-100 text-stone-400 hover:border-primary hover:bg-stone-50 hover:text-primary disabled:opacity-40";
+	"static size-10 bg-card translate-x-0 translate-y-0 shadow-sm hover:border-primary hover:bg-mauve-100 hover:text-primary disabled:opacity-40";
 
 interface ProductStripProps {
 	title: string;
@@ -28,9 +28,13 @@ export function ProductStrip({ title, subtitle, books }: ProductStripProps) {
 				className="w-full"
 				opts={{ align: "start", dragFree: true, loop: false }}
 			>
-				<div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+				<div className="mb-10 flex items-end justify-between gap-6">
 					<div>
-						{subtitle && <Badge variant="secondary">{subtitle}</Badge>}
+						{subtitle && (
+							<Badge className="mb-1" variant="secondary">
+								{subtitle}
+							</Badge>
+						)}
 						<div className="flex flex-wrap items-center gap-4 md:gap-6">
 							<h2 className="whitespace-nowrap font-bold font-serif text-2xl md:text-4xl">
 								{title.split(" ").map((word, i) => (

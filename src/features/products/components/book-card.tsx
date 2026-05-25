@@ -37,10 +37,10 @@ export function BookCard({
 	return (
 		<div className="group relative">
 			<Link className="absolute inset-0 z-10" href={productHref} />
-			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-stone-50">
+			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-card">
 				<Image
 					alt={title}
-					className="object-cover transition-transform duration-700 group-hover:scale-105"
+					className="object-contain transition-transform duration-700 group-hover:scale-105"
 					fill
 					sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
 					src={image}
@@ -50,7 +50,7 @@ export function BookCard({
 					<WishlistToggleButton
 						className={cn(
 							"size-9 rounded-full backdrop-blur-sm",
-							"bg-white/80 text-stone-900 hover:bg-white"
+							"bg-card text-stone-900 hover:bg-mauve-100"
 						)}
 						productId={wixProductId}
 					/>

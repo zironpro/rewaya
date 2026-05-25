@@ -12,6 +12,12 @@ import {
 } from "./categories";
 import { getCatalogVersion, getWixClient } from "./client";
 import { isWixCatalogEnabled } from "./constants";
+import {
+	buildProductDetails,
+	getInfoSectionValue,
+	parseV1AdditionalInfoSections,
+	parseV3InfoSections,
+} from "./info-sections";
 import { catalogProductToBookProps, reshapeV1Product } from "./reshape-product";
 import {
 	mapWixProductToBook,
@@ -51,13 +57,6 @@ function filterCatalogProducts(
 	return products.filter(
 		(product) => Boolean(product.id) && product.visible !== false
 	);
-}
-
-function getInfoSection(product: V1Product, title: string): string | undefined {
-	const sections = product.additionalInfoSections as
-		| Array<{ title?: string; description?: string }>
-		| undefined;
-	return sections?.find((s) => s.title === title)?.description;
 }
 
 function resolveCategoryNames(
@@ -111,6 +110,7 @@ function mapV1Product(
 		collectionIds.find((id) => categoryNameMap?.has(id)) ??
 		primaryCategoryId ??
 		collectionIds[0];
+	const infoSections = parseV1AdditionalInfoSections(product);
 
 	return {
 		id: resolveWixProductId(product),
@@ -123,9 +123,10 @@ function mapV1Product(
 		formattedPrice: priceData?.formatted?.price as string | undefined,
 		currency: priceData?.currency as string | undefined,
 		imageUrl: mainImage as string | undefined,
-		author: getInfoSection(product, "Author"),
-		publisher: getInfoSection(product, "Publisher"),
-		language: getInfoSection(product, "Language"),
+		author: getInfoSectionValue(infoSections, "Author"),
+		publisher: getInfoSectionValue(infoSections, "Publisher"),
+		language: getInfoSectionValue(infoSections, "Language"),
+		infoSections,
 		genre: product.ribbon as string | undefined,
 		collectionIds,
 		categoryIds: collectionIds,
@@ -172,12 +173,7 @@ function mapV3Product(
 		.map((c) => c.slug)
 		.filter((slug): slug is string => Boolean(slug));
 
-	const infoSections = product.infoSections as
-		| Array<{ title?: string; plainDescription?: string; description?: string }>
-		| undefined;
-	const getSection = (title: string) =>
-		infoSections?.find((s) => s.title === title)?.plainDescription ??
-		infoSections?.find((s) => s.title === title)?.description;
+	const infoSections = parseV3InfoSections(product);
 
 	const resolved = resolveCategoryNames(
 		{ categoryIds, categoryNames, genre: undefined },
@@ -193,9 +189,10 @@ function mapV3Product(
 		visible: product.visible as boolean | undefined,
 		price: price != null ? Number(price) : undefined,
 		imageUrl: image as string | undefined,
-		author: getSection("Author"),
-		publisher: getSection("Publisher"),
-		language: getSection("Language"),
+		author: getInfoSectionValue(infoSections, "Author"),
+		publisher: getInfoSectionValue(infoSections, "Publisher"),
+		language: getInfoSectionValue(infoSections, "Language"),
+		infoSections,
 		categoryIds,
 		categoryNames: resolved.categoryNames ?? categoryNames,
 		primaryCategoryId: categoryIds[0],
@@ -428,6 +425,7 @@ export async function getCatalogProductBySlug(
 			author: wixProduct.author,
 			publisher: wixProduct.publisher,
 			language: wixProduct.language,
+			infoSections: wixProduct.infoSections,
 			sku: wixProduct.sku,
 			variants: book.variants ?? [],
 			defaultVariant: book.defaultVariant,
@@ -459,14 +457,11 @@ export async function getProductDetailBySlug(
 	if (!catalog) return null;
 
 	const book = catalogProductToBookProps(catalog);
+
 	return {
 		...book,
 		description: catalog.description ?? "",
-		details: [
-			{ label: "Language", value: catalog.language ?? "—" },
-			{ label: "Publisher", value: catalog.publisher ?? "—" },
-			{ label: "ISBN", value: catalog.sku ?? "—" },
-		],
+		details: buildProductDetails(catalog),
 		images: catalog.images,
 	};
 }

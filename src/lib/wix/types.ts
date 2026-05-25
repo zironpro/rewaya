@@ -1,6 +1,7 @@
 import type { Book, Bundle, Faq } from "@/lib/catalog/types";
 import type { BookProps } from "@/lib/store";
 import type { ProductVariant } from "./catalog-types";
+import type { ProductInfoSection } from "./info-sections";
 import {
 	buildV3VariantsFromCatalog,
 	wixCatalogToBookProps,
@@ -22,6 +23,7 @@ export interface WixCatalogProduct {
 	author?: string;
 	publisher?: string;
 	language?: string;
+	infoSections?: ProductInfoSection[];
 	genre?: string;
 	collectionIds?: string[];
 	categoryIds?: string[];

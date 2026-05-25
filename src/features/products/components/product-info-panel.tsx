@@ -181,30 +181,32 @@ export function ProductInfoPanel({
 				</div>
 			)}
 
-			<div id="product-details">
-				<SectionLabel>Product details</SectionLabel>
-				<dl className="grid grid-cols-2 gap-3 sm:grid-cols-2">
-					{product.details.map((detail) => (
-						<div
-							className="rounded-lg border border-border bg-card px-3 py-2.5"
-							key={detail.label}
-						>
-							<dt className="mb-0.5 text-muted-foreground text-xs">
-								{detail.label}
-							</dt>
-							<dd className="font-semibold text-secondary text-sm">
-								{detail.value}
-							</dd>
-						</div>
-					))}
-				</dl>
-			</div>
+			{product.details.length > 0 && (
+				<div id="product-details">
+					<SectionLabel>Product details</SectionLabel>
+					<dl className="grid grid-cols-2 gap-3 sm:grid-cols-2">
+						{product.details.map((detail) => (
+							<div
+								className="rounded-lg border border-border bg-card px-3 py-2.5"
+								key={detail.label}
+							>
+								<dt className="mb-0.5 text-muted-foreground text-xs">
+									{detail.label}
+								</dt>
+								<dd className="font-semibold text-secondary text-sm">
+									{detail.value}
+								</dd>
+							</div>
+						))}
+					</dl>
+				</div>
+			)}
 
 			<div className="space-y-3 border-border border-t pt-6 lg:hidden">
 				<SectionLabel>Why shop with us</SectionLabel>
 				<ul className="space-y-3">
 					{[
-						{ icon: Truck, text: "Express delivery across the UAE (2–3 days)" },
+						{ icon: Truck, text: "Express delivery across the UAE (2-3 days)" },
 						{ icon: RefreshCcw, text: "Easy 30-day returns on eligible items" },
 						{ icon: ShieldCheck, text: "100% authentic edition guarantee" },
 					].map(({ icon: Icon, text }) => (

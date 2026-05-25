@@ -6,8 +6,11 @@ import {
 	type CatalogProduct,
 	PLACEHOLDER_VARIANT_ID,
 	type ProductVariant,
-	type ProductVariantOption,
 } from "./catalog-types";
+import {
+	getInfoSectionValue,
+	parseV1AdditionalInfoSections,
+} from "./info-sections";
 import type { WixCatalogProduct } from "./types";
 
 const cartesian = <T>(data: T[][]): T[][] =>
@@ -78,9 +81,7 @@ function buildV1Variants(item: V1Product): ProductVariant[] {
 		id: PLACEHOLDER_VARIANT_ID,
 		title: item.name ?? undefined,
 		availableForSale: item.stock?.inventoryStatus === "IN_STOCK",
-		selectedOptions: selectedOptions.filter((o) =>
-			Boolean(o.name && o.value)
-		),
+		selectedOptions: selectedOptions.filter((o) => Boolean(o.name && o.value)),
 		price: {
 			amount: String(item.price?.price ?? 0),
 			currencyCode: item.price?.currency,
@@ -99,6 +100,7 @@ export function reshapeV1Product(
 		item.media?.mainMedia?.thumbnail?.url ??
 		"";
 	const variants = buildV1Variants(item);
+	const infoSections = parseV1AdditionalInfoSections(item);
 
 	return {
 		id: item._id ?? "",
@@ -116,9 +118,10 @@ export function reshapeV1Product(
 		category: categoryName ?? "Books",
 		categoryId,
 		categorySlug,
-		author: undefined,
-		publisher: undefined,
-		language: undefined,
+		author: getInfoSectionValue(infoSections, "Author"),
+		publisher: getInfoSectionValue(infoSections, "Publisher"),
+		language: getInfoSectionValue(infoSections, "Language"),
+		infoSections,
 		sku: item.sku ?? undefined,
 		variants,
 		defaultVariant: variants[0],

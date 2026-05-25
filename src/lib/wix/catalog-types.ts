@@ -1,5 +1,7 @@
 /** Cart / catalog variant shape (aligned with wix/headless-templates nextjs/commerce). */
 
+import type { ProductInfoSection } from "./info-sections";
+
 export const PLACEHOLDER_VARIANT_ID = "00000000-0000-0000-0000-000000000000";
 
 export interface ProductVariantOption {
@@ -34,6 +36,8 @@ export interface CatalogProduct {
 	author?: string;
 	publisher?: string;
 	language?: string;
+	/** Wix Stores additional info sections (Publisher, Author, Language, etc.). */
+	infoSections?: ProductInfoSection[];
 	sku?: string;
 	variants: ProductVariant[];
 	defaultVariant?: ProductVariant;
