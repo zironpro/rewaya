@@ -34,7 +34,7 @@ export function BundlesIndexHero({
 }: BundlesIndexHeroProps) {
 	return (
 		<section className="relative overflow-hidden bg-card py-6 sm:py-12 md:py-20">
-			<div className="absolute inset-0 bg-[radial-gradient(100%_100%_at_50%_100%,oklch(from_var(--color-gold)_l_c_h/0.25)_0,var(--color-card)_50%,var(--color-card)_100%)] bg-white" />
+			<div className="absolute inset-0 bg-[radial-gradient(100%_100%_at_50%_100%,oklch(from_var(--color-gold)_l_c_h/0.25)_0,var(--color-card)_50%,var(--color-card)_100%)] bg-card" />
 			<div className="container relative z-10">
 				<div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
 					<div className="flex flex-col items-start gap-3 md:gap-5 lg:col-span-5">
@@ -55,7 +55,7 @@ export function BundlesIndexHero({
 						/>
 						<div className="flex w-full flex-col gap-3 sm:flex-row sm:items-stretch">
 							<Button
-								className="btn-shimmer w-full flex-1"
+								className="btn-shimmer min-h-11 w-full shrink-0 sm:flex-1"
 								nativeButton={false}
 								render={<Link href={`/bundles/${featuredSlug}`} />}
 								size="lg"
