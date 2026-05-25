@@ -149,11 +149,11 @@ export function ProductPurchasePanel({
 						Buy Now
 					</AddToCartButton>
 
-					{!productId && (
+					{/* {!productId && (
 						<p className="text-center text-muted-foreground text-xs">
 							Catalog sync required to purchase online.
 						</p>
-					)}
+					)} */}
 				</div>
 
 				<Separator className="my-4" />

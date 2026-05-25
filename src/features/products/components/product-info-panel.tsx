@@ -81,12 +81,12 @@ export function ProductInfoPanel({
 					</Button>
 				</div>
 
-				{product.author && (
+				{/* {product.author && (
 					<p className="text-muted-foreground text-sm">
 						by{" "}
 						<span className="font-medium text-secondary">{product.author}</span>
 					</p>
-				)}
+				)} */}
 
 				<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
 					<div className="flex items-center gap-0.5">
@@ -128,7 +128,7 @@ export function ProductInfoPanel({
 			<div className="flex flex-wrap items-center gap-2">
 				<span className="inline-flex items-center gap-1.5 rounded-md border border-warning/30 bg-warning/10 px-2.5 py-1 font-medium text-warning-foreground text-xs">
 					<AlertCircle className="size-3.5" />
-					In stock — ships from UAE
+					In stock - ships from UAE
 				</span>
 				{formatDetail && (
 					<span className="text-muted-foreground text-sm">
@@ -151,9 +151,9 @@ export function ProductInfoPanel({
 
 			<div>
 				<SectionLabel>Delivery information</SectionLabel>
-				<div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-muted/20 px-4 py-3">
+				<div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-muted px-4 py-3">
 					<div className="flex items-center gap-3">
-						<div className="flex size-9 items-center justify-center rounded-md bg-success/15 text-success">
+						<div className="flex size-9 items-center justify-center rounded-md bg-card text-success">
 							<Truck className="size-5" />
 						</div>
 						<div>

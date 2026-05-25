@@ -72,7 +72,7 @@ export function Navbar({
 						</Button>
 
 						<Button
-							className="hidden md:inline-flex"
+							className="relative hidden md:inline-flex"
 							nativeButton={false}
 							render={<Link href="/cart" />}
 							variant="ghost"

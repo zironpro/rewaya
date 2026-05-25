@@ -36,8 +36,6 @@ export function WishlistToggleButton({
 	const wishlisted = isWishlisted(productId);
 	const disabled = !productId || isLoading;
 
-	console.log(productId);
-
 	const handleClick = async (e: MouseEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
