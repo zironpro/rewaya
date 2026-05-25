@@ -1,0 +1,175 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+
+import { motion } from "framer-motion";
+import { Minus, Plus, Trash2 } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+import {
+	firstDescriptionSubtitle,
+	isItemUnavailable,
+	type LineItem,
+	resolveCartImage,
+	resolveProductHref,
+} from "@/features/cart/cart-sdk";
+import { cn } from "@/lib/utils";
+
+interface CartLineItemProps {
+	item: LineItem;
+	onUpdateQuantity: (lineId: string, quantity: number) => void;
+	onRemove: (lineId: string) => void;
+}
+
+export function CartLineItem({
+	item,
+	onUpdateQuantity,
+	onRemove,
+}: CartLineItemProps) {
+	const lineId = item._id ?? "";
+	const unavailable = isItemUnavailable(item);
+	const maxQty = item.availability?.quantityAvailable ?? 99;
+	const href = !unavailable ? resolveProductHref(item) : undefined;
+	const imageUrl = resolveCartImage(item.image, 200, 280);
+	const subtitle = firstDescriptionSubtitle(item);
+	const hasDiscount =
+		item.fullPrice?.formattedConvertedAmount &&
+		item.fullPrice.formattedConvertedAmount !==
+			item.price?.formattedConvertedAmount;
+
+	const unavailableLabel =
+		item.availability?.status === "NOT_FOUND"
+			? "No longer available"
+			: "Out of stock";
+
+	return (
+		<motion.div
+			animate={{ opacity: 1, y: 0 }}
+			className={cn(
+				"grid grid-cols-1 items-center gap-8 border-b py-8 md:grid-cols-4",
+				unavailable && "opacity-75"
+			)}
+			exit={{ opacity: 0, x: -20 }}
+			initial={{ opacity: 0, y: 20 }}
+			key={lineId}
+			layout
+		>
+			<div className="col-span-2 flex gap-6">
+				<div className="relative h-24 w-20 shrink-0 overflow-hidden bg-card sm:h-32 sm:w-24">
+					{imageUrl ? (
+						href ? (
+							<Link className="block h-full w-full" href={href}>
+								<Image
+									alt={item.productName?.translated ?? "Product"}
+									className="h-full w-full object-contain"
+									fill
+									sizes="96px"
+									src={imageUrl}
+								/>
+							</Link>
+						) : (
+							<Image
+								alt={item.productName?.translated ?? "Product"}
+								className="h-full w-full object-cover"
+								fill
+								sizes="96px"
+								src={imageUrl}
+							/>
+						)
+					) : null}
+				</div>
+				<div className="flex flex-col justify-center gap-1">
+					{href ? (
+						<Link
+							className="font-bold text-secondary text-sm hover:text-primary hover:underline"
+							href={href}
+						>
+							{item.productName?.translated}
+						</Link>
+					) : (
+						<h3 className="font-bold text-secondary text-sm">
+							{item.productName?.translated}
+						</h3>
+					)}
+					{subtitle ? (
+						<p className="text-sm text-stone-400">{subtitle}</p>
+					) : null}
+					{hasDiscount && (
+						<p className="text-stone-400 text-xs line-through">
+							{item.fullPrice?.formattedConvertedAmount}
+						</p>
+					)}
+					{item.price?.formattedConvertedAmount && (
+						<p className="text-sm text-stone-500">
+							{item.price.formattedConvertedAmount} each
+						</p>
+					)}
+					{unavailable && (
+						<Badge className="mt-1 w-fit" size="sm" variant="error">
+							{unavailableLabel}
+						</Badge>
+					)}
+					<Button
+						className="mt-1 h-auto w-fit gap-2 p-0 font-bold text-sm text-stone-400 hover:text-primary"
+						onClick={() => lineId && onRemove(lineId)}
+						size="sm"
+						type="button"
+						variant="ghost"
+					>
+						<Trash2 size={12} />
+						Remove
+					</Button>
+				</div>
+			</div>
+
+			<div className="flex items-center justify-center">
+				{unavailable ? (
+					<span className="text-sm text-stone-400">—</span>
+				) : (
+					<div className="flex items-center rounded-sm border border-stone-200">
+						<Button
+							aria-label="Decrease quantity"
+							className="size-8 rounded-none"
+							disabled={!item.quantity || item.quantity <= 1}
+							onClick={() =>
+								lineId && onUpdateQuantity(lineId, (item.quantity ?? 1) - 1)
+							}
+							size="icon"
+							type="button"
+							variant="outline"
+						>
+							<Minus size={12} />
+						</Button>
+						<span className="w-10 text-center font-bold text-sm">
+							{item.quantity}
+						</span>
+						<Button
+							aria-label="Increase quantity"
+							className="size-8 rounded-none"
+							disabled={(item.quantity ?? 0) >= maxQty}
+							onClick={() =>
+								lineId && onUpdateQuantity(lineId, (item.quantity ?? 1) + 1)
+							}
+							size="icon"
+							type="button"
+							variant="outline"
+						>
+							<Plus size={12} />
+						</Button>
+					</div>
+				)}
+			</div>
+
+			<div className="text-right">
+				<span className="font-bold text-primary text-sm">
+					{item.lineItemPrice?.formattedConvertedAmount ??
+						item.price?.formattedConvertedAmount ??
+						"—"}
+				</span>
+			</div>
+		</motion.div>
+	);
+}

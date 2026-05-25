@@ -91,6 +91,7 @@ export const ProductDetailView = ({
 
 						<div className="hidden lg:col-span-3 lg:block xl:col-span-3">
 							<ProductPurchasePanel
+								availableForSale={product.availableForSale}
 								compareAtPrice={compareAtPrice}
 								onQuantityChange={setQuantity}
 								price={product.price}
@@ -113,6 +114,7 @@ export const ProductDetailView = ({
 			</main>
 
 			<ProductMobileBuyBar
+				availableForSale={product.availableForSale}
 				price={product.price}
 				productId={product.wixProductId}
 				productName={product.title}

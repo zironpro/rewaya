@@ -175,6 +175,11 @@ function mapV3Product(
 
 	const infoSections = parseV3InfoSections(product);
 
+	const variantInventory = variant?.inventoryStatus as
+		| { inStock?: boolean; preorderEnabled?: boolean }
+		| undefined;
+	const productStock = product.stock as { inventoryStatus?: string } | undefined;
+
 	const resolved = resolveCategoryNames(
 		{ categoryIds, categoryNames, genre: undefined },
 		categoryNameMap
@@ -200,6 +205,9 @@ function mapV3Product(
 		productPagePath: (product.productPageUrl as { path?: string } | undefined)
 			?.path,
 		variantId: (variant?.id ?? variant?._id) as string | undefined,
+		inventoryStatus: productStock?.inventoryStatus,
+		variantInStock: variantInventory?.inStock,
+		variantPreorderEnabled: variantInventory?.preorderEnabled,
 	};
 }
 
@@ -415,7 +423,7 @@ export async function getCatalogProductBySlug(
 			slug: wixProduct.slug,
 			title: wixProduct.name,
 			description: wixProduct.description,
-			availableForSale: wixProduct.visible !== false,
+			availableForSale: book.availableForSale !== false,
 			price: wixProduct.price ?? 0,
 			currency: wixProduct.currency,
 			image: wixProduct.imageUrl ?? "",

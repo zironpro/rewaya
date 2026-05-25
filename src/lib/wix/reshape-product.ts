@@ -159,17 +159,35 @@ export function catalogProductToBookProps(product: CatalogProduct): BookProps {
 	};
 }
 
+function resolveV3AvailableForSale(product: WixCatalogProduct): boolean {
+	if (product.visible === false) return false;
+	if (product.inventoryStatus === "OUT_OF_STOCK") return false;
+	if (
+		product.variantInStock === false &&
+		product.variantPreorderEnabled !== true
+	) {
+		return false;
+	}
+	return true;
+}
+
 export function wixCatalogToBookProps(
 	product: WixCatalogProduct,
 	categoryNameMap?: Map<string, string>,
 	variants?: ProductVariant[]
 ): BookProps {
+	const resolvedVariants =
+		variants ?? buildV3VariantsFromCatalog(product, product.variantId);
+	const availableForSale =
+		resolvedVariants.some((v) => v.availableForSale !== false) &&
+		resolveV3AvailableForSale(product);
+
 	const base = catalogProductToBookProps({
 		id: product.id,
 		slug: product.slug,
 		title: product.name,
 		description: product.description,
-		availableForSale: product.visible !== false,
+		availableForSale,
 		price: product.price ?? 0,
 		currency: product.currency,
 		image: product.imageUrl ?? "",
@@ -186,26 +204,37 @@ export function wixCatalogToBookProps(
 		publisher: product.publisher,
 		language: product.language,
 		sku: product.sku,
-		variants: variants ?? [],
-		defaultVariant: variants?.[0],
+		variants: resolvedVariants,
+		defaultVariant: resolvedVariants[0],
 	});
 	return base;
+}
+
+function variantAvailableFromV3(product: WixCatalogProduct): boolean {
+	if (product.inventoryStatus === "OUT_OF_STOCK") return false;
+	if (product.variantInStock === false && product.variantPreorderEnabled !== true) {
+		return false;
+	}
+	return true;
 }
 
 export function buildV3VariantsFromCatalog(
 	product: WixCatalogProduct,
 	variantId?: string
 ): ProductVariant[] {
+	const availableForSale = variantAvailableFromV3(product);
+	const price = {
+		amount: String(product.price ?? 0),
+		currencyCode: product.currency,
+	};
+
 	if (!variantId) {
 		return [
 			{
 				id: PLACEHOLDER_VARIANT_ID,
 				selectedOptions: [],
-				availableForSale: true,
-				price: {
-					amount: String(product.price ?? 0),
-					currencyCode: product.currency,
-				},
+				availableForSale,
+				price,
 			},
 		];
 	}
@@ -213,11 +242,8 @@ export function buildV3VariantsFromCatalog(
 		{
 			id: variantId,
 			selectedOptions: [],
-			availableForSale: true,
-			price: {
-				amount: String(product.price ?? 0),
-				currencyCode: product.currency,
-			},
+			availableForSale,
+			price,
 		},
 	];
 }

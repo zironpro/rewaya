@@ -2,14 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
-import Image from "next/image";
-import Link from "next/link";
-
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Minus, Plus, Trash2 } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
-import { Button } from "@/components/ui/button";
 
 import {
 	fetchCart,
@@ -19,16 +14,16 @@ import {
 } from "@/features/cart/cart-actions";
 import {
 	type CartSummary,
-	firstDescriptionSubtitle,
 	isItemUnavailable,
 	type LineItem,
 	readCartSnapshot,
-	resolveCartImage,
-	resolveProductHref,
 	syncCartFromWixResponse,
 } from "@/features/cart/cart-sdk";
+import { CartEmpty } from "@/features/cart/components/cart-empty";
+import { CartLineItem } from "@/features/cart/components/cart-line-item";
+import { CartLoading } from "@/features/cart/components/cart-loading";
+import { CartOrderSummary } from "@/features/cart/components/cart-order-summary";
 import { DeliveryNoticeBanner } from "@/features/cart/components/delivery-notice-banner";
-import { cn } from "@/lib/utils";
 
 function dispatchCartUpdated(cart?: unknown) {
 	window.dispatchEvent(
@@ -174,21 +169,21 @@ export function CartView() {
 				</div>
 
 				{loading ? (
-					<p className="border-stone-100 border-y py-20 text-center text-sm text-stone-400">
-						Loading your bag…
-					</p>
+					<CartLoading />
 				) : items.length === 0 ? (
-					<div className="border-stone-100 border-y py-20 text-center">
-						<p className="mb-8 text-sm text-stone-400">
-							Your bag is currently empty.
-						</p>
-
-						<Button nativeButton={false} render={<Link href="/shop" />}>
-							Explore the Library
-						</Button>
-					</div>
+					<CartEmpty />
 				) : (
 					<div className="flex flex-col gap-20 lg:flex-row">
+						<aside className="order-2 w-full lg:order-0 lg:w-96">
+							<CartOrderSummary
+								checkingOut={checkingOut}
+								displayTotal={displayTotal}
+								hasUnavailable={hasUnavailable}
+								onCheckout={handleCheckout}
+								summary={summary}
+							/>
+						</aside>
+
 						<div className="order-1 grow space-y-8">
 							<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-sm text-stone-400 md:grid">
 								<div className="col-span-2">Product</div>
@@ -197,215 +192,16 @@ export function CartView() {
 							</div>
 
 							<AnimatePresence mode="popLayout">
-								{items.map((item) => {
-									const lineId = item._id ?? "";
-									const unavailable = isItemUnavailable(item);
-									const maxQty = item.availability?.quantityAvailable ?? 99;
-									const href = !unavailable
-										? resolveProductHref(item)
-										: undefined;
-									const imageUrl = resolveCartImage(item.image, 200, 280);
-									const subtitle = firstDescriptionSubtitle(item);
-									const hasDiscount =
-										item.fullPrice?.formattedConvertedAmount &&
-										item.fullPrice.formattedConvertedAmount !==
-											item.price?.formattedConvertedAmount;
-
-									return (
-										<motion.div
-											animate={{ opacity: 1, y: 0 }}
-											className={cn(
-												"grid grid-cols-1 items-center gap-8 border-stone-50 border-b py-8 md:grid-cols-4",
-												unavailable && "opacity-60"
-											)}
-											exit={{ opacity: 0, x: -20 }}
-											initial={{ opacity: 0, y: 20 }}
-											key={lineId}
-											layout
-										>
-											<div className="col-span-2 flex gap-6">
-												<div className="relative h-24 w-20 shrink-0 overflow-hidden bg-stone-50 sm:h-32 sm:w-24">
-													{imageUrl ? (
-														href ? (
-															<Link className="block h-full w-full" href={href}>
-																<Image
-																	alt={
-																		item.productName?.translated ?? "Product"
-																	}
-																	className="h-full w-full object-cover"
-																	fill
-																	sizes="96px"
-																	src={imageUrl}
-																/>
-															</Link>
-														) : (
-															<Image
-																alt={item.productName?.translated ?? "Product"}
-																className="h-full w-full object-cover"
-																fill
-																sizes="96px"
-																src={imageUrl}
-															/>
-														)
-													) : null}
-												</div>
-												<div className="flex flex-col justify-center gap-1">
-													{href ? (
-														<Link
-															className="font-bold text-secondary text-sm hover:text-primary hover:underline"
-															href={href}
-														>
-															{item.productName?.translated}
-														</Link>
-													) : (
-														<h3 className="font-bold text-secondary text-sm">
-															{item.productName?.translated}
-														</h3>
-													)}
-													{subtitle ? (
-														<p className="text-sm text-stone-400">{subtitle}</p>
-													) : null}
-													{hasDiscount && (
-														<p className="text-stone-400 text-xs line-through">
-															{item.fullPrice?.formattedConvertedAmount}
-														</p>
-													)}
-													{item.price?.formattedConvertedAmount && (
-														<p className="text-sm text-stone-500">
-															{item.price.formattedConvertedAmount} each
-														</p>
-													)}
-													{unavailable ? (
-														<p className="mt-2 font-medium text-red-600 text-xs">
-															{item.availability?.status === "NOT_FOUND"
-																? "This item is no longer available"
-																: "Out of stock"}
-														</p>
-													) : (
-														<button
-															className="mt-2 flex w-fit items-center gap-2 font-bold text-sm text-stone-300 transition-colors hover:text-primary"
-															onClick={() => lineId && handleRemoveItem(lineId)}
-															type="button"
-														>
-															<Trash2 size={12} /> Remove
-														</button>
-													)}
-												</div>
-											</div>
-
-											<div className="flex items-center justify-center">
-												{unavailable ? (
-													<span className="text-sm text-stone-400">—</span>
-												) : (
-													<div className="flex items-center rounded-sm border border-stone-100">
-														<button
-															className="p-2 transition-colors hover:bg-stone-50 disabled:opacity-40"
-															disabled={!item.quantity || item.quantity <= 1}
-															onClick={() =>
-																lineId &&
-																handleUpdateQuantity(
-																	lineId,
-																	(item.quantity ?? 1) - 1
-																)
-															}
-															type="button"
-														>
-															<Minus size={12} />
-														</button>
-														<span className="w-10 text-center font-bold text-sm">
-															{item.quantity}
-														</span>
-														<button
-															className="p-2 transition-colors hover:bg-stone-50 disabled:opacity-40"
-															disabled={(item.quantity ?? 0) >= maxQty}
-															onClick={() =>
-																lineId &&
-																handleUpdateQuantity(
-																	lineId,
-																	(item.quantity ?? 1) + 1
-																)
-															}
-															type="button"
-														>
-															<Plus size={12} />
-														</button>
-													</div>
-												)}
-											</div>
-
-											<div className="text-right">
-												<span className="font-bold text-primary text-sm">
-													{item.lineItemPrice?.formattedConvertedAmount ??
-														item.price?.formattedConvertedAmount ??
-														"—"}
-												</span>
-											</div>
-										</motion.div>
-									);
-								})}
+								{items.map((item) => (
+									<CartLineItem
+										item={item}
+										key={item._id ?? ""}
+										onRemove={handleRemoveItem}
+										onUpdateQuantity={handleUpdateQuantity}
+									/>
+								))}
 							</AnimatePresence>
 						</div>
-
-						<aside className="order-2 w-full lg:order-0 lg:w-96">
-							<div className="sticky top-32 bg-stone-50 p-8">
-								<h3 className="mb-8 border-stone-200 border-b pb-4 font-bold text-sm">
-									Order Summary
-								</h3>
-								<div className="mb-8 space-y-4">
-									<div className="flex justify-between font-bold text-sm text-stone-500">
-										<span>Subtotal</span>
-										<span>{summary.subtotal ?? "—"}</span>
-									</div>
-									{summary.discount ? (
-										<div className="flex justify-between font-bold text-sm text-stone-500">
-											<span>
-												Discount
-												{summary.discountNames.length > 0 && (
-													<span className="font-normal text-stone-400">
-														{" "}
-														· {summary.discountNames.join(", ")}
-													</span>
-												)}
-											</span>
-											<span>−{summary.discount}</span>
-										</div>
-									) : summary.discountNames.length > 0 ? (
-										<div className="flex justify-between text-sm text-stone-500">
-											<span>Applied discount</span>
-											<span className="text-right text-stone-400">
-												{summary.discountNames.join(", ")}
-											</span>
-										</div>
-									) : null}
-									<div className="flex justify-between font-bold text-sm text-stone-500">
-										<span>Shipping</span>
-										<span>Free</span>
-									</div>
-								</div>
-								<div className="mb-10 flex items-end justify-between border-stone-200 border-t pt-6">
-									<span className="font-bold text-sm">Total</span>
-									<span className="font-black font-serif text-2xl text-primary">
-										{displayTotal ?? "—"}
-									</span>
-								</div>
-								{hasUnavailable && (
-									<p className="mb-4 text-red-600 text-xs">
-										Remove unavailable items before checking out.
-									</p>
-								)}
-								<Button
-									disabled={checkingOut || hasUnavailable}
-									onClick={handleCheckout}
-									variant="secondary"
-								>
-									{checkingOut ? "Redirecting…" : "Checkout"}
-									<ArrowRight
-										className="ml-2 transition-transform group-hover:translate-x-1"
-										size={16}
-									/>
-								</Button>
-							</div>
-						</aside>
 					</div>
 				)}
 			</div>

@@ -34,6 +34,11 @@ export interface WixCatalogProduct {
 	primaryCategorySlug?: string;
 	productPagePath?: string;
 	variantId?: string;
+	/** Product-level inventory status from Wix Stores V3 */
+	inventoryStatus?: string;
+	/** First variant inStock flag from variantsInfo (authoritative when present) */
+	variantInStock?: boolean;
+	variantPreorderEnabled?: boolean;
 }
 
 /** Row from Wix CMS `BookBundles` collection. */

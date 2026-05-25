@@ -31,6 +31,7 @@ export function BookCard({
 	category,
 	badge,
 	defaultVariant,
+	availableForSale,
 }: BookProps) {
 	const productHref = `/product/${slug ?? id}`;
 
@@ -68,7 +69,7 @@ export function BookCard({
 							<Eye size={16} strokeWidth={1.5} />
 						</DialogTrigger>
 						<DialogContent className="max-w-3xl">
-							<div className="grid grid-cols-1 gap-8 pt-6 md:grid-cols-2">
+							<div className="grid grid-cols-1 gap-8 p-6 md:grid-cols-2">
 								<div className="relative aspect-3/4 overflow-hidden bg-stone-50">
 									<Image
 										alt={title}
@@ -96,6 +97,7 @@ export function BookCard({
 										</p>
 										<div className="flex gap-4">
 											<AddToCartButton
+												availableForSale={availableForSale}
 												className="h-14 flex-1"
 												disabled={!wixProductId}
 												productId={wixProductId ?? ""}
@@ -120,6 +122,7 @@ export function BookCard({
 
 				<div className="absolute right-0 bottom-0 left-0 z-20 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
 					<AddToCartButton
+						availableForSale={availableForSale}
 						className="h-auto w-full rounded-none p-6 text-white hover:text-white"
 						disabled={!wixProductId}
 						productId={wixProductId ?? ""}

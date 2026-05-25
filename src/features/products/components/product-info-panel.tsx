@@ -126,10 +126,16 @@ export function ProductInfoPanel({
 			</div>
 
 			<div className="flex flex-wrap items-center gap-2">
-				<span className="inline-flex items-center gap-1.5 rounded-md border border-warning/30 bg-warning/10 px-2.5 py-1 font-medium text-warning-foreground text-xs">
-					<AlertCircle className="size-3.5" />
-					In stock - ships from UAE
-				</span>
+				{product.availableForSale !== false ? (
+					<span className="inline-flex items-center gap-1.5 rounded-md border border-warning/30 bg-warning/10 px-2.5 py-1 font-medium text-warning-foreground text-xs">
+						<AlertCircle className="size-3.5" />
+						In stock - ships from UAE
+					</span>
+				) : (
+					<Badge size="sm" variant="error">
+						Out of stock
+					</Badge>
+				)}
 				{formatDetail && (
 					<span className="text-muted-foreground text-sm">
 						{formatDetail.value}

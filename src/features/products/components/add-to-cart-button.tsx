@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 import { addItem } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
+import { isAvailableForPurchase } from "@/lib/wix/availability";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
 import { isCmsCatalogAppId } from "@/lib/wix/purchase-flow";
 
@@ -16,6 +17,7 @@ interface AddToCartButtonProps {
 	catalogAppId?: string;
 	/** Wix Stores variant / options for catalogReference */
 	productVariant?: ProductVariant;
+	availableForSale?: boolean;
 	quantity?: number;
 	disabled?: boolean;
 	className?: string;
@@ -36,6 +38,7 @@ export function AddToCartButton({
 	productName: _productName,
 	catalogAppId,
 	productVariant,
+	availableForSale,
 	quantity = 1,
 	disabled,
 	className,
@@ -49,9 +52,9 @@ export function AddToCartButton({
 	);
 
 	const isCmsCatalog = isCmsCatalogAppId(catalogAppId);
-	const canAdd =
-		Boolean(productId) &&
-		(isCmsCatalog || productVariant?.availableForSale !== false);
+	const inStock = isAvailableForPurchase(availableForSale, productVariant);
+	const canAdd = Boolean(productId) && (isCmsCatalog || inStock);
+	const outOfStock = Boolean(productId) && !isCmsCatalog && !inStock;
 
 	const handleAddToCart = async () => {
 		if (!productId || !canAdd) return;
@@ -64,6 +67,7 @@ export function AddToCartButton({
 				variant: productVariant,
 				quantity,
 				catalogAppId,
+				availableForSale,
 			});
 			if (error) {
 				setStatus("error");
@@ -93,7 +97,9 @@ export function AddToCartButton({
 				? "Added ✓"
 				: status === "error"
 					? "Try again"
-					: (children ?? "Add to Cart");
+					: outOfStock
+						? "Out of Stock"
+						: (children ?? "Add to Cart");
 
 	return (
 		<Button
@@ -101,6 +107,7 @@ export function AddToCartButton({
 			disabled={disabled || !canAdd || status === "added"}
 			onClick={handleAddToCart}
 			size={size}
+			title={outOfStock ? "This item is currently out of stock" : undefined}
 			variant={variant}
 		>
 			{label}

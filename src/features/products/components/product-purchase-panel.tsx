@@ -32,6 +32,7 @@ interface ProductPurchasePanelProps {
 	compareAtPrice?: number;
 	productId?: string;
 	productVariant?: import("@/lib/wix/catalog-types").ProductVariant;
+	availableForSale?: boolean;
 	quantity: number;
 	onQuantityChange: (qty: number) => void;
 	className?: string;
@@ -43,11 +44,13 @@ export function ProductPurchasePanel({
 	compareAtPrice,
 	productId,
 	productVariant,
+	availableForSale,
 	quantity,
 	onQuantityChange,
 	className,
 }: ProductPurchasePanelProps) {
 	const router = useRouter();
+	const inStock = availableForSale !== false;
 	const savingsPercent =
 		compareAtPrice && compareAtPrice > price
 			? Math.round((1 - price / compareAtPrice) * 100)
@@ -100,7 +103,7 @@ export function ProductPurchasePanel({
 						<Button
 							aria-label="Decrease quantity"
 							className="size-8"
-							disabled={quantity <= 1}
+							disabled={!inStock || quantity <= 1}
 							onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
 							size="icon"
 							type="button"
@@ -114,6 +117,7 @@ export function ProductPurchasePanel({
 						<Button
 							aria-label="Increase quantity"
 							className="size-8"
+							disabled={!inStock}
 							onClick={() => onQuantityChange(quantity + 1)}
 							size="icon"
 							type="button"
@@ -126,6 +130,7 @@ export function ProductPurchasePanel({
 
 				<div className="flex flex-col gap-2">
 					<AddToCartButton
+						availableForSale={availableForSale}
 						className="hidden w-full gap-2 md:flex"
 						disabled={!productId}
 						productId={productId ?? ""}
@@ -140,6 +145,7 @@ export function ProductPurchasePanel({
 					</AddToCartButton>
 
 					<AddToCartButton
+						availableForSale={availableForSale}
 						className="hidden w-full md:flex"
 						disabled={!productId}
 						onAdded={() => router.push("/cart")}

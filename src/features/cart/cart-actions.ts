@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { isAvailableForPurchase } from "@/lib/wix/availability";
 import {
 	addToCartServer,
 	createCheckoutUrlServer,
@@ -12,6 +13,7 @@ import {
 	updateCartLineQuantityServer,
 } from "@/lib/wix/cart";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
+import { isCmsCatalogAppId } from "@/lib/wix/purchase-flow";
 
 export type CartActionResult = {
 	error: string | null;
@@ -32,12 +34,20 @@ export async function addItem(
 	item: {
 		productId: string;
 		variant?: ProductVariant;
+		availableForSale?: boolean;
 		quantity?: number;
 		catalogAppId?: string;
 	}
 ): Promise<CartActionResult> {
 	if (!item.productId) {
 		return { error: "Missing product" };
+	}
+
+	if (
+		!isCmsCatalogAppId(item.catalogAppId) &&
+		!isAvailableForPurchase(item.availableForSale, item.variant)
+	) {
+		return { error: "This item is out of stock." };
 	}
 
 	try {

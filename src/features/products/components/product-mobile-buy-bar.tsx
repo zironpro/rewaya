@@ -10,6 +10,7 @@ interface ProductMobileBuyBarProps {
 	productId?: string;
 	productName?: string;
 	productVariant?: ProductVariant;
+	availableForSale?: boolean;
 	quantity?: number;
 }
 
@@ -18,6 +19,7 @@ export function ProductMobileBuyBar({
 	productId,
 	productName = "Product",
 	productVariant,
+	availableForSale,
 	quantity = 1,
 }: ProductMobileBuyBarProps) {
 	return (
@@ -27,6 +29,7 @@ export function ProductMobileBuyBar({
 					AED {price.toFixed(2)}
 				</span>
 				<AddToCartButton
+					availableForSale={availableForSale}
 					className="shrink-0 gap-2"
 					disabled={!productId}
 					productId={productId ?? ""}
