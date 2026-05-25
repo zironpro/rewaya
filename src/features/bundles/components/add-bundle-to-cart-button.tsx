@@ -8,7 +8,8 @@ import { addBundle } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
 
 interface AddBundleToCartButtonProps {
-	productIds: string[];
+	checkoutCatalogItemId: string;
+	checkoutCatalogAppId?: string;
 	quantity?: number;
 	disabled?: boolean;
 	className?: string;
@@ -25,7 +26,8 @@ function dispatchCartUpdated(cart?: unknown) {
 }
 
 export function AddBundleToCartButton({
-	productIds,
+	checkoutCatalogItemId,
+	checkoutCatalogAppId,
 	quantity = 1,
 	disabled,
 	className,
@@ -38,7 +40,7 @@ export function AddBundleToCartButton({
 		"idle"
 	);
 
-	const canAdd = productIds.length > 0;
+	const canAdd = Boolean(checkoutCatalogItemId);
 
 	const handleAddToCart = async () => {
 		if (!canAdd) return;
@@ -46,7 +48,11 @@ export function AddBundleToCartButton({
 		setStatus("loading");
 
 		try {
-			const { error, cart } = await addBundle(null, { productIds, quantity });
+			const { error, cart } = await addBundle(null, {
+				catalogItemId: checkoutCatalogItemId,
+				catalogAppId: checkoutCatalogAppId,
+				quantity,
+			});
 			if (error) {
 				setStatus("error");
 				setTimeout(() => setStatus("idle"), 2500);
@@ -83,11 +89,7 @@ export function AddBundleToCartButton({
 			disabled={disabled || !canAdd || status === "added"}
 			onClick={handleAddToCart}
 			size={size}
-			title={
-				!canAdd
-					? "Link Wix Stores products in the BookBundles collection"
-					: undefined
-			}
+			title={!canAdd ? "This bundle is not available for purchase" : undefined}
 			variant={variant}
 		>
 			{label}

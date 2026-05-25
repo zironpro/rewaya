@@ -24,9 +24,10 @@ export function BundleCheckoutCta({
 }: BundleCheckoutCtaProps) {
 	return (
 		<AddBundleToCartButton
+			checkoutCatalogAppId={bundle.checkoutCatalogAppId}
+			checkoutCatalogItemId={bundle.checkoutCatalogItemId}
 			className={cn(shimmerClass, "min-h-11 w-full shrink-0 gap-2", className)}
-			disabled={bundle.storeProductIds.length === 0}
-			productIds={bundle.storeProductIds}
+			disabled={!bundle.checkoutCatalogItemId}
 			size={size}
 		>
 			<ShoppingBag className="size-4" />

@@ -70,18 +70,25 @@ export async function addItem(
 
 export async function addBundle(
 	_prevState: unknown,
-	item: { productIds: string[]; quantity?: number }
+	item: {
+		catalogItemId: string;
+		catalogAppId?: string;
+		quantity?: number;
+	}
 ): Promise<CartActionResult> {
-	const productIds = (item.productIds ?? []).filter(Boolean);
-	if (!productIds.length) {
+	const catalogItemId = item.catalogItemId?.trim();
+	if (!catalogItemId) {
 		return {
-			error:
-				"This bundle has no linked products. Link books in the BookBundles collection.",
+			error: "This bundle is not available for purchase.",
 		};
 	}
 
 	try {
-		const cart = await addBundleToCartServer(productIds, item.quantity ?? 1);
+		const cart = await addBundleToCartServer(
+			catalogItemId,
+			item.quantity ?? 1,
+			item.catalogAppId
+		);
 		revalidatePath("/", "layout");
 		return { error: null, cart };
 	} catch (e) {

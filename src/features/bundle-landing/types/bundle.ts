@@ -38,7 +38,11 @@ export interface BundleData {
 	books: BookItem[];
 	reviews: Review[];
 	faqs: FAQ[];
-	/** Wix Stores product IDs from BookBundles `bundleProducts` */
+	/** Wix Stores product ID when set on CMS */
+	bundleProductId: string;
+	checkoutCatalogItemId: string;
+	checkoutCatalogAppId: string;
+	/** Included book Stores IDs — display only */
 	storeProductIds: string[];
 	coverImage: string;
 }

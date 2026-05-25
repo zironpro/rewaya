@@ -17,6 +17,9 @@ export function mapBundleToBundleData(bundle: Bundle): BundleData {
 		price: bundle.price,
 		originalPrice: bundle.originalPrice,
 		savingsAmount: bundle.originalPrice - bundle.price,
+		bundleProductId: bundle.bundleProductId,
+		checkoutCatalogItemId: bundle.checkoutCatalogItemId,
+		checkoutCatalogAppId: bundle.checkoutCatalogAppId,
 		storeProductIds: bundle.storeProductIds,
 		coverImage: bundle.coverImage,
 		books: bundle.books.map((book) => ({

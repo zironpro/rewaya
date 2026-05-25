@@ -89,6 +89,27 @@ interface ParsedBundleProducts {
 	books: Book[];
 }
 
+/** CMS text or product-reference field → Stores/CMS catalog item id. */
+function parseCmsProductIdField(raw: unknown): string | undefined {
+	if (!raw) return undefined;
+	if (typeof raw === "string") {
+		const id = raw.trim();
+		return id || undefined;
+	}
+	if (Array.isArray(raw) && raw.length > 0) {
+		return parseCmsProductIdField(raw[0]);
+	}
+	if (typeof raw === "object") {
+		const obj = raw as Record<string, unknown>;
+		const id = obj._id ?? obj.id ?? obj.productId;
+		if (id != null) {
+			const s = String(id).trim();
+			return s || undefined;
+		}
+	}
+	return undefined;
+}
+
 /** Text/array `productIds` field (comma-separated or JSON array). */
 function parseProductIdsField(raw: unknown): string[] {
 	if (!raw) return [];
@@ -261,6 +282,15 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 			if (!itemId || (!title && includedBookIds.length === 0)) continue;
 
 			const slug = resolveBundleSlug(title, itemId, usedSlugs);
+			const bundleProductIdRaw = readCmsField(
+				data,
+				"bundleProductId",
+				"bundle_product_id",
+				"wixProductId",
+				"bundleProduct",
+				"bundle_product"
+			);
+			const bundleProductId = parseCmsProductIdField(bundleProductIdRaw);
 
 			rows.push({
 				_id: itemId,
@@ -276,6 +306,7 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 				includedBookIds,
 				includedBooks: includedBooks.length > 0 ? includedBooks : undefined,
 				cmsCatalogItemId: itemId,
+				bundleProductId,
 				tag: readCmsField(data, "tag", "ribbon") as string | undefined,
 			});
 		}

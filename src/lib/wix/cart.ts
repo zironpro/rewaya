@@ -5,7 +5,7 @@ import { currentCart } from "@wix/ecom";
 import type { ProductVariant } from "./catalog-types";
 import {
 	buildAddToCartLineItem,
-	buildBundleLineItems,
+	buildBundleProductLineItem,
 	buildCmsCatalogLineItem,
 	isCmsCatalogAppId,
 } from "./purchase-flow";
@@ -36,17 +36,21 @@ export async function addToCartServer(lines: AddToCartLineInput[]) {
 	return cart;
 }
 
-/** Add all Wix Stores products linked to a BookBundles CMS row. */
+/** Add one bundle line (Stores `bundleProductId` or BookBundles CMS catalog item). */
 export async function addBundleToCartServer(
-	productIds: string[],
-	quantity = 1
+	catalogItemId: string,
+	quantity = 1,
+	catalogAppId?: string
 ) {
-	if (!productIds.length) {
-		throw new Error("Bundle has no linked Wix Stores products.");
+	if (!catalogItemId) {
+		throw new Error("Bundle has no checkout catalog item id.");
 	}
 	const client = await getWixServerSessionClient();
+	const lineItem = isCmsCatalogAppId(catalogAppId)
+		? buildCmsCatalogLineItem(catalogItemId, quantity)
+		: buildBundleProductLineItem(catalogItemId, quantity);
 	const { cart } = await client.currentCart.addToCurrentCart({
-		lineItems: buildBundleLineItems(productIds, quantity),
+		lineItems: [lineItem],
 	});
 	return cart;
 }

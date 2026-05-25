@@ -3,6 +3,7 @@ import type { BookProps } from "@/lib/store";
 
 import type { ProductVariant } from "./catalog-types";
 import type { ProductInfoSection } from "./info-sections";
+import { resolveBundleCheckout } from "./purchase-flow";
 import {
 	buildV3VariantsFromCatalog,
 	wixCatalogToBookProps,
@@ -53,8 +54,10 @@ export interface BookBundleCmsItem {
 	includedBookIds: string[];
 	/** Books resolved from expanded `bundleProducts` refs (when query uses `.include()`). */
 	includedBooks?: Book[];
-	/** BookBundles CMS catalog item id for add-to-cart. */
+	/** BookBundles CMS catalog item id (legacy CMS-catalog checkout). */
 	cmsCatalogItemId: string;
+	/** Wix Stores product ID for the discounted bundle SKU (checkout). */
+	bundleProductId?: string;
 	tag?: string;
 }
 
@@ -95,6 +98,11 @@ export function mapBookBundleFromCms(
 	const tagline =
 		overview.length > 120 ? `${overview.slice(0, 117)}…` : overview;
 
+	const checkout = resolveBundleCheckout({
+		bundleProductId: details.bundleProductId,
+		cmsCatalogItemId: details.cmsCatalogItemId,
+	});
+
 	return {
 		id: details.slug,
 		title: details.title,
@@ -106,6 +114,9 @@ export function mapBookBundleFromCms(
 		longDescription: overview,
 		coverImage: details.coverImage || includedBooks[0]?.image || "",
 		books: includedBooks,
+		bundleProductId: details.bundleProductId ?? "",
+		checkoutCatalogItemId: checkout.checkoutCatalogItemId,
+		checkoutCatalogAppId: checkout.checkoutCatalogAppId,
 		storeProductIds: details.includedBookIds,
 		faqs: [],
 	};

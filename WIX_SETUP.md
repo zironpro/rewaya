@@ -100,20 +100,27 @@ In CMS `HomepageSections`, set `categorySlug` to the **slug from Wix** (Dashboar
 
 ### `BookBundles` (CMS ID; dashboard label: **Bundles**)
 
-This collection is a **CMS catalog collection** (CATALOG plugin). Each row is the purchasable bundle SKU.
+Each row is a marketing/content bundle. Checkout uses a **separate Wix Stores product** per bundle (discounted bundle SKU).
 
 | Field | Type | Notes |
 |-------|------|-------|
 | `bundleTitle` | Text | Display name; slug generated for URLs |
+| `bundleProductId` | Text | **Required for checkout** — Wix Stores product ID for this bundle |
 | `bundleProducts` | Multi-reference | Included Wix Stores books — **display only** (“what’s inside”) |
-| `price` | Number | Bundle price (AED); used by CMS catalog checkout |
+| `price` | Number | Bundle price (AED) for UI; should match the Stores bundle product price |
 | `originalPrice` | Number | Strikethrough / savings |
 | `overview` | Text | Description |
 | `bundleImage` | Image | Cover art |
 | `offerStart` / `offerEnd` | Date | Optional campaign window |
 | `quantityAvailable` | Number | Optional stock hint |
 
-**Add to cart:** `catalogReference.appId` = CMS catalog (`e593b0bd-b783-45b8-97c2-873d42aacaf4`), `catalogItemId` = the BookBundles CMS item `_id`. Do not use Stores product ids from `bundleProducts` for checkout.
+**Dashboard setup (per bundle):**
+
+1. Create a Wix Stores product with the bundle discounted price and name.
+2. Copy the product ID into `bundleProductId` on the matching `BookBundles` row.
+3. Link books in `bundleProducts` for the “what’s inside” list only.
+
+**Add to cart:** one line only. If `bundleProductId` is set → Wix Stores app + that product id. If not set yet → CMS catalog app (`e593b0bd-b783-45b8-97c2-873d42aacaf4`) + the BookBundles row `_id` (bundle CMS price). Do not add individual `bundleProducts` IDs to the cart.
 
 ## Purchase flow
 

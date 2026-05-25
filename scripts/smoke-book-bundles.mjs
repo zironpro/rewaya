@@ -1,6 +1,6 @@
-import { readFileSync, existsSync } from "fs";
-import { createClient, OAuthStrategy } from "@wix/sdk";
 import { items } from "@wix/data";
+import { createClient, OAuthStrategy } from "@wix/sdk";
+import { existsSync, readFileSync } from "fs";
 
 for (const file of [".env.local", ".env"]) {
 	if (!existsSync(file)) continue;
@@ -17,13 +17,17 @@ const client = createClient({
 	headers: { "wix-site-id": process.env.NEXT_PUBLIC_WIX_SITE_ID },
 });
 
-const { items: rows } = await client.items.query("BookBundles").limit(10).find();
+const { items: rows } = await client.items
+	.query("BookBundles")
+	.limit(10)
+	.find();
 console.log("BookBundles count:", rows.length);
 for (const item of rows) {
 	console.log({
 		_id: item._id,
 		keys: Object.keys(item.data ?? {}),
 		bundleTitle: item.data?.bundleTitle,
+		bundleProductId: item.data?.bundleProductId,
 		bundleProducts: item.data?.bundleProducts,
 		price: item.data?.price,
 	});

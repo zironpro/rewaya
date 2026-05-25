@@ -43,9 +43,10 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 				</ScrollArea>
 
 				<AddBundleToCartButton
+					checkoutCatalogAppId={bundle.checkoutCatalogAppId}
+					checkoutCatalogItemId={bundle.checkoutCatalogItemId}
 					className="w-full gap-3"
-					disabled={bundle.storeProductIds.length === 0}
-					productIds={bundle.storeProductIds}
+					disabled={!bundle.checkoutCatalogItemId}
 					size="lg"
 					variant="secondary"
 				>
@@ -55,9 +56,11 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 
 				<Separator className="my-4" />
 
-				{bundle.storeProductIds[0] ? (
+				{bundle.bundleProductId || bundle.storeProductIds[0] ? (
 					<WishlistToggleButton
-						productId={bundle.storeProductIds[0]}
+						productId={
+							bundle.bundleProductId || bundle.storeProductIds[0]!
+						}
 						variant="row"
 					/>
 				) : null}
