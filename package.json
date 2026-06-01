@@ -9,8 +9,7 @@
 		"lint": "biome check --write",
 		"format": "biome format --write",
 		"typecheck": "tsc --noEmit",
-		"check": "biome check src && tsc --noEmit",
-		"smoke:home": "node scripts/smoke-homepage.mjs"
+		"check": "biome check src && tsc --noEmit"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.4.1",

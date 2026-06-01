@@ -114,7 +114,11 @@ export async function addBundle(
 			catalogItemId,
 			item.quantity ?? 1,
 			item.catalogAppId,
-			{ bundleSlug: item.bundleSlug?.trim() }
+			{
+				bundleSlug: item.bundleSlug?.trim(),
+				// Never add individual book lines — wrong total; use Stores bundle SKU + discount rules.
+				bundleOnly: true,
+			}
 		);
 		const enriched = await enrichCartResponse(cart);
 		const lineCount =
