@@ -58,7 +58,7 @@ export function WishlistToggleButton({
 				<Heart
 					className={cn(
 						"transition-all",
-						wishlisted && "fill-primary text-primary",
+
 						iconClassName
 					)}
 					size={iconSizes[size]}

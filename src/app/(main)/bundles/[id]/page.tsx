@@ -23,14 +23,28 @@ export default async function BundleDetailPage({
 		getShopBooks(),
 	]);
 
+	// const client = getWixClient();
+	// const { items } = await client.items
+	// 	.query(BOOK_BUNDLES_COLLECTION)
+	// 	// .include("bundleProducts")
+	// 	.limit(1)
+	// 	.find();
+
+	// console.log("items", items);
+
 	if (!bundle) notFound();
 
 	return (
-		<BundleDetailView
-			allBundles={allBundles}
-			bundle={bundle}
-			id={id}
-			relatedBooks={relatedBooks}
-		/>
+		<>
+			{/* <pre className="text-wrap px-6 text-xs">
+				{JSON.stringify(items, null, 2)}
+			</pre> */}
+			<BundleDetailView
+				allBundles={allBundles}
+				bundle={bundle}
+				id={id}
+				relatedBooks={relatedBooks}
+			/>
+		</>
 	);
 }

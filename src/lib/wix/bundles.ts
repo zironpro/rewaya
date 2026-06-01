@@ -10,7 +10,6 @@ import { getCmsItemData, readCmsField } from "./cms/record";
 import { isWixCatalogEnabled } from "./constants";
 import { resolveWixImageUrl } from "./image";
 import { queryWixProducts, searchWixProducts } from "./products";
-import { resolveBundleCheckout } from "./purchase-flow";
 import {
 	type BookBundleCmsItem,
 	type Bundle,
@@ -19,7 +18,7 @@ import {
 } from "./types";
 
 /** Wix CMS collection (dashboard label: Bundles, ID: BookBundles). */
-export const BOOK_BUNDLES_COLLECTION = "BookBundles";
+export const BOOK_BUNDLES_COLLECTION = "BookBundles" as const;
 
 function parseNumber(value: unknown): number {
 	if (typeof value === "number" && !Number.isNaN(value)) return value;
@@ -386,24 +385,24 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 			});
 		}
 
-		if (process.env.NODE_ENV === "development" && rows.length > 0) {
-			const first = rows[0];
-			console.log(
-				"[BookBundles] loaded",
-				rows.length,
-				"row(s); first mapped:",
-				{
-					slug: first?.slug,
-					bundleProductId: first?.bundleProductId ?? "(none)",
-					cmsCatalogItemId: first?.cmsCatalogItemId,
-					checkout: resolveBundleCheckout({
-						bundleProductId: first?.bundleProductId,
-						cmsCatalogItemId: first?.cmsCatalogItemId ?? "",
-					}),
-					includedBookIds: first?.includedBookIds?.length ?? 0,
-				}
-			);
-		}
+		// if (process.env.NODE_ENV === "development" && rows.length > 0) {
+		// 	const first = rows[0];
+		// 	console.log(
+		// 		"[BookBundles] loaded",
+		// 		rows.length,
+		// 		"row(s); first mapped:",
+		// 		{
+		// 			slug: first?.slug,
+		// 			bundleProductId: first?.bundleProductId ?? "(none)",
+		// 			cmsCatalogItemId: first?.cmsCatalogItemId,
+		// 			checkout: resolveBundleCheckout({
+		// 				bundleProductId: first?.bundleProductId,
+		// 				cmsCatalogItemId: first?.cmsCatalogItemId ?? "",
+		// 			}),
+		// 			includedBookIds: first?.includedBookIds?.length ?? 0,
+		// 		}
+		// 	);
+		// }
 
 		return rows;
 	} catch (error) {

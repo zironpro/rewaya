@@ -66,7 +66,11 @@ async function resolveSessionTokens(
 	return tokens;
 }
 
-/** Wix client for server actions using visitor/member tokens from wix_session cookie. */
+/**
+ * Per-request Wix client for cart/ecom (not cached).
+ * Uses visitor/member OAuth tokens from the `wix_session` cookie — same session as
+ * the browser after `proxy.ts` mints or refreshes visitor tokens.
+ */
 export async function getWixServerSessionClient() {
 	const clientId = getWixOAuthClientId();
 	if (!clientId) {

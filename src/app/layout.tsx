@@ -29,6 +29,7 @@ export default function RootLayout({
 				"font-sans",
 				inter.variable
 			)}
+			data-scroll-behavior="smooth"
 			lang="en"
 		>
 			<body>

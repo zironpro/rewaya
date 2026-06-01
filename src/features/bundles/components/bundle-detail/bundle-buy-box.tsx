@@ -1,13 +1,15 @@
-import { ShoppingBagIcon } from "lucide-react";
+import { useState, useTransition } from "react";
 
 import { PurchasePanelShell } from "@/components/commerce/purchase-panel-shell";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
-import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
 import { WishlistToggleButton } from "@/features/wishlist/components/wishlist-toggle-button";
 import type { Bundle } from "@/lib/catalog/types";
 import { cn } from "@/lib/utils";
+
+import { addToCartAction } from "./add-to-cart-action";
 
 interface BundleBuyBoxProps {
 	bundle: Bundle;
@@ -15,6 +17,23 @@ interface BundleBuyBoxProps {
 }
 
 export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
+	const [isPending, startTransition] = useTransition();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const canAdd = Boolean(bundle.checkoutCatalogItemId);
+	console.log(" bundle.bundleProductId", bundle.checkoutCatalogItemId);
+	const handleAddToCart = () => {
+		setErrorMessage(null);
+		startTransition(async () => {
+			try {
+				await addToCartAction({
+					checkoutCatalogItemId: bundle.checkoutCatalogItemId,
+				});
+			} catch (error) {
+				console.error("[bundle-cart] BundleBuyBox — add failed:", error);
+			}
+		});
+	};
+
 	return (
 		<PurchasePanelShell className={cn("p-6", className)}>
 			<div>
@@ -42,7 +61,14 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 				</div>
 			</ScrollArea>
 
-			<AddBundleToCartButton
+			<Button disabled={!canAdd || isPending} onClick={handleAddToCart}>
+				{isPending ? "Adding…" : "Add to cart"}
+			</Button>
+			{errorMessage ? (
+				<p className="mt-2 text-destructive text-xs">{errorMessage}</p>
+			) : null}
+
+			{/* <AddBundleToCartButton
 				bundleSlug={bundle.id}
 				checkoutCatalogAppId={bundle.checkoutCatalogAppId}
 				checkoutCatalogItemId={bundle.checkoutCatalogItemId}
@@ -53,7 +79,7 @@ export function BundleBuyBox({ bundle, className }: BundleBuyBoxProps) {
 			>
 				<ShoppingBagIcon />
 				Add to Cart
-			</AddBundleToCartButton>
+			</AddBundleToCartButton> */}
 
 			<Separator className="my-4" />
 

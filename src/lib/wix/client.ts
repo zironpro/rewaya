@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 import { items } from "@wix/data";
 import { currentCart } from "@wix/ecom";
 import { createClient, type IOAuthStrategy, OAuthStrategy } from "@wix/sdk";
@@ -8,7 +10,8 @@ import {
 	productsV3,
 } from "@wix/stores";
 
-import { WIX_SITE_ID } from "./constants";
+import { WIX_SESSION_COOKIE, WIX_SITE_ID } from "./constants";
+import { parseSessionTokens } from "./session-cookie";
 
 /** Resolved catalog mode from Wix (e.g. `V3_CATALOG`). */
 export type CatalogVersion = string;
@@ -30,7 +33,6 @@ function createWixClient() {
 			productsV3,
 			collections,
 			catalogVersioning,
-			currentCart,
 			items,
 		},
 		auth: OAuthStrategy({
@@ -42,6 +44,11 @@ function createWixClient() {
 	});
 }
 
+/**
+ * App-level Wix client for catalog/CMS reads (OAuth + site id).
+ * Do not use for `currentCart` — use `getWixServerSessionClient` from
+ * `./server-session-client` (visitor/member tokens from `wix_session` cookie).
+ */
 export function getWixClient() {
 	if (!cachedClient) {
 		cachedClient = createWixClient();
@@ -57,4 +64,16 @@ export async function getCatalogVersion(): Promise<CatalogVersion> {
 	const resolved = catalogVersion ?? "V1_CATALOG";
 	cachedCatalogVersion = resolved;
 	return resolved;
+}
+
+export async function getVisitorWixClient() {
+	const cookieVal = (await cookies()).get(WIX_SESSION_COOKIE)?.value;
+	const tokens = parseSessionTokens(cookieVal);
+
+	const clientId = process.env.WIX_CLIENT_ID!;
+	return createClient({
+		modules: { currentCart },
+		auth: OAuthStrategy({ clientId, tokens }), // <-- key part
+		headers: { "wix-site-id": WIX_SITE_ID },
+	});
 }

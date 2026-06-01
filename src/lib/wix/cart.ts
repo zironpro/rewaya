@@ -109,6 +109,8 @@ export interface AddBundleToCartOptions {
 	quantity?: number;
 	catalogAppId?: string;
 	bundleSlug?: string;
+	/** Only add the bundle SKU — never fall back to individual book line items. */
+	bundleOnly?: boolean;
 }
 
 interface ResolvedBundleCheckout {
@@ -191,7 +193,8 @@ async function addBundleWithFallbacks(
 	client: WixSessionClient,
 	checkout: ResolvedBundleCheckout,
 	quantity: number,
-	bundleSlug?: string
+	bundleSlug?: string,
+	bundleOnly = false
 ): Promise<unknown> {
 	const bundle = bundleSlug ? await getBundleBySlug(bundleSlug) : null;
 
@@ -206,15 +209,16 @@ async function addBundleWithFallbacks(
 	}
 
 	if (lineItems === 0 && bundle?.bundleProductId) {
-		const retry = await tryStoresBundleProduct(
-			client,
-			bundle.bundleProductId,
-			quantity
-		);
-		if (retry) ({ cart, lineItems } = retry);
+		const storesId = bundle.bundleProductId.trim();
+		const checkoutId = checkout.catalogItemId.trim();
+		// Retry Stores SKU when primary used CMS catalog (or wrong id).
+		if (storesId && storesId !== checkoutId) {
+			const retry = await tryStoresBundleProduct(client, storesId, quantity);
+			if (retry) ({ cart, lineItems } = retry);
+		}
 	}
 
-	if (lineItems === 0) {
+	if (lineItems === 0 && !bundleOnly) {
 		const fallback = await tryIncludedBooksFallback(
 			client,
 			bundle?.storeProductIds,
@@ -225,7 +229,9 @@ async function addBundleWithFallbacks(
 
 	if (lineItems === 0) {
 		throw new Error(
-			"Cart add returned no line items. Set bundleProductId on the BookBundles row in Wix, or run scripts/ensure-book-bundles-catalog.mjs."
+			bundleOnly
+				? "Bundle was not added. Set bundleProductId on the BookBundles row in Wix to the bundle Stores product."
+				: "Cart add returned no line items. Set bundleProductId on the BookBundles row in Wix, or run scripts/ensure-book-bundles-catalog.mjs."
 		);
 	}
 
@@ -246,12 +252,15 @@ export async function addBundleToCartServer(
 	);
 
 	return withWixServerSessionClient(async (client) => {
+		const bundleOnly = options?.bundleOnly ?? false;
+
 		try {
 			return await addBundleWithFallbacks(
 				client,
 				checkout,
 				quantity,
-				options?.bundleSlug
+				options?.bundleSlug,
+				bundleOnly
 			);
 		} catch (primaryError) {
 			if (!isCmsCatalogAppId(checkout.catalogAppId)) throw primaryError;
@@ -269,12 +278,14 @@ export async function addBundleToCartServer(
 				if (retry) return retry.cart;
 			}
 
-			const booksFallback = await tryIncludedBooksFallback(
-				client,
-				bundle?.storeProductIds,
-				quantity
-			);
-			if (booksFallback) return booksFallback.cart;
+			if (!bundleOnly) {
+				const booksFallback = await tryIncludedBooksFallback(
+					client,
+					bundle?.storeProductIds,
+					quantity
+				);
+				if (booksFallback) return booksFallback.cart;
+			}
 
 			throw primaryError;
 		}
