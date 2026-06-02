@@ -5,13 +5,21 @@ import { isWixCatalogEnabled } from "@/lib/wix/constants";
 import {
 	getProductBookSections,
 	getProductDetailBySlug,
+	queryWixProducts,
 } from "@/lib/wix/products";
-export const revalidate = 86_400;
-export const dynamicParams = true;
 
-/** On-demand ISR — pre-rendering the full Wix catalog at build exceeds timeouts. */
+export const revalidate = 86_400;
+
 export async function generateStaticParams() {
-	return [];
+	if (!isWixCatalogEnabled()) return [];
+
+	const products = await queryWixProducts({ limit: 1000 });
+
+	return products
+		.filter((product) => Boolean(product.slug))
+		.map((product) => ({
+			id: product.slug as string,
+		}));
 }
 
 export default async function ProductDetailPage({

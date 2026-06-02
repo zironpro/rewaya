@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "cross-env NODE_OPTIONS=--max-old-space-size=8192 next build",
 		"start": "next start",
 		"lint": "biome check --write",
 		"format": "biome format --write",
@@ -51,6 +51,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
 		"tailwindcss": "^4",
-		"typescript": "^5"
+		"typescript": "^5",
+		"cross-env": "^10.1.0"
 	}
 }

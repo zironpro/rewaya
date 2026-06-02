@@ -85,7 +85,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	);
 
 	return (
-		<div className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 transition-all duration-500 hover:border-gold sm:flex-row md:gap-10 md:p-9 lg:gap-12">
+		<div className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 shadow-sm transition-all duration-500 hover:border-gold sm:flex-row md:gap-10 md:p-9 lg:gap-12">
 			<Link
 				aria-label={`View ${bundle.title}`}
 				className="pointer-events-none absolute inset-0 z-10"
