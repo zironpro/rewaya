@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { messageForAddBundleError } from "@/features/cart/cart-errors";
@@ -17,6 +16,13 @@ import {
 	updateCartLineQuantityServer,
 } from "@/lib/wix/cart";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
+import {
+	type CheckoutDebugPayload,
+	checkoutDebug,
+	isCheckoutDebugEnabled,
+	serializeWixError,
+} from "@/lib/wix/checkout-debug";
+import { resolveCheckoutOrigin } from "@/lib/wix/checkout-origin";
 import { isCmsCatalogAppId } from "@/lib/wix/purchase-flow";
 
 export type CartActionResult = {
@@ -169,38 +175,157 @@ export async function removeItem(
 	}
 }
 
+export type BundleCheckoutResult = {
+	ok: boolean;
+	checkoutUrl?: string;
+	error?: string;
+	debug?: CheckoutDebugPayload;
+};
+
+export async function getCheckoutUrl(
+	originOverride?: string
+): Promise<BundleCheckoutResult> {
+	const origin = await resolveCheckoutOrigin(originOverride);
+	const debug: CheckoutDebugPayload = { step: "resolve-origin", origin };
+
+	try {
+		const checkoutUrl = await createCheckoutUrlServer({ origin });
+		if (!checkoutUrl) {
+			const message =
+				"Checkout URL was not returned. Ensure the cart has items and Wix eCommerce is enabled.";
+			console.error("[checkout] missing redirect URL", { origin });
+			return {
+				ok: false,
+				error: message,
+				debug: isCheckoutDebugEnabled()
+					? { ...debug, step: "redirect-session", error: { message } }
+					: undefined,
+			};
+		}
+		return {
+			ok: true,
+			checkoutUrl,
+			debug: isCheckoutDebugEnabled()
+				? { ...debug, step: "complete", checkoutUrl }
+				: undefined,
+		};
+	} catch (error) {
+		console.error("[checkout] getCheckoutUrl failed:", error);
+		return {
+			ok: false,
+			error: "Could not start checkout. Please try again.",
+			debug: isCheckoutDebugEnabled()
+				? {
+						...debug,
+						step: "create-checkout",
+						error: serializeWixError(error),
+					}
+				: undefined,
+		};
+	}
+}
+
+/** Add bundle to cart, then return Wix hosted checkout URL (headless-safe server flow). */
+export async function startBundleCheckout(
+	item: {
+		catalogItemId: string;
+		catalogAppId?: string;
+		bundleSlug?: string;
+		quantity?: number;
+	},
+	originOverride?: string
+): Promise<BundleCheckoutResult> {
+	const origin = await resolveCheckoutOrigin(originOverride);
+	const catalogItemId = item.catalogItemId?.trim();
+	const debug: CheckoutDebugPayload = {
+		step: "resolve-origin",
+		origin,
+		bundleSlug: item.bundleSlug,
+		catalogItemId: catalogItemId || undefined,
+		catalogAppId: item.catalogAppId,
+	};
+
+	checkoutDebug("startBundleCheckout", {
+		origin,
+		bundleSlug: item.bundleSlug,
+		catalogItemId,
+	});
+
+	if (!catalogItemId && !item.bundleSlug?.trim()) {
+		return {
+			ok: false,
+			error: "This bundle is not available for purchase.",
+			debug: isCheckoutDebugEnabled() ? debug : undefined,
+		};
+	}
+
+	try {
+		const cart = await addBundleToCartServer(
+			catalogItemId,
+			item.quantity ?? 1,
+			item.catalogAppId,
+			{
+				bundleSlug: item.bundleSlug?.trim(),
+				bundleOnly: true,
+			}
+		);
+		const lineItemCount =
+			(cart as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
+		debug.step = "add-bundle";
+		debug.lineItemCount = lineItemCount;
+		checkoutDebug("bundle added", { lineItemCount });
+
+		if (lineItemCount === 0) {
+			return {
+				ok: false,
+				error:
+					"Bundle was not added to the cart (0 line items). Set bundleProductId on the BookBundles row in Wix.",
+				debug: isCheckoutDebugEnabled() ? debug : undefined,
+			};
+		}
+
+		revalidatePath("/", "layout");
+
+		const checkoutUrl = await createCheckoutUrlServer({ origin });
+		if (!checkoutUrl) {
+			return {
+				ok: false,
+				error:
+					"Checkout URL was not returned. Check Wix Headless checkout settings and cart contents.",
+				debug: isCheckoutDebugEnabled()
+					? { ...debug, step: "redirect-session" }
+					: undefined,
+			};
+		}
+
+		return {
+			ok: true,
+			checkoutUrl,
+			debug: isCheckoutDebugEnabled()
+				? { ...debug, step: "complete", checkoutUrl }
+				: undefined,
+		};
+	} catch (error) {
+		console.error("[checkout] startBundleCheckout failed:", error);
+		return {
+			ok: false,
+			error: messageForAddBundleError(error),
+			debug: isCheckoutDebugEnabled()
+				? {
+						...debug,
+						step: "add-bundle",
+						error: serializeWixError(error),
+					}
+				: undefined,
+		};
+	}
+}
+
 export async function redirectToCheckout(originOverride?: string) {
-	const headersList = await headers();
-	const referer = headersList.get("referer");
-	const forwardedHost = headersList.get("x-forwarded-host");
-	const forwardedProto = headersList.get("x-forwarded-proto");
-	const host = headersList.get("host");
-	const originHeader = headersList.get("origin");
-
-	const deploymentOrigin = process.env.VERCEL_URL
-		? `https://${process.env.VERCEL_URL}`
-		: undefined;
-	const fallbackOrigin =
-		process.env.NEXT_PUBLIC_SITE_URL ??
-		deploymentOrigin ??
-		"http://localhost:3000";
-
-	const refererOrigin = referer ? new URL(referer).origin : undefined;
-	const headerOrigin =
-		forwardedHost && forwardedProto
-			? `${forwardedProto}://${forwardedHost}`
-			: host
-				? `${host.includes("localhost") ? "http" : "https"}://${host}`
-				: undefined;
-
-	const originOverrideValue = originOverride?.trim();
-	const origin =
-		originOverrideValue ||
-		(originHeader ??
-			headerOrigin ??
-			refererOrigin ??
-			fallbackOrigin);
-
-	const checkoutUrl = await createCheckoutUrlServer({ origin });
-	if (checkoutUrl) redirect(checkoutUrl);
+	const result = await getCheckoutUrl(originOverride);
+	if (result.ok && result.checkoutUrl) {
+		checkoutDebug("redirecting", { checkoutUrl: result.checkoutUrl });
+		redirect(result.checkoutUrl);
+	}
+	console.error("[checkout] redirectToCheckout aborted — no URL", result.debug);
 }

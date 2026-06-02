@@ -1,15 +1,21 @@
 "use client";
 
 import { useState, useTransition } from "react";
+
 import { ShoppingBag } from "lucide-react";
 
-import type { BundlePresentation } from "@/domain/bundle";
 import { Button } from "@/components/ui/button";
-import { dispatchCartUpdated } from "@/components/commerce/cart-events";
+
+import type { BundlePresentation } from "@/domain/bundle";
 import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
-import { addBundle, redirectToCheckout } from "@/features/cart/cart-actions";
-import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
+import {
+	type BundleCheckoutResult,
+	startBundleCheckout,
+} from "@/features/cart/cart-actions";
+import { trackMetaEvent } from "@/lib/analytics/meta";
 import { cn } from "@/lib/utils";
+
+const showCheckoutDebug = process.env.NEXT_PUBLIC_CHECKOUT_DEBUG === "1";
 
 interface BundleCheckoutCtaProps {
 	bundle: BundlePresentation;
@@ -24,6 +30,11 @@ interface BundleCheckoutCtaProps {
 	mode?: "cart" | "checkout";
 }
 
+function formatCheckoutDebug(result: BundleCheckoutResult): string | null {
+	if (!showCheckoutDebug || !result.debug) return null;
+	return JSON.stringify(result.debug, null, 2);
+}
+
 export function BundleCheckoutCta({
 	bundle,
 	className,
@@ -33,44 +44,58 @@ export function BundleCheckoutCta({
 	mode = "cart",
 }: BundleCheckoutCtaProps) {
 	const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [debugDetails, setDebugDetails] = useState<string | null>(null);
 	const [isPending, startCheckout] = useTransition();
 
 	const canCheckout = Boolean(bundle.checkoutCatalogItemId);
 	const isDisabled = !canCheckout || status === "loading" || isPending;
 
-	const handleCheckout = async () => {
+	const handleCheckout = () => {
 		if (!canCheckout) return;
+
 		setStatus("loading");
+		setErrorMessage(null);
+		setDebugDetails(null);
 
-		try {
-			const { error, cart } = await addBundle(null, {
-				catalogItemId: bundle.checkoutCatalogItemId,
-				catalogAppId: bundle.checkoutCatalogAppId,
-				bundleSlug: bundle.slug,
-				quantity: 1,
+		if (typeof window !== "undefined") {
+			trackMetaEvent("InitiateCheckout", {
+				event_source_url: window.location.href,
+				custom_data: {
+					content_ids: [bundle.checkoutCatalogItemId],
+					content_name: bundle.slug,
+					content_type: "product_group",
+					currency: "AED",
+				},
 			});
-
-			if (error) {
-				setStatus("error");
-				return;
-			}
-
-			if (cart) {
-				// Keep any local cart UI in sync in case checkout redirect is delayed.
-				syncCartFromWixResponse(cart);
-				dispatchCartUpdated(cart);
-			}
-
-			// Track Meta "InitiateCheckout" consistently with cart checkout.
-			// redirectToCheckout will create checkout from the now-updated current cart.
-			startCheckout(() => redirectToCheckout(window.location.origin));
-		} catch {
-			setStatus("error");
 		}
+
+		startCheckout(() => {
+			void startBundleCheckout(
+				{
+					catalogItemId: bundle.checkoutCatalogItemId,
+					catalogAppId: bundle.checkoutCatalogAppId,
+					bundleSlug: bundle.slug,
+				},
+				typeof window !== "undefined" ? window.location.origin : undefined
+			).then((result) => {
+				if (result.ok && result.checkoutUrl) {
+					window.location.href = result.checkoutUrl;
+					return;
+				}
+				setStatus("error");
+				setErrorMessage(
+					result.error ?? "Could not start checkout. Please try again."
+				);
+				setDebugDetails(formatCheckoutDebug(result));
+				if (showCheckoutDebug) {
+					console.error("[checkout:debug] bundle CTA failed", result);
+				}
+			});
+		});
 	};
 
 	if (mode === "cart") {
-		// Keep existing behavior for PDP & landing CTAs that just add to cart.
 		return (
 			<AddBundleToCartButton
 				bundleSlug={bundle.slug}
@@ -97,20 +122,21 @@ export function BundleCheckoutCta({
 				disabled={isDisabled}
 				onClick={handleCheckout}
 				size={size}
-				variant="secondary"
 				title={
-					!canCheckout
-						? "This bundle is not available for purchase"
-						: undefined
+					!canCheckout ? "This bundle is not available for purchase" : undefined
 				}
+				variant="secondary"
 			>
 				<ShoppingBag className="size-4" />
-				{status === "loading" ? "Redirecting…" : label}
+				{status === "loading" || isPending ? "Redirecting…" : label}
 			</Button>
-			{status === "error" ? (
-				<p className="text-destructive text-xs">
-					Could not start checkout. Please try again.
-				</p>
+			{status === "error" && errorMessage ? (
+				<p className="text-destructive text-xs">{errorMessage}</p>
+			) : null}
+			{status === "error" && debugDetails ? (
+				<pre className="max-h-40 overflow-auto rounded-md bg-muted p-2 font-mono text-[10px] text-muted-foreground">
+					{debugDetails}
+				</pre>
 			) : null}
 		</div>
 	);

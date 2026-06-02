@@ -39,7 +39,7 @@ export function CountdownTimer({
 	return (
 		<div
 			className={cn(
-				"w-fit rounded-sm border",
+				"mx-auto w-fit rounded-sm border",
 				compact ? "px-1.5 py-0.5 text-xs" : "px-2.5 py-1 text-sm",
 				box,
 				className

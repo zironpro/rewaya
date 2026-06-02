@@ -22,7 +22,7 @@ export function StickyCheckoutBar({ bundle }: StickyCheckoutBarProps) {
 		>
 			<div className="mx-auto flex max-w-lg items-center gap-3">
 				<div className="min-w-0 flex-1">
-					<p className="truncate font-display text-secondary text-lg font-bold ">
+					<p className="truncate font-bold font-display text-lg text-secondary">
 						{bundle.name}
 					</p>
 					<p className="text-muted-foreground text-xs">
@@ -32,13 +32,13 @@ export function StickyCheckoutBar({ bundle }: StickyCheckoutBarProps) {
 						<span className="line-through">AED {bundle.originalPrice}</span>
 					</p>
 				</div>
-				<div className="  shrink-0">
+				<div className="shrink-0">
 					<BundleCheckoutCta
 						bundle={bundle}
 						className="text-sm"
-						size="sm"
-						mode="checkout"
 						label="Checkout"
+						mode="checkout"
+						size="sm"
 					/>
 				</div>
 			</div>

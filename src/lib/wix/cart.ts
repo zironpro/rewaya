@@ -4,6 +4,11 @@ import { currentCart } from "@wix/ecom";
 
 import { getBundleBySlug } from "./bundles";
 import type { ProductVariant } from "./catalog-types";
+import {
+	checkoutDebug,
+	isCheckoutDebugEnabled,
+	serializeWixError,
+} from "./checkout-debug";
 import { WIX_STORES_APP_ID } from "./constants";
 import { getWixProductById } from "./products";
 import {
@@ -335,25 +340,54 @@ export async function createCheckoutUrlServer(
 ): Promise<string | undefined> {
 	return withWixServerSessionClient(async (client) => {
 		const origin = options.origin.replace(/\/$/, "");
+		const callbacks = {
+			postFlowUrl: options.postFlowUrl ?? `${origin}/shop`,
+			thankYouPageUrl: options.thankYouPageUrl ?? `${origin}/thank-you`,
+			cartPageUrl: options.cartPageUrl ?? `${origin}/cart`,
+		};
+
+		checkoutDebug("callbacks", { origin, callbacks });
 
 		const tryCheckout = async (channelType: currentCart.ChannelType) => {
+			const channel =
+				channelType === currentCart.ChannelType.WEB ? "WEB" : "OTHER_PLATFORM";
+			checkoutDebug("createCheckoutFromCurrentCart", { channel });
+
 			const { checkoutId } =
 				await client.currentCart.createCheckoutFromCurrentCart({ channelType });
+
+			checkoutDebug("checkout created", { checkoutId, channel });
+
 			const { redirectSession } = await client.redirects.createRedirectSession({
 				ecomCheckout: { checkoutId },
-				callbacks: {
-					postFlowUrl: options.postFlowUrl ?? `${origin}/shop`,
-					thankYouPageUrl: options.thankYouPageUrl ?? `${origin}/thank-you`,
-					cartPageUrl: options.cartPageUrl ?? `${origin}/cart`,
-				},
+				callbacks,
 			});
-			return redirectSession?.fullUrl;
+
+			const fullUrl = redirectSession?.fullUrl;
+			checkoutDebug("redirect session", {
+				checkoutId,
+				hasFullUrl: Boolean(fullUrl),
+				fullUrl: isCheckoutDebugEnabled() ? fullUrl : undefined,
+			});
+
+			return fullUrl;
 		};
 
 		try {
 			return await tryCheckout(currentCart.ChannelType.OTHER_PLATFORM);
-		} catch {
-			return tryCheckout(currentCart.ChannelType.WEB);
+		} catch (primaryError) {
+			checkoutDebug("OTHER_PLATFORM failed, retry WEB", {
+				error: serializeWixError(primaryError),
+			});
+			try {
+				return await tryCheckout(currentCart.ChannelType.WEB);
+			} catch (webError) {
+				console.error("[checkout] createCheckoutUrlServer failed:", webError);
+				checkoutDebug("WEB channel failed", {
+					error: serializeWixError(webError),
+				});
+				throw webError;
+			}
 		}
 	});
 }
