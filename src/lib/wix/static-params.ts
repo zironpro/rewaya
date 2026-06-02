@@ -9,23 +9,27 @@ const PAGE_SIZE = 100;
 export async function getProductStaticParamIds(): Promise<string[]> {
 	if (!isWixCatalogEnabled()) return [];
 
-	const ids: string[] = [];
-	let offset = 0;
+	try {
+		const ids: string[] = [];
+		let offset = 0;
 
-	while (true) {
-		const batch = await queryWixProducts({ limit: PAGE_SIZE, offset });
-		if (batch.length === 0) break;
+		while (true) {
+			const batch = await queryWixProducts({ limit: PAGE_SIZE, offset });
+			if (batch.length === 0) break;
 
-		for (const product of batch) {
-			const param = product.slug ?? product.id;
-			if (param && product.name) ids.push(param);
+			for (const product of batch) {
+				const param = product.slug ?? product.id;
+				if (param && product.name) ids.push(param);
+			}
+
+			if (batch.length < PAGE_SIZE) break;
+			offset += PAGE_SIZE;
 		}
 
-		if (batch.length < PAGE_SIZE) break;
-		offset += PAGE_SIZE;
+		return ids;
+	} catch {
+		return [];
 	}
-
-	return ids;
 }
 
 export async function getBundleStaticParamSlugs(): Promise<string[]> {

@@ -9,13 +9,12 @@ export const BANNERS = [
 	},
 	{
 		id: 2,
-		title: "New Arrivals",
+		title: "Discover Stories",
 		subtitle:
-			"Discover the latest releases from bestselling local and global authors",
-		cta: "Explore New Releases",
+			"Stories that stay with you, inspire you, and connect you to the world",
+		cta: "Explore Stories",
 		href: "/shop",
-		image:
-			"https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=2000&auto=format&fit=crop",
+		image: "/banners/hero-banner.webp",
 	},
 	{
 		id: 3,

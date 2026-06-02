@@ -430,13 +430,17 @@ export async function queryWixProducts(
 export async function getWixProductBySlug(
 	slug: string
 ): Promise<WixCatalogProduct | null> {
-	const categoryNameMap = await getCategoryNameMap();
-	const products = await queryWixProducts({
-		slugs: [slug],
-		limit: 1,
-		categoryNameMap,
-	});
-	return products[0] ?? null;
+	try {
+		const categoryNameMap = await getCategoryNameMap();
+		const products = await queryWixProducts({
+			slugs: [slug],
+			limit: 1,
+			categoryNameMap,
+		});
+		return products[0] ?? null;
+	} catch {
+		return null;
+	}
 }
 
 export async function getCatalogProductBySlug(
@@ -444,31 +448,35 @@ export async function getCatalogProductBySlug(
 ): Promise<CatalogProduct | null> {
 	if (!isWixCatalogEnabled()) return null;
 
-	const categoryNameMap = await getCategoryNameMap();
-	const version = await getCatalogVersion();
+	try {
+		const categoryNameMap = await getCategoryNameMap();
+		const version = await getCatalogVersion();
 
-	if (version === "V3_CATALOG") {
-		const wixProduct = await getWixProductBySlug(slug);
-		if (!wixProduct) return null;
-		return reshapeV3FromCatalog(wixProduct, categoryNameMap);
+		if (version === "V3_CATALOG") {
+			const wixProduct = await getWixProductBySlug(slug);
+			if (!wixProduct) return null;
+			return reshapeV3FromCatalog(wixProduct, categoryNameMap);
+		}
+
+		const client = getWixClient();
+		const { items } = await client.products
+			.queryProducts()
+			.eq("slug", slug)
+			.limit(1)
+			.find();
+		const item = items[0] as V1Product | undefined;
+		if (!item) return null;
+
+		const collectionIds = (item.collectionIds ?? []) as string[];
+		const categoryId = collectionIds[0];
+		const categoryName = categoryId ? categoryNameMap.get(categoryId) : undefined;
+		const categories = await getStoreCategories();
+		const categorySlug = categories.find((c) => c.id === categoryId)?.slug;
+
+		return reshapeV1Product(item, categoryName, categorySlug, categoryId);
+	} catch {
+		return null;
 	}
-
-	const client = getWixClient();
-	const { items } = await client.products
-		.queryProducts()
-		.eq("slug", slug)
-		.limit(1)
-		.find();
-	const item = items[0] as V1Product | undefined;
-	if (!item) return null;
-
-	const collectionIds = (item.collectionIds ?? []) as string[];
-	const categoryId = collectionIds[0];
-	const categoryName = categoryId ? categoryNameMap.get(categoryId) : undefined;
-	const categories = await getStoreCategories();
-	const categorySlug = categories.find((c) => c.id === categoryId)?.slug;
-
-	return reshapeV1Product(item, categoryName, categorySlug, categoryId);
 }
 
 /** Alias — route param is the product slug. */
