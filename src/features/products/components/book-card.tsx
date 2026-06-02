@@ -159,15 +159,15 @@ export function BookCard({
 			</div>
 
 			<div className="flex cursor-pointer flex-col gap-1 px-1">
-				<div className="flex flex-col items-start gap-1 md:flex-row md:justify-between md:gap-4">
-					<h3 className="flex-1 font-semibold text-base text-primary leading-tight transition-colors">
-						{title}
-					</h3>
-					<span className="whitespace-nowrap font-semibold text-secondary text-sm">
+				<h3 className="flex-1 font-semibold text-base text-primary leading-tight transition-colors">
+					{title}
+				</h3>
+				<div className="flex flex-col items-center sm:flex-row sm:justify-between">
+					{author && <p className="text-mauve-400 text-xs">{author}</p>}
+					<span className="whitespace-nowrap font-semibold text-secondary text-sm md:text-base">
 						AED {price.toFixed(2)}
 					</span>
 				</div>
-				{author && <p className="text-mauve-400 text-xs">{author}</p>}
 			</div>
 		</div>
 	);

@@ -14,6 +14,10 @@ export const metadata: Metadata = {
 	title: "Al Rewaya Book World | Your Premier Islamic Bookstore",
 	description:
 		"Discover a curated collection of Islamic literature, academic texts, and classic books at Rewaya Book World.",
+
+	other: {
+		"facebook-domain-verification": "40qw6zil0ubg6k26nl0ku20oy70djy",
+	},
 };
 
 export default function RootLayout({
