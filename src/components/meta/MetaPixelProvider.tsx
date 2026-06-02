@@ -1,11 +1,32 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 
 import { trackMetaEvent } from "@/lib/analytics/meta";
+
+function MetaPixelRouteTracker({ pixelId }: { pixelId: string }) {
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const hasTrackedInitialPageView = useRef(false);
+
+	// Fire PageView on route change (client navigation)
+	useEffect(() => {
+		const url = `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ""}`;
+
+		// Prevent duplicate initial PageView (Script already tracks once on first load).
+		if (!hasTrackedInitialPageView.current) {
+			hasTrackedInitialPageView.current = true;
+			return;
+		}
+
+		trackMetaEvent("PageView", { event_source_url: url });
+	}, [pathname, pixelId, searchParams]);
+
+	return null;
+}
 
 /**
  * Loads Meta Pixel script and fires a PageView event on initial load and on every route change.
@@ -17,26 +38,6 @@ export default function MetaPixelProvider({
 	children: React.ReactNode;
 }) {
 	const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-	const pathname = usePathname();
-	const searchParams = useSearchParams();
-	const hasTrackedInitialPageView = useRef(false);
-
-	// Fire PageView on route change (client navigation)
-	useEffect(() => {
-		if (!pixelId) {
-			return;
-		}
-
-		const url = `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ""}`;
-
-		// Prevent duplicate initial PageView (Script already tracks once on first load).
-		if (!hasTrackedInitialPageView.current) {
-			hasTrackedInitialPageView.current = true;
-			return;
-		}
-
-		trackMetaEvent("PageView", { event_source_url: url });
-	}, [pathname, pixelId, searchParams]);
 
 	if (!pixelId) {
 		return <>{children}</>;
@@ -55,6 +56,9 @@ export default function MetaPixelProvider({
 				fbq('init', '${pixelId}');
 				fbq('track', 'PageView');`}
 			</Script>
+			<Suspense fallback={null}>
+				<MetaPixelRouteTracker pixelId={pixelId} />
+			</Suspense>
 			{children}
 		</>
 	);
