@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 
 import { addBundle } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
+import { trackMetaEvent } from "@/lib/analytics/meta";
 
 interface AddBundleToCartButtonProps {
 	checkoutCatalogItemId: string;
@@ -83,7 +84,15 @@ export function AddBundleToCartButton({
 				syncCartFromWixResponse(cart);
 			}
 			dispatchCartUpdated(cart);
-
+			// Track Meta AddToCart for bundle
+			if (typeof window !== "undefined") {
+				trackMetaEvent("AddToCart", {
+					event_source_url: window.location.href,
+					custom_data: {
+						content_ids: [checkoutCatalogItemId],
+					},
+				});
+			}
 			setStatus("added");
 			onAdded?.();
 			setTimeout(() => setStatus("idle"), 2000);

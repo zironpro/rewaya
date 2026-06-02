@@ -26,6 +26,7 @@ import { CartEmpty } from "@/features/cart/components/cart-empty";
 import { CartLineItem } from "@/features/cart/components/cart-line-item";
 import { CartLoading } from "@/features/cart/components/cart-loading";
 import { CartOrderSummary } from "@/features/cart/components/cart-order-summary";
+import { trackMetaEvent } from "@/lib/analytics/meta";
 
 const cartEnabled = Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
 
@@ -140,24 +141,17 @@ export function CartView() {
 
 	const handleCheckout = () => {
 		if (!cartEnabled) return;
+		// Track InitiateCheckout event
+		if (typeof window !== "undefined") {
+			trackMetaEvent("InitiateCheckout", {
+				event_source_url: window.location.href,
+			});
+		}
 		startCheckout(() => redirectToCheckout());
 	};
 
 	const hasUnavailable = items.some(isItemUnavailable);
 	const displayTotal = summary.total ?? summary.subtotal;
-
-	if (!cartEnabled) {
-		return (
-			<main className="grow pt-20 pb-28 md:pb-16">
-				<div className="container py-32 text-center">
-					<p className="text-stone-500">
-						Configure <code className="text-sm">NEXT_PUBLIC_WIX_CLIENT_ID</code>{" "}
-						to enable checkout.
-					</p>
-				</div>
-			</main>
-		);
-	}
 
 	return (
 		<main className="grow pt-4 pb-28 md:pb-16">

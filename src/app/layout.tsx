@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 
+import MetaPixelProvider from "@/components/meta/MetaPixelProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { inter, playfair } from "@/assets/fonts";
@@ -41,7 +42,9 @@ export default function RootLayout({
 				<WixProvider>
 					<CartProvider>
 						<WishlistProvider>
-							<TooltipProvider delay={0}>{children}</TooltipProvider>
+							<MetaPixelProvider>
+								<TooltipProvider delay={0}>{children}</TooltipProvider>
+							</MetaPixelProvider>
 						</WishlistProvider>
 					</CartProvider>
 				</WixProvider>

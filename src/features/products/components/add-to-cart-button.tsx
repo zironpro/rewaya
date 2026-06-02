@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { isAvailableForPurchase } from "@/domain/product/availability";
 import { addItem } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
+import { trackMetaEvent } from "@/lib/analytics/meta";
 import type { ProductVariant } from "@/lib/wix/catalog-types";
 import { isCmsCatalogAppId } from "@/lib/wix/purchase-flow";
 
@@ -73,6 +74,15 @@ export function AddToCartButton({
 				syncCartFromWixResponse(cart);
 			}
 			dispatchCartUpdated(cart);
+			// Track Meta AddToCart event
+			if (typeof window !== "undefined") {
+				trackMetaEvent("AddToCart", {
+					event_source_url: window.location.href,
+					custom_data: {
+						content_ids: [productId],
+					},
+				});
+			}
 
 			setStatus("added");
 			onAdded?.();

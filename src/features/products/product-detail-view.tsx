@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ import { ProductMobileBuyBar } from "@/features/products/components/product-mobi
 import { ProductPurchasePanel } from "@/features/products/components/product-purchase-panel";
 import { ProductRelatedBooks } from "@/features/products/components/product-related-books";
 import type { ProductDetailData } from "@/features/products/types";
+import { trackMetaEvent } from "@/lib/analytics/meta";
 import type { BookProps } from "@/lib/store";
 
 export type { ProductDetailData } from "@/features/products/types";
@@ -34,6 +35,25 @@ export const ProductDetailView = ({
 	relatedReads = [],
 }: ProductDetailViewProps) => {
 	const [quantity, setQuantity] = useState(1);
+
+	useEffect(() => {
+		if (product) {
+			const customData = {
+				...(product.wixProductId
+					? { content_ids: [product.wixProductId] }
+					: {}),
+				content_name: product.title,
+				content_type: "product",
+				value: product.price,
+				currency: "AED",
+				...(product.category ? { content_category: product.category } : {}),
+			};
+			trackMetaEvent("ViewContent", {
+				event_source_url: window.location.href,
+				custom_data: customData,
+			});
+		}
+	}, [product]);
 
 	if (!product) {
 		return (
