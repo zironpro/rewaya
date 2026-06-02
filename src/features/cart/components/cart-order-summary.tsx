@@ -24,18 +24,18 @@ export function CartOrderSummary({
 	onCheckout,
 }: CartOrderSummaryProps) {
 	return (
-		<Card className="sticky top-32 border-stone-200 bg-stone-50 shadow-none">
-			<CardHeader className="border-stone-200 border-b pb-4">
+		<Card className="sticky top-32 bg-card">
+			<CardHeader className="border-b pb-4">
 				<CardTitle className="font-bold text-sm">Order Summary</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-0 pt-6">
 				<div className="space-y-4">
-					<div className="flex justify-between font-bold text-sm text-stone-500">
+					<div className="flex justify-between text-muted-foreground text-sm">
 						<span>Subtotal</span>
 						<span>{summary.subtotal ?? "—"}</span>
 					</div>
 					{summary.discount ? (
-						<div className="flex justify-between font-bold text-sm text-stone-500">
+						<div className="flex justify-between text-muted-foreground text-sm">
 							<span>
 								Discount
 								{summary.discountNames.length > 0 && (
@@ -48,14 +48,14 @@ export function CartOrderSummary({
 							<span>−{summary.discount}</span>
 						</div>
 					) : summary.discountNames.length > 0 ? (
-						<div className="flex justify-between text-sm text-stone-500">
+						<div className="flex justify-between text-muted-foreground text-sm">
 							<span>Applied discount</span>
 							<span className="text-right text-stone-400">
 								{summary.discountNames.join(", ")}
 							</span>
 						</div>
 					) : null}
-					<div className="flex justify-between font-bold text-sm text-stone-500">
+					<div className="flex justify-between text-muted-foreground text-sm">
 						<span>Shipping</span>
 						<span>Free</span>
 					</div>
@@ -64,8 +64,8 @@ export function CartOrderSummary({
 				<Separator className="my-6" />
 
 				<div className="flex items-end justify-between">
-					<span className="font-bold text-sm">Total</span>
-					<span className="font-black font-serif text-2xl text-primary">
+					<span className="font-semibold text-sm">Total</span>
+					<span className="font-bold text-2xl text-primary tracking-tight">
 						{displayTotal ?? "—"}
 					</span>
 				</div>

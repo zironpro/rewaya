@@ -2,8 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 
-import { AnimatePresence } from "motion/react";
-
 import {
 	CART_UPDATED_EVENT,
 	dispatchCartUpdated,
@@ -197,23 +195,21 @@ export function CartView() {
 							/>
 						</aside>
 
-						<div className="order-1 grow space-y-8">
-							<div className="hidden grid-cols-4 border-stone-100 border-b pb-6 font-bold text-sm text-stone-400 md:grid">
+						<div className="order-1 grow space-y-4">
+							<div className="hidden grid-cols-4 border-stone-100 border-b pb-4 font-bold text-sm text-stone-400 md:grid">
 								<div className="col-span-2">Item</div>
 								<div className="text-center">Quantity</div>
 								<div className="text-right">Total</div>
 							</div>
 
-							<AnimatePresence mode="popLayout">
-								{items.map((item) => (
-									<CartLineItem
-										item={item}
-										key={item._id ?? ""}
-										onRemove={handleRemoveItem}
-										onUpdateQuantity={handleUpdateQuantity}
-									/>
-								))}
-							</AnimatePresence>
+							{items.map((item) => (
+								<CartLineItem
+									item={item}
+									key={item._id ?? ""}
+									onRemove={handleRemoveItem}
+									onUpdateQuantity={handleUpdateQuantity}
+								/>
+							))}
 						</div>
 					</div>
 				)}

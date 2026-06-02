@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { motion } from "motion/react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,25 +46,20 @@ export function CartLineItem({
 			: "Out of stock";
 
 	return (
-		<motion.div
-			animate={{ opacity: 1, y: 0 }}
+		<div
 			className={cn(
 				"grid grid-cols-1 items-center gap-8 border-b py-8 md:grid-cols-4",
 				unavailable && "opacity-75"
 			)}
-			exit={{ opacity: 0, x: -20 }}
-			initial={{ opacity: 0, y: 20 }}
-			key={lineId}
-			layout
 		>
 			<div className="col-span-2 flex gap-6">
-				<div className="relative h-24 w-20 shrink-0 overflow-hidden bg-card sm:h-32 sm:w-24">
+				<div className="relative aspect-3/4 h-24 shrink-0 overflow-hidden overflow-hidden rounded-sm bg-card sm:h-32">
 					{imageUrl ? (
 						href ? (
 							<Link className="block h-full w-full" href={href}>
 								<Image
 									alt={item.productName?.translated ?? "Product"}
-									className="h-full w-full object-contain"
+									className="object-cover"
 									fill
 									sizes="96px"
 									src={imageUrl}
@@ -74,7 +68,7 @@ export function CartLineItem({
 						) : (
 							<Image
 								alt={item.productName?.translated ?? "Product"}
-								className="h-full w-full object-cover"
+								className="object-cover"
 								fill
 								sizes="96px"
 								src={imageUrl}
@@ -176,6 +170,6 @@ export function CartLineItem({
 						"—"}
 				</span>
 			</div>
-		</motion.div>
+		</div>
 	);
 }
