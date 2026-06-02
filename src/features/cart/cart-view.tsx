@@ -152,7 +152,7 @@ export function CartView() {
 				},
 			});
 		}
-		startCheckout(() => redirectToCheckout());
+		startCheckout(() => redirectToCheckout(window.location.origin));
 	};
 
 	const hasUnavailable = items.some(isItemUnavailable);

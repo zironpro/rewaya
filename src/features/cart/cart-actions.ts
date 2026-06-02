@@ -169,12 +169,37 @@ export async function removeItem(
 	}
 }
 
-export async function redirectToCheckout() {
+export async function redirectToCheckout(originOverride?: string) {
 	const headersList = await headers();
 	const referer = headersList.get("referer");
-	const origin = referer
-		? new URL(referer).origin
-		: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+	const forwardedHost = headersList.get("x-forwarded-host");
+	const forwardedProto = headersList.get("x-forwarded-proto");
+	const host = headersList.get("host");
+	const originHeader = headersList.get("origin");
+
+	const deploymentOrigin = process.env.VERCEL_URL
+		? `https://${process.env.VERCEL_URL}`
+		: undefined;
+	const fallbackOrigin =
+		process.env.NEXT_PUBLIC_SITE_URL ??
+		deploymentOrigin ??
+		"http://localhost:3000";
+
+	const refererOrigin = referer ? new URL(referer).origin : undefined;
+	const headerOrigin =
+		forwardedHost && forwardedProto
+			? `${forwardedProto}://${forwardedHost}`
+			: host
+				? `${host.includes("localhost") ? "http" : "https"}://${host}`
+				: undefined;
+
+	const originOverrideValue = originOverride?.trim();
+	const origin =
+		originOverrideValue ||
+		(originHeader ??
+			headerOrigin ??
+			refererOrigin ??
+			fallbackOrigin);
 
 	const checkoutUrl = await createCheckoutUrlServer({ origin });
 	if (checkoutUrl) redirect(checkoutUrl);

@@ -58,6 +58,7 @@ export interface BookBundleCmsItem {
 	cmsCatalogItemId: string;
 	/** Wix Stores product ID for the discounted bundle SKU (checkout). */
 	bundleProductId?: string;
+	faqs?: Faq[];
 	tag?: string;
 }
 
@@ -115,6 +116,6 @@ export function mapBookBundleFromCms(
 		checkoutCatalogItemId: checkout.checkoutCatalogItemId,
 		checkoutCatalogAppId: checkout.checkoutCatalogAppId,
 		storeProductIds: details.includedBookIds,
-		faqs: [],
+		faqs: details.faqs ?? [],
 	};
 }

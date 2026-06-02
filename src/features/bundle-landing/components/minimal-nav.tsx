@@ -1,14 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import type { BundlePresentation } from "@/domain/bundle";
 
 import { cn } from "@/lib/utils";
 
+import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { useStickyNav } from "../hooks/useStickyNav";
 
 interface MinimalNavProps {
 	bundleName: string;
 	priceLabel: string;
+	bundle: BundlePresentation;
 	/** `dark` for timer strip over dark CTA */
 	variant?: "default" | "dark";
 }
@@ -16,6 +18,7 @@ interface MinimalNavProps {
 export function MinimalNav({
 	bundleName,
 	priceLabel,
+	bundle,
 	variant = "default",
 }: MinimalNavProps) {
 	const { pastHero } = useStickyNav();
@@ -39,9 +42,15 @@ export function MinimalNav({
 				</p>
 				<div className="flex shrink-0 items-center gap-2 sm:gap-3">
 					<span className="hidden text-sm sm:inline">{priceLabel}</span>
-					<Button className="btn-shimmer" type="button">
-						Checkout
-					</Button>
+					<div className="w-[140px]">
+						<BundleCheckoutCta
+							bundle={bundle}
+							className="btn-shimmer min-h-9"
+							label="Checkout"
+							mode="checkout"
+							size="sm"
+						/>
+					</div>
 				</div>
 			</div>
 		</header>
