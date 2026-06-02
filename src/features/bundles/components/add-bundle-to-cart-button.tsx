@@ -90,6 +90,9 @@ export function AddBundleToCartButton({
 					event_source_url: window.location.href,
 					custom_data: {
 						content_ids: [checkoutCatalogItemId],
+						content_name: bundleSlug ?? "bundle",
+						content_type: "product_group",
+						currency: "AED",
 					},
 				});
 			}

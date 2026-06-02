@@ -145,6 +145,11 @@ export function CartView() {
 		if (typeof window !== "undefined") {
 			trackMetaEvent("InitiateCheckout", {
 				event_source_url: window.location.href,
+				custom_data: {
+					value: Number(summary.total) ?? Number(summary.subtotal),
+					currency: "AED",
+					num_items: items.length,
+				},
 			});
 		}
 		startCheckout(() => redirectToCheckout());

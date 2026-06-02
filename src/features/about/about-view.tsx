@@ -31,7 +31,7 @@ export const AboutView = () => {
 						<div>
 							<Image
 								alt="Aesthetic library"
-								className="aspect-[3/4] w-full object-cover grayscale"
+								className="aspect-3/4 w-full object-cover grayscale"
 								height={1200}
 								src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200&auto=format&fit=crop"
 								width={900}

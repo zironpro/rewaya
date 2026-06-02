@@ -14,14 +14,10 @@ function MetaPixelRouteTracker({ pixelId }: { pixelId: string }) {
 
 	// Fire PageView on route change (client navigation)
 	useEffect(() => {
-		const url = `${pathname}${searchParams?.toString() ? `?${searchParams.toString()}` : ""}`;
-
-		// Prevent duplicate initial PageView (Script already tracks once on first load).
+		const url = window.location.href;
 		if (!hasTrackedInitialPageView.current) {
 			hasTrackedInitialPageView.current = true;
-			return;
 		}
-
 		trackMetaEvent("PageView", { event_source_url: url });
 	}, [pathname, pixelId, searchParams]);
 
@@ -53,8 +49,7 @@ export default function MetaPixelProvider({
 				t.src=v;s=b.getElementsByTagName(e)[0];
 				s.parentNode.insertBefore(t,s)}(window, document,'script',
 				'https://connect.facebook.net/en_US/fbevents.js');
-				fbq('init', '${pixelId}');
-				fbq('track', 'PageView');`}
+				fbq('init', '${pixelId}');`}
 			</Script>
 			<Suspense fallback={null}>
 				<MetaPixelRouteTracker pixelId={pixelId} />

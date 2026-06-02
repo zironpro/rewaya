@@ -31,7 +31,7 @@ interface AddToCartButtonProps {
 
 export function AddToCartButton({
 	productId,
-	productName: _productName,
+	productName,
 	catalogAppId,
 	productVariant,
 	availableForSale,
@@ -80,6 +80,9 @@ export function AddToCartButton({
 					event_source_url: window.location.href,
 					custom_data: {
 						content_ids: [productId],
+						content_name: productName,
+						content_type: "product",
+						currency: "AED",
 					},
 				});
 			}

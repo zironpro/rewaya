@@ -77,15 +77,23 @@ export async function trackMetaEvent(
 
 	// Forward to server for CAPI
 	try {
-		await fetch("/api/meta/events", {
+		const response = await fetch("/api/meta/events", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
+			keepalive: true,
 			body: JSON.stringify({
 				event_name: eventName,
 				event_id: eventId,
 				...payload,
 			}),
 		});
+		if (!response.ok) {
+			const body = await response.text().catch(() => "");
+			console.error(
+				`Meta CAPI forward failed (${response.status}):`,
+				body || "No response body"
+			);
+		}
 	} catch (err) {
 		console.error("Failed to forward Meta event to CAPI", err);
 	}
