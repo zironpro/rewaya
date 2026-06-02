@@ -36,13 +36,13 @@ export const CountdownTimer = () => {
 	const format = (n: number) => n.toString().padStart(2, "0");
 
 	return (
-		<div className="flex items-center gap-2 rounded-lg border border-stone-100 bg-stone-50 px-4 py-2">
+		<div className="flex items-center gap-2 rounded-sm border border-mauve-200 bg-card px-2.5 py-1.5">
 			<Timer className="animate-pulse text-primary" size={14} />
 			<div className="flex items-center gap-1 font-black font-mono text-sm">
 				<span className="text-secondary">{format(timeLeft.hours)}</span>
-				<span className="text-stone-300">:</span>
+				<span className="text-muted-foreground/50">:</span>
 				<span className="text-secondary">{format(timeLeft.minutes)}</span>
-				<span className="text-stone-300">:</span>
+				<span className="text-muted-foreground/50">:</span>
 				<span className="text-secondary">{format(timeLeft.seconds)}</span>
 			</div>
 		</div>

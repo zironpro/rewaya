@@ -33,7 +33,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 					title: b.title,
 					subtitle: b.subtitle,
 					cta: b.cta,
-					href: "/shop",
+					href: b.href,
 					image: b.image,
 				}));
 
@@ -57,7 +57,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 	const slide = slides[current];
 
 	return (
-		<div className="relative h-[60vh] w-full overflow-hidden bg-stone-50 sm:h-[70vh] md:h-[calc(100vh-113px)]">
+		<div className="relative h-[35vh] w-full overflow-hidden bg-card sm:h-[70vh] md:h-[calc(100vh-113px)]">
 			<AnimatePresence mode="wait">
 				<motion.div
 					animate={{ opacity: 1 }}
@@ -76,16 +76,16 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 							sizes="100vw"
 							src={slide.image}
 						/>
-						<div className="absolute inset-0 bg-black/40 backdrop-brightness-75" />
+						<div className="absolute inset-0 bg-black/40 backdrop-brightness-90" />
 					</div>
 
 					<div className="container relative mx-auto flex h-full flex-col items-center justify-center text-center text-card">
 						<h1 className="sr-only">
-							Al Rewaya Book world: Your Premier Islamic Bookstore
+							Al Rewaya Book world: Your Premier Bookstore
 						</h1>
 						<motion.span
 							animate={{ opacity: 1, y: 0 }}
-							className="font-light text-base md:text-xl"
+							className="text-balance font-light text-sm sm:text-base md:text-xl"
 							initial={{ opacity: 0, y: 20 }}
 							transition={{ delay: 0.2 }}
 						>
@@ -93,7 +93,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 						</motion.span>
 						<motion.h2
 							animate={{ opacity: 1, y: 0 }}
-							className="mb-8 font-black font-serif text-5xl uppercase leading-none md:text-8xl"
+							className="mb-4 font-black font-serif text-4xl uppercase leading-none sm:text-5xl md:mb-8 md:text-8xl"
 							initial={{ opacity: 0, y: 30 }}
 							transition={{ delay: 0.4 }}
 						>
@@ -112,7 +112,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 							transition={{ delay: 0.6 }}
 						>
 							<Button
-								className="hover:px-6"
+								className="md:hover:px-6"
 								nativeButton={false}
 								render={<Link href={slide.href} />}
 								size="lg"
@@ -126,7 +126,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 
 			{slides.length > 1 && (
 				<>
-					<div className="absolute right-6 bottom-10 z-10 flex gap-2 md:right-20">
+					<div className="absolute right-4 bottom-4 z-10 flex gap-2 md:right-20 md:bottom-10">
 						<Button
 							className="text-card"
 							onClick={prev}
@@ -145,7 +145,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 						</Button>
 					</div>
 
-					<div className="absolute bottom-10 left-6 z-10 flex gap-1 md:left-20">
+					<div className="absolute bottom-4 left-4 z-10 flex gap-1 md:bottom-10 md:left-20">
 						{slides.map((_, i) => (
 							<div
 								className={cn(

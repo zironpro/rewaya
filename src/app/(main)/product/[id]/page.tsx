@@ -5,21 +5,14 @@ import { isWixCatalogEnabled } from "@/lib/wix/constants";
 import {
 	getProductBookSections,
 	getProductDetailBySlug,
-	queryWixProducts,
 } from "@/lib/wix/products";
+import { getProductStaticParams } from "@/lib/wix/static-params";
 
 export const revalidate = 86_400;
 
 export async function generateStaticParams() {
 	if (!isWixCatalogEnabled()) return [];
-
-	const products = await queryWixProducts({ limit: 1000 });
-
-	return products
-		.filter((product) => Boolean(product.slug))
-		.map((product) => ({
-			id: product.slug as string,
-		}));
+	return getProductStaticParams();
 }
 
 export default async function ProductDetailPage({

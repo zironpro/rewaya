@@ -38,7 +38,7 @@ export function BookCard({
 	return (
 		<div className="group relative">
 			<Link className="absolute inset-0 z-10" href={productHref} />
-			<div className="relative mb-4 aspect-3/4 overflow-hidden rounded-lg bg-card">
+			<div className="relative mb-4 aspect-4/5 overflow-hidden rounded-md bg-card hover:shadow-md">
 				<Image
 					alt={title}
 					className="object-contain transition-transform duration-700 group-hover:scale-105"
@@ -123,7 +123,7 @@ export function BookCard({
 				<div className="absolute right-0 bottom-0 left-0 z-20 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
 					<AddToCartButton
 						availableForSale={availableForSale}
-						className="h-auto w-full rounded-none p-6 text-white hover:text-white"
+						className="h-auto w-full rounded-none p-3 text-white hover:text-white md:p-4"
 						disabled={!wixProductId}
 						productId={wixProductId ?? ""}
 						productName={title}
@@ -159,15 +159,15 @@ export function BookCard({
 			</div>
 
 			<div className="flex cursor-pointer flex-col gap-1 px-1">
-				<div className="flex items-start justify-between gap-4">
+				<div className="flex flex-col items-start gap-1 md:flex-row md:justify-between md:gap-4">
 					<h3 className="flex-1 font-semibold text-base text-primary leading-tight transition-colors">
 						{title}
 					</h3>
-					<span className="whitespace-nowrap font-medium text-secondary text-sm">
+					<span className="whitespace-nowrap font-semibold text-secondary text-sm">
 						AED {price.toFixed(2)}
 					</span>
 				</div>
-				<p className="font-medium text-sm text-stone-400">{author}</p>
+				{author && <p className="text-mauve-400 text-xs">{author}</p>}
 			</div>
 		</div>
 	);

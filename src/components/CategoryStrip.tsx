@@ -25,7 +25,7 @@ export function CategoryStrip({ categories = [] }: CategoryStripProps) {
 	}));
 
 	return (
-		<section className="container w-full py-16">
+		<section className="container w-full py-9 md:py-16">
 			<Carousel
 				className="w-full"
 				opts={{ align: "start", dragFree: true, loop: false }}
@@ -33,7 +33,7 @@ export function CategoryStrip({ categories = [] }: CategoryStripProps) {
 				<CarouselContent className="-ml-6">
 					{items.map((cat) => (
 						<CarouselItem
-							className="basis-[70%] pl-6 sm:basis-[45%] md:basis-1/3 lg:basis-1/7"
+							className="basis-[30%] pl-6 sm:basis-[45%] md:basis-1/3 lg:basis-1/7"
 							key={cat.href}
 						>
 							<Link

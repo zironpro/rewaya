@@ -13,7 +13,7 @@ import { BookProps } from "@/lib/store";
 import { BookCard } from "./book-card";
 
 const navButtonClass =
-	"static size-10 bg-card translate-x-0 translate-y-0 shadow-sm hover:border-primary hover:bg-mauve-100 hover:text-primary disabled:opacity-40";
+	"static   bg-card translate-x-0 translate-y-0 hover:border-primary hover:bg-mauve-100 hover:text-primary disabled:opacity-40";
 
 interface ProductStripProps {
 	title: string;
@@ -50,16 +50,8 @@ export function ProductStrip({ title, subtitle, books }: ProductStripProps) {
 						</div>
 					</div>
 					<div className="flex gap-2">
-						<CarouselPrevious
-							className={navButtonClass}
-							size="icon"
-							variant="outline"
-						/>
-						<CarouselNext
-							className={navButtonClass}
-							size="icon"
-							variant="outline"
-						/>
+						<CarouselPrevious className={navButtonClass} />
+						<CarouselNext className={navButtonClass} />
 					</div>
 				</div>
 

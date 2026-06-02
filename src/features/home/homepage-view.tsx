@@ -1,8 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { MapPin } from "lucide-react";
-
 import { BundleSection } from "@/components/BundleSection";
 import { CategoryStrip } from "@/components/CategoryStrip";
 import { PolicyCards } from "@/components/PolicyCards";
@@ -68,15 +66,15 @@ export const HomepageView = ({
 				)}
 
 			<section className="container mb-16">
-				<div className="group relative min-h-[300px] overflow-hidden rounded-2xl shadow-lg md:min-h-[360px]">
+				<div className="group relative overflow-hidden rounded-2xl shadow-lg md:min-h-[360px]">
 					<Image
 						alt="Rewaya Books at the Dubai Book Fair"
-						className="object-cover transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-102"
+						className="object-cover object-left transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-102 md:object-center"
 						fill
 						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="/banners/book-fair-banner.webp"
 					/>
-					<div className="relative z-10 flex min-h-[300px] flex-col items-start justify-center p-6 text-card sm:p-10 md:min-h-[360px] md:max-w-2xl md:p-12">
+					<div className="relative z-10 flex flex-col items-start justify-center p-6 text-card sm:p-10 md:min-h-[360px] md:max-w-2xl md:p-12">
 						<Badge
 							className="border-card/20 bg-card/10 text-card tracking-normal backdrop-blur-sm"
 							size="lg"
@@ -84,21 +82,21 @@ export const HomepageView = ({
 						>
 							Event recap
 						</Badge>
-						<h3 className="mt-3 font-bold font-display text-3xl leading-tight md:text-5xl">
+						<h3 className="mt-2 font-bold font-display text-2xl leading-tight sm:text-3xl md:mt-3 md:text-5xl">
 							Rewaya at the{" "}
 							<span className="text-accent italic">Book Fair</span>
 						</h3>
-						<p className="mt-4 font-light text-base text-card/90">
+						<p className="mt-4 font-light text-card/90 text-xs sm:text-base">
 							Thank you to everyone who visited our stand. We loved meeting
 							readers, signing books, and sharing stories from across the
 							Islamic world.
 						</p>
-						<p className="mt-3 flex items-center gap-1.5 text-card/75 text-sm">
+						{/* <p className="mt-3 flex items-center gap-1.5 text-card/75 text-sm">
 							<MapPin aria-hidden className="size-4 shrink-0" />
 							Dubai, United Arab Emirates
-						</p>
+						</p> */}
 						<Button
-							className="mt-8"
+							className="mt-4 md:mt-8"
 							nativeButton={false}
 							render={<Link href="/shop" />}
 							size="lg"

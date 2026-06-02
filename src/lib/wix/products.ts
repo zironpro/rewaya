@@ -31,6 +31,7 @@ import {
 import { wixFetch } from "./wix-rest";
 
 const DEFAULT_LIMIT = 100;
+const MAX_WIX_LIMIT = 100;
 const STORES_TREE_REFERENCE = {
 	appNamespace: "@wix/stores",
 	treeKey: null,
@@ -221,19 +222,34 @@ async function listV3CategoryProductIds(
 	categoryId: string,
 	limit: number
 ): Promise<string[]> {
-	const data = await wixFetch<{
-		catalogItems?: Array<{ catalogItemId?: string }>;
-	}>(
-		`https://www.wixapis.com/categories/v1/categories/${categoryId}/list-items`,
-		{
-			treeReference: STORES_TREE_REFERENCE,
-			paging: { limit, offset: 0 },
-		}
-	);
+	const target = Math.max(0, limit);
+	const ids: string[] = [];
+	let offset = 0;
 
-	return (data.catalogItems ?? [])
-		.map((item) => item.catalogItemId)
-		.filter((id): id is string => Boolean(id));
+	while (ids.length < target) {
+		const pageLimit = Math.min(MAX_WIX_LIMIT, target - ids.length);
+		if (pageLimit <= 0) break;
+
+		const data = await wixFetch<{
+			catalogItems?: Array<{ catalogItemId?: string }>;
+		}>(
+			`https://www.wixapis.com/categories/v1/categories/${categoryId}/list-items`,
+			{
+				treeReference: STORES_TREE_REFERENCE,
+				paging: { limit: pageLimit, offset },
+			}
+		);
+
+		const batch = (data.catalogItems ?? [])
+			.map((item) => item.catalogItemId)
+			.filter((id): id is string => Boolean(id));
+
+		ids.push(...batch);
+		if (batch.length < pageLimit) break;
+		offset += batch.length;
+	}
+
+	return ids;
 }
 
 async function queryV1ProductsViaSdk(options: {
@@ -245,6 +261,8 @@ async function queryV1ProductsViaSdk(options: {
 	ids?: string[];
 }): Promise<V1Product[]> {
 	const client = getWixClient();
+	const limit = Math.min(Math.max(1, options.limit), MAX_WIX_LIMIT);
+	const offset = Math.max(0, options.offset);
 	let query = client.products.queryProducts();
 
 	if (options.collectionId) {
@@ -260,8 +278,8 @@ async function queryV1ProductsViaSdk(options: {
 	}
 
 	const { items } = await query
-		.limit(options.limit)
-		.skip(options.offset)
+		.limit(limit)
+		.skip(offset)
 		.find();
 	return items as V1Product[];
 }
@@ -276,8 +294,11 @@ export async function searchWixProducts(options: {
 
 	const client = getWixClient();
 	const version = await getCatalogVersion();
-	const limit = options.limit ?? DEFAULT_LIMIT;
-	const offset = options.offset ?? 0;
+	const limit = Math.min(
+		Math.max(1, options.limit ?? DEFAULT_LIMIT),
+		MAX_WIX_LIMIT
+	);
+	const offset = Math.max(0, options.offset ?? 0);
 	const categoryNameMap =
 		options.categoryNameMap ?? (await getCategoryNameMap());
 
@@ -314,8 +335,11 @@ export async function queryWixProductsByCategory(
 	if (!isWixCatalogEnabled()) return [];
 
 	const version = await getCatalogVersion();
-	const limit = options?.limit ?? DEFAULT_LIMIT;
-	const offset = options?.offset ?? 0;
+	const limit = Math.min(
+		Math.max(1, options?.limit ?? DEFAULT_LIMIT),
+		MAX_WIX_LIMIT
+	);
+	const offset = Math.max(0, options?.offset ?? 0);
 	const categoryNameMap =
 		options?.categoryNameMap ?? (await getCategoryNameMap());
 
@@ -367,8 +391,11 @@ export async function queryWixProducts(
 
 	const client = getWixClient();
 	const version = await getCatalogVersion();
-	const limit = options?.limit ?? DEFAULT_LIMIT;
-	const offset = options?.offset ?? 0;
+	const limit = Math.min(
+		Math.max(1, options?.limit ?? DEFAULT_LIMIT),
+		MAX_WIX_LIMIT
+	);
+	const offset = Math.max(0, options?.offset ?? 0);
 
 	if (version === "V3_CATALOG") {
 		let query = client.productsV3.queryProducts({
@@ -504,8 +531,11 @@ function mapV1ItemsToBookProps(
 async function queryV1ShopItems(
 	options: GetShopBooksOptions | undefined
 ): Promise<V1Product[]> {
-	const limit = options?.limit ?? DEFAULT_LIMIT;
-	const offset = options?.offset ?? 0;
+	const limit = Math.min(
+		Math.max(1, options?.limit ?? DEFAULT_LIMIT),
+		MAX_WIX_LIMIT
+	);
+	const offset = Math.max(0, options?.offset ?? 0);
 
 	if (options?.search?.trim()) {
 		return queryV1ProductsViaSdk({
