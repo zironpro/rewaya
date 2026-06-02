@@ -48,12 +48,12 @@ export function CartLineItem({
 	return (
 		<div
 			className={cn(
-				"grid grid-cols-1 items-center gap-8 border-b py-8 md:grid-cols-4",
+				"grid grid-cols-1 items-center gap-8 border-b pb-8 md:grid-cols-4",
 				unavailable && "opacity-75"
 			)}
 		>
 			<div className="col-span-2 flex gap-6">
-				<div className="relative aspect-3/4 h-24 shrink-0 overflow-hidden overflow-hidden rounded-sm bg-card sm:h-32">
+				<div className="relative aspect-3/4 h-24 shrink-0 overflow-hidden rounded-sm bg-card sm:h-32">
 					{imageUrl ? (
 						href ? (
 							<Link className="block h-full w-full" href={href}>
@@ -77,23 +77,25 @@ export function CartLineItem({
 					) : null}
 				</div>
 				<div className="flex flex-col justify-center gap-1">
-					{href ? (
-						<Link
-							className="font-bold text-secondary text-sm hover:text-primary hover:underline"
-							href={href}
-						>
-							{item.productName?.translated}
-						</Link>
-					) : (
-						<h3 className="font-bold text-secondary text-sm">
-							{item.productName?.translated}
-						</h3>
-					)}
-					{isBundle ? (
-						<Badge className="mt-0.5 w-fit" size="sm" variant="secondary">
-							Bundle
-						</Badge>
-					) : null}
+					<div className="flex gap-2">
+						{href ? (
+							<Link
+								className="font-bold text-secondary text-sm hover:text-primary hover:underline"
+								href={href}
+							>
+								{item.productName?.translated}
+							</Link>
+						) : (
+							<h3 className="font-bold text-secondary text-sm">
+								{item.productName?.translated}
+							</h3>
+						)}
+						{isBundle ? (
+							<Badge className="mt-0.5 w-fit" size="sm" variant="secondary">
+								Bundle
+							</Badge>
+						) : null}
+					</div>
 					{subtitle ? (
 						<p className="text-sm text-stone-400">{subtitle}</p>
 					) : null}
@@ -113,11 +115,11 @@ export function CartLineItem({
 						</Badge>
 					)}
 					<Button
-						className="mt-1 h-auto w-fit gap-2 p-0 font-bold text-sm text-stone-400 hover:text-primary"
+						className="mt-1 w-fit text-xs"
 						onClick={() => lineId && onRemove(lineId)}
-						size="sm"
+						size="xs"
 						type="button"
-						variant="ghost"
+						variant="destructive"
 					>
 						<Trash2 size={12} />
 						Remove
@@ -129,7 +131,7 @@ export function CartLineItem({
 				{unavailable ? (
 					<span className="text-sm text-stone-400">—</span>
 				) : (
-					<div className="flex items-center rounded-sm border border-stone-200">
+					<div className="flex items-center rounded-sm border border-stone-200 bg-card">
 						<Button
 							aria-label="Decrease quantity"
 							className="size-8 rounded-none"

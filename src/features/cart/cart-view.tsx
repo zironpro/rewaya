@@ -26,7 +26,6 @@ import { CartEmpty } from "@/features/cart/components/cart-empty";
 import { CartLineItem } from "@/features/cart/components/cart-line-item";
 import { CartLoading } from "@/features/cart/components/cart-loading";
 import { CartOrderSummary } from "@/features/cart/components/cart-order-summary";
-import { DeliveryNoticeBanner } from "@/features/cart/components/delivery-notice-banner";
 
 const cartEnabled = Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
 
@@ -163,18 +162,15 @@ export function CartView() {
 	return (
 		<main className="grow pt-4 pb-28 md:pb-16">
 			<div className="container">
-				<Breadcrumbs className="mb-8" items={[{ label: "Shopping Bag" }]} />
-				<DeliveryNoticeBanner />
+				<Breadcrumbs className="mb-4" items={[{ label: "Shopping Bag" }]} />
+
 				{actionError ? (
 					<StatusBanner className="mb-6" variant="error">
 						{actionError}
 					</StatusBanner>
 				) : null}
-				<div className="mb-16">
-					<span className="mb-4 block font-medium text-sm text-stone-400">
-						Your Selection
-					</span>
-					<h1 className="font-black font-serif text-3xl text-secondary sm:text-4xl md:text-5xl">
+				<div className="mb-12">
+					<h1 className="font-bold font-serif text-3xl text-secondary sm:text-4xl md:text-5xl">
 						Shopping <span className="font-normal italic">Bag</span>.
 					</h1>
 				</div>
@@ -184,7 +180,7 @@ export function CartView() {
 				) : items.length === 0 ? (
 					<CartEmpty />
 				) : (
-					<div className="flex flex-col gap-20 lg:flex-row">
+					<div className="flex flex-col gap-12 lg:flex-row">
 						<aside className="order-2 w-full lg:order-0 lg:w-96">
 							<CartOrderSummary
 								checkingOut={checkingOut}
