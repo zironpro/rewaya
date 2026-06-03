@@ -201,6 +201,27 @@ export function AuthProvider({
 			setIsPending(true);
 			setError(null);
 			try {
+				const returnPath =
+					returnUrl && returnUrl.startsWith(window.location.origin)
+						? returnUrl.slice(window.location.origin.length) || "/"
+						: returnUrl;
+
+				const res = await fetch("/api/wix/login", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						returnUrl: returnPath?.startsWith("/") ? returnPath : undefined,
+					}),
+				});
+
+				if (res.ok) {
+					const { authUrl } = (await res.json()) as { authUrl?: string };
+					if (authUrl) {
+						window.location.href = authUrl;
+						return;
+					}
+				}
+
 				const redirectUri = `${window.location.origin}${AUTH_CALLBACK_PATH}`;
 				const oauthData: OauthData = client.auth.generateOAuthData(
 					redirectUri,

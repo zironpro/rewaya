@@ -68,6 +68,20 @@ npm run dev
 
 Visitor cart uses the `wix_session` cookie (refreshed by `src/proxy.ts` on each request when tokens are missing or expired). Add-to-cart sends `catalogItemId` plus variant/options per [Wix headless-templates commerce](https://github.com/wix/headless-templates/blob/main/nextjs/commerce/lib/wix/index.ts).
 
+### Wix API routes (`/api/wix/*`)
+
+Catch-all proxy and helpers live under `src/app/api/wix/[...path]/route.ts`:
+
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/wix/login` | POST | Start Wix-managed login (`{ authUrl }`); stores OAuth PKCE data in an httpOnly cookie |
+| `/api/wix/logout` | POST | Wix-managed logout URL; clears `wix_session` |
+| `/api/wix/checkout` | GET/POST | Hosted checkout URL (`?redirect=false` for JSON only) |
+| `/api/wix/session/refresh` | POST | Refresh visitor tokens into `wix_session` |
+| `/api/wix/<wix-api-path>` | * | Proxy to `edge.wixapis.com` / `www.wixapis.com` (oauth2 → www) with session auth |
+
+Example proxy: `POST /api/wix/oauth2/token` forwards to Wix token endpoint (same-origin, no browser CORS).
+
 ## Catalog version
 
 Auto-detected via `catalogVersioning.getCatalogVersion()`:

@@ -28,8 +28,6 @@ import { CartLoading } from "@/features/cart/components/cart-loading";
 import { CartOrderSummary } from "@/features/cart/components/cart-order-summary";
 import { trackMetaEvent } from "@/lib/analytics/meta";
 
-const cartEnabled = Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
-
 export function CartView() {
 	const initialCacheRef = useRef(
 		typeof window !== "undefined" ? readCartSnapshot() : null
@@ -52,11 +50,6 @@ export function CartView() {
 	}, []);
 
 	const loadCart = useCallback(async () => {
-		if (!cartEnabled) {
-			setLoading(false);
-			return;
-		}
-
 		try {
 			const cart = await fetchCart();
 			if (cart) {
@@ -83,7 +76,7 @@ export function CartView() {
 	}, [loadCart]);
 
 	const handleUpdateQuantity = (itemId: string, quantity: number) => {
-		if (!cartEnabled || quantity < 1) return;
+		if (quantity < 1) return;
 
 		setItems((prev) =>
 			prev.map((it) => (it._id === itemId ? { ...it, quantity } : it))
@@ -119,8 +112,6 @@ export function CartView() {
 	};
 
 	const handleRemoveItem = async (itemId: string) => {
-		if (!cartEnabled) return;
-
 		setItems((prev) => prev.filter((it) => it._id !== itemId));
 
 		try {
@@ -140,7 +131,6 @@ export function CartView() {
 	};
 
 	const handleCheckout = () => {
-		if (!cartEnabled) return;
 		// Track InitiateCheckout event
 		if (typeof window !== "undefined") {
 			trackMetaEvent("InitiateCheckout", {
