@@ -16,8 +16,6 @@ import { PurchasePanelShell } from "@/components/commerce/purchase-panel-shell";
 import { QuantitySelector } from "@/components/commerce/quantity-selector";
 import { Separator } from "@/components/ui/separator";
 
-import { CurrencyIcon } from "@/assets/icons/currency";
-
 import { isAvailableForPurchase } from "@/domain/product/availability";
 import { AddToCartButton } from "@/features/products/components/add-to-cart-button";
 import { WishlistToggleButton } from "@/features/wishlist/components/wishlist-toggle-button";
@@ -31,7 +29,6 @@ const TRUST_ITEMS = [
 interface ProductPurchasePanelProps {
 	title: string;
 	price: number;
-	compareAtPrice?: number;
 	productId?: string;
 	productVariant?: import("@/lib/wix/catalog-types").ProductVariant;
 	availableForSale?: boolean;
@@ -43,7 +40,6 @@ interface ProductPurchasePanelProps {
 export function ProductPurchasePanel({
 	title,
 	price,
-	compareAtPrice,
 	productId,
 	productVariant,
 	availableForSale,
@@ -53,10 +49,6 @@ export function ProductPurchasePanel({
 }: ProductPurchasePanelProps) {
 	const router = useRouter();
 	const inStock = isAvailableForPurchase(availableForSale, productVariant);
-	const savingsPercent =
-		compareAtPrice && compareAtPrice > price
-			? Math.round((1 - price / compareAtPrice) * 100)
-			: null;
 
 	return (
 		<PurchasePanelShell className={className}>
@@ -69,34 +61,20 @@ export function ProductPurchasePanel({
 						Sold by
 					</p>
 					<p className="font-bold text-secondary text-sm">Rewaya Books</p>
-					<p className="text-muted-foreground text-xs">
+					{/* <p className="text-muted-foreground text-xs">
 						Official store · Curated editions
-					</p>
+					</p> */}
 				</div>
 			</div>
 
 			<Separator className="mb-4" />
 
-			<div className="mb-4 space-y-1">
-				<div className="flex items-baseline gap-2">
-					<CurrencyIcon className="size-5 text-primary" />
-					<span className="font-black font-display text-2xl text-primary">
-						{price.toFixed(2)}
-					</span>
-				</div>
-				{compareAtPrice && compareAtPrice > price && (
-					<div className="flex flex-wrap items-center gap-2 text-sm">
-						<span className="text-muted-foreground line-through">
-							AED {compareAtPrice.toFixed(2)}
-						</span>
-						{savingsPercent !== null && (
-							<span className="font-bold text-success">
-								{savingsPercent}% off
-							</span>
-						)}
-					</div>
-				)}
-			</div>
+			<p className="flex items-baseline gap-1 tracking-tight">
+				AED
+				<span className="font-extrabold text-2xl text-primary">
+					{price.toFixed(2)}
+				</span>
+			</p>
 
 			<div className="mb-4 space-y-2">
 				<AvailabilityStatus
@@ -110,43 +88,45 @@ export function ProductPurchasePanel({
 				/>
 			</div>
 
-			<div className="flex flex-col gap-2">
-				<AddToCartButton
-					availableForSale={availableForSale}
-					className="hidden w-full gap-2 md:flex"
-					disabled={!productId}
-					productId={productId ?? ""}
-					productName={title}
-					productVariant={productVariant}
-					quantity={quantity}
-					size="lg"
-					variant="secondary"
-				>
-					<ShoppingBagIcon className="size-4" />
-					Add to Cart
-				</AddToCartButton>
+			{inStock && (
+				<div className="flex flex-col gap-2">
+					<AddToCartButton
+						availableForSale={availableForSale}
+						className="hidden w-full gap-2 md:flex"
+						disabled={!productId}
+						productId={productId ?? ""}
+						productName={title}
+						productVariant={productVariant}
+						quantity={quantity}
+						size="lg"
+						variant="secondary"
+					>
+						<ShoppingBagIcon className="size-4" />
+						Add to Cart
+					</AddToCartButton>
 
-				<AddToCartButton
-					availableForSale={availableForSale}
-					className="hidden w-full md:flex"
-					disabled={!productId}
-					onAdded={() => router.push("/cart")}
-					productId={productId ?? ""}
-					productName={title}
-					productVariant={productVariant}
-					quantity={quantity}
-					size="lg"
-					variant="outline"
-				>
-					Buy Now
-				</AddToCartButton>
+					<AddToCartButton
+						availableForSale={availableForSale}
+						className="hidden w-full md:flex"
+						disabled={!productId}
+						onAdded={() => router.push("/cart")}
+						productId={productId ?? ""}
+						productName={title}
+						productVariant={productVariant}
+						quantity={quantity}
+						size="lg"
+						variant="outline"
+					>
+						Buy Now
+					</AddToCartButton>
 
-				{/* {!productId && (
+					{/* {!productId && (
 						<p className="text-center text-muted-foreground text-xs">
-							Catalog sync required to purchase online.
+						Catalog sync required to purchase online.
 						</p>
-					)} */}
-			</div>
+						)} */}
+				</div>
+			)}
 
 			<Separator className="my-4" />
 

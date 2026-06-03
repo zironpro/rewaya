@@ -41,20 +41,13 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 interface ProductInfoPanelProps {
 	product: ProductDetailData;
-	compareAtPrice?: number;
 	className?: string;
 }
 
 export function ProductInfoPanel({
 	product,
-	compareAtPrice,
 	className,
 }: ProductInfoPanelProps) {
-	const savingsPercent =
-		compareAtPrice && compareAtPrice > product.price
-			? Math.round((1 - product.price / compareAtPrice) * 100)
-			: null;
-
 	const formatDetail = product.details.find((d) => d.label === "Format");
 
 	return (
@@ -111,18 +104,6 @@ export function ProductInfoPanel({
 						{product.price.toFixed(2)}
 					</span>
 				</div>
-				{compareAtPrice && compareAtPrice > product.price && (
-					<div className="flex flex-col gap-0.5">
-						<span className="text-muted-foreground text-sm line-through">
-							AED {compareAtPrice.toFixed(2)}
-						</span>
-						{savingsPercent !== null && (
-							<span className="font-bold text-sm text-success">
-								{savingsPercent}% off
-							</span>
-						)}
-					</div>
-				)}
 			</div>
 
 			<div className="flex flex-wrap items-center gap-2">

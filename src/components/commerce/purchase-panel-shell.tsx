@@ -14,7 +14,7 @@ export function PurchasePanelShell({
 }: PurchasePanelShellProps) {
 	return (
 		<aside className={cn(className)}>
-			<div className="rounded-xl border border-border bg-card p-5 shadow-sm lg:sticky lg:top-28">
+			<div className="rounded-xl border border-border bg-card p-5 shadow-sm/2 lg:sticky lg:top-28">
 				{children}
 			</div>
 		</aside>

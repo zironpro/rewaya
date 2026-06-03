@@ -18,11 +18,6 @@ import type { BookProps } from "@/lib/store";
 
 export type { ProductDetailData } from "@/features/products/types";
 
-function getCompareAtPrice(price: number): number | undefined {
-	if (price <= 0) return undefined;
-	return Math.round(price * 1.18 * 100) / 100;
-}
-
 interface ProductDetailViewProps {
 	product: ProductDetailData | null;
 	sameCategoryBooks?: BookProps[];
@@ -75,8 +70,6 @@ export const ProductDetailView = ({
 		);
 	}
 
-	const compareAtPrice = getCompareAtPrice(product.price);
-
 	return (
 		<>
 			<main className="bg-background pt-4 pb-28 md:pb-16">
@@ -110,16 +103,12 @@ export const ProductDetailView = ({
 						</div>
 
 						<div className="lg:col-span-5 xl:col-span-4">
-							<ProductInfoPanel
-								compareAtPrice={compareAtPrice}
-								product={product}
-							/>
+							<ProductInfoPanel product={product} />
 						</div>
 
 						<div className="hidden lg:col-span-3 lg:block xl:col-span-3">
 							<ProductPurchasePanel
 								availableForSale={product.availableForSale}
-								compareAtPrice={compareAtPrice}
 								onQuantityChange={setQuantity}
 								price={product.price}
 								productId={product.wixProductId}
