@@ -66,7 +66,7 @@ export function CartOrderSummary({
 				<div className="flex items-end justify-between">
 					<span className="font-semibold text-sm">Total</span>
 					<span className="font-bold text-2xl text-primary tracking-tight">
-						{displayTotal ?? "—"}
+						{displayTotal ?? "-"}
 					</span>
 				</div>
 
