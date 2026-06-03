@@ -42,7 +42,7 @@ export const ShopView = ({
 	const FilterContent = ({ onClose }: { onClose?: () => void }) => (
 		<div className="space-y-12">
 			<div className="lg:hidden">
-				<h3 className="mb-4 border-b pb-4 font-bold text-sm">Sort by</h3>
+				<h3 className="mb-4 border-b pb-1 font-semiboldtext-sm">Sort by</h3>
 				<select className="h-12 w-full cursor-pointer border px-4 font-bold text-sm outline-none">
 					<option>Newest first</option>
 					<option>Price: Low to high</option>
@@ -51,23 +51,23 @@ export const ShopView = ({
 			</div>
 
 			<div>
-				<h3 className="mb-4 border-b pb-4 font-bold text-sm">Categories</h3>
-				<div className="flex flex-col gap-2">
+				<h3 className="mb-4 border-b pb-1 font-semibold text-sm">Categories</h3>
+				<div className="flex flex-col gap-1">
 					{sidebarCategories.map((item) => {
 						if (item.type === "all") {
 							const isActive = !activeCategory;
 							return (
 								<Link
 									className={cn(
-										"inline-flex h-10 w-full items-center justify-between rounded-sm px-2 text-sm transition-colors hover:bg-accent",
-										isActive ? "bg-accent" : ""
+										"inline-flex h-8 w-full items-center justify-between rounded-sm px-2 text-sm transition-colors hover:bg-accent/80",
+										isActive ? "bg-accent text-accent-foreground" : ""
 									)}
 									href="/shop"
 									key="all"
 								>
 									<span>{item.name}</span>
-									<span className="text-[8px] text-stone-300">
-										({item.count})
+									<span className="text-[9px] text-mauve-500 tabular-nums">
+										{item.count}
 									</span>
 								</Link>
 							);
@@ -80,14 +80,16 @@ export const ShopView = ({
 						return (
 							<Link
 								className={cn(
-									"inline-flex h-10 w-full items-center justify-between rounded-sm px-2 text-sm transition-colors hover:bg-accent",
-									isActive ? "bg-accent" : ""
+									"inline-flex h-8 w-full items-center justify-between rounded-sm px-2 text-sm transition-colors hover:bg-accent/80 hover:text-accent-foreground",
+									isActive ? "bg-accent text-accent-foreground" : ""
 								)}
 								href={category.href}
 								key={`${category.slug}-${category.name}`}
 							>
 								<span>{category.name}</span>
-								<span className="text-[8px] text-stone-300">({count})</span>
+								<span className="text-[9px] text-mauve-500 tabular-nums">
+									{count}
+								</span>
 							</Link>
 						);
 					})}
@@ -95,7 +97,7 @@ export const ShopView = ({
 			</div>
 
 			<div>
-				<h3 className="mb-8 border-stone-100 border-b pb-4 font-bold text-sm">
+				<h3 className="mb-4 border-b pb-1 font-semibold text-sm">
 					Price Range
 				</h3>
 				<div className="space-y-4">
@@ -106,16 +108,16 @@ export const ShopView = ({
 							min="0"
 							type="range"
 						/>
-						<div className="flex justify-between font-bold text-sm text-stone-400">
-							<span>$0</span>
-							<span>$200+</span>
+						<div className="flex justify-between font-medium text-muted-foreground text-sm">
+							<span>AED 0</span>
+							<span>AED 200+</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div>
-				<h3 className="mb-8 border-stone-100 border-b pb-4 font-bold text-sm">
+				<h3 className="mb-4 border-b pb-1 font-semibold text-sm">
 					Availability
 				</h3>
 				<div className="space-y-4">
@@ -154,27 +156,24 @@ export const ShopView = ({
 
 	return (
 		<>
-			<main className="grow pt-6 pb-28 md:pb-16">
+			<main className="grow pt-4 pb-28 md:pt-6 md:pb-16">
 				<section className="container md:mb-4">
-					<Breadcrumbs className="mb-4" items={[{ label: "Shop" }]} />
-					<div className="text-center">
+					<Breadcrumbs className="mb-3" items={[{ label: "Shop" }]} />
+					<div className="flex items-center justify-between text-center">
 						{/* <span className="mb-2 block font-medium text-muted-foreground text-xs sm:text-sm">
 							Collection
 						</span> */}
-						<h1 className="mb-4 font-bold font-display text-2xl text-secondary sm:text-4xl md:mb-8 md:text-5xl">
+						<h1 className="mb-4 font-bold font-display text-3xl text-secondary sm:text-4xl md:mb-4 md:text-5xl">
 							The <span className="text-primary italic">Library.</span>
 						</h1>
-					</div>
-				</section>
 
-				<section className="container mb-8 flex gap-4 lg:hidden">
-					<Button
-						className="h-12 flex-1 border-stone-100 font-bold text-sm"
-						onClick={() => setIsMobileFilterOpen(true)}
-						variant="outline"
-					>
-						<SlidersHorizontal className="mr-2" size={14} /> Filter & Sort
-					</Button>
+						<Button
+							onClick={() => setIsMobileFilterOpen(true)}
+							variant="outline"
+						>
+							<SlidersHorizontal className="mr-2" size={14} /> Filter & Sort
+						</Button>
+					</div>
 				</section>
 
 				<section className="container mb-32">
@@ -184,8 +183,8 @@ export const ShopView = ({
 						</aside>
 
 						<div className="grow">
-							<div className="mb-4 hidden items-center justify-between border-stone-100 border-b pb-4 lg:flex">
-								<p className="font-bold text-sm text-stone-400">
+							<div className="lg:medium mb-4 hidden items-center justify-between border-mauve-100 border-b font-semibold">
+								<p className="font-bold text-mauve-400 text-sm">
 									Showing {books.length} results
 									{searchQuery ? ` for "${searchQuery}"` : ""}
 									{activeCategory
@@ -193,7 +192,7 @@ export const ShopView = ({
 										: ""}
 								</p>
 								<div className="flex items-center gap-6">
-									<span className="font-bold text-sm text-stone-400">
+									<span className="font-bold text-mauve-400 text-sm">
 										Sort by:
 									</span>
 									<select className="cursor-pointer bg-transparent font-bold text-sm outline-none">
