@@ -170,17 +170,7 @@ export function CartView() {
 					<CartEmpty />
 				) : (
 					<div className="flex flex-col gap-12 lg:flex-row">
-						<aside className="order-2 w-full lg:order-0 lg:w-96">
-							<CartOrderSummary
-								checkingOut={checkingOut}
-								displayTotal={displayTotal}
-								hasUnavailable={hasUnavailable}
-								onCheckout={handleCheckout}
-								summary={summary}
-							/>
-						</aside>
-
-						<div className="order-1 grow space-y-4">
+						<div className="grow space-y-4">
 							<div className="hidden grid-cols-4 border-stone-100 border-b pb-4 font-bold text-sm text-stone-400 md:grid">
 								<div className="col-span-2">Item</div>
 								<div className="text-center">Quantity</div>
@@ -196,6 +186,15 @@ export function CartView() {
 								/>
 							))}
 						</div>
+						<aside className="w-full lg:w-96">
+							<CartOrderSummary
+								checkingOut={checkingOut}
+								displayTotal={displayTotal}
+								hasUnavailable={hasUnavailable}
+								onCheckout={handleCheckout}
+								summary={summary}
+							/>
+						</aside>
 					</div>
 				)}
 			</div>

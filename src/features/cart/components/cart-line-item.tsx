@@ -3,10 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+	NumberField,
+	NumberFieldDecrement,
+	NumberFieldGroup,
+	NumberFieldIncrement,
+	NumberFieldInput,
+} from "@/components/ui/number-field";
 
 import {
 	firstDescriptionSubtitle,
@@ -97,16 +104,16 @@ export function CartLineItem({
 						) : null}
 					</div>
 					{subtitle ? (
-						<p className="text-sm text-stone-400">{subtitle}</p>
+						<p className="text-mauve-400 text-sm">{subtitle}</p>
 					) : null}
 					{hasDiscount && (
-						<p className="text-stone-400 text-xs line-through">
+						<p className="text-mauve-400 text-xs line-through">
 							{item.fullPrice?.formattedConvertedAmount}
 						</p>
 					)}
 					{item.price?.formattedConvertedAmount && (
-						<p className="text-sm text-stone-500">
-							{item.price.formattedConvertedAmount} each
+						<p className="text-mauve-500 text-sm">
+							{item.price.formattedConvertedAmount}
 						</p>
 					)}
 					{unavailable && (
@@ -129,44 +136,27 @@ export function CartLineItem({
 
 			<div className="flex items-center justify-center">
 				{unavailable ? (
-					<span className="text-sm text-stone-400">—</span>
+					<span className="text-mauve-400 text-sm">-</span>
 				) : (
-					<div className="flex items-center rounded-sm border border-stone-200 bg-card">
-						<Button
-							aria-label="Decrease quantity"
-							className="size-8 rounded-none"
-							disabled={!item.quantity || item.quantity <= 1}
-							onClick={() =>
-								lineId && onUpdateQuantity(lineId, (item.quantity ?? 1) - 1)
-							}
-							size="icon"
-							type="button"
-							variant="outline"
-						>
-							<Minus size={12} />
-						</Button>
-						<span className="w-10 text-center font-bold text-sm">
-							{item.quantity}
-						</span>
-						<Button
-							aria-label="Increase quantity"
-							className="size-8 rounded-none"
-							disabled={(item.quantity ?? 0) >= maxQty}
-							onClick={() =>
-								lineId && onUpdateQuantity(lineId, (item.quantity ?? 1) + 1)
-							}
-							size="icon"
-							type="button"
-							variant="outline"
-						>
-							<Plus size={12} />
-						</Button>
-					</div>
+					<NumberField
+						className="w-28"
+						defaultValue={item.quantity}
+						max={maxQty}
+						onValueChange={(val) =>
+							lineId && onUpdateQuantity(lineId, val ?? 1)
+						}
+					>
+						<NumberFieldGroup>
+							<NumberFieldDecrement />
+							<NumberFieldInput />
+							<NumberFieldIncrement />
+						</NumberFieldGroup>
+					</NumberField>
 				)}
 			</div>
 
 			<div className="text-right">
-				<span className="font-bold text-primary text-sm">
+				<span className="font-bold text-lg text-primary">
 					{item.lineItemPrice?.formattedConvertedAmount ??
 						item.price?.formattedConvertedAmount ??
 						"—"}

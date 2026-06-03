@@ -26,13 +26,13 @@ export function CartOrderSummary({
 	return (
 		<Card className="sticky top-32 bg-card">
 			<CardHeader className="border-b pb-4">
-				<CardTitle className="font-bold text-sm">Order Summary</CardTitle>
+				<CardTitle className="font-bold font-display">Order Summary</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-0 pt-6">
 				<div className="space-y-4">
 					<div className="flex justify-between text-muted-foreground text-sm">
 						<span>Subtotal</span>
-						<span>{summary.subtotal ?? "—"}</span>
+						<span>{summary.subtotal ?? "-klp"}</span>
 					</div>
 					{summary.discount ? (
 						<div className="flex justify-between text-muted-foreground text-sm">
@@ -45,7 +45,7 @@ export function CartOrderSummary({
 									</span>
 								)}
 							</span>
-							<span>−{summary.discount}</span>
+							<span>-{summary.discount}</span>
 						</div>
 					) : summary.discountNames.length > 0 ? (
 						<div className="flex justify-between text-muted-foreground text-sm">
