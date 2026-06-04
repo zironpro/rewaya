@@ -8,6 +8,7 @@ import { inter, playfair } from "@/assets/fonts";
 
 import { CartProvider } from "@/features/cart/cart-provider";
 import { WishlistProvider } from "@/features/wishlist/wishlist-provider";
+import OpenPanelProvider from "@/lib/open-panel/provider";
 import { cn } from "@/lib/utils";
 import { WixProvider } from "@/lib/wix/provider";
 
@@ -39,15 +40,17 @@ export default function RootLayout({
 			lang="en"
 		>
 			<body>
-				<WixProvider>
-					<CartProvider>
-						<WishlistProvider>
-							<MetaPixelProvider>
-								<TooltipProvider delay={0}>{children}</TooltipProvider>
-							</MetaPixelProvider>
-						</WishlistProvider>
-					</CartProvider>
-				</WixProvider>
+				<OpenPanelProvider>
+					<WixProvider>
+						<CartProvider>
+							<WishlistProvider>
+								<MetaPixelProvider>
+									<TooltipProvider delay={0}>{children}</TooltipProvider>
+								</MetaPixelProvider>
+							</WishlistProvider>
+						</CartProvider>
+					</WixProvider>
+				</OpenPanelProvider>
 			</body>
 		</html>
 	);

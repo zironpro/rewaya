@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 
+import { useOpenPanel } from "@openpanel/nextjs";
 import { ShoppingBag } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,7 @@ export function BundleCheckoutCta({
 	shimmerClass = "btn-shimmer",
 	mode = "cart",
 }: BundleCheckoutCtaProps) {
+	const { track } = useOpenPanel();
 	const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [debugDetails, setDebugDetails] = useState<string | null>(null);
@@ -69,6 +71,12 @@ export function BundleCheckoutCta({
 				},
 			});
 		}
+
+		track("checkout", {
+			product_id: bundle.checkoutCatalogItemId,
+			product_name: bundle.slug,
+			is_bundle: true,
+		});
 
 		startCheckout(() => {
 			void startBundleCheckout(

@@ -138,6 +138,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 						>
 							<Button
 								className="md:hover:px-6"
+								data-track="banner"
 								nativeButton={false}
 								render={<Link href={slide.href} />}
 								size="lg"

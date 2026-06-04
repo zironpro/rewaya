@@ -67,6 +67,7 @@ export function BundlesCampaignActions({
 		return (
 			<Button
 				className={cn("min-h-11 shrink-0", className)}
+				data-track="cta"
 				nativeButton={false}
 				render={<Link href="#bundles" />}
 				size={buttonSize}

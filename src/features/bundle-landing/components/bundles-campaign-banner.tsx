@@ -88,6 +88,7 @@ export function BundlesCampaignBanner({
 							) : (
 								<Button
 									className="campaign-shimmer"
+									data-track="banner"
 									nativeButton={false}
 									render={<Link href={slot.ctaHref ?? "#bundles"} />}
 									size="lg"

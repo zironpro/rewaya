@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useOpenPanel } from "@openpanel/nextjs";
+
 import { dispatchCartUpdated } from "@/components/commerce/cart-events";
 import { Button } from "@/components/ui/button";
 
@@ -35,6 +37,7 @@ export function AddBundleToCartButton({
 	children,
 	onAdded,
 }: AddBundleToCartButtonProps) {
+	const { track } = useOpenPanel();
 	const [status, setStatus] = useState<"idle" | "loading" | "added" | "error">(
 		"idle"
 	);
@@ -96,6 +99,12 @@ export function AddBundleToCartButton({
 					},
 				});
 			}
+			track("add_to_cart", {
+				product_id: checkoutCatalogItemId,
+				product_name: bundleSlug ?? "bundle",
+				quantity,
+				is_bundle: true,
+			});
 			setStatus("added");
 			onAdded?.();
 			setTimeout(() => setStatus("idle"), 2000);

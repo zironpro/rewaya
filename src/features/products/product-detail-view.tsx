@@ -13,6 +13,7 @@ import { ProductMobileBuyBar } from "@/features/products/components/product-mobi
 import { ProductPurchasePanel } from "@/features/products/components/product-purchase-panel";
 import { ProductRelatedBooks } from "@/features/products/components/product-related-books";
 import type { ProductDetailData } from "@/features/products/types";
+import { useOpenPanel } from "@openpanel/nextjs";
 import { trackMetaEvent } from "@/lib/analytics/meta";
 import type { BookProps } from "@/lib/store";
 
@@ -29,6 +30,7 @@ export const ProductDetailView = ({
 	sameCategoryBooks = [],
 	relatedReads = [],
 }: ProductDetailViewProps) => {
+	const { track } = useOpenPanel();
 	const [quantity, setQuantity] = useState(1);
 
 	useEffect(() => {
@@ -47,8 +49,14 @@ export const ProductDetailView = ({
 				event_source_url: window.location.href,
 				custom_data: customData,
 			});
+			track("product_view", {
+				product_id: product.wixProductId,
+				product_name: product.title,
+				category: product.category,
+				price: product.price,
+			});
 		}
-	}, [product]);
+	}, [product, track]);
 
 	if (!product) {
 		return (

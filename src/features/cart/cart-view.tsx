@@ -9,6 +9,8 @@ import {
 import { StatusBanner } from "@/components/feedback/status-banner";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
+import { useOpenPanel } from "@openpanel/nextjs";
+
 import {
 	fetchCart,
 	redirectToCheckout,
@@ -29,6 +31,7 @@ import { CartOrderSummary } from "@/features/cart/components/cart-order-summary"
 import { trackMetaEvent } from "@/lib/analytics/meta";
 
 export function CartView() {
+	const { track } = useOpenPanel();
 	const initialCacheRef = useRef(
 		typeof window !== "undefined" ? readCartSnapshot() : null
 	);
@@ -142,6 +145,10 @@ export function CartView() {
 				},
 			});
 		}
+		track("checkout", {
+			value: Number(summary.total) ?? Number(summary.subtotal),
+			num_items: items.length,
+		});
 		startCheckout(() => redirectToCheckout(window.location.origin));
 	};
 

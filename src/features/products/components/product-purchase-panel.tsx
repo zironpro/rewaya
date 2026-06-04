@@ -115,6 +115,7 @@ export function ProductPurchasePanel({
 						productVariant={productVariant}
 						quantity={quantity}
 						size="lg"
+						trackEventName="buy_now"
 						variant="outline"
 					>
 						Buy Now

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useOpenPanel } from "@openpanel/nextjs";
+
 import { dispatchCartUpdated } from "@/components/commerce/cart-events";
 import { Button } from "@/components/ui/button";
 
@@ -27,6 +29,7 @@ interface AddToCartButtonProps {
 	variant?: "default" | "secondary" | "outline" | "ghost";
 	children?: React.ReactNode;
 	onAdded?: () => void;
+	trackEventName?: string;
 }
 
 export function AddToCartButton({
@@ -42,7 +45,9 @@ export function AddToCartButton({
 	variant = "secondary",
 	children,
 	onAdded,
+	trackEventName = "add_to_cart",
 }: AddToCartButtonProps) {
+	const { track } = useOpenPanel();
 	const [status, setStatus] = useState<"idle" | "loading" | "added" | "error">(
 		"idle"
 	);
@@ -86,6 +91,11 @@ export function AddToCartButton({
 					},
 				});
 			}
+			track(trackEventName, {
+				product_id: productId,
+				product_name: productName,
+				quantity,
+			});
 
 			setStatus("added");
 			onAdded?.();
