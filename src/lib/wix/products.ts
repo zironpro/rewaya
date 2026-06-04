@@ -281,10 +281,10 @@ async function queryV1ProductsViaSdk(options: {
 		query = query.in("_id", options.ids);
 	}
 	if (options.minPrice !== undefined) {
-		query = query.ge("price", options.minPrice);
+		query = query.ge("priceData.price", options.minPrice);
 	}
 	if (options.maxPrice !== undefined) {
-		query = query.le("price", options.maxPrice);
+		query = query.le("priceData.price", options.maxPrice);
 	}
 
 	const { items, totalCount } = await query.limit(limit).skip(offset).find();
@@ -414,20 +414,23 @@ export async function queryWixProducts(
 		} else if (options?.slugs?.length === 1) {
 			query = query.eq("slug", options.slugs[0]);
 		}
-		if (options?.minPrice !== undefined) {
-			// Try to filter V3 by price
-			query = query.ge("price.price", options.minPrice);
-		}
-		if (options?.maxPrice !== undefined) {
-			query = query.le("price.price", options.maxPrice);
-		}
 
 		const { items } = await query.limit(limit).skipTo(String(offset)).find();
-		return filterCatalogProducts(
-			items.map((p) =>
-				mapV3Product(p as Record<string, unknown>, categoryNameMap)
-			)
+		let products = items.map((p) =>
+			mapV3Product(p as Record<string, unknown>, categoryNameMap)
 		);
+
+		// Filter by price client-side (V3 API doesn't support price filtering in query)
+		const minPrice = options?.minPrice;
+		if (minPrice !== undefined) {
+			products = products.filter((p) => (p.price ?? 0) >= minPrice);
+		}
+		const maxPrice = options?.maxPrice;
+		if (maxPrice !== undefined) {
+			products = products.filter((p) => (p.price ?? 0) <= maxPrice);
+		}
+
+		return filterCatalogProducts(products);
 	}
 
 	const { items } = await queryV1ProductsViaSdk({
