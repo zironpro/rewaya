@@ -32,6 +32,7 @@ export interface CartSummary {
 	subtotal?: string;
 	discount?: string;
 	total?: string;
+	shipping?: string;
 	discountNames: string[];
 }
 
@@ -120,21 +121,41 @@ export function countLineItems(items: LineItem[]): number {
 	return items.reduce((sum, item) => sum + (item.quantity ?? 0), 0);
 }
 
+function parseCurrencyAmount(value?: string): number | undefined {
+	if (!value) return undefined;
+	const normalized = value
+		.replace(/[^0-9.,-]+/g, "")
+		.replace(/,/g, "");
+	const parsed = Number(normalized);
+	return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function formatCurrencyAmount(amount: number, currency = "AED") {
+	try {
+		return new Intl.NumberFormat(undefined, {
+			style: "currency",
+			currency,
+		}).format(amount);
+	} catch {
+		return amount.toFixed(2);
+	}
+}
+
 export function extractSummary(
 	cart:
 		| {
-				priceSummary?: {
-					subtotal?: { formattedConvertedAmount?: string };
-					discount?: { formattedConvertedAmount?: string };
-					total?: { formattedConvertedAmount?: string };
-				};
-				appliedDiscounts?: Array<{
-					discountName?: string;
-					coupon?: { name?: string };
-					merchantDiscount?: { discountName?: string };
-				}>;
-				lineItems?: Array<{ lineItemPrice?: { amount?: string } }>;
-				currency?: string;
+			priceSummary?: {
+				subtotal?: { formattedConvertedAmount?: string };
+				discount?: { formattedConvertedAmount?: string };
+				total?: { formattedConvertedAmount?: string };
+			};
+			appliedDiscounts?: Array<{
+				discountName?: string;
+				coupon?: { name?: string };
+				merchantDiscount?: { discountName?: string };
+			}>;
+			lineItems?: Array<{ lineItemPrice?: { amount?: string } }>;
+			currency?: string;
 		  }
 		| undefined
 ): CartSummary {
@@ -149,14 +170,21 @@ export function extractSummary(
 			return amt ? acc + Number(amt) : acc;
 		}, 0);
 		if (sum > 0) {
-			try {
-				subtotal = new Intl.NumberFormat(undefined, {
-					style: "currency",
-					currency: cart.currency ?? "AED",
-				}).format(sum);
-			} catch {
-				subtotal = sum.toFixed(2);
-			}
+			subtotal = formatCurrencyAmount(sum, cart.currency ?? "AED");
+		}
+	}
+
+	const parsedSubtotal = parseCurrencyAmount(subtotal);
+	const parsedDiscount = parseCurrencyAmount(discount);
+	const parsedTotal = parseCurrencyAmount(total);
+
+	let shipping: string | undefined;
+	if (typeof parsedSubtotal === "number" && typeof parsedTotal === "number") {
+		const shippingAmount = parsedTotal - parsedSubtotal + (parsedDiscount ?? 0);
+		if (!Number.isNaN(shippingAmount)) {
+			shipping = shippingAmount === 0
+				? "Free"
+				: formatCurrencyAmount(shippingAmount, cart?.currency ?? "AED");
 		}
 	}
 
@@ -167,7 +195,7 @@ export function extractSummary(
 		)
 		.filter((name): name is string => Boolean(name));
 
-	return { subtotal, discount, total, discountNames };
+	return { subtotal, discount, total, shipping, discountNames };
 }
 
 /** Persist cart snapshot from any Wix cart API response. */
