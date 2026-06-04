@@ -54,6 +54,9 @@ export function buildBundleDiscountRulePayload({
 }
 
 /** List price on the Stores SKU should match `originalPrice` so the fixed discount reaches `salePrice`. */
-export function bundleStoresListPrice(salePrice: number, originalPrice: number): number {
+export function bundleStoresListPrice(
+	salePrice: number,
+	originalPrice: number
+): number {
 	return originalPrice > salePrice ? originalPrice : salePrice;
 }

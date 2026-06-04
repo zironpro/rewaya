@@ -30,12 +30,21 @@ export async function POST(req: Request) {
 		return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
 	}
 
-	if (typeof payload.event_name !== "string" || payload.event_name.length === 0) {
-		return NextResponse.json({ error: "event_name is required" }, { status: 400 });
+	if (
+		typeof payload.event_name !== "string" ||
+		payload.event_name.length === 0
+	) {
+		return NextResponse.json(
+			{ error: "event_name is required" },
+			{ status: 400 }
+		);
 	}
 
 	if (typeof payload.event_id !== "string" || payload.event_id.length === 0) {
-		return NextResponse.json({ error: "event_id is required" }, { status: 400 });
+		return NextResponse.json(
+			{ error: "event_id is required" },
+			{ status: 400 }
+		);
 	}
 
 	const normalizedPayload = {
@@ -51,7 +60,7 @@ export async function POST(req: Request) {
 		event_source_url:
 			typeof payload.event_source_url === "string"
 				? payload.event_source_url
-				: req.headers.get("referer") ?? undefined,
+				: (req.headers.get("referer") ?? undefined),
 	};
 
 	const enrichedPayload = enrichMetaPayload(normalizedPayload, req);
@@ -69,9 +78,10 @@ export async function POST(req: Request) {
 			}
 		);
 
-		const metaResult = (await metaResponse.json().catch(() => null)) as
-			| Record<string, unknown>
-			| null;
+		const metaResult = (await metaResponse.json().catch(() => null)) as Record<
+			string,
+			unknown
+		> | null;
 
 		if (!metaResponse.ok) {
 			return NextResponse.json(

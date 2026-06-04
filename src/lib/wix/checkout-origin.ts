@@ -33,6 +33,9 @@ export async function resolveCheckoutOrigin(
 				: undefined;
 
 	return (
-		originHeader ?? headerOrigin ?? refererOrigin ?? fallbackOrigin
+		originHeader ??
+		headerOrigin ??
+		refererOrigin ??
+		fallbackOrigin
 	).replace(/\/$/, "");
 }

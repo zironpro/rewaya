@@ -28,7 +28,11 @@ export function BundleLandingPage({
 
 	return (
 		<main className={cn("bundle-page pb-20 md:pb-0")}>
-			<MinimalNav bundle={bundle} bundleName={bundle.name} priceLabel={priceLabel} />
+			<MinimalNav
+				bundle={bundle}
+				bundleName={bundle.name}
+				priceLabel={priceLabel}
+			/>
 			<HeroSection bundle={bundle} />
 			<BookGallerySection bundle={bundle} />
 			<OverviewSection bundle={bundle} />

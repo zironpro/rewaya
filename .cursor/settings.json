@@ -1,7 +1,7 @@
 {
-  "plugins": {
-    "wix": {
-      "enabled": true
-    }
-  }
+	"plugins": {
+		"wix": {
+			"enabled": true
+		}
+	}
 }

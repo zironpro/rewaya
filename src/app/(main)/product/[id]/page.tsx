@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductDetailView } from "@/features/products/product-detail-view";
@@ -13,6 +14,51 @@ export const revalidate = 86_400;
 export async function generateStaticParams() {
 	if (!isWixCatalogEnabled()) return [];
 	return getProductStaticParams();
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+	if (!isWixCatalogEnabled()) return {};
+
+	const { id } = await params;
+	const detail = await getProductDetailBySlug(id);
+
+	if (!detail) {
+		return {
+			title: "Product Not Found · Rewaya Book world",
+		};
+	}
+
+	const title = detail.author
+		? `${detail.title} by ${detail.author} · Rewaya Book world`
+		: `${detail.title} · Rewaya Book world`;
+
+	const description = detail.description
+		? detail.description
+				.replace(/<[^>]*>/g, "")
+				.trim()
+				.substring(0, 160)
+		: `Buy ${detail.title} online at Rewaya Book World.`;
+
+	return {
+		title,
+		description,
+		openGraph: {
+			title,
+			description,
+			type: "website",
+			images: detail.image ? [{ url: detail.image }] : [],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title,
+			description,
+			images: detail.image ? [detail.image] : [],
+		},
+	};
 }
 
 export default async function ProductDetailPage({

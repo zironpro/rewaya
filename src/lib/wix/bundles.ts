@@ -146,7 +146,11 @@ function normalizeToken(value: unknown): string | undefined {
 function toIdCandidates(value: unknown): string[] {
 	if (value == null) return [];
 	if (Array.isArray(value)) {
-		return [...new Set(value.flatMap((entry) => toIdCandidates(entry)).filter(Boolean))];
+		return [
+			...new Set(
+				value.flatMap((entry) => toIdCandidates(entry)).filter(Boolean)
+			),
+		];
 	}
 	if (typeof value === "object") {
 		const obj = value as Record<string, unknown>;
@@ -214,7 +218,8 @@ function extractFaqFromCmsItem(item: Record<string, unknown>): Faq | null {
 	);
 	if (!question || !answer) return null;
 
-	const rawId = (item as { _id?: string; id?: string })._id ?? (item as { id?: string }).id;
+	const rawId =
+		(item as { _id?: string; id?: string })._id ?? (item as { id?: string }).id;
 	const id = String(rawId ?? `${question}-${answer}`).trim();
 
 	return { id, question, answer };
@@ -278,7 +283,9 @@ function resolveBundleFaqs(
 	return matched;
 }
 
-async function getBundleFaqItems(): Promise<Array<{ faq: Faq; tokens: Set<string> }>> {
+async function getBundleFaqItems(): Promise<
+	Array<{ faq: Faq; tokens: Set<string> }>
+> {
 	try {
 		const client = getWixClient();
 		const { items } = await client.items

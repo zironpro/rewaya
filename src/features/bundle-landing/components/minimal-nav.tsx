@@ -1,11 +1,10 @@
 "use client";
 
 import type { BundlePresentation } from "@/domain/bundle";
-
 import { cn } from "@/lib/utils";
 
-import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { useStickyNav } from "../hooks/useStickyNav";
+import { BundleCheckoutCta } from "./bundle-checkout-cta";
 
 interface MinimalNavProps {
 	bundleName: string;

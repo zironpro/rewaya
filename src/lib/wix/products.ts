@@ -277,10 +277,7 @@ async function queryV1ProductsViaSdk(options: {
 		query = query.in("_id", options.ids);
 	}
 
-	const { items } = await query
-		.limit(limit)
-		.skip(offset)
-		.find();
+	const { items } = await query.limit(limit).skip(offset).find();
 	return items as V1Product[];
 }
 
@@ -469,7 +466,9 @@ export async function getCatalogProductBySlug(
 
 		const collectionIds = (item.collectionIds ?? []) as string[];
 		const categoryId = collectionIds[0];
-		const categoryName = categoryId ? categoryNameMap.get(categoryId) : undefined;
+		const categoryName = categoryId
+			? categoryNameMap.get(categoryId)
+			: undefined;
 		const categories = await getStoreCategories();
 		const categorySlug = categories.find((c) => c.id === categoryId)?.slug;
 
