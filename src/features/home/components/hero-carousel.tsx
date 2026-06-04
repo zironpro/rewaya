@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -38,21 +38,46 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 				}));
 
 	const [current, setCurrent] = useState(0);
+	const [isInteracting, setIsInteracting] = useState(false);
+	const interactionTimeout = useRef<number | null>(null);
 
 	useEffect(() => {
-		if (slides.length <= 1) return;
-		const timer = setInterval(() => {
+		if (slides.length <= 1 || isInteracting) return;
+		const timer = window.setInterval(() => {
 			setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
 		}, 5000);
-		return () => clearInterval(timer);
-	}, [slides.length]);
+		return () => window.clearInterval(timer);
+	}, [slides.length, isInteracting]);
+
+	useEffect(() => {
+		return () => {
+			if (interactionTimeout.current) {
+				window.clearTimeout(interactionTimeout.current);
+			}
+		};
+	}, []);
+
+	const pauseInteraction = () => {
+		if (interactionTimeout.current) {
+			window.clearTimeout(interactionTimeout.current);
+		}
+		setIsInteracting(true);
+		interactionTimeout.current = window.setTimeout(() => {
+			setIsInteracting(false);
+		}, 4000);
+	};
 
 	if (slides.length === 0) return null;
 
-	const next = () =>
+	const next = () => {
+		pauseInteraction();
 		setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-	const prev = () =>
+	};
+
+	const prev = () => {
+		pauseInteraction();
 		setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+	};
 
 	const slide = slides[current];
 
@@ -60,23 +85,23 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 		<div className="relative h-[35vh] w-full overflow-hidden bg-card sm:h-[70vh] md:h-[calc(100vh-113px)]">
 			<AnimatePresence mode="wait">
 				<motion.div
-					animate={{ opacity: 1 }}
-					className="absolute inset-0 h-full w-full"
+					animate={{ opacity: 1,  }}
+					className="absolute inset-0 size-full overflow-hidden"
 					exit={{ opacity: 0 }}
-					initial={{ opacity: 0 }}
+					initial={{ opacity: 0,  }}
 					key={current}
-					transition={{ duration: 1 }}
+					transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
 				>
 					<div className="absolute inset-0">
 						<Image
 							alt={slide.title}
-							className="h-full w-full object-cover"
+							className="object-cover"
 							fill
 							priority={current === 0}
 							sizes="100vw"
 							src={slide.image}
 						/>
-						<div className="absolute inset-0 bg-black/40 backdrop-brightness-90" />
+						<div className="absolute inset-0 bg-black/20 backdrop-brightness-80" />
 					</div>
 
 					<div className="container relative mx-auto flex h-full flex-col items-center justify-center text-center text-card">
@@ -87,7 +112,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 							animate={{ opacity: 1, y: 0 }}
 							className="text-balance font-light text-sm sm:text-base md:text-xl"
 							initial={{ opacity: 0, y: 20 }}
-							transition={{ delay: 0.2 }}
+							transition={{ delay: 0.1 }}
 						>
 							{slide.subtitle}
 						</motion.span>
@@ -95,7 +120,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 							animate={{ opacity: 1, y: 0 }}
 							className="mb-4 font-black font-serif text-4xl uppercase leading-none sm:text-5xl md:mb-8 md:text-8xl"
 							initial={{ opacity: 0, y: 30 }}
-							transition={{ delay: 0.4 }}
+							transition={{ delay: 0.2 }}
 						>
 							{slide.title.split(" ").map((word, i) => (
 								<span
@@ -109,7 +134,7 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 						<motion.div
 							animate={{ opacity: 1, y: 0 }}
 							initial={{ opacity: 0, y: 20 }}
-							transition={{ delay: 0.6 }}
+							transition={{ delay: 0.3 }}
 						>
 							<Button
 								className="md:hover:px-6"
@@ -128,34 +153,54 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 				<>
 					<div className="absolute right-4 bottom-4 z-10 flex gap-2 md:right-20 md:bottom-10">
 						<Button
-							className="text-card"
-							onClick={prev}
-							size="icon-lg"
-							variant="outline"
-						>
-							<ChevronLeft size={24} />
-						</Button>
-						<Button
-							className="text-card"
-							onClick={next}
-							size="icon-lg"
-							variant="outline"
-						>
+						aria-label="Previous slide"
+						className="text-card transition duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+						onClick={() => {
+						pauseInteraction();
+						prev();
+					}}
+						size="icon-lg"
+						type="button"
+						variant="outline"
+					>
+						<ChevronLeft size={24} />
+					</Button>
+					<Button
+						aria-label="Next slide"
+						className="text-card transition duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+						onClick={() => {
+						pauseInteraction();
+						next();
+					}}
+						size="icon-lg"
+						type="button" 
+						variant="outline">
 							<ChevronRight size={24} />
 						</Button>
 					</div>
 
-					<div className="absolute bottom-4 left-4 z-10 flex gap-1 md:bottom-10 md:left-20">
+					<div
+					className="absolute bottom-4 left-4 z-10 flex gap-1 md:bottom-10 md:left-20"
+					onPointerEnter={() => setIsInteracting(true)}
+					onPointerLeave={() => setIsInteracting(false)}
+					onFocusCapture={() => setIsInteracting(true)}
+					onBlurCapture={() => setIsInteracting(false)}
+				>
 						{slides.map((_, i) => (
-							<div
+							<button
+								aria-current={current === i ? "true" : undefined}
+								aria-label={`Go to slide ${i + 1}`}
 								className={cn(
-									"h-1 cursor-pointer rounded-full transition-all duration-500",
+									"relative h-1.5 rounded-full transition-all cursor-pointer backdrop-blur-sm duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 									current === i
-										? "w-12 bg-primary"
-										: "w-6 bg-card/30 hover:bg-card/50"
+										? "w-12 bg-primary  "
+										: "w-6 bg-card/30 hover:w-8 hover:bg-card/60"
 								)}
 								key={Number(i + 1)}
-								onClick={() => setCurrent(i)}
+								onClick={() => {
+								pauseInteraction();
+								setCurrent(i);
+							}}
 							/>
 						))}
 					</div>
@@ -164,3 +209,6 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 		</div>
 	);
 }
+
+
+

@@ -102,14 +102,11 @@ async function resolveSectionBooks(
 }
 
 export async function getHomeBanners(): Promise<HomeBanner[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const client = getWixClient();
 		const { items } = await client.items
 			.query(HOME_BANNERS_COLLECTION)
 			.eq("enabled", true)
-			.ascending("sortOrder")
 			.limit(20)
 			.find();
 
@@ -119,8 +116,8 @@ export async function getHomeBanners(): Promise<HomeBanner[]> {
 			const imageRaw = readCmsField(data, "image", "bundleImage");
 			const image = resolveWixImageUrl(
 				imageRaw as string | { id?: string; url?: string } | undefined,
-				1600,
-				900
+				1920,
+				1080
 			);
 			if (!image) continue;
 			banners.push({
