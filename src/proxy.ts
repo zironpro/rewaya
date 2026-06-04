@@ -13,6 +13,24 @@ import {
 } from "@/lib/wix/session-cookie";
 
 export async function proxy(request: NextRequest) {
+	const pathname = request.nextUrl?.pathname ?? request.url;
+	const wixRedirectHost = "https://store.rewayabooks.com";
+	const wixManagedPrefixes = [
+		"/_api",
+		"/checkout",
+		 
+	];
+
+	for (const p of wixManagedPrefixes) {
+		if (pathname === p || pathname.startsWith(`${p}/`)) {
+			const dest = new URL(
+				request.nextUrl.pathname + request.nextUrl.search,
+				wixRedirectHost
+			);
+			return NextResponse.redirect(dest);
+		}
+	}
+
 	const existing = parseSessionTokens(
 		request.cookies.get(WIX_SESSION_COOKIE)?.value
 	);
@@ -33,6 +51,7 @@ export async function proxy(request: NextRequest) {
 	try {
 		const visitorTokens = await wixClient.auth.generateVisitorTokens(existing);
 		const response = NextResponse.next();
+
 		response.cookies.set(
 			WIX_SESSION_COOKIE,
 			serializeSessionTokens(visitorTokens),

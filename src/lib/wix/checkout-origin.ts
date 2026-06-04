@@ -9,6 +9,13 @@ export async function resolveCheckoutOrigin(
 	const override = originOverride?.trim();
 	if (override) return override.replace(/\/$/, "");
 
+	// Allow forcing a different origin (including an API path) for Wix redirects.
+	// Example: NEXT_PUBLIC_STORE_API_URL=https://store.rewayabooks.com/_api
+	const storeApiUrl = process.env.NEXT_PUBLIC_STORE_API_URL;
+	if (storeApiUrl && storeApiUrl.trim()) {
+		return storeApiUrl.replace(/\/$/, "");
+	}
+
 	const headersList = await headers();
 	const referer = headersList.get("referer");
 	const forwardedHost = headersList.get("x-forwarded-host");

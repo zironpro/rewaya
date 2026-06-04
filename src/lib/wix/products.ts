@@ -49,6 +49,8 @@ export interface QueryWixProductsOptions {
 	categoryId?: string;
 	search?: string;
 	categoryNameMap?: Map<string, string>;
+	minPrice?: number;
+	maxPrice?: number;
 }
 
 function resolveWixProductId(product: Record<string, unknown>): string {
@@ -259,7 +261,9 @@ async function queryV1ProductsViaSdk(options: {
 	search?: string;
 	slugs?: string[];
 	ids?: string[];
-}): Promise<V1Product[]> {
+	minPrice?: number;
+	maxPrice?: number;
+}): Promise<{ items: V1Product[]; totalCount: number }> {
 	const client = getWixClient();
 	const limit = Math.min(Math.max(1, options.limit), MAX_WIX_LIMIT);
 	const offset = Math.max(0, options.offset);
@@ -276,9 +280,15 @@ async function queryV1ProductsViaSdk(options: {
 	} else if (options.ids?.length) {
 		query = query.in("_id", options.ids);
 	}
+	if (options.minPrice !== undefined) {
+		query = query.ge("price", options.minPrice);
+	}
+	if (options.maxPrice !== undefined) {
+		query = query.le("price", options.maxPrice);
+	}
 
-	const { items } = await query.limit(limit).skip(offset).find();
-	return items as V1Product[];
+	const { items, totalCount } = await query.limit(limit).skip(offset).find();
+	return { items: items as V1Product[], totalCount: totalCount ?? 0 };
 }
 
 export async function searchWixProducts(options: {
@@ -311,13 +321,13 @@ export async function searchWixProducts(options: {
 		);
 	}
 
-	const products = await queryV1ProductsViaSdk({
+	const { items } = await queryV1ProductsViaSdk({
 		limit,
 		offset,
 		search: options.query,
 	});
 	return filterCatalogProducts(
-		products.map((p) => mapV1Product(p, categoryNameMap))
+		items.map((p) => mapV1Product(p, categoryNameMap))
 	);
 }
 
@@ -350,13 +360,13 @@ export async function queryWixProductsByCategory(
 		return queryWixProducts({ ids, limit: ids.length, categoryNameMap });
 	}
 
-	const products = await queryV1ProductsViaSdk({
+	const { items } = await queryV1ProductsViaSdk({
 		limit,
 		offset,
 		collectionId: categoryId,
 	});
 	return filterCatalogProducts(
-		products.map((p) => mapV1Product(p, categoryNameMap))
+		items.map((p) => mapV1Product(p, categoryNameMap))
 	);
 }
 
@@ -404,6 +414,13 @@ export async function queryWixProducts(
 		} else if (options?.slugs?.length === 1) {
 			query = query.eq("slug", options.slugs[0]);
 		}
+		if (options?.minPrice !== undefined) {
+			// Try to filter V3 by price
+			query = query.ge("price.price", options.minPrice);
+		}
+		if (options?.maxPrice !== undefined) {
+			query = query.le("price.price", options.maxPrice);
+		}
 
 		const { items } = await query.limit(limit).skipTo(String(offset)).find();
 		return filterCatalogProducts(
@@ -413,14 +430,16 @@ export async function queryWixProducts(
 		);
 	}
 
-	const products = await queryV1ProductsViaSdk({
+	const { items } = await queryV1ProductsViaSdk({
 		limit,
 		offset,
 		slugs: options?.slugs,
 		ids: options?.ids,
+		minPrice: options?.minPrice,
+		maxPrice: options?.maxPrice,
 	});
 	return filterCatalogProducts(
-		products.map((p) => mapV1Product(p, categoryNameMap))
+		items.map((p) => mapV1Product(p, categoryNameMap))
 	);
 }
 
@@ -514,6 +533,8 @@ export interface GetShopBooksOptions {
 	categorySlug?: string;
 	limit?: number;
 	offset?: number;
+	minPrice?: number;
+	maxPrice?: number;
 }
 
 function mapV1ItemsToBookProps(
@@ -537,7 +558,7 @@ function mapV1ItemsToBookProps(
 
 async function queryV1ShopItems(
 	options: GetShopBooksOptions | undefined
-): Promise<V1Product[]> {
+): Promise<{ items: V1Product[]; totalCount: number }> {
 	const limit = Math.min(
 		Math.max(1, options?.limit ?? DEFAULT_LIMIT),
 		MAX_WIX_LIMIT
@@ -549,35 +570,49 @@ async function queryV1ShopItems(
 			limit,
 			offset,
 			search: options.search,
+			minPrice: options?.minPrice,
+			maxPrice: options?.maxPrice,
 		});
 	}
 
 	if (options?.categorySlug) {
 		const category = await getCategoryBySlug(options.categorySlug);
-		if (!category) return [];
+		if (!category) return { items: [], totalCount: 0 };
 		return queryV1ProductsViaSdk({
 			limit,
 			offset,
 			collectionId: category.id,
+			minPrice: options?.minPrice,
+			maxPrice: options?.maxPrice,
 		});
 	}
 
-	return queryV1ProductsViaSdk({ limit, offset });
+	return queryV1ProductsViaSdk({ 
+		limit, 
+		offset,
+		minPrice: options?.minPrice,
+		maxPrice: options?.maxPrice, 
+	});
 }
 
-export async function getShopBooks(options?: GetShopBooksOptions) {
-	if (!isWixCatalogEnabled()) return [];
+export async function getShopBooks(
+	options?: GetShopBooksOptions
+): Promise<{ books: BookProps[]; totalCount: number }> {
+	if (!isWixCatalogEnabled()) return { books: [], totalCount: 0 };
 
 	try {
 		const categoryNameMap = await getCategoryNameMap();
 		const version = await getCatalogVersion();
 
 		if (version !== "V3_CATALOG") {
-			const [items, categories] = await Promise.all([
+			const [{ items, totalCount }, categories] = await Promise.all([
 				queryV1ShopItems(options),
 				getStoreCategories(),
 			]);
-			return mapV1ItemsToBookProps(items, categoryNameMap, categories);
+			return {
+				books: mapV1ItemsToBookProps(items, categoryNameMap, categories),
+				totalCount,
+			};
 		}
 
 		let products: WixCatalogProduct[];
@@ -608,9 +643,12 @@ export async function getShopBooks(options?: GetShopBooksOptions) {
 			});
 		}
 
-		return products.map((p) => mapWixProductToBookProps(p, categoryNameMap));
+		return {
+			books: products.map((p) => mapWixProductToBookProps(p, categoryNameMap)),
+			totalCount: products.length,
+		};
 	} catch {
-		return [];
+		return { books: [], totalCount: 0 };
 	}
 }
 

@@ -272,7 +272,3 @@
 		@apply font-sans;
 	}
 }
-
-.dark {
-	--destructive-foreground: var(--color-red-400);
-}

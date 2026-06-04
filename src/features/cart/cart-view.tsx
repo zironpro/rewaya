@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 import {
 	CART_UPDATED_EVENT,
@@ -11,12 +12,7 @@ import Breadcrumbs from "@/components/layout/Breadcrumbs";
 
 import { useOpenPanel } from "@openpanel/nextjs";
 
-import {
-	fetchCart,
-	redirectToCheckout,
-	removeItem,
-	updateItemQuantity,
-} from "@/features/cart/cart-actions";
+import { fetchCart, removeItem, updateItemQuantity, redirectToCheckout } from "@/features/cart/cart-actions";
 import {
 	type CartSummary,
 	isItemUnavailable,
@@ -32,6 +28,7 @@ import { trackMetaEvent } from "@/lib/analytics/meta";
 
 export function CartView() {
 	const { track } = useOpenPanel();
+	const router = useRouter();
 	const initialCacheRef = useRef(
 		typeof window !== "undefined" ? readCartSnapshot() : null
 	);
@@ -149,7 +146,8 @@ export function CartView() {
 			value: Number(summary.total) ?? Number(summary.subtotal),
 			num_items: items.length,
 		});
-		startCheckout(() => redirectToCheckout(window.location.origin));
+		// Redirect to Wix-hosted checkout
+		startCheckout(() => redirectToCheckout());
 	};
 
 	const hasUnavailable = items.some(isItemUnavailable);

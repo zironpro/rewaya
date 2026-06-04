@@ -39,7 +39,7 @@ export function BookCard({
 	return (
 		<div className="group relative">
 			<Link className="absolute inset-0 z-10" href={productHref} />
-			<div className="relative mb-4 aspect-4/5 overflow-hidden rounded-md bg-card group-hover:shadow-md">
+			<div className="relative mb-4 aspect-4/5 overflow-hidden rounded-md bg-card group-hover:shadow-md border">
 				<Image
 					alt={title}
 					className="object-contain transition-transform duration-700 group-hover:scale-105"

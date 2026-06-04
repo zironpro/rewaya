@@ -17,7 +17,7 @@ export default async function BundleDetailPage({
 	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
-	const [bundle, allBundles, relatedBooks] = await Promise.all([
+	const [bundle, allBundles, { books: relatedBooks }] = await Promise.all([
 		getBundleBySlug(id),
 		getBundlesIndex(),
 		getShopBooks(),

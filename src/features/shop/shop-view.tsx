@@ -3,24 +3,51 @@
 import { useState } from "react";
 
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { SlidersHorizontal } from "lucide-react";
+import {
+	ChevronFirstIcon,
+	ChevronLastIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	SlidersHorizontal,
+} from "lucide-react";
 
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { MobileFilterDrawer } from "@/components/layout/mobile-filter-drawer";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationItem,
+	PaginationLink,
+} from "@/components/ui/pagination";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 import { BookCard } from "@/features/products/components/book-card";
 import { type BookProps, getBookReactKey } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import type { StoreCategory } from "@/lib/wix/categories";
 
+import { PriceFilter } from "./components/price-filter";
+import { ShopSortFieldset } from "./components/shop-sort-fieldset";
+
 interface ShopViewProps {
 	books: BookProps[];
 	categories?: StoreCategory[];
 	activeCategory?: string;
 	searchQuery?: string;
+	totalCount?: number;
+	currentPage?: number;
+	itemsPerPage?: number;
 }
 
 export const ShopView = ({
@@ -28,26 +55,56 @@ export const ShopView = ({
 	categories = [],
 	activeCategory,
 	searchQuery,
+	totalCount = 0,
+	currentPage = 1,
+	itemsPerPage = 25,
 }: ShopViewProps) => {
 	const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const updatePage = (page: number) => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.set("page", page.toString());
+		router.push(`${pathname}?${params.toString()}`);
+	};
+
+	const updateLimit = (limit: number) => {
+		const params = new URLSearchParams(searchParams.toString());
+		params.set("limit", limit.toString());
+		params.set("page", "1");
+		router.push(`${pathname}?${params.toString()}`);
+	};
+
+	const updateSort = (value: string | null) => {
+		const params = new URLSearchParams(searchParams.toString());
+		if (!value) {
+			params.delete("sort");
+		} else {
+			params.set("sort", value);
+		}
+		params.set("page", "1");
+		router.push(`${pathname}?${params.toString()}`);
+	};
+
+	const totalPages = Math.max(1, Math.ceil(totalCount / itemsPerPage));
 
 	const sidebarCategories: Array<
 		| { type: "all"; name: string; count: number }
 		| { type: "wix"; category: StoreCategory }
 	> = [
-		{ type: "all", name: "All", count: books.length },
+		{ type: "all", name: "All", count: totalCount },
 		...categories.map((category) => ({ type: "wix" as const, category })),
 	];
 
 	const FilterContent = ({ onClose }: { onClose?: () => void }) => (
 		<div className="space-y-12">
 			<div className="lg:hidden">
-				<h3 className="mb-4 border-b pb-1 font-semiboldtext-sm">Sort by</h3>
-				<select className="h-12 w-full cursor-pointer border px-4 font-bold text-sm outline-none">
-					<option>Newest first</option>
-					<option>Price: Low to high</option>
-					<option>Price: High to low</option>
-				</select>
+				<ShopSortFieldset
+					onChange={updateSort}
+					value={searchParams.get("sort") ?? undefined}
+				/>
 			</div>
 
 			<div>
@@ -100,20 +157,7 @@ export const ShopView = ({
 				<h3 className="mb-4 border-b pb-1 font-semibold text-sm">
 					Price Range
 				</h3>
-				<div className="space-y-4">
-					<div className="flex flex-col gap-2">
-						<input
-							className="w-full accent-primary"
-							max="200"
-							min="0"
-							type="range"
-						/>
-						<div className="flex justify-between font-medium text-muted-foreground text-sm">
-							<span>AED 0</span>
-							<span>AED 200+</span>
-						</div>
-					</div>
-				</div>
+				<PriceFilter />
 			</div>
 
 			<div>
@@ -157,9 +201,9 @@ export const ShopView = ({
 	return (
 		<>
 			<main className="grow pt-4 pb-28 md:pt-6 md:pb-16">
-				<section className="container md:mb-4">
-					<Breadcrumbs className="mb-3" items={[{ label: "Shop" }]} />
-					<div className="flex items-center justify-between text-center">
+				<section className="container max-w-none md:mb-4">
+					<Breadcrumbs className="mb-2" items={[{ label: "Shop" }]} />
+					<div className="flex items-center justify-between text-center md:justify-center">
 						{/* <span className="mb-2 block font-medium text-muted-foreground text-xs sm:text-sm">
 							Collection
 						</span> */}
@@ -168,6 +212,7 @@ export const ShopView = ({
 						</h1>
 
 						<Button
+							className="md:hidden"
 							onClick={() => setIsMobileFilterOpen(true)}
 							variant="outline"
 						>
@@ -176,30 +221,27 @@ export const ShopView = ({
 					</div>
 				</section>
 
-				<section className="container mb-32">
+				<section className="container mb-6 max-w-none">
 					<div className="flex flex-col gap-9 lg:flex-row">
 						<aside className="scrollbar-thin sticky top-32 hidden h-fit max-h-[calc(100vh-160px)] w-64 shrink-0 space-y-12 overflow-y-auto pr-4 lg:block">
 							<FilterContent />
 						</aside>
 
 						<div className="grow">
-							<div className="lg:medium mb-4 hidden items-center justify-between border-mauve-100 border-b font-semibold">
-								<p className="font-bold text-mauve-400 text-sm">
-									Showing {books.length} results
+							<div className="mb-4 hidden items-center justify-between border-mauve-100 border-b pb-2 font-semibold md:flex">
+								<p className="font-medium text-mauve-500 text-sm">
+									Showing {totalCount} results
 									{searchQuery ? ` for "${searchQuery}"` : ""}
 									{activeCategory
 										? ` in ${categories.find((c) => c.slug === activeCategory)?.name ?? activeCategory}`
 										: ""}
 								</p>
 								<div className="flex items-center gap-6">
-									<span className="font-bold text-mauve-400 text-sm">
-										Sort by:
-									</span>
-									<select className="cursor-pointer bg-transparent font-bold text-sm outline-none">
-										<option>Newest first</option>
-										<option>Price: Low to high</option>
-										<option>Price: High to low</option>
-									</select>
+									<ShopSortFieldset
+										className="m-0 flex flex-row items-center gap-2 p-0"
+										onChange={updateSort}
+										value={searchParams.get("sort") ?? undefined}
+									/>
 								</div>
 							</div>
 
@@ -208,10 +250,112 @@ export const ShopView = ({
 									No books found. Try another search or category.
 								</p>
 							) : (
-								<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-									{books.map((book, index) => (
-										<BookCard key={getBookReactKey(book, index)} {...book} />
-									))}
+								<div className="space-y-8">
+									<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+										{books.map((book, index) => (
+											<BookCard key={getBookReactKey(book, index)} {...book} />
+										))}
+									</div>
+
+									<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+										<div className="flex items-center gap-3">
+											<Label htmlFor="rows-per-page">Books per page</Label>
+											<Select
+												onValueChange={(val) => updateLimit(Number(val))}
+												value={itemsPerPage.toString()}
+											>
+												<SelectTrigger
+													className="w-fit whitespace-nowrap"
+													id="rows-per-page"
+												>
+													<SelectValue placeholder="Select number of results" />
+												</SelectTrigger>
+												<SelectContent className="[&_*[role=option]>span]:inset-e-2 [&_*[role=option]>span]:inset-s-auto [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8">
+													<SelectItem value="25">25</SelectItem>
+													<SelectItem value="50">50</SelectItem>
+													<SelectItem value="100">100</SelectItem>
+												</SelectContent>
+											</Select>
+										</div>
+
+										<div className="flex items-center gap-4 text-muted-foreground text-sm">
+											<p aria-live="polite" className="whitespace-nowrap">
+												<span className="text-foreground">
+													{totalCount === 0
+														? 0
+														: (currentPage - 1) * itemsPerPage + 1}
+													-{Math.min(currentPage * itemsPerPage, totalCount)}
+												</span>{" "}
+												of <span className="text-foreground">{totalCount}</span>
+											</p>
+
+											<Pagination>
+												<PaginationContent>
+													<PaginationItem>
+														<PaginationLink
+															aria-label="Go to first page"
+															className={cn(
+																currentPage <= 1
+																	? "pointer-events-none opacity-50"
+																	: "cursor-pointer"
+															)}
+															onClick={() => updatePage(1)}
+														>
+															<ChevronFirstIcon aria-hidden="true" size={16} />
+														</PaginationLink>
+													</PaginationItem>
+
+													<PaginationItem>
+														<PaginationLink
+															aria-label="Go to previous page"
+															className={cn(
+																currentPage <= 1
+																	? "pointer-events-none opacity-50"
+																	: "cursor-pointer"
+															)}
+															onClick={() =>
+																updatePage(Math.max(1, currentPage - 1))
+															}
+														>
+															<ChevronLeftIcon aria-hidden="true" size={16} />
+														</PaginationLink>
+													</PaginationItem>
+
+													<PaginationItem>
+														<PaginationLink
+															aria-label="Go to next page"
+															className={cn(
+																currentPage >= totalPages || totalCount === 0
+																	? "pointer-events-none opacity-50"
+																	: "cursor-pointer"
+															)}
+															onClick={() =>
+																updatePage(
+																	Math.min(totalPages, currentPage + 1)
+																)
+															}
+														>
+															<ChevronRightIcon aria-hidden="true" size={16} />
+														</PaginationLink>
+													</PaginationItem>
+
+													<PaginationItem>
+														<PaginationLink
+															aria-label="Go to last page"
+															className={
+																currentPage >= totalPages || totalCount === 0
+																	? "pointer-events-none opacity-50"
+																	: "cursor-pointer"
+															}
+															onClick={() => updatePage(totalPages)}
+														>
+															<ChevronLastIcon aria-hidden="true" size={16} />
+														</PaginationLink>
+													</PaginationItem>
+												</PaginationContent>
+											</Pagination>
+										</div>
+									</div>
 								</div>
 							)}
 						</div>

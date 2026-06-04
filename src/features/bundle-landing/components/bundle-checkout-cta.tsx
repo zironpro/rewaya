@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 import { useOpenPanel } from "@openpanel/nextjs";
 import { ShoppingBag } from "lucide-react";
@@ -78,6 +79,8 @@ export function BundleCheckoutCta({
 			is_bundle: true,
 		});
 
+		const router = useRouter();
+
 		startCheckout(() => {
 			void startBundleCheckout(
 				{
@@ -87,8 +90,8 @@ export function BundleCheckoutCta({
 				},
 				typeof window !== "undefined" ? window.location.origin : undefined
 			).then((result) => {
-				if (result.ok && result.checkoutUrl) {
-					window.location.href = result.checkoutUrl;
+				if (result.ok) {
+					router.push("/checkout");
 					return;
 				}
 				setStatus("error");

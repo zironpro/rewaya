@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { items } from "@wix/data";
 import { currentCart } from "@wix/ecom";
-import { createClient, type IOAuthStrategy, OAuthStrategy } from "@wix/sdk";
+import { createClient, OAuthStrategy } from "@wix/sdk";
 import {
 	catalogVersioning,
 	collections,
@@ -37,7 +37,7 @@ function createWixClient() {
 		},
 		auth: OAuthStrategy({
 			clientId,
-		}) as IOAuthStrategy,
+		}),
 		headers: {
 			"wix-site-id": WIX_SITE_ID,
 		},
