@@ -7,7 +7,7 @@ export default async function Home() {
 		getHomepageData(),
 		getBundlesIndex(),
 	]);
- 
+
 	return (
 		<HomepageView
 			banners={banners}

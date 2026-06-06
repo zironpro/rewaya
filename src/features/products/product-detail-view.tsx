@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
+import { useOpenPanel } from "@openpanel/nextjs";
+
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
 import { Button } from "@/components/ui/button";
 
@@ -13,7 +15,6 @@ import { ProductMobileBuyBar } from "@/features/products/components/product-mobi
 import { ProductPurchasePanel } from "@/features/products/components/product-purchase-panel";
 import { ProductRelatedBooks } from "@/features/products/components/product-related-books";
 import type { ProductDetailData } from "@/features/products/types";
-import { useOpenPanel } from "@openpanel/nextjs";
 import { trackMetaEvent } from "@/lib/analytics/meta";
 import type { BookProps } from "@/lib/store";
 

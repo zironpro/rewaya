@@ -85,10 +85,10 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 		<div className="relative h-[35vh] w-full overflow-hidden bg-card sm:h-[70vh] md:h-[calc(100vh-113px)]">
 			<AnimatePresence mode="wait">
 				<motion.div
-					animate={{ opacity: 1,  }}
+					animate={{ opacity: 1 }}
 					className="absolute inset-0 size-full overflow-hidden"
 					exit={{ opacity: 0 }}
-					initial={{ opacity: 0,  }}
+					initial={{ opacity: 0 }}
 					key={current}
 					transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
 				>
@@ -154,54 +154,55 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 				<>
 					<div className="absolute right-4 bottom-4 z-10 flex gap-2 md:right-20 md:bottom-10">
 						<Button
-						aria-label="Previous slide"
-						className="text-card transition duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-						onClick={() => {
-						pauseInteraction();
-						prev();
-					}}
-						size="icon-lg"
-						type="button"
-						variant="outline"
-					>
-						<ChevronLeft size={24} />
-					</Button>
-					<Button
-						aria-label="Next slide"
-						className="text-card transition duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-						onClick={() => {
-						pauseInteraction();
-						next();
-					}}
-						size="icon-lg"
-						type="button" 
-						variant="outline">
+							aria-label="Previous slide"
+							className="text-card transition duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+							onClick={() => {
+								pauseInteraction();
+								prev();
+							}}
+							size="icon-lg"
+							type="button"
+							variant="outline"
+						>
+							<ChevronLeft size={24} />
+						</Button>
+						<Button
+							aria-label="Next slide"
+							className="text-card transition duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+							onClick={() => {
+								pauseInteraction();
+								next();
+							}}
+							size="icon-lg"
+							type="button"
+							variant="outline"
+						>
 							<ChevronRight size={24} />
 						</Button>
 					</div>
 
 					<div
-					className="absolute bottom-4 left-4 z-10 flex gap-1 md:bottom-10 md:left-20"
-					onPointerEnter={() => setIsInteracting(true)}
-					onPointerLeave={() => setIsInteracting(false)}
-					onFocusCapture={() => setIsInteracting(true)}
-					onBlurCapture={() => setIsInteracting(false)}
-				>
+						className="absolute bottom-4 left-4 z-10 flex gap-1 md:bottom-10 md:left-20"
+						onBlurCapture={() => setIsInteracting(false)}
+						onFocusCapture={() => setIsInteracting(true)}
+						onPointerEnter={() => setIsInteracting(true)}
+						onPointerLeave={() => setIsInteracting(false)}
+					>
 						{slides.map((_, i) => (
 							<button
 								aria-current={current === i ? "true" : undefined}
 								aria-label={`Go to slide ${i + 1}`}
 								className={cn(
-									"relative h-1.5 rounded-full transition-all cursor-pointer backdrop-blur-sm duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+									"relative h-1.5 cursor-pointer rounded-full backdrop-blur-sm transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 									current === i
-										? "w-12 bg-primary  "
+										? "w-12 bg-primary"
 										: "w-6 bg-card/30 hover:w-8 hover:bg-card/60"
 								)}
 								key={Number(i + 1)}
 								onClick={() => {
-								pauseInteraction();
-								setCurrent(i);
-							}}
+									pauseInteraction();
+									setCurrent(i);
+								}}
 							/>
 						))}
 					</div>
@@ -210,6 +211,3 @@ export function HeroCarousel({ banners = [] }: HeroCarouselProps) {
 		</div>
 	);
 }
-
-
-

@@ -123,9 +123,7 @@ export function countLineItems(items: LineItem[]): number {
 
 function parseCurrencyAmount(value?: string): number | undefined {
 	if (!value) return undefined;
-	const normalized = value
-		.replace(/[^0-9.,-]+/g, "")
-		.replace(/,/g, "");
+	const normalized = value.replace(/[^0-9.,-]+/g, "").replace(/,/g, "");
 	const parsed = Number(normalized);
 	return Number.isFinite(parsed) ? parsed : undefined;
 }
@@ -144,18 +142,18 @@ function formatCurrencyAmount(amount: number, currency = "AED") {
 export function extractSummary(
 	cart:
 		| {
-			priceSummary?: {
-				subtotal?: { formattedConvertedAmount?: string };
-				discount?: { formattedConvertedAmount?: string };
-				total?: { formattedConvertedAmount?: string };
-			};
-			appliedDiscounts?: Array<{
-				discountName?: string;
-				coupon?: { name?: string };
-				merchantDiscount?: { discountName?: string };
-			}>;
-			lineItems?: Array<{ lineItemPrice?: { amount?: string } }>;
-			currency?: string;
+				priceSummary?: {
+					subtotal?: { formattedConvertedAmount?: string };
+					discount?: { formattedConvertedAmount?: string };
+					total?: { formattedConvertedAmount?: string };
+				};
+				appliedDiscounts?: Array<{
+					discountName?: string;
+					coupon?: { name?: string };
+					merchantDiscount?: { discountName?: string };
+				}>;
+				lineItems?: Array<{ lineItemPrice?: { amount?: string } }>;
+				currency?: string;
 		  }
 		| undefined
 ): CartSummary {
@@ -182,9 +180,10 @@ export function extractSummary(
 	if (typeof parsedSubtotal === "number" && typeof parsedTotal === "number") {
 		const shippingAmount = parsedTotal - parsedSubtotal + (parsedDiscount ?? 0);
 		if (!Number.isNaN(shippingAmount)) {
-			shipping = shippingAmount === 0
-				? "Free"
-				: formatCurrencyAmount(shippingAmount, cart?.currency ?? "AED");
+			shipping =
+				shippingAmount === 0
+					? "Free"
+					: formatCurrencyAmount(shippingAmount, cart?.currency ?? "AED");
 		}
 	}
 

@@ -58,7 +58,9 @@ export function useSliderWithInput({
 		const nextNumber = Number(value);
 		if (Number.isNaN(nextNumber)) {
 			setInputValues((current) =>
-				index === 0 ? [String(sliderValue[0]), current[1]] : [current[0], String(sliderValue[1])]
+				index === 0
+					? [String(sliderValue[0]), current[1]]
+					: [current[0], String(sliderValue[1])]
 			);
 			return;
 		}

@@ -590,11 +590,11 @@ async function queryV1ShopItems(
 		});
 	}
 
-	return queryV1ProductsViaSdk({ 
-		limit, 
+	return queryV1ProductsViaSdk({
+		limit,
 		offset,
 		minPrice: options?.minPrice,
-		maxPrice: options?.maxPrice, 
+		maxPrice: options?.maxPrice,
 	});
 }
 

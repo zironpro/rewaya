@@ -65,7 +65,7 @@ export function PriceFilter() {
 		if (sliderValue[0] !== normalized[0] || sliderValue[1] !== normalized[1]) {
 			setSliderValue(normalized);
 		}
-	}, [searchParamsString, setSliderValue, sliderValue]);
+	}, [setSliderValue, sliderValue]);
 
 	useEffect(() => {
 		const params = new URLSearchParams(searchParamsString);

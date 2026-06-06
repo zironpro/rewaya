@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+
 import { useRouter } from "next/navigation";
 
 import { useOpenPanel } from "@openpanel/nextjs";
@@ -45,6 +46,7 @@ export function BundleCheckoutCta({
 	shimmerClass = "btn-shimmer",
 	mode = "cart",
 }: BundleCheckoutCtaProps) {
+	const router = useRouter();
 	const { track } = useOpenPanel();
 	const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -78,8 +80,6 @@ export function BundleCheckoutCta({
 			product_name: bundle.slug,
 			is_bundle: true,
 		});
-
-		const router = useRouter();
 
 		startCheckout(() => {
 			void startBundleCheckout(

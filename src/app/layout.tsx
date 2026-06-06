@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 
 import MetaPixelProvider from "@/components/meta/MetaPixelProvider";
+import QueryProvider from "@/components/providers/query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { inter, playfair } from "@/assets/fonts";
@@ -40,17 +41,19 @@ export default function RootLayout({
 			lang="en"
 		>
 			<body>
-				<OpenPanelProvider>
-					<WixProvider>
-						<CartProvider>
-							<WishlistProvider>
-								<MetaPixelProvider>
-									<TooltipProvider delay={0}>{children}</TooltipProvider>
-								</MetaPixelProvider>
-							</WishlistProvider>
-						</CartProvider>
-					</WixProvider>
-				</OpenPanelProvider>
+				<QueryProvider>
+					<OpenPanelProvider>
+						<WixProvider>
+							<CartProvider>
+								<WishlistProvider>
+									<MetaPixelProvider>
+										<TooltipProvider delay={0}>{children}</TooltipProvider>
+									</MetaPixelProvider>
+								</WishlistProvider>
+							</CartProvider>
+						</WixProvider>
+					</OpenPanelProvider>
+				</QueryProvider>
 			</body>
 		</html>
 	);

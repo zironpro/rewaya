@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 import { createClient, OAuthStrategy, type OauthData } from "@wix/sdk";
 
+import { BASE_URL } from "@/constants/site-config";
 import { getCheckoutUrl } from "@/features/cart/cart-actions";
 import { resolveCheckoutOrigin } from "@/lib/wix/checkout-origin";
 import {
@@ -123,7 +124,7 @@ export async function handleWixLogin(request: Request) {
 		};
 
 		const origin = await resolveCheckoutOrigin();
-		const redirectUri = `${origin}${AUTH_CALLBACK_PATH}`;
+		const redirectUri = `${BASE_URL}${AUTH_CALLBACK_PATH}`;
 		const originalUri =
 			typeof body.returnUrl === "string" && body.returnUrl.startsWith("/")
 				? `${origin}${body.returnUrl}`
@@ -307,7 +308,6 @@ export async function consumeOAuthDataCookie(): Promise<OauthData | null> {
 	const cookieStore = await cookies();
 	const raw = cookieStore.get(WIX_OAUTH_COOKIE)?.value;
 	if (!raw) return null;
-	cookieStore.delete(WIX_OAUTH_COOKIE);
 	try {
 		return JSON.parse(raw) as OauthData;
 	} catch {
