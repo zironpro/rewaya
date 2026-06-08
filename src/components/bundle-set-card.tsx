@@ -51,7 +51,7 @@ function bundleToCoverFlowItems(bundle: Bundle): CoverFlowItem[] {
 export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	const router = useRouter();
 	const prefersReducedMotion = usePrefersReducedMotion();
-	const bundleHref = `/bundles/${bundle.id}`;
+	const bundleHref = `/bundle/${bundle.id}`;
 
 	const coverFlowItems = useMemo(
 		() => bundleToCoverFlowItems(bundle),
@@ -85,13 +85,10 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 	);
 
 	return (
-		<div className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 shadow-sm transition-all duration-500 hover:border-gold sm:flex-row md:gap-10 md:p-9 lg:gap-12">
-			<Link
-				aria-label={`View ${bundle.title}`}
-				className="pointer-events-none absolute inset-0 z-10"
-				href={bundleHref}
-			/>
-
+		<Link
+			className="group relative flex cursor-pointer flex-col items-center gap-3 rounded-sm border bg-card p-6 shadow-sm transition-all duration-500 hover:border-gold sm:flex-row md:gap-10 md:p-9 lg:gap-12"
+			href={bundleHref}
+		>
 			{/* Mobile: Cover Flow */}
 			<div className="relative z-10 h-52 w-full shrink-0 gap-6 sm:hidden">
 				{prefersReducedMotion ? (
@@ -198,6 +195,6 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 					</Button>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 }
