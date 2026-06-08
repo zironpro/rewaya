@@ -103,7 +103,7 @@ async function resolveSectionBooks(
 
 export async function getHomeBanners(): Promise<HomeBanner[]> {
 	try {
-		const client = getWixClient();
+		const client = await getWixClient();
 		const { items } = await client.items
 			.query(HOME_BANNERS_COLLECTION)
 			.eq("enabled", true)
@@ -139,7 +139,7 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
 	if (!isWixCatalogEnabled()) return [];
 
 	try {
-		const client = getWixClient();
+		const client = await getWixClient();
 		const { items } = await client.items
 			.query(HOMEPAGE_SECTIONS_COLLECTION)
 			.eq("enabled", true)
