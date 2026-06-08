@@ -58,6 +58,10 @@ export interface BookBundleCmsItem {
 	cmsCatalogItemId: string;
 	/** Wix Stores product ID for the discounted bundle SKU (checkout). */
 	bundleProductId?: string;
+	/** Shopify variant ID for this bundle (when using Shopify checkout). */
+	shopifyVariantId?: string;
+	/** Shopify product handle (optional — used to query variant if shopifyVariantId not set). */
+	shopifyProductHandle?: string;
 	faqs?: Faq[];
 	tag?: string;
 }
@@ -116,6 +120,8 @@ export function mapBookBundleFromCms(
 		checkoutCatalogItemId: checkout.checkoutCatalogItemId,
 		checkoutCatalogAppId: checkout.checkoutCatalogAppId,
 		storeProductIds: details.includedBookIds,
+		shopifyVariantId: details.shopifyVariantId,
+		shopifyProductHandle: details.shopifyProductHandle,
 		faqs: details.faqs ?? [],
 	};
 }

@@ -124,3 +124,16 @@ export const GET_COLLECTION_BY_HANDLE_WITH_PAGINATION_QUERY = gql`
     }
   }
 `;
+
+export const GET_BUNDLE_COLLECTION_SLUGS = gql`
+  query GetBundleCollectionSlugs {
+    collection(handle: "bundles") {
+      handle
+      products(first: 50) {
+        nodes {
+          handle
+        }
+      }
+    }
+  }
+`;

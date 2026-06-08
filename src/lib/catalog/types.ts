@@ -53,5 +53,9 @@ export interface Bundle {
 	/** Default variant for add-to-cart (Stores books only) */
 	defaultVariant?: ProductVariant;
 	variants?: ProductVariant[];
+	/** Shopify variant ID for this bundle (when using Shopify checkout). */
+	shopifyVariantId?: string;
+	/** Shopify product handle (optional — used to query variant if shopifyVariantId not set). */
+	shopifyProductHandle?: string;
 	faqs: Faq[];
 }

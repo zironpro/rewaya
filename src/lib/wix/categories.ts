@@ -1,5 +1,3 @@
-import "server-only";
-
 import { cache } from "react";
 
 import { getCatalogVersion, getWixClient } from "./client";
@@ -56,7 +54,7 @@ interface V1CollectionsResponse {
 }
 
 async function queryV1CollectionsViaSdk(): Promise<StoreCategory[]> {
-	const client = getWixClient();
+	const client = await getWixClient();
 	const results: StoreCategory[] = [];
 	let offset = 0;
 	const pageSize = 100;

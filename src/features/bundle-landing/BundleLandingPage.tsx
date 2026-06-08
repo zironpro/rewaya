@@ -18,29 +18,34 @@ import { StickyCheckoutBar } from "./components/sticky-checkout-bar";
 interface BundleLandingPageProps {
 	bundle: BundlePresentation;
 	relatedBundles: Bundle[];
+	productVariantId?: string | null;
 }
 
 export function BundleLandingPage({
 	bundle,
 	relatedBundles,
+	productVariantId,
 }: BundleLandingPageProps) {
-	const priceLabel = `AED ${bundle.price} · was ${bundle.originalPrice}`;
+	// const priceLabel = `AED ${bundle.price} · was ${bundle.originalPrice}`;
+	const priceLabel = `AED ${bundle.price}`;
+
+	console.log(productVariantId, "variant id from landing page props");
 
 	return (
 		<main className={cn("bundle-page pb-20 md:pb-0")}>
 			<MinimalNav
-				bundle={bundle}
 				bundleName={bundle.name}
 				priceLabel={priceLabel}
+				productVariantId={productVariantId}
 			/>
-			<HeroSection bundle={bundle} />
+			<HeroSection bundle={bundle} productVariantId={productVariantId} />
 			<BookGallerySection bundle={bundle} />
 			<OverviewSection bundle={bundle} />
 			<BooksBreakdownSection bundle={bundle} />
 			<SocialProofSection bundle={bundle} />
 			<RelatedBundlesSection bundles={relatedBundles} />
 			<BundleFaqSection bundle={bundle} />
-			<CtaSection bundle={bundle} />
+			<CtaSection bundle={bundle} productVariantId={productVariantId} />
 			<StickyCheckoutBar bundle={bundle} />
 		</main>
 	);

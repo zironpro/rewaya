@@ -1,5 +1,9 @@
 import "server-only";
 
+import { GET_BUNDLE_COLLECTION_SLUGS } from "@/qraphql/storefront/collections";
+import { GetBundleCollectionSlugsQuery } from "@/types/shopify-storefront-graphql";
+
+import { fetchGraphQL } from "../shopify";
 import { getBookBundlesFromCms } from "./bundles";
 import { isWixCatalogEnabled } from "./constants";
 import { queryWixProducts } from "./products";
@@ -56,6 +60,12 @@ export async function getBundleStaticParams(): Promise<{ id: string }[]> {
 export async function getMarketingBundleStaticParams(): Promise<
 	{ slug: string }[]
 > {
-	const slugs = await getBundleStaticParamSlugs();
-	return slugs.map((slug) => ({ slug }));
+	const bundles = await fetchGraphQL<GetBundleCollectionSlugsQuery>(
+		GET_BUNDLE_COLLECTION_SLUGS
+	);
+
+	return (
+		bundles.collection?.products.nodes.map((node) => ({ slug: node.handle })) ??
+		[]
+	);
 }

@@ -1,15 +1,20 @@
 "use client";
 
+import { ShoppingBag } from "lucide-react";
+
 import type { BundlePresentation } from "@/domain/bundle";
 
-import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { CountdownTimer } from "./countdown-timer";
+import { CheckoutButton } from "./ui/checkout-button";
 
 interface CtaSectionProps {
 	bundle: BundlePresentation;
 }
 
-export function CtaSection({ bundle }: CtaSectionProps) {
+export function CtaSection({
+	bundle,
+	productVariantId,
+}: CtaSectionProps & { productVariantId?: string | null }) {
 	return (
 		<section
 			className="relative overflow-hidden border-white/10 border-t bg-secondary py-16 text-(--bundle-cream) md:py-24"
@@ -35,12 +40,17 @@ export function CtaSection({ bundle }: CtaSectionProps) {
 					{bundle.description} Use the same Rewaya cart and delivery you already
 					use on the main store.
 				</p>
-				<div className="mx-auto mt-6 flex max-w-xs justify-center">
+				<div className="mx-auto mt-6 mb-4 flex max-w-xs justify-center">
 					<CountdownTimer slug={bundle.slug} variant="dark" />
 				</div>
-				<div className="mx-auto mt-8 max-w-md">
-					<BundleCheckoutCta bundle={bundle} />
-				</div>
+				<CheckoutButton
+					className="btn-shimmer"
+					productVariantId={productVariantId}
+					size="lg"
+					variant="secondary"
+				>
+					<ShoppingBag className="size-4" /> Get your bundle now
+				</CheckoutButton>
 				<p className="mt-4 text-white/55 text-xs">
 					AED {bundle.price} · List AED {bundle.originalPrice} · Save AED{" "}
 					{bundle.savingsAmount}

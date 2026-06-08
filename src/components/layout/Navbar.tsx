@@ -21,11 +21,15 @@ import { ProductSearch } from "./components/product-search";
 interface NavbarProps {
 	showCategories?: boolean;
 	showSearch?: boolean;
+	showActions?: boolean;
+	children?: React.ReactNode;
 }
 
 export function Navbar({
 	showCategories = true,
 	showSearch = true,
+	showActions = true,
+	children,
 }: NavbarProps) {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -64,6 +68,7 @@ export function Navbar({
 								: "ml-auto flex items-center gap-1 text-secondary md:gap-2"
 						}
 					>
+						{children}
 						{showSearch && (
 							<Button
 								aria-expanded={isMobileSearchOpen}
@@ -82,7 +87,7 @@ export function Navbar({
 							</Button>
 						)}
 
-						{!(showSearch && isMobileSearchOpen) && (
+						{showActions && !(showSearch && isMobileSearchOpen) && (
 							<>
 								<Button className="hidden md:inline-flex" variant="ghost">
 									<LanguageIcon />

@@ -8,8 +8,10 @@ import { Logo } from "@/assets/logo";
 
 import { SOCIAL_LINKS } from "@/constants/site-config";
 import { featureFlags } from "@/lib/feature-flags";
+import { fetchGraphQL } from "@/lib/shopify";
 import { cn } from "@/lib/utils";
-import { getCachedBundles } from "@/lib/wix/bundles";
+import { GET_COLLECTION_BY_HANDLE_WITH_PAGINATION_QUERY } from "@/qraphql/storefront/collections";
+import { GetCollectionByHandleQuery } from "@/types/shopify-storefront-graphql";
 
 import { NewsletterForm } from "./components/newsletter-form";
 import {
@@ -40,16 +42,23 @@ function FooterNavLinks({ links }: { links: FooterNavLink[] }) {
 
 export async function Footer() {
 	const year = new Date().getFullYear();
-	const bundles = await getCachedBundles();
+	// const bundles = await getCachedBundles();
+	const bundles = await fetchGraphQL<GetCollectionByHandleQuery>(
+		GET_COLLECTION_BY_HANDLE_WITH_PAGINATION_QUERY,
+		{
+			handle: "bundles",
+			first: 10,
+		}
+	);
 
 	const footerLinkColumns = getVisibleFooterLinkColumns(
 		featureFlags.footerDiscoverSection
 	);
 
 	const bundleDealLinks: FooterNavLink[] = [
-		...bundles.map((bundle) => ({
-			label: bundle.title,
-			href: `/bundle/${bundle.id}`,
+		...(bundles.collection?.products.edges ?? []).map(({ node }) => ({
+			label: node.title,
+			href: `/bundle/${node.handle}`,
 		})),
 		FOOTER_VIEW_ALL_BUNDLES,
 	];

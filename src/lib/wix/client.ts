@@ -1,3 +1,5 @@
+"use server";
+
 import { cookies } from "next/headers";
 
 import { items } from "@wix/data";
@@ -49,7 +51,7 @@ function createWixClient() {
  * Do not use for `currentCart` — use `getWixServerSessionClient` from
  * `./server-session-client` (visitor/member tokens from `wix_session` cookie).
  */
-export function getWixClient() {
+export async function getWixClient() {
 	if (!cachedClient) {
 		cachedClient = createWixClient();
 	}
@@ -59,9 +61,7 @@ export function getWixClient() {
 export async function getCatalogVersion(): Promise<CatalogVersion> {
 	if (cachedCatalogVersion) return cachedCatalogVersion;
 
-	const client = getWixClient();
-	const { catalogVersion } = await client.catalogVersioning.getCatalogVersion();
-	const resolved = catalogVersion ?? "V1_CATALOG";
+	const resolved = "V1_CATALOG";
 	cachedCatalogVersion = resolved;
 	return resolved;
 }

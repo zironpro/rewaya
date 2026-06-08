@@ -61,11 +61,11 @@ export function BooksBreakdownSection({ bundle }: BooksBreakdownSectionProps) {
 		<section className="bg-[#f3ece4]/55 py-14 md:py-20">
 			<div className="mx-auto max-w-4xl px-4 sm:px-6">
 				<h2 className="font-bold font-display text-2xl text-secondary tracking-tight md:text-3xl">
-					Title by title
+					Books by title
 				</h2>
 				<p className="mt-2 max-w-2xl text-muted-foreground">
-					A quick tour of what you are bringing home — no spoilers, just why
-					each book earned its place.
+					A quick tour of what you are bringing home no spoilers, just why each
+					book earned its place.
 				</p>
 				<div className="mt-4 flex flex-col gap-3">
 					{bundle.books.map((book, index) => (

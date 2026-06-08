@@ -67,3 +67,89 @@ export const GET_BUNDLES_QUERY = gql`
   }
 }
 `;
+
+export const GET_BUNDLE_BY_HANDLE = gql`
+  query GetBundleByHandle($handle: String!) {
+  products(first: 1, query: $handle) {
+    edges {
+      node {
+        id
+        title
+        handle
+        status
+        productType
+        tags
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        variants(first: 10) {
+          edges {
+            node {
+              id
+              title
+              price
+              sku
+              availableForSale
+              inventoryQuantity
+            }
+          }
+        }
+        bundleComponents(first: 20) {
+          edges {
+            node {
+              quantity
+              optionSelections {
+                componentOption {
+                  id
+                  name
+                }
+                values {
+                  value
+                }
+              }
+              componentProduct {
+                id
+                title
+                handle
+                featuredImage {
+                  url
+                  altText
+                }
+                variants(first: 10) {
+                  edges {
+                    node {
+                      id
+                      title
+                      price
+                      sku
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        featuredImage {
+          url
+          altText
+        }
+        images(first: 5) {
+          edges {
+            node {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`;

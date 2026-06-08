@@ -91,6 +91,12 @@ export function BundleCheckoutCta({
 				typeof window !== "undefined" ? window.location.origin : undefined
 			).then((result) => {
 				if (result.ok) {
+					// If a checkout URL was returned (Shopify), redirect browser directly.
+					if (result.checkoutUrl && typeof window !== "undefined") {
+						window.location.href = result.checkoutUrl;
+						return;
+					}
+					// Fallback to internal checkout route which triggers server-side redirect
 					router.push("/checkout");
 					return;
 				}

@@ -2,7 +2,7 @@
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 
@@ -10769,6 +10769,20 @@ export type VariantOptionFilter = {
   value: string;
 };
 
+export type GetBundleMetaQueryVariables = Exact<{
+  handle?: string | null | undefined;
+}>;
+
+
+export type GetBundleMetaQuery = { product: { id: string, title: string, description: string, featuredImage: { url: unknown } | null, seo: { description: string | null, title: string | null } } | null };
+
+export type CartCreateMutationVariables = Exact<{
+  variantId: string | number;
+}>;
+
+
+export type CartCreateMutation = { cartCreate: { cart: { id: string, checkoutUrl: unknown } | null, userErrors: Array<{ field: Array<string> | null, message: string }> } | null };
+
 export type GetCollectionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -10786,7 +10800,87 @@ export type GetCollectionByHandleQueryVariables = Exact<{
 
 export type GetCollectionByHandleQuery = { collection: { id: string, handle: string, title: string, description: string, descriptionHtml: unknown, products: { edges: Array<{ cursor: string, node: { id: string, title: string, vendor: string, handle: string, priceRange: { minVariantPrice: { amount: unknown, currencyCode: CurrencyCode }, maxVariantPrice: { amount: unknown, currencyCode: CurrencyCode } }, compareAtPriceRange: { minVariantPrice: { amount: unknown, currencyCode: CurrencyCode }, maxVariantPrice: { amount: unknown, currencyCode: CurrencyCode } }, images: { edges: Array<{ node: { url: unknown, altText: string | null } }> }, featuredImage: { url: unknown } | null, options: Array<{ name: string, optionValues: Array<{ id: string, name: string, swatch: { color: unknown } | null }> }>, variants: { edges: Array<{ node: { id: string, availableForSale: boolean, compareAtPrice: { amount: unknown, currencyCode: CurrencyCode } | null, price: { amount: unknown, currencyCode: CurrencyCode }, selectedOptions: Array<{ name: string, value: string }> } }> } } }>, pageInfo: { hasNextPage: boolean, endCursor: string | null, hasPreviousPage: boolean, startCursor: string | null } } } | null };
 
+export type GetBundleCollectionSlugsQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type GetBundleCollectionSlugsQuery = { collection: { handle: string, products: { nodes: Array<{ handle: string }> } } | null };
+
+export type GetProductByHandleQueryVariables = Exact<{
+  handle: string;
+}>;
+
+
+export type GetProductByHandleQuery = { product: { id: string, title: string, description: string, productType: string, priceRange: { minVariantPrice: { amount: unknown, currencyCode: CurrencyCode }, maxVariantPrice: { amount: unknown, currencyCode: CurrencyCode } }, images: { edges: Array<{ node: { url: unknown, altText: string | null, width: number | null, height: number | null } }> }, options: Array<{ name: string, optionValues: Array<{ id: string, name: string, swatch: { color: unknown } | null }> }>, variants: { edges: Array<{ node: { id: string, availableForSale: boolean, compareAtPrice: { amount: unknown, currencyCode: CurrencyCode } | null, price: { amount: unknown, currencyCode: CurrencyCode }, selectedOptions: Array<{ name: string, value: string }> } }> }, seo: { title: string | null, description: string | null } } | null };
+
+export type GetVariantsQueryVariables = Exact<{
+  handle?: string | null | undefined;
+}>;
+
+
+export type GetVariantsQuery = { product: { title: string, variants: { edges: Array<{ node: { id: string, title: string, availableForSale: boolean } }> } } | null };
+
+
+
+export const GetBundleMetaDocument = new TypedDocumentString(`
+    query GetBundleMeta($handle: String) {
+  product(handle: $handle) {
+    id
+    title
+    featuredImage {
+      url
+    }
+    description
+    seo {
+      description
+      title
+    }
+  }
+}
+    `);
+
+export const useGetBundleMetaQuery = <
+      TData = GetBundleMetaQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: GetBundleMetaQueryVariables,
+      options?: UseQueryOptions<GetBundleMetaQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetBundleMetaQuery, TError, TData>(
+      variables === undefined ? ['GetBundleMeta'] : ['GetBundleMeta', variables],
+      fetcher<GetBundleMetaQuery, GetBundleMetaQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetBundleMetaDocument, variables),
+      options
+    )};
+
+export const CartCreateDocument = new TypedDocumentString(`
+    mutation CartCreate($variantId: ID!) {
+  cartCreate(input: {lines: [{quantity: 1, merchandiseId: $variantId}]}) {
+    cart {
+      id
+      checkoutUrl
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+    `);
+
+export const useCartCreateMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      options?: UseMutationOptions<CartCreateMutation, TError, CartCreateMutationVariables, TContext>
+    ) => {
+    
+    return useMutation<CartCreateMutation, TError, CartCreateMutationVariables, TContext>(
+      ['CartCreate'],
+      (variables?: CartCreateMutationVariables) => fetcher<CartCreateMutation, CartCreateMutationVariables>(dataSource.endpoint, dataSource.fetchParams || {}, CartCreateDocument, variables)(),
+      options
+    )};
 
 export const GetCollectionsDocument = new TypedDocumentString(`
     query GetCollections {
@@ -10933,5 +11027,145 @@ export const useGetCollectionByHandleQuery = <
     return useQuery<GetCollectionByHandleQuery, TError, TData>(
       ['GetCollectionByHandle', variables],
       fetcher<GetCollectionByHandleQuery, GetCollectionByHandleQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetCollectionByHandleDocument, variables),
+      options
+    )};
+
+export const GetBundleCollectionSlugsDocument = new TypedDocumentString(`
+    query GetBundleCollectionSlugs {
+  collection(handle: "bundles") {
+    handle
+    products(first: 50) {
+      nodes {
+        handle
+      }
+    }
+  }
+}
+    `);
+
+export const useGetBundleCollectionSlugsQuery = <
+      TData = GetBundleCollectionSlugsQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: GetBundleCollectionSlugsQueryVariables,
+      options?: UseQueryOptions<GetBundleCollectionSlugsQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetBundleCollectionSlugsQuery, TError, TData>(
+      variables === undefined ? ['GetBundleCollectionSlugs'] : ['GetBundleCollectionSlugs', variables],
+      fetcher<GetBundleCollectionSlugsQuery, GetBundleCollectionSlugsQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetBundleCollectionSlugsDocument, variables),
+      options
+    )};
+
+export const GetProductByHandleDocument = new TypedDocumentString(`
+    query GetProductByHandle($handle: String!) {
+  product(handle: $handle) {
+    id
+    title
+    description
+    productType
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 10) {
+      edges {
+        node {
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+    options {
+      name
+      optionValues {
+        id
+        name
+        swatch {
+          color
+        }
+      }
+    }
+    variants(first: 100) {
+      edges {
+        node {
+          id
+          availableForSale
+          compareAtPrice {
+            amount
+            currencyCode
+          }
+          price {
+            amount
+            currencyCode
+          }
+          selectedOptions {
+            name
+            value
+          }
+        }
+      }
+    }
+    seo {
+      title
+      description
+    }
+  }
+}
+    `);
+
+export const useGetProductByHandleQuery = <
+      TData = GetProductByHandleQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetProductByHandleQueryVariables,
+      options?: UseQueryOptions<GetProductByHandleQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetProductByHandleQuery, TError, TData>(
+      ['GetProductByHandle', variables],
+      fetcher<GetProductByHandleQuery, GetProductByHandleQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetProductByHandleDocument, variables),
+      options
+    )};
+
+export const GetVariantsDocument = new TypedDocumentString(`
+    query GetVariants($handle: String) {
+  product(handle: $handle) {
+    title
+    variants(first: 10) {
+      edges {
+        node {
+          id
+          title
+          availableForSale
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useGetVariantsQuery = <
+      TData = GetVariantsQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables?: GetVariantsQueryVariables,
+      options?: UseQueryOptions<GetVariantsQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetVariantsQuery, TError, TData>(
+      variables === undefined ? ['GetVariants'] : ['GetVariants', variables],
+      fetcher<GetVariantsQuery, GetVariantsQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetVariantsDocument, variables),
       options
     )};

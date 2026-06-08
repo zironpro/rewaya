@@ -8,7 +8,7 @@ export default function BundleMarketingLayout({
 }>) {
 	return (
 		<>
-			<Navbar showCategories={false} showSearch={false} />
+			<Navbar showActions={false} showCategories={false} showSearch={false} />
 			{children}
 			<Footer />
 		</>

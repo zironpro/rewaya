@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { ProductDetailData } from "@/features/products/types";
 import type { BookProps } from "@/lib/store";
 
@@ -264,7 +262,7 @@ async function queryV1ProductsViaSdk(options: {
 	minPrice?: number;
 	maxPrice?: number;
 }): Promise<{ items: V1Product[]; totalCount: number }> {
-	const client = getWixClient();
+	const client = await getWixClient();
 	const limit = Math.min(Math.max(1, options.limit), MAX_WIX_LIMIT);
 	const offset = Math.max(0, options.offset);
 	let query = client.products.queryProducts();
@@ -299,7 +297,7 @@ export async function searchWixProducts(options: {
 }): Promise<WixCatalogProduct[]> {
 	if (!isWixCatalogEnabled() || !options.query.trim()) return [];
 
-	const client = getWixClient();
+	const client = await getWixClient();
 	const version = await getCatalogVersion();
 	const limit = Math.min(
 		Math.max(1, options.limit ?? DEFAULT_LIMIT),
@@ -396,7 +394,7 @@ export async function queryWixProducts(
 		});
 	}
 
-	const client = getWixClient();
+	const client = await getWixClient();
 	const version = await getCatalogVersion();
 	const limit = Math.min(
 		Math.max(1, options?.limit ?? DEFAULT_LIMIT),
@@ -477,7 +475,7 @@ export async function getCatalogProductBySlug(
 			return reshapeV3FromCatalog(wixProduct, categoryNameMap);
 		}
 
-		const client = getWixClient();
+		const client = await getWixClient();
 		const { items } = await client.products
 			.queryProducts()
 			.eq("slug", slug)

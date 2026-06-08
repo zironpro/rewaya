@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 
 import { messageForAddBundleError } from "@/features/cart/cart-errors";
 import { enrichCartWithBundles } from "@/features/cart/enrich-cart";
+import { isBundleReadyForShopify } from "@/lib/shopify/bundle-mapping";
+import { createBundleCheckout } from "@/lib/shopify/cart";
 import { isAvailableForPurchase } from "@/lib/wix/availability";
 import { getCachedBundles } from "@/lib/wix/bundles";
 import {
@@ -99,14 +101,16 @@ export async function addBundle(
 	}
 ): Promise<CartActionResult> {
 	const catalogItemId = item.catalogItemId?.trim();
+	const bundleSlug = item.bundleSlug?.trim();
+
 	console.log("[bundle-cart] addBundle (server action)", {
 		catalogItemId: catalogItemId || "(empty)",
 		catalogAppId: item.catalogAppId ?? "(none)",
-		bundleSlug: item.bundleSlug ?? "(none)",
+		bundleSlug: bundleSlug || "(none)",
 		quantity: item.quantity ?? 1,
 	});
 
-	if (!catalogItemId && !item.bundleSlug?.trim()) {
+	if (!catalogItemId && !bundleSlug) {
 		console.warn(
 			"[bundle-cart] rejected — missing catalogItemId and bundleSlug"
 		);
@@ -115,13 +119,38 @@ export async function addBundle(
 		};
 	}
 
+	// Check if this bundle is configured for Shopify
+	if (bundleSlug) {
+		const useShopify = await isBundleReadyForShopify(bundleSlug);
+		if (useShopify) {
+			console.log("[bundle-cart] Using Shopify for bundle:", bundleSlug);
+			try {
+				// For Shopify bundles, we don't actually add to cart here
+				// We just validate that it exists. The checkout flow will handle it.
+				// Return success to allow checkout flow to proceed
+				return {
+					error: null,
+					cart: {
+						isShopifyBundle: true,
+						bundleSlug,
+						quantity: item.quantity ?? 1,
+					} as unknown,
+				};
+			} catch (e) {
+				console.error("[bundle-cart] Shopify validation failed:", e);
+				// Fall through to Wix
+			}
+		}
+	}
+
+	// Fall back to Wix for bundles not ready for Shopify
 	try {
 		const cart = await addBundleToCartServer(
 			catalogItemId,
 			item.quantity ?? 1,
 			item.catalogAppId,
 			{
-				bundleSlug: item.bundleSlug?.trim(),
+				bundleSlug,
 				// Never add individual book lines — wrong total; use Stores bundle SKU + discount rules.
 				bundleOnly: true,
 			}
@@ -129,7 +158,7 @@ export async function addBundle(
 		const enriched = await enrichCartResponse(cart);
 		const lineCount =
 			(enriched as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
-		console.log("[bundle-cart] addBundle OK", { lineItems: lineCount });
+		console.log("[bundle-cart] addBundle OK (Wix)", { lineItems: lineCount });
 		if (lineCount === 0) {
 			return {
 				error:
@@ -189,6 +218,8 @@ export async function getCheckoutUrl(
 	const debug: CheckoutDebugPayload = { step: "resolve-origin", origin };
 
 	try {
+		// For now, getCheckoutUrl uses Wix (legacy behavior)
+		// If you need Shopify support here, call startBundleCheckout with bundleSlug instead
 		const checkoutUrl = await createCheckoutUrlServer({ origin });
 		if (!checkoutUrl) {
 			const message =
@@ -225,7 +256,7 @@ export async function getCheckoutUrl(
 	}
 }
 
-/** Add bundle to cart, then return Wix hosted checkout URL (headless-safe server flow). */
+/** Add bundle to cart, then return checkout URL (Shopify or Wix hosted). */
 export async function startBundleCheckout(
 	item: {
 		catalogItemId: string;
@@ -237,21 +268,22 @@ export async function startBundleCheckout(
 ): Promise<BundleCheckoutResult> {
 	const origin = await resolveCheckoutOrigin(originOverride);
 	const catalogItemId = item.catalogItemId?.trim();
+	const bundleSlug = item.bundleSlug?.trim();
 	const debug: CheckoutDebugPayload = {
 		step: "resolve-origin",
 		origin,
-		bundleSlug: item.bundleSlug,
+		bundleSlug,
 		catalogItemId: catalogItemId || undefined,
 		catalogAppId: item.catalogAppId,
 	};
 
 	checkoutDebug("startBundleCheckout", {
 		origin,
-		bundleSlug: item.bundleSlug,
+		bundleSlug,
 		catalogItemId,
 	});
 
-	if (!catalogItemId && !item.bundleSlug?.trim()) {
+	if (!catalogItemId && !bundleSlug) {
 		return {
 			ok: false,
 			error: "This bundle is not available for purchase.",
@@ -259,13 +291,49 @@ export async function startBundleCheckout(
 		};
 	}
 
+	// Check if this bundle is configured for Shopify
+	if (bundleSlug) {
+		const useShopify = await isBundleReadyForShopify(bundleSlug);
+		if (useShopify) {
+			console.log("[checkout] Using Shopify for bundle:", bundleSlug);
+			try {
+				const checkoutUrl = await createBundleCheckout(
+					bundleSlug,
+					item.quantity ?? 1
+				);
+
+				return {
+					ok: true,
+					checkoutUrl,
+					debug: isCheckoutDebugEnabled()
+						? { ...debug, step: "complete", checkoutUrl }
+						: undefined,
+				};
+			} catch (error) {
+				console.error("[checkout] Shopify createBundleCheckout failed:", error);
+				return {
+					ok: false,
+					error: `Shopify checkout failed: ${error instanceof Error ? error.message : String(error)}`,
+					debug: isCheckoutDebugEnabled()
+						? {
+								...debug,
+								step: "create-checkout",
+								error: serializeWixError(error),
+							}
+						: undefined,
+				};
+			}
+		}
+	}
+
+	// Fall back to Wix checkout for bundles not ready for Shopify
 	try {
 		const cart = await addBundleToCartServer(
 			catalogItemId,
 			item.quantity ?? 1,
 			item.catalogAppId,
 			{
-				bundleSlug: item.bundleSlug?.trim(),
+				bundleSlug,
 				bundleOnly: true,
 			}
 		);
@@ -306,7 +374,7 @@ export async function startBundleCheckout(
 				: undefined,
 		};
 	} catch (error) {
-		console.error("[checkout] startBundleCheckout failed:", error);
+		console.error("[checkout] startBundleCheckout (Wix) failed:", error);
 		return {
 			ok: false,
 			error: messageForAddBundleError(error),

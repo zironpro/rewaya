@@ -73447,10 +73447,359 @@ export enum WeightUnit {
   Pounds = 'POUNDS'
 }
 
+/**
+ * The currency codes that represent the world currencies throughout the Admin API. Currency codes include
+ * [standard ISO 4217 codes](https://en.wikipedia.org/wiki/ISO_4217), legacy codes, non-standard codes,
+ * digital currency codes.
+ */
+export type CurrencyCode =
+  /** United Arab Emirates Dirham (AED). */
+  | 'AED'
+  /** Afghan Afghani (AFN). */
+  | 'AFN'
+  /** Albanian Lek (ALL). */
+  | 'ALL'
+  /** Armenian Dram (AMD). */
+  | 'AMD'
+  /** Netherlands Antillean Guilder. */
+  | 'ANG'
+  /** Angolan Kwanza (AOA). */
+  | 'AOA'
+  /** Argentine Pesos (ARS). */
+  | 'ARS'
+  /** Australian Dollars (AUD). */
+  | 'AUD'
+  /** Aruban Florin (AWG). */
+  | 'AWG'
+  /** Azerbaijani Manat (AZN). */
+  | 'AZN'
+  /** Bosnia and Herzegovina Convertible Mark (BAM). */
+  | 'BAM'
+  /** Barbadian Dollar (BBD). */
+  | 'BBD'
+  /** Bangladesh Taka (BDT). */
+  | 'BDT'
+  /** Bulgarian Lev (BGN). */
+  | 'BGN'
+  /** Bahraini Dinar (BHD). */
+  | 'BHD'
+  /** Burundian Franc (BIF). */
+  | 'BIF'
+  /** Bermudian Dollar (BMD). */
+  | 'BMD'
+  /** Brunei Dollar (BND). */
+  | 'BND'
+  /** Bolivian Boliviano (BOB). */
+  | 'BOB'
+  /** Brazilian Real (BRL). */
+  | 'BRL'
+  /** Bahamian Dollar (BSD). */
+  | 'BSD'
+  /** Bhutanese Ngultrum (BTN). */
+  | 'BTN'
+  /** Botswana Pula (BWP). */
+  | 'BWP'
+  /** Belarusian Ruble (BYN). */
+  | 'BYN'
+  /** Belarusian Ruble (BYR). */
+  | 'BYR'
+  /** Belize Dollar (BZD). */
+  | 'BZD'
+  /** Canadian Dollars (CAD). */
+  | 'CAD'
+  /** Congolese franc (CDF). */
+  | 'CDF'
+  /** Swiss Francs (CHF). */
+  | 'CHF'
+  /** Chilean Peso (CLP). */
+  | 'CLP'
+  /** Chinese Yuan Renminbi (CNY). */
+  | 'CNY'
+  /** Colombian Peso (COP). */
+  | 'COP'
+  /** Costa Rican Colones (CRC). */
+  | 'CRC'
+  /** Cape Verdean escudo (CVE). */
+  | 'CVE'
+  /** Czech Koruny (CZK). */
+  | 'CZK'
+  /** Djiboutian Franc (DJF). */
+  | 'DJF'
+  /** Danish Kroner (DKK). */
+  | 'DKK'
+  /** Dominican Peso (DOP). */
+  | 'DOP'
+  /** Algerian Dinar (DZD). */
+  | 'DZD'
+  /** Egyptian Pound (EGP). */
+  | 'EGP'
+  /** Eritrean Nakfa (ERN). */
+  | 'ERN'
+  /** Ethiopian Birr (ETB). */
+  | 'ETB'
+  /** Euro (EUR). */
+  | 'EUR'
+  /** Fijian Dollars (FJD). */
+  | 'FJD'
+  /** Falkland Islands Pounds (FKP). */
+  | 'FKP'
+  /** United Kingdom Pounds (GBP). */
+  | 'GBP'
+  /** Georgian Lari (GEL). */
+  | 'GEL'
+  /** Ghanaian Cedi (GHS). */
+  | 'GHS'
+  /** Gibraltar Pounds (GIP). */
+  | 'GIP'
+  /** Gambian Dalasi (GMD). */
+  | 'GMD'
+  /** Guinean Franc (GNF). */
+  | 'GNF'
+  /** Guatemalan Quetzal (GTQ). */
+  | 'GTQ'
+  /** Guyanese Dollar (GYD). */
+  | 'GYD'
+  /** Hong Kong Dollars (HKD). */
+  | 'HKD'
+  /** Honduran Lempira (HNL). */
+  | 'HNL'
+  /** Croatian Kuna (HRK). */
+  | 'HRK'
+  /** Haitian Gourde (HTG). */
+  | 'HTG'
+  /** Hungarian Forint (HUF). */
+  | 'HUF'
+  /** Indonesian Rupiah (IDR). */
+  | 'IDR'
+  /** Israeli New Shekel (NIS). */
+  | 'ILS'
+  /** Indian Rupees (INR). */
+  | 'INR'
+  /** Iraqi Dinar (IQD). */
+  | 'IQD'
+  /** Iranian Rial (IRR). */
+  | 'IRR'
+  /** Icelandic Kronur (ISK). */
+  | 'ISK'
+  /** Jersey Pound. */
+  | 'JEP'
+  /** Jamaican Dollars (JMD). */
+  | 'JMD'
+  /** Jordanian Dinar (JOD). */
+  | 'JOD'
+  /** Japanese Yen (JPY). */
+  | 'JPY'
+  /** Kenyan Shilling (KES). */
+  | 'KES'
+  /** Kyrgyzstani Som (KGS). */
+  | 'KGS'
+  /** Cambodian Riel. */
+  | 'KHR'
+  /** Kiribati Dollar (KID). */
+  | 'KID'
+  /** Comorian Franc (KMF). */
+  | 'KMF'
+  /** South Korean Won (KRW). */
+  | 'KRW'
+  /** Kuwaiti Dinar (KWD). */
+  | 'KWD'
+  /** Cayman Dollars (KYD). */
+  | 'KYD'
+  /** Kazakhstani Tenge (KZT). */
+  | 'KZT'
+  /** Laotian Kip (LAK). */
+  | 'LAK'
+  /** Lebanese Pounds (LBP). */
+  | 'LBP'
+  /** Sri Lankan Rupees (LKR). */
+  | 'LKR'
+  /** Liberian Dollar (LRD). */
+  | 'LRD'
+  /** Lesotho Loti (LSL). */
+  | 'LSL'
+  /** Lithuanian Litai (LTL). */
+  | 'LTL'
+  /** Latvian Lati (LVL). */
+  | 'LVL'
+  /** Libyan Dinar (LYD). */
+  | 'LYD'
+  /** Moroccan Dirham. */
+  | 'MAD'
+  /** Moldovan Leu (MDL). */
+  | 'MDL'
+  /** Malagasy Ariary (MGA). */
+  | 'MGA'
+  /** Macedonia Denar (MKD). */
+  | 'MKD'
+  /** Burmese Kyat (MMK). */
+  | 'MMK'
+  /** Mongolian Tugrik. */
+  | 'MNT'
+  /** Macanese Pataca (MOP). */
+  | 'MOP'
+  /** Mauritanian Ouguiya (MRU). */
+  | 'MRU'
+  /** Mauritian Rupee (MUR). */
+  | 'MUR'
+  /** Maldivian Rufiyaa (MVR). */
+  | 'MVR'
+  /** Malawian Kwacha (MWK). */
+  | 'MWK'
+  /** Mexican Pesos (MXN). */
+  | 'MXN'
+  /** Malaysian Ringgits (MYR). */
+  | 'MYR'
+  /** Mozambican Metical. */
+  | 'MZN'
+  /** Namibian Dollar. */
+  | 'NAD'
+  /** Nigerian Naira (NGN). */
+  | 'NGN'
+  /** Nicaraguan Córdoba (NIO). */
+  | 'NIO'
+  /** Norwegian Kroner (NOK). */
+  | 'NOK'
+  /** Nepalese Rupee (NPR). */
+  | 'NPR'
+  /** New Zealand Dollars (NZD). */
+  | 'NZD'
+  /** Omani Rial (OMR). */
+  | 'OMR'
+  /** Panamian Balboa (PAB). */
+  | 'PAB'
+  /** Peruvian Nuevo Sol (PEN). */
+  | 'PEN'
+  /** Papua New Guinean Kina (PGK). */
+  | 'PGK'
+  /** Philippine Peso (PHP). */
+  | 'PHP'
+  /** Pakistani Rupee (PKR). */
+  | 'PKR'
+  /** Polish Zlotych (PLN). */
+  | 'PLN'
+  /** Paraguayan Guarani (PYG). */
+  | 'PYG'
+  /** Qatari Rial (QAR). */
+  | 'QAR'
+  /** Romanian Lei (RON). */
+  | 'RON'
+  /** Serbian dinar (RSD). */
+  | 'RSD'
+  /** Russian Rubles (RUB). */
+  | 'RUB'
+  /** Rwandan Franc (RWF). */
+  | 'RWF'
+  /** Saudi Riyal (SAR). */
+  | 'SAR'
+  /** Solomon Islands Dollar (SBD). */
+  | 'SBD'
+  /** Seychellois Rupee (SCR). */
+  | 'SCR'
+  /** Sudanese Pound (SDG). */
+  | 'SDG'
+  /** Swedish Kronor (SEK). */
+  | 'SEK'
+  /** Singapore Dollars (SGD). */
+  | 'SGD'
+  /** Saint Helena Pounds (SHP). */
+  | 'SHP'
+  /** Sierra Leonean Leone (SLL). */
+  | 'SLL'
+  /** Somali Shilling (SOS). */
+  | 'SOS'
+  /** Surinamese Dollar (SRD). */
+  | 'SRD'
+  /** South Sudanese Pound (SSP). */
+  | 'SSP'
+  /** Sao Tome And Principe Dobra (STD). */
+  | 'STD'
+  /** Sao Tome And Principe Dobra (STN). */
+  | 'STN'
+  /** Syrian Pound (SYP). */
+  | 'SYP'
+  /** Swazi Lilangeni (SZL). */
+  | 'SZL'
+  /** Thai baht (THB). */
+  | 'THB'
+  /** Tajikistani Somoni (TJS). */
+  | 'TJS'
+  /** Turkmenistani Manat (TMT). */
+  | 'TMT'
+  /** Tunisian Dinar (TND). */
+  | 'TND'
+  /** Tongan Pa'anga (TOP). */
+  | 'TOP'
+  /** Turkish Lira (TRY). */
+  | 'TRY'
+  /** Trinidad and Tobago Dollars (TTD). */
+  | 'TTD'
+  /** Taiwan Dollars (TWD). */
+  | 'TWD'
+  /** Tanzanian Shilling (TZS). */
+  | 'TZS'
+  /** Ukrainian Hryvnia (UAH). */
+  | 'UAH'
+  /** Ugandan Shilling (UGX). */
+  | 'UGX'
+  /** United States Dollars (USD). */
+  | 'USD'
+  /** United States Dollars Coin (USDC). */
+  | 'USDC'
+  /** Uruguayan Pesos (UYU). */
+  | 'UYU'
+  /** Uzbekistan som (UZS). */
+  | 'UZS'
+  /** Venezuelan Bolivares (VED). */
+  | 'VED'
+  /** Venezuelan Bolivares (VEF). */
+  | 'VEF'
+  /** Venezuelan Bolivares Soberanos (VES). */
+  | 'VES'
+  /** Vietnamese đồng (VND). */
+  | 'VND'
+  /** Vanuatu Vatu (VUV). */
+  | 'VUV'
+  /** Samoan Tala (WST). */
+  | 'WST'
+  /** Central African CFA Franc (XAF). */
+  | 'XAF'
+  /** East Caribbean Dollar (XCD). */
+  | 'XCD'
+  /** West African CFA franc (XOF). */
+  | 'XOF'
+  /** CFP Franc (XPF). */
+  | 'XPF'
+  /** Unrecognized currency. */
+  | 'XXX'
+  /** Yemeni Rial (YER). */
+  | 'YER'
+  /** South African Rand (ZAR). */
+  | 'ZAR'
+  /** Zambian Kwacha (ZMW). */
+  | 'ZMW';
+
+/** The possible product statuses. */
+export type ProductStatus =
+  /** The product is ready to sell and can be published to sales channels and apps. Products with an active status aren't automatically published to sales channels, such as the online store, or apps. By default, existing products are set to active. */
+  | 'ACTIVE'
+  /** The product is no longer being sold and isn't available to customers on sales channels and apps. */
+  | 'ARCHIVED'
+  /** The product isn't ready to sell and is unavailable to customers on sales channels and apps. By default, duplicated and unarchived products are set to draft. */
+  | 'DRAFT'
+  /** The product is active but you need a direct link to view it. The product doesn't show up in search, collections, or product recommendations. It will be returned in Storefront API and Liquid only when referenced individually by handle, id, or metafield reference.This status is only visible from 2025-10 and up, is translated to active in older versions and can't be changed from unlisted in older versions. */
+  | 'UNLISTED';
+
 export type GetAllBundlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllBundlesQuery = { products: { nodes: Array<{ id: string, title: string, handle: string, tags: Array<string>, featuredImage: { url: unknown, width: number | null, height: number | null, altText: string | null } | null, productComponentsCount: { count: number } | null, productComponents: { nodes: Array<{ product: { id: string, title: string, handle: string }, componentVariants: { nodes: Array<{ id: string, title: string, sku: string | null, price: unknown, inventoryQuantity: number | null }> } }> }, variants: { nodes: Array<{ id: string, title: string, price: unknown, requiresComponents: boolean, productVariantComponents: { nodes: Array<{ id: string, quantity: number, productVariant: { id: string, title: string, sku: string | null, price: unknown, product: { id: string, title: string } } }> } }> } }>, pageInfo: { hasNextPage: boolean, endCursor: string | null } } };
+
+export type GetBundleByHandleQueryVariables = Exact<{
+  handle: string;
+}>;
+
+
+export type GetBundleByHandleQuery = { products: { edges: Array<{ node: { id: string, title: string, handle: string, status: ProductStatus, productType: string, tags: Array<string>, priceRangeV2: { minVariantPrice: { amount: unknown, currencyCode: CurrencyCode }, maxVariantPrice: { amount: unknown, currencyCode: CurrencyCode } }, variants: { edges: Array<{ node: { id: string, title: string, price: unknown, sku: string | null, availableForSale: boolean, inventoryQuantity: number | null } }> }, bundleComponents: { edges: Array<{ node: { quantity: number | null, optionSelections: Array<{ componentOption: { id: string, name: string }, values: Array<{ value: string }> }>, componentProduct: { id: string, title: string, handle: string, featuredImage: { url: unknown, altText: string | null } | null, variants: { edges: Array<{ node: { id: string, title: string, price: unknown, sku: string | null } }> } } } }> }, featuredImage: { url: unknown, altText: string | null } | null, images: { edges: Array<{ node: { url: unknown, altText: string | null } }> } } }> } };
 
 
 
@@ -73534,5 +73883,106 @@ export const useGetAllBundlesQuery = <
     return useQuery<GetAllBundlesQuery, TError, TData>(
       variables === undefined ? ['GetAllBundles'] : ['GetAllBundles', variables],
       fetcher<GetAllBundlesQuery, GetAllBundlesQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetAllBundlesDocument, variables),
+      options
+    )};
+
+export const GetBundleByHandleDocument = new TypedDocumentString(`
+    query GetBundleByHandle($handle: String!) {
+  products(first: 1, query: $handle) {
+    edges {
+      node {
+        id
+        title
+        handle
+        status
+        productType
+        tags
+        priceRangeV2 {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        variants(first: 10) {
+          edges {
+            node {
+              id
+              title
+              price
+              sku
+              availableForSale
+              inventoryQuantity
+            }
+          }
+        }
+        bundleComponents(first: 20) {
+          edges {
+            node {
+              quantity
+              optionSelections {
+                componentOption {
+                  id
+                  name
+                }
+                values {
+                  value
+                }
+              }
+              componentProduct {
+                id
+                title
+                handle
+                featuredImage {
+                  url
+                  altText
+                }
+                variants(first: 10) {
+                  edges {
+                    node {
+                      id
+                      title
+                      price
+                      sku
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        featuredImage {
+          url
+          altText
+        }
+        images(first: 5) {
+          edges {
+            node {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useGetBundleByHandleQuery = <
+      TData = GetBundleByHandleQuery,
+      TError = unknown
+    >(
+      dataSource: { endpoint: string, fetchParams?: RequestInit },
+      variables: GetBundleByHandleQueryVariables,
+      options?: UseQueryOptions<GetBundleByHandleQuery, TError, TData>
+    ) => {
+    
+    return useQuery<GetBundleByHandleQuery, TError, TData>(
+      ['GetBundleByHandle', variables],
+      fetcher<GetBundleByHandleQuery, GetBundleByHandleQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetBundleByHandleDocument, variables),
       options
     )};

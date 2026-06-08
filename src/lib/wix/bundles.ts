@@ -1,5 +1,3 @@
-import "server-only";
-
 import { cache } from "react";
 
 import { type BundlePresentation, bundleToPresentation } from "@/domain/bundle";
@@ -287,7 +285,7 @@ async function getBundleFaqItems(): Promise<
 	Array<{ faq: Faq; tokens: Set<string> }>
 > {
 	try {
-		const client = getWixClient();
+		const client = await getWixClient();
 		const { items } = await client.items
 			.query(BUNDLE_FAQS_COLLECTION)
 			.limit(500)
@@ -459,7 +457,7 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 	if (!isWixCatalogEnabled()) return [];
 
 	try {
-		const client = getWixClient();
+		const client = await getWixClient();
 		const { items } = await client.items
 			.query(BOOK_BUNDLES_COLLECTION)
 			.include("bundleProducts")
@@ -529,6 +527,24 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 				bundleProductId = await findStoresBundleProductIdByTitle(title);
 			}
 
+			const shopifyVariantId =
+				(readCmsField(
+					data,
+					"shopifyVariantId",
+					"shopify_variant_id",
+					"shopifyVariant",
+					"shopify_variant"
+				) as string | undefined) ?? undefined;
+
+			const shopifyProductHandle =
+				(readCmsField(
+					data,
+					"shopifyProductHandle",
+					"shopify_product_handle",
+					"shopifyHandle",
+					"shopify_product"
+				) as string | undefined) ?? undefined;
+
 			rows.push({
 				_id: itemId,
 				slug,
@@ -544,6 +560,8 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 				includedBooks: includedBooks.length > 0 ? includedBooks : undefined,
 				cmsCatalogItemId: itemId,
 				bundleProductId,
+				shopifyVariantId,
+				shopifyProductHandle,
 				tag: readCmsField(data, "tag", "ribbon") as string | undefined,
 			});
 		}
