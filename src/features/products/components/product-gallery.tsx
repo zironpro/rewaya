@@ -83,13 +83,13 @@ export function ProductGallery({
 				setApi={setApi}
 			>
 				<div className="relative">
-					<CarouselContent className="ml-0">
+					<CarouselContent className="-ml-2">
 						{galleryImages.map((src, index) => (
-							<CarouselItem className="basis-full pl-0" key={src}>
-								<div className="group relative aspect-4/5 overflow-hidden rounded-xl border bg-muted/30">
+							<CarouselItem className="basis-full pl-2" key={src}>
+								<div className="group relative aspect-4/5 overflow-hidden rounded-xl border bg-card">
 									<Image
 										alt={`${title} — image ${index + 1}`}
-										className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+										className="object-contain transition-transform duration-700 group-hover:scale-[1.02]"
 										fill
 										priority={index === 0}
 										sizes="(max-width: 1024px) 100vw, 38vw"

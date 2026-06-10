@@ -132,7 +132,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 			{/* Desktop: stacked covers */}
 			<div className="relative mb-6 hidden aspect-4/5 w-32 shrink-0 sm:mb-0 sm:block md:w-48">
 				{stackImages[0] && (
-					<div className="absolute inset-0 translate-x-[-15px] -rotate-12 transform overflow-hidden rounded-sm border border-stone-100 bg-stone-200 shadow-md transition-transform duration-500 group-hover:-rotate-15">
+					<div className="absolute inset-0 -translate-x-3.75 -rotate-12 transform overflow-hidden rounded-sm border border-stone-100 bg-stone-200 shadow-md transition-transform duration-500 group-hover:-rotate-15">
 						<Image
 							alt=""
 							className="object-cover opacity-60"
@@ -144,7 +144,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 				)}
 
 				{stackImages[1] && (
-					<div className="absolute inset-0 translate-x-[15px] rotate-6 transform overflow-hidden rounded-sm border border-stone-200 bg-stone-100 shadow-lg transition-transform duration-500 group-hover:rotate-12">
+					<div className="absolute inset-0 translate-x-3.75 rotate-6 transform overflow-hidden rounded-sm border border-stone-200 bg-stone-100 shadow-lg transition-transform duration-500 group-hover:rotate-12">
 						<Image
 							alt=""
 							className="object-cover opacity-80"
@@ -190,9 +190,7 @@ export function BundleSetCard({ bundle }: BundleSetCardProps) {
 							AED {bundle.price.toFixed(2)}
 						</span>
 					</div>
-					<Button nativeButton={false} render={<Link href={bundleHref} />}>
-						Buy bundle
-					</Button>
+					<Button>Buy bundle</Button>
 				</div>
 			</div>
 		</Link>

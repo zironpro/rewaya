@@ -15,14 +15,31 @@ import {
 export async function proxy(request: NextRequest) {
 	const pathname = request.nextUrl?.pathname ?? request.url;
 	const wixRedirectHost = "https://store.rewayabooks.com";
-	const wixManagedPrefixes = ["/_api", "/checkout"];
+	const wixManagedPrefixes = ["/_api", "/__ecom", "/checkout"];
 
 	for (const p of wixManagedPrefixes) {
 		if (pathname === p || pathname.startsWith(`${p}/`)) {
-			const dest = new URL(
-				request.nextUrl.pathname + request.nextUrl.search,
-				wixRedirectHost
-			);
+			// Build destination URL on the wix redirect host and rewrite
+			// any redirectUrl param that points at the public site to the store host.
+			const dest = new URL(request.nextUrl.pathname, wixRedirectHost);
+			for (const [key, value] of request.nextUrl.searchParams) {
+				let newVal = value;
+				if (key === "redirectUrl") {
+					try {
+						const ru = new URL(value);
+						if (ru.hostname === "www.rewayabooks.com") {
+							ru.hostname = "store.rewayabooks.com";
+							newVal = ru.toString();
+						}
+					} catch {
+						newVal = value.replace(
+							"https://www.rewayabooks.com",
+							"https://store.rewayabooks.com"
+						);
+					}
+				}
+				dest.searchParams.set(key, newVal);
+			}
 			return NextResponse.redirect(dest);
 		}
 	}

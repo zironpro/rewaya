@@ -66,7 +66,7 @@ export const HomepageView = ({
 				)}
 
 			<section className="container mb-16">
-				<div className="group relative overflow-hidden rounded-2xl shadow-lg md:min-h-[360px]">
+				<div className="group relative overflow-hidden rounded-2xl shadow-lg md:min-h-90">
 					<Image
 						alt="Rewaya Books at the Dubai Book Fair"
 						className="object-cover object-left transition-transform duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-102 md:object-center"
@@ -74,7 +74,7 @@ export const HomepageView = ({
 						sizes="(max-width: 1280px) 100vw, 1280px"
 						src="/banners/book-fair-banner.webp"
 					/>
-					<div className="relative z-10 flex flex-col items-start justify-center p-6 text-card sm:p-10 md:min-h-[360px] md:max-w-2xl md:p-12">
+					<div className="relative z-10 flex flex-col items-start justify-center p-6 text-card sm:p-10 md:min-h-90 md:max-w-2xl md:p-12">
 						<Badge
 							className="border-card/20 bg-card/10 text-card tracking-normal backdrop-blur-sm"
 							size="lg"
