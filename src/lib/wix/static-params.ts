@@ -5,14 +5,11 @@ import { GetBundleCollectionSlugsQuery } from "@/types/shopify-storefront-graphq
 
 import { fetchGraphQL } from "../shopify";
 import { getBookBundlesFromCms } from "./bundles";
-import { isWixCatalogEnabled } from "./constants";
 import { queryWixProducts } from "./products";
 
 const PAGE_SIZE = 100;
 
 export async function getProductStaticParamIds(): Promise<string[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const ids: string[] = [];
 		let offset = 0;
@@ -37,8 +34,6 @@ export async function getProductStaticParamIds(): Promise<string[]> {
 }
 
 export async function getBundleStaticParamSlugs(): Promise<string[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const details = await getBookBundlesFromCms();
 		return details.map((d) => d.slug).filter(Boolean);

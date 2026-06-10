@@ -20,13 +20,6 @@ export const AUTH_CALLBACK_PATH = "/auth/callback";
 /** Wix CMS collection for member wishlist rows (memberId + productId). */
 export const WISHLIST_COLLECTION = "Wishlist";
 
-export function isWixCatalogEnabled(): boolean {
-	return (
-		process.env.USE_WIX_CATALOG !== "false" &&
-		Boolean(process.env.WIX_CLIENT_ID)
-	);
-}
-
 export function isWixAuthEnabled(): boolean {
 	return Boolean(process.env.NEXT_PUBLIC_WIX_CLIENT_ID);
 }

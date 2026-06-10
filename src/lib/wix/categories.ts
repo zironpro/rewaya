@@ -1,7 +1,6 @@
 import { cache } from "react";
 
 import { getCatalogVersion, getWixClient } from "./client";
-import { isWixCatalogEnabled } from "./constants";
 import { wixFetch } from "./wix-rest";
 
 /** Wix V1 "All Products" collection — assigned to every product; skip for grouping. */
@@ -174,8 +173,6 @@ async function queryV3Categories(): Promise<StoreCategory[]> {
 }
 
 export const getStoreCategories = cache(async (): Promise<StoreCategory[]> => {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const version = await getCatalogVersion();
 		if (version === "V3_CATALOG") {

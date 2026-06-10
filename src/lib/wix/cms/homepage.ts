@@ -11,7 +11,6 @@ import {
 	WIX_ALL_PRODUCTS_COLLECTION_ID,
 } from "../categories";
 import { getWixClient } from "../client";
-import { isWixCatalogEnabled } from "../constants";
 import { resolveWixImageUrl } from "../image";
 import { queryWixProducts, queryWixProductsByCategory } from "../products";
 import { mapWixProductToBookProps, type WixCatalogProduct } from "../types";
@@ -136,8 +135,6 @@ export async function getHomeBanners(): Promise<HomeBanner[]> {
 }
 
 export async function getHomepageSections(): Promise<HomepageSection[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const client = await getWixClient();
 		const { items } = await client.items

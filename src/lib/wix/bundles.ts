@@ -5,7 +5,6 @@ import type { Book, Faq } from "@/lib/catalog/types";
 
 import { getWixClient } from "./client";
 import { getCmsItemData, readCmsField } from "./cms/record";
-import { isWixCatalogEnabled } from "./constants";
 import { resolveWixImageUrl } from "./image";
 import { queryWixProducts, searchWixProducts } from "./products";
 import {
@@ -454,8 +453,6 @@ async function resolveIncludedBooks(
 }
 
 export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const client = await getWixClient();
 		const { items } = await client.items
@@ -601,8 +598,6 @@ export async function getBookBundlesFromCms(): Promise<BookBundleCmsItem[]> {
 }
 
 export async function getBundles(): Promise<Bundle[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const cmsRows = await getBookBundlesFromCms();
 		if (cmsRows.length === 0) return [];

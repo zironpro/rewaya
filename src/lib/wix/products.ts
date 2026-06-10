@@ -9,7 +9,6 @@ import {
 	WIX_ALL_PRODUCTS_COLLECTION_ID,
 } from "./categories";
 import { getCatalogVersion, getWixClient } from "./client";
-import { isWixCatalogEnabled } from "./constants";
 import {
 	buildProductDetails,
 	getInfoSectionValue,
@@ -295,8 +294,6 @@ export async function searchWixProducts(options: {
 	offset?: number;
 	categoryNameMap?: Map<string, string>;
 }): Promise<WixCatalogProduct[]> {
-	if (!isWixCatalogEnabled() || !options.query.trim()) return [];
-
 	const client = await getWixClient();
 	const version = await getCatalogVersion();
 	const limit = Math.min(
@@ -337,8 +334,6 @@ export async function queryWixProductsByCategory(
 		categoryNameMap?: Map<string, string>;
 	}
 ): Promise<WixCatalogProduct[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	const version = await getCatalogVersion();
 	const limit = Math.min(
 		Math.max(1, options?.limit ?? DEFAULT_LIMIT),
@@ -371,8 +366,6 @@ export async function queryWixProductsByCategory(
 export async function queryWixProducts(
 	options?: QueryWixProductsOptions
 ): Promise<WixCatalogProduct[]> {
-	if (!isWixCatalogEnabled()) return [];
-
 	const categoryNameMap =
 		options?.categoryNameMap ?? (await getCategoryNameMap());
 
@@ -463,8 +456,6 @@ export async function getWixProductBySlug(
 export async function getCatalogProductBySlug(
 	slug: string
 ): Promise<CatalogProduct | null> {
-	if (!isWixCatalogEnabled()) return null;
-
 	try {
 		const categoryNameMap = await getCategoryNameMap();
 		const version = await getCatalogVersion();
@@ -599,8 +590,6 @@ async function queryV1ShopItems(
 export async function getShopBooks(
 	options?: GetShopBooksOptions
 ): Promise<{ books: BookProps[]; totalCount: number }> {
-	if (!isWixCatalogEnabled()) return { books: [], totalCount: 0 };
-
 	try {
 		const categoryNameMap = await getCategoryNameMap();
 		const version = await getCatalogVersion();
@@ -765,7 +754,6 @@ export async function getSameCategoryShopBooks(
 	product: RelatedShopBooksOptions
 ): Promise<BookProps[]> {
 	const limit = product.limit ?? 4;
-	if (!isWixCatalogEnabled()) return [];
 	if (!product.categoryId && !product.categorySlug && !product.category) {
 		return [];
 	}
@@ -797,7 +785,6 @@ export async function getRelatedReadsShopBooks(
 ): Promise<BookProps[]> {
 	const limit = product.limit ?? 4;
 	const category = product.category;
-	if (!isWixCatalogEnabled()) return [];
 
 	try {
 		const categoryNameMap = await getCategoryNameMap();
@@ -832,8 +819,6 @@ export async function getProductBookSections(product: RelatedShopBooksOptions) {
 }
 
 export async function getBookProductsForBundles() {
-	if (!isWixCatalogEnabled()) return [];
-
 	try {
 		const categoryNameMap = await getCategoryNameMap();
 		const products = await queryWixProducts({

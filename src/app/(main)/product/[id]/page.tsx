@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProductDetailView } from "@/features/products/product-detail-view";
-import { isWixCatalogEnabled } from "@/lib/wix/constants";
 import {
 	getProductBookSections,
 	getProductDetailBySlug,
@@ -12,7 +11,6 @@ import { getProductStaticParams } from "@/lib/wix/static-params";
 export const revalidate = 86_400;
 
 export async function generateStaticParams() {
-	if (!isWixCatalogEnabled()) return [];
 	return getProductStaticParams();
 }
 
@@ -21,8 +19,6 @@ export async function generateMetadata({
 }: {
 	params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-	if (!isWixCatalogEnabled()) return {};
-
 	const { id } = await params;
 	const detail = await getProductDetailBySlug(id);
 
@@ -67,10 +63,6 @@ export default async function ProductDetailPage({
 	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
-
-	if (!isWixCatalogEnabled()) {
-		notFound();
-	}
 
 	const detail = await getProductDetailBySlug(id);
 	if (!detail) {
