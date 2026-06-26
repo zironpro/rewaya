@@ -135,7 +135,7 @@ export async function handleWixLogin(request: Request) {
 		const oauthData = client.auth.generateOAuthData(redirectUri, originalUri);
 		const { authUrl } = await client.auth.getAuthUrl(oauthData);
 
-		const response = NextResponse.json({ authUrl });
+		const response = NextResponse.json({ authUrl, oauthData });
 		response.cookies.set(WIX_OAUTH_COOKIE, JSON.stringify(oauthData), {
 			httpOnly: true,
 			sameSite: "lax",
