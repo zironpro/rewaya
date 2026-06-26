@@ -4,8 +4,6 @@ import { memberPrivacySettings, members } from "@wix/members";
 import { createClient, OAuthStrategy, type Tokens } from "@wix/sdk";
 import { catalogVersioning, products, productsV3 } from "@wix/stores";
 
-import { WIX_SITE_ID } from "./constants";
-
 export type WixBrowserClient = ReturnType<typeof createBrowserClient>;
 
 /**
@@ -32,6 +30,5 @@ export function createBrowserClient(initialTokens?: Tokens | null) {
 			clientId,
 			...(initialTokens ? { tokens: initialTokens } : {}),
 		}),
-		headers: { "wix-site-id": WIX_SITE_ID },
 	});
 }

@@ -270,7 +270,8 @@ export function AuthProvider({
 		if (!client) return;
 		setIsPending(true);
 		try {
-			const { logoutUrl } = await client.auth.logout(window.location.href);
+			const returnUrl = `${window.location.origin}/`;
+			const { logoutUrl } = await client.auth.logout(returnUrl);
 			clearSessionCookie();
 			setMember(null);
 			setNeedsVerification(false);

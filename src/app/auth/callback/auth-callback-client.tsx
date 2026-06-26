@@ -18,7 +18,7 @@ export function AuthCallbackClient({
 }) {
 	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const [redirectTo, setRedirectTo] = useState("/profile");
+	const [redirectTo, setRedirectTo] = useState("/");
 
 	useEffect(() => {
 		async function verifyLogin() {
@@ -52,7 +52,7 @@ export function AuthCallbackClient({
 				}
 			}
 
-			setRedirectTo(oauthData.originalUri || "/profile");
+			setRedirectTo(oauthData.originalUri || "/");
 
 			const parsed = client.auth.parseFromUrl();
 			if (parsed.error) {
@@ -72,7 +72,7 @@ export function AuthCallbackClient({
 				);
 				client.auth.setTokens(tokens);
 				setTokensCookie(tokens);
-				window.location.href = oauthData.originalUri || "/profile";
+				window.location.href = oauthData.originalUri || "/";
 			} catch (e) {
 				setErrorMessage(
 					e instanceof Error ? e.message : "Could not complete sign-in."

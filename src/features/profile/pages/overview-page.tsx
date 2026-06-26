@@ -38,11 +38,10 @@ export const OverviewPage = () => {
 			} else {
 				setOrders([]);
 			}
-			await refreshMember();
 		} finally {
 			setLoading(false);
 		}
-	}, [wixClient, member, refreshMember]);
+	}, [wixClient, member]);
 
 	useEffect(() => {
 		load();

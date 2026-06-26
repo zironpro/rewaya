@@ -1,16 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
-import { VerificationForm } from "@/features/auth/verification-form";
 import { useWixAuth } from "@/lib/wix/provider";
 
+export const LoginView = () => {
+	const router = useRouter();
+	const returnUrl = "/";
+
+	const { isReady, isLoggedIn, startWixLogin } = useWixAuth();
+
+	useEffect(() => {
+		if (!isReady) return;
+		if (isLoggedIn) {
+			router.replace(returnUrl);
+		} else {
+			startWixLogin(returnUrl);
+		}
+	}, [isReady, isLoggedIn, returnUrl, router, startWixLogin]);
+
+	return (
+		<main className="flex min-h-svh grow items-center justify-center px-4">
+			<p className="font-bold text-secondary text-sm">
+				Redirecting to sign in…
+			</p>
+		</main>
+	);
+};
+
+/*
 export const LoginView = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
@@ -215,3 +235,4 @@ export const LoginView = () => {
 		</main>
 	);
 };
+*/

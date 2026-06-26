@@ -1,3 +1,4 @@
+import { members } from "@wix/members";
 import type { StateMachine, Tokens } from "@wix/sdk";
 
 import type { WixBrowserClient } from "./browser-client";
@@ -25,6 +26,10 @@ export type WixMember = {
 		phones?: Array<{
 			phone?: string;
 			formattedPhone?: string;
+			primary?: boolean;
+		}>;
+		emails?: Array<{
+			email?: string;
 			primary?: boolean;
 		}>;
 		addresses?: Array<{
@@ -151,10 +156,19 @@ export async function fetchCurrentMember(
 	if (!client.auth.loggedIn()) return null;
 
 	try {
-		const { member } = await client.members.getCurrentMember();
+		const { member } = await client.members.getCurrentMember({
+			fieldsets: [members.Set.FULL],
+		});
 		return (member as WixMember | undefined) ?? null;
-	} catch {
-		return null;
+	} catch (e) {
+		console.error("getCurrentMember with FULL fieldset failed:", e);
+		try {
+			const { member } = await client.members.getCurrentMember();
+			return (member as WixMember | undefined) ?? null;
+		} catch (err) {
+			console.error("getCurrentMember also failed:", err);
+			return null;
+		}
 	}
 }
 
@@ -176,7 +190,12 @@ export function memberDisplayName(member: WixMember | null): string {
 }
 
 export function memberEmail(member: WixMember | null): string {
-	return member?.loginEmail ?? "";
+	return (
+		member?.loginEmail ||
+		(member as WixMember & { email?: string })?.email ||
+		member?.contact?.emails?.[0]?.email ||
+		""
+	);
 }
 
 export function memberAvatar(member: WixMember | null): string {

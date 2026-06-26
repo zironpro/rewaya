@@ -1,16 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
-import { VerificationForm } from "@/features/auth/verification-form";
 import { useWixAuth } from "@/lib/wix/provider";
 
+export const SignupView = () => {
+	const router = useRouter();
+	const { isReady, isLoggedIn, startWixLogin } = useWixAuth();
+
+	useEffect(() => {
+		if (!isReady) return;
+		if (isLoggedIn) {
+			router.replace("/");
+		} else {
+			startWixLogin("/");
+		}
+	}, [isReady, isLoggedIn, router, startWixLogin]);
+
+	return (
+		<main className="flex min-h-svh grow items-center justify-center px-4">
+			<p className="font-bold text-secondary text-sm">
+				Redirecting to sign in…
+			</p>
+		</main>
+	);
+};
+
+/*
 export const SignupView = () => {
 	const router = useRouter();
 	const {
@@ -169,3 +187,4 @@ export const SignupView = () => {
 		</main>
 	);
 };
+*/
