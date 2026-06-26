@@ -8,7 +8,6 @@ import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import { LanguageIcon } from "@/assets/icons/language";
 import { Logo } from "@/assets/logo";
 
 import { useCartCount } from "@/hooks/use-cart-count";
@@ -89,10 +88,10 @@ export function Navbar({
 
 						{showActions && !(showSearch && isMobileSearchOpen) && (
 							<>
-								<Button className="hidden md:inline-flex" variant="ghost">
+								{/* <Button className="hidden md:inline-flex" variant="ghost">
 									<LanguageIcon />
 									<span className="text-base">العربية</span>
-								</Button>
+								</Button> */}
 
 								<Button
 									className="hidden md:inline-flex"

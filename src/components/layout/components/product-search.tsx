@@ -54,7 +54,7 @@ export function ProductSearch({
 }: ProductSearchProps) {
 	const router = useRouter();
 	const listboxId = useId();
-	const rootRef = useRef<HTMLDivElement>(null);
+	const rootRef = useRef<HTMLFormElement>(null);
 
 	const [query, setQuery] = useState(defaultQuery);
 	const [results, setResults] = useState<SearchSuggestion[]>([]);
@@ -156,7 +156,14 @@ export function ProductSearch({
 	};
 
 	return (
-		<div className={cn("relative w-full", className)} ref={rootRef}>
+		<form
+			className={cn("relative w-full", className)}
+			onSubmit={(e) => {
+				e.preventDefault();
+				navigateToShop();
+			}}
+			ref={rootRef}
+		>
 			<InputGroup>
 				<InputGroupInput
 					aria-activedescendant={
@@ -187,7 +194,9 @@ export function ProductSearch({
 					{isLoading ? (
 						<Spinner aria-hidden className="text-muted-foreground" />
 					) : (
-						<SearchIcon aria-hidden className="text-muted-foreground" />
+						<button className="flex items-center justify-center" type="submit">
+							<SearchIcon aria-hidden className="text-muted-foreground" />
+						</button>
 					)}
 				</InputGroupAddon>
 			</InputGroup>
@@ -281,6 +290,6 @@ export function ProductSearch({
 					) : null}
 				</ul>
 			)}
-		</div>
+		</form>
 	);
 }
