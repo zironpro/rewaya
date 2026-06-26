@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Eye, Heart, Plus } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import {
 
 import type { Bundle } from "@/domain/catalog";
 import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
+import { WishlistToggleButton } from "@/features/wishlist/components/wishlist-toggle-button";
 
 export function BundleCard({
 	id,
@@ -30,6 +31,8 @@ export function BundleCard({
 	checkoutCatalogItemId,
 	checkoutCatalogAppId,
 	defaultVariant,
+	bundleProductId,
+	storeProductIds,
 }: Bundle) {
 	return (
 		<div className="group relative">
@@ -45,13 +48,14 @@ export function BundleCard({
 				/>
 
 				<div className="absolute top-4 right-4 z-10 flex flex-col gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-					<Button
-						className="size-9 rounded-full bg-white/80 backdrop-blur-sm"
-						size="icon"
-						variant="ghost"
-					>
-						<Heart size={16} strokeWidth={1.5} />
-					</Button>
+					{bundleProductId || storeProductIds[0] ? (
+						<WishlistToggleButton
+							className="size-9 rounded-full bg-white/80 backdrop-blur-sm"
+							iconClassName="text-stone-900"
+							productId={bundleProductId || storeProductIds[0]!}
+							size="sm"
+						/>
+					) : null}
 
 					<Dialog>
 						<DialogTrigger
@@ -67,6 +71,7 @@ export function BundleCard({
 						</DialogTrigger>
 						<BundleQuickViewDialog
 							books={books}
+							bundleProductId={bundleProductId}
 							checkoutCatalogAppId={checkoutCatalogAppId}
 							checkoutCatalogItemId={checkoutCatalogItemId}
 							coverImage={coverImage}
@@ -74,6 +79,7 @@ export function BundleCard({
 							id={id}
 							originalPrice={originalPrice}
 							price={price}
+							storeProductIds={storeProductIds}
 							title={title}
 						/>
 					</Dialog>
@@ -130,6 +136,8 @@ type BundleQuickViewDialogProps = Pick<
 	| "checkoutCatalogItemId"
 	| "checkoutCatalogAppId"
 	| "defaultVariant"
+	| "bundleProductId"
+	| "storeProductIds"
 >;
 
 function BundleQuickViewDialog({
@@ -141,6 +149,8 @@ function BundleQuickViewDialog({
 	coverImage,
 	checkoutCatalogItemId,
 	checkoutCatalogAppId,
+	bundleProductId,
+	storeProductIds,
 }: BundleQuickViewDialogProps) {
 	return (
 		<DialogContent className="max-w-3xl">
@@ -188,9 +198,14 @@ function BundleQuickViewDialog({
 							>
 								Add to Bag
 							</AddBundleToCartButton>
-							<Button size="icon-lg" variant="outline">
-								<Heart size={20} strokeWidth={1.5} />
-							</Button>
+							{bundleProductId || storeProductIds[0] ? (
+								<WishlistToggleButton
+									className="size-10 sm:size-10"
+									iconClassName="text-stone-900"
+									productId={bundleProductId || storeProductIds[0]!}
+									size="md"
+								/>
+							) : null}
 						</div>
 					</div>
 				</div>
