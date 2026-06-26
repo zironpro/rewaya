@@ -136,12 +136,12 @@ export async function handleWixLogin(request: Request) {
 		const { authUrl } = await client.auth.getAuthUrl(oauthData);
 
 		const response = NextResponse.json({ authUrl });
-		const cookieStore = await cookies();
-		cookieStore.set(WIX_OAUTH_COOKIE, JSON.stringify(oauthData), {
+		response.cookies.set(WIX_OAUTH_COOKIE, JSON.stringify(oauthData), {
 			httpOnly: true,
 			sameSite: "lax",
 			path: "/",
 			maxAge: OAUTH_COOKIE_MAX_AGE,
+			secure: process.env.NODE_ENV === "production",
 		});
 		return response;
 	} catch (error) {
@@ -160,9 +160,8 @@ export async function handleWixLogout(_request: Request) {
 		const { logoutUrl } = await client.auth.logout(postFlowUrl);
 
 		const response = NextResponse.json({ logoutUrl });
-		const cookieStore = await cookies();
-		cookieStore.delete(WIX_SESSION_COOKIE);
-		cookieStore.delete(WIX_OAUTH_COOKIE);
+		response.cookies.delete(WIX_SESSION_COOKIE);
+		response.cookies.delete(WIX_OAUTH_COOKIE);
 		return response;
 	} catch (error) {
 		const cookieStore = await cookies();
@@ -286,11 +285,11 @@ export async function handleWixApiRoute(
 				await sessionTokensFromRequest()
 			);
 			const response = NextResponse.json({ ok: true });
-			const cookieStore = await cookies();
-			cookieStore.set(WIX_SESSION_COOKIE, serializeSessionTokens(tokens), {
+			response.cookies.set(WIX_SESSION_COOKIE, serializeSessionTokens(tokens), {
 				path: "/",
 				maxAge: SESSION_MAX_AGE,
 				sameSite: "lax",
+				secure: process.env.NODE_ENV === "production",
 			});
 			return response;
 		} catch (error) {

@@ -72,7 +72,7 @@ export function AuthCallbackClient({
 				);
 				client.auth.setTokens(tokens);
 				setTokensCookie(tokens);
-				router.replace(oauthData.originalUri || "/profile");
+				window.location.href = oauthData.originalUri || "/profile";
 			} catch (e) {
 				setErrorMessage(
 					e instanceof Error ? e.message : "Could not complete sign-in."
