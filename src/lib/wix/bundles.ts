@@ -1,4 +1,4 @@
-import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 import { type BundlePresentation, bundleToPresentation } from "@/domain/bundle";
 import type { Book, Faq } from "@/lib/catalog/types";
@@ -620,8 +620,10 @@ export async function getBundles(): Promise<Bundle[]> {
 	}
 }
 
-export const getCachedBundles = cache(getBundles);
-
+export const getCachedBundles = unstable_cache(getBundles, ["wix-bundles-v1"], {
+	revalidate: 3600,
+	tags: ["bundles"],
+});
 export async function getBundleBySlug(slug: string): Promise<Bundle | null> {
 	const all = await getCachedBundles();
 	return all.find((b) => b.id === slug) ?? null;

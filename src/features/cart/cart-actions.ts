@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { messageForAddBundleError } from "@/features/cart/cart-errors";
@@ -82,8 +81,7 @@ export async function addItem(
 				catalogAppId: item.catalogAppId,
 			},
 		]);
-		revalidatePath("/", "layout");
-		return { error: null, cart };
+		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
 		console.error("[cart] addItem failed:", e);
 		return { error: "Could not add to cart. Please try again." };
@@ -165,7 +163,6 @@ export async function addBundle(
 					"Bundle was not added to the cart (0 line items). Set bundleProductId on the BookBundles row in Wix.",
 			};
 		}
-		revalidatePath("/", "layout");
 		return { error: null, cart: enriched };
 	} catch (e) {
 		console.error("[bundle-cart] addBundle failed:", e);
@@ -182,7 +179,6 @@ export async function updateItemQuantity(
 			payload.quantity < 1
 				? await removeFromCartServer([payload.lineId])
 				: await updateCartLineQuantityServer(payload.lineId, payload.quantity);
-		revalidatePath("/", "layout");
 		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
 		console.error("[cart] update quantity failed:", e);
@@ -196,7 +192,6 @@ export async function removeItem(
 ): Promise<CartActionResult> {
 	try {
 		const cart = await removeFromCartServer([lineId]);
-		revalidatePath("/", "layout");
 		return { error: null, cart: await enrichCartResponse(cart) };
 	} catch (e) {
 		console.error("[cart] remove failed:", e);
@@ -351,8 +346,6 @@ export async function startBundleCheckout(
 				debug: isCheckoutDebugEnabled() ? debug : undefined,
 			};
 		}
-
-		revalidatePath("/", "layout");
 
 		const checkoutUrl = await createCheckoutUrlServer({ origin });
 		if (!checkoutUrl) {

@@ -45,78 +45,77 @@ export function AddBundleToCartButton({
 
 	const canAdd = Boolean(checkoutCatalogItemId);
 
-	const handleAddToCart = async () => {
+	const handleAddToCart = () => {
 		if (!canAdd) return;
 
-		setStatus("loading");
+		setStatus("added");
 		setErrorMessage(null);
+		onAdded?.();
+		setTimeout(() => setStatus("idle"), 2000);
 
-		try {
-			const { error, cart } = await addBundle(null, {
-				catalogItemId: checkoutCatalogItemId,
-				catalogAppId: checkoutCatalogAppId,
-				bundleSlug,
-				quantity,
-			});
+		addBundle(null, {
+			catalogItemId: checkoutCatalogItemId,
+			catalogAppId: checkoutCatalogAppId,
+			bundleSlug,
+			quantity,
+		})
+			.then(({ error, cart }) => {
+				if (error) {
+					setErrorMessage(error);
+					setStatus("error");
+					setTimeout(() => {
+						setStatus("idle");
+						setErrorMessage(null);
+					}, 4000);
+					return;
+				}
+				const lineCount =
+					(cart as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
 
-			if (error) {
-				setErrorMessage(error);
-				setStatus("error");
-				setTimeout(() => {
-					setStatus("idle");
-					setErrorMessage(null);
-				}, 4000);
-				return;
-			}
-			const lineCount =
-				(cart as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
+				if (lineCount === 0) {
+					setErrorMessage(
+						"Bundle was not added (cart has 0 items). Set bundleProductId in Wix BookBundles."
+					);
+					setStatus("error");
+					setTimeout(() => {
+						setStatus("idle");
+						setErrorMessage(null);
+					}, 4000);
+					return;
+				}
 
-			if (lineCount === 0) {
-				setErrorMessage(
-					"Bundle was not added (cart has 0 items). Set bundleProductId in Wix BookBundles."
-				);
-				setStatus("error");
-				setTimeout(() => {
-					setStatus("idle");
-					setErrorMessage(null);
-				}, 4000);
-				return;
-			}
-
-			if (cart) {
-				syncCartFromWixResponse(cart);
-			}
-			dispatchCartUpdated(cart);
-			// Track Meta AddToCart for bundle
-			if (typeof window !== "undefined") {
-				trackMetaEvent("AddToCart", {
-					event_source_url: window.location.href,
-					custom_data: {
-						content_ids: [checkoutCatalogItemId],
-						content_name: bundleSlug ?? "bundle",
-						content_type: "product_group",
-						currency: "AED",
-					},
+				if (cart) {
+					syncCartFromWixResponse(cart);
+				}
+				dispatchCartUpdated(cart);
+				// Track Meta AddToCart for bundle
+				if (typeof window !== "undefined") {
+					trackMetaEvent("AddToCart", {
+						event_source_url: window.location.href,
+						custom_data: {
+							content_ids: [checkoutCatalogItemId],
+							content_name: bundleSlug ?? "bundle",
+							content_type: "product_group",
+							currency: "AED",
+						},
+					});
+				}
+				track("add_to_cart", {
+					product_id: checkoutCatalogItemId,
+					product_name: bundleSlug ?? "bundle",
+					quantity,
+					is_bundle: true,
 				});
-			}
-			track("add_to_cart", {
-				product_id: checkoutCatalogItemId,
-				product_name: bundleSlug ?? "bundle",
-				quantity,
-				is_bundle: true,
+			})
+			.catch(() => {
+				setErrorMessage("Could not add bundle to cart. Please try again.");
+				setStatus("error");
+				dispatchCartUpdated();
+				setTimeout(() => {
+					setStatus("idle");
+					setErrorMessage(null);
+				}, 4000);
 			});
-			setStatus("added");
-			onAdded?.();
-			setTimeout(() => setStatus("idle"), 2000);
-		} catch {
-			setErrorMessage("Could not add bundle to cart. Please try again.");
-			setStatus("error");
-			dispatchCartUpdated();
-			setTimeout(() => {
-				setStatus("idle");
-				setErrorMessage(null);
-			}, 4000);
-		}
 	};
 
 	const label =

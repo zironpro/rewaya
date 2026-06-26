@@ -73,7 +73,14 @@ export function CartView() {
 
 	useEffect(() => {
 		loadCart();
-		const onUpdate = () => loadCart();
+		const onUpdate = (event: Event) => {
+			const detail = (event as CustomEvent<{ cart?: unknown }>).detail;
+			if (detail?.cart) {
+				applyCart(detail.cart);
+			} else {
+				loadCart();
+			}
+		};
 		window.addEventListener(CART_UPDATED_EVENT, onUpdate);
 		return () => window.removeEventListener(CART_UPDATED_EVENT, onUpdate);
 	}, [loadCart]);

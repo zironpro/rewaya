@@ -57,55 +57,54 @@ export function AddToCartButton({
 	const canAdd = Boolean(productId) && (isCmsCatalog || inStock);
 	const outOfStock = Boolean(productId) && !isCmsCatalog && !inStock;
 
-	const handleAddToCart = async () => {
+	const handleAddToCart = () => {
 		if (!productId || !canAdd) return;
 
-		setStatus("loading");
+		setStatus("added");
+		onAdded?.();
+		setTimeout(() => setStatus("idle"), 2000);
 
-		try {
-			const { error, cart } = await addItem(null, {
-				productId,
-				variant: productVariant,
-				quantity,
-				catalogAppId,
-				availableForSale,
-			});
-			if (error) {
-				setStatus("error");
-				setTimeout(() => setStatus("idle"), 2500);
-				return;
-			}
-			if (cart) {
-				syncCartFromWixResponse(cart);
-			}
-			dispatchCartUpdated(cart);
-			// Track Meta AddToCart event
-			if (typeof window !== "undefined") {
-				trackMetaEvent("AddToCart", {
-					event_source_url: window.location.href,
-					custom_data: {
-						content_ids: [productId],
-						content_name: productName,
-						content_type: "product",
-						currency: "AED",
-					},
+		addItem(null, {
+			productId,
+			variant: productVariant,
+			quantity,
+			catalogAppId,
+			availableForSale,
+		})
+			.then(({ error, cart }) => {
+				if (error) {
+					setStatus("error");
+					setTimeout(() => setStatus("idle"), 2500);
+					return;
+				}
+				if (cart) {
+					syncCartFromWixResponse(cart);
+				}
+				dispatchCartUpdated(cart);
+				// Track Meta AddToCart event
+				if (typeof window !== "undefined") {
+					trackMetaEvent("AddToCart", {
+						event_source_url: window.location.href,
+						custom_data: {
+							content_ids: [productId],
+							content_name: productName,
+							content_type: "product",
+							currency: "AED",
+						},
+					});
+				}
+				track(trackEventName, {
+					product_id: productId,
+					product_name: productName,
+					quantity,
 				});
-			}
-			track(trackEventName, {
-				product_id: productId,
-				product_name: productName,
-				quantity,
+			})
+			.catch((e) => {
+				console.error("[cart] add to cart failed:", e);
+				setStatus("error");
+				dispatchCartUpdated();
+				setTimeout(() => setStatus("idle"), 2500);
 			});
-
-			setStatus("added");
-			onAdded?.();
-			setTimeout(() => setStatus("idle"), 2000);
-		} catch (e) {
-			console.error("[cart] add to cart failed:", e);
-			setStatus("error");
-			dispatchCartUpdated();
-			setTimeout(() => setStatus("idle"), 2500);
-		}
 	};
 
 	const label =
