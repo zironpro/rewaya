@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,69 +19,66 @@ export function AuthCallbackClient({
 	const router = useRouter();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [redirectTo, setRedirectTo] = useState("/");
+	const authPromise = useRef<Promise<void> | null>(null);
 
 	useEffect(() => {
 		async function verifyLogin() {
 			const client = createBrowserClient(getTokensFromCookie());
 			if (!client) {
-				setErrorMessage(
-					"Wix is not configured. Set NEXT_PUBLIC_WIX_CLIENT_ID in .env.local."
+				throw new Error("Wix is not configured. Set NEXT_PUBLIC_WIX_CLIENT_ID in .env.local.");
+			}
+
+			const parsed = client.auth.parseFromUrl();
+			if (parsed.error) {
+				throw new Error(
+					parsed.errorDescription ??
+						parsed.error ??
+						"Authentication was cancelled."
 				);
-				return;
 			}
 
 			let oauthData = oauthDataFromServer;
+			if (oauthData && parsed.state && oauthData.state !== parsed.state) {
+				oauthData = null; // state mismatch, try fallback
+			}
+
 			if (!oauthData) {
 				const rawOauth = sessionStorage.getItem(WIX_OAUTH_DATA_KEY);
 				sessionStorage.removeItem(WIX_OAUTH_DATA_KEY);
 				if (!rawOauth) {
-					setErrorMessage(
-						"Missing OAuth session data. Please try logging in again."
-					);
 					setRedirectTo("/login");
-					return;
+					throw new Error("Missing OAuth session data. Please try logging in again.");
 				}
 				try {
 					oauthData = JSON.parse(rawOauth) as OauthData;
 				} catch {
-					setErrorMessage(
-						"Invalid OAuth session data. Please try logging in again."
-					);
 					setRedirectTo("/login");
-					return;
+					throw new Error("Invalid OAuth session data. Please try logging in again.");
 				}
 			}
 
 			setRedirectTo(oauthData.originalUri || "/");
 
-			const parsed = client.auth.parseFromUrl();
-			if (parsed.error) {
-				setErrorMessage(
-					parsed.errorDescription ??
-						parsed.error ??
-						"Authentication was cancelled."
-				);
-				return;
-			}
-
-			try {
-				const tokens = await client.auth.getMemberTokens(
-					parsed.code,
-					parsed.state,
-					oauthData
-				);
-				client.auth.setTokens(tokens);
-				setTokensCookie(tokens);
-				window.location.href = oauthData.originalUri || "/";
-			} catch (e) {
-				setErrorMessage(
-					e instanceof Error ? e.message : "Could not complete sign-in."
-				);
-			}
+			const tokens = await client.auth.getMemberTokens(
+				parsed.code,
+				parsed.state,
+				oauthData
+			);
+			client.auth.setTokens(tokens);
+			setTokensCookie(tokens);
+			window.location.href = oauthData.originalUri || "/";
 		}
 
-		verifyLogin();
-	}, [router, oauthDataFromServer]);
+		if (!authPromise.current) {
+			authPromise.current = verifyLogin();
+		}
+
+		authPromise.current.catch((e) => {
+			setErrorMessage(
+				e instanceof Error ? e.message : "Could not complete sign-in."
+			);
+		});
+	}, [oauthDataFromServer]);
 
 	return (
 		<main className="flex min-h-svh items-center justify-center px-4">

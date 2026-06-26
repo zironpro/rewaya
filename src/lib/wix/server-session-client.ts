@@ -16,6 +16,7 @@ import {
 import { WIX_SITE_ID } from "./constants";
 import {
 	getWixOAuthClientId,
+	hasUsableSessionTokens,
 	parseSessionTokens,
 	SESSION_MAX_AGE,
 	serializeSessionTokens,
@@ -82,8 +83,11 @@ export async function getWixServerSessionClient() {
 	const cookieStore = await cookies();
 	const parsed = parseSessionTokens(cookieStore.get(WIX_SESSION_COOKIE)?.value);
 
-	const tokens = await resolveSessionTokens(clientId, parsed);
-	await persistSessionTokens(tokens);
+	let tokens = parsed;
+	if (!tokens || !hasUsableSessionTokens(tokens)) {
+		tokens = await resolveSessionTokens(clientId, parsed);
+		await persistSessionTokens(tokens);
+	}
 
 	const client = createSessionClient(clientId, tokens);
 	client.auth.setTokens(tokens);
