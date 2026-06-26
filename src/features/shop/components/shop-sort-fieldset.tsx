@@ -36,7 +36,7 @@ export const ShopSortFieldset = ({
 			<Select
 				items={SORT_OPTIONS}
 				onValueChange={(val) => onChange?.(val ?? null)}
-				value={value ?? undefined}
+				value={value || null}
 			>
 				<SelectTrigger className="w-44">
 					<SelectValue placeholder={SORT_OPTIONS[0].label} />

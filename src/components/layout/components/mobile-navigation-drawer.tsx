@@ -328,7 +328,7 @@ export function MobileNavigationDrawer({
 														<li key={item}>
 															<Link
 																className="flex items-center gap-2 rounded-md py-2.5 ps-1 font-medium text-secondary text-sm transition-colors hover:text-primary"
-																href="/shop"
+																href={`/shop?category=${encodeURIComponent(item.toLowerCase().replace(/ /g, "-"))}`}
 																onClick={closeAll}
 															>
 																<span className="h-1 w-1 shrink-0 rounded-full bg-secondary/35" />

@@ -69,7 +69,7 @@ export const CategoriesMenu = () => {
 													<li key={item}>
 														<Link
 															className="group/item flex items-center gap-2 font-medium text-secondary transition-colors hover:text-primary"
-															href="/shop"
+															href={`/shop?category=${encodeURIComponent(item.toLowerCase().replace(/ /g, "-"))}`}
 														>
 															<div className="h-1 w-1 rounded-full bg-secondary/30 transition-colors group-hover/item:bg-primary" />
 															{item}

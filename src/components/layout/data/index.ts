@@ -39,22 +39,22 @@ export const CATEGORIES = [
 	},
 	{
 		name: "Today's Deals",
-		href: "/#deals",
+		href: "/shop?category=deals",
 		icon: Zap,
 	},
 	{
 		name: "Islamic",
-		href: "/#islamic",
+		href: "/shop?category=islamic",
 		icon: Moon,
 	},
 	{
 		name: "Fiction",
-		href: "/#fiction",
+		href: "/shop?category=fiction",
 		icon: Feather,
 	},
 	{
 		name: "Children",
-		href: "/#children",
+		href: "/shop?category=children",
 		icon: Baby,
 	},
 	{
@@ -64,7 +64,7 @@ export const CATEGORIES = [
 	},
 	{
 		name: "New Arrivals",
-		href: "/#new",
+		href: "/shop?category=new-arrivals",
 		icon: Sparkles,
 	},
 ];
