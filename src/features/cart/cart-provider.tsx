@@ -74,6 +74,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		return () => window.removeEventListener(CART_UPDATED_EVENT, onUpdate);
 	}, [applyCart]);
 
+	// Fetch fresh cart on mount to sync cross-device or cross-session state
+	useEffect(() => {
+		refresh();
+	}, [refresh]);
+
 	const count = useMemo(
 		() =>
 			snapshot?.lineItems?.reduce(

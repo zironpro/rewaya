@@ -32,7 +32,7 @@ export const PaymentTab = ({
 	return (
 		<div className="space-y-6">
 			{paymentMethods.length === 0 ? (
-				<Card className="rounded-[2rem] border-stone-100 shadow-soft">
+				<Card>
 					<CardContent className="flex flex-col items-center py-12 text-center md:py-16">
 						<CreditCard className="mb-4 text-stone-300" size={40} />
 						<p className="mb-2 font-bold text-secondary">No saved cards yet</p>
@@ -59,7 +59,7 @@ export const PaymentTab = ({
 				<div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
 					{paymentMethods.map((method) => (
 						<Card
-							className={`group relative overflow-hidden rounded-[2rem] border-stone-100 shadow-soft transition-all duration-300 hover:shadow-heavy ${
+							className={`group relative overflow-hidden transition-all duration-300 hover:shadow-md ${
 								method.isDefault ? "ring-2 ring-primary ring-offset-2" : ""
 							}`}
 							key={method.id}
@@ -116,7 +116,7 @@ export const PaymentTab = ({
 				</div>
 			)}
 
-			<div className="mt-8 flex items-start gap-4 rounded-3xl border border-stone-100 bg-stone-50 p-6">
+			<div className="mt-8 flex items-start gap-4 rounded-lg border border-stone-100 bg-stone-50 p-6">
 				<div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white shadow-soft">
 					<ShieldCheck className="text-primary" size={20} />
 				</div>

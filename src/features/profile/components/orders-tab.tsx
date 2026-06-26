@@ -32,7 +32,7 @@ function statusClass(status: string) {
 export const OrdersTab = ({ orders, loading = false }: OrdersTabProps) => {
 	if (loading) {
 		return (
-			<Card className="overflow-hidden rounded-[2rem] border-stone-100 shadow-soft">
+			<Card className="overflow-hidden">
 				<CardContent className="py-16 text-center text-sm text-stone-400">
 					Loading orders…
 				</CardContent>
@@ -42,7 +42,7 @@ export const OrdersTab = ({ orders, loading = false }: OrdersTabProps) => {
 
 	if (orders.length === 0) {
 		return (
-			<Card className="overflow-hidden rounded-[2rem] border-stone-100 shadow-soft">
+			<Card className="overflow-hidden">
 				<CardContent className="flex flex-col items-center py-16 text-center md:py-24">
 					<Package className="mb-4 text-stone-300" size={40} />
 					<p className="mb-2 font-bold text-secondary">No orders yet</p>
@@ -62,7 +62,7 @@ export const OrdersTab = ({ orders, loading = false }: OrdersTabProps) => {
 	}
 
 	return (
-		<Card className="overflow-hidden rounded-[2rem] border-stone-100 shadow-soft">
+		<Card className="overflow-hidden">
 			<CardHeader className="border-stone-100 border-b bg-stone-50/50 pb-6">
 				<CardTitle className="font-serif text-2xl">Order History</CardTitle>
 				<CardDescription>

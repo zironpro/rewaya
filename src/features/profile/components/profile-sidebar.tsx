@@ -43,7 +43,7 @@ export const ProfileSidebar = ({
 	return (
 		<aside className="w-full shrink-0 lg:w-80">
 			<div className="sticky top-28 space-y-6 lg:top-32 lg:space-y-8">
-				<div className="flex items-center gap-4 rounded-3xl border border-stone-100 bg-stone-50 p-5">
+				<div className="flex items-center gap-4 rounded-lg border border-stone-100 bg-stone-50 p-5">
 					<div className="relative size-16 overflow-hidden rounded-full border-2 border-white shadow-soft">
 						<Image
 							alt="User Avatar"
@@ -58,7 +58,7 @@ export const ProfileSidebar = ({
 					</div>
 				</div>
 
-				<nav className="scrollbar-none flex gap-2.5 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden">
+				<nav className="scrollbar-none flex items-center gap-2.5 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] lg:flex-col lg:items-stretch lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden">
 					{navItems.map((item) => {
 						const active = isNavActive(pathname, item.href);
 						return (
@@ -77,7 +77,7 @@ export const ProfileSidebar = ({
 							</Link>
 						);
 					})}
-					<div className="mt-2 border-stone-100 border-t pt-6 lg:mt-6">
+					<div className="ml-2 shrink-0 border-stone-100 border-l pl-6 lg:mt-6 lg:ml-0 lg:border-t lg:border-l-0 lg:pt-6 lg:pl-0">
 						<button
 							className="flex w-full shrink-0 items-center gap-3 rounded-2xl px-5 py-3.5 text-left text-red-500 transition-colors hover:bg-red-50 disabled:opacity-50 lg:px-6 lg:py-4"
 							disabled={isLoggingOut}

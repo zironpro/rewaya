@@ -92,7 +92,7 @@ export const SettingsTab = ({
 				<ProfileStatusBanner message={message.text} variant={message.variant} />
 			) : null}
 
-			<Card className="rounded-[2rem] border-stone-100 shadow-soft">
+			<Card>
 				<CardHeader>
 					<CardTitle className="font-serif text-2xl">Profile</CardTitle>
 					<CardDescription>Update your personal information</CardDescription>
@@ -150,7 +150,7 @@ export const SettingsTab = ({
 				</CardContent>
 			</Card>
 
-			<Card className="rounded-[2rem] border-stone-100 shadow-soft">
+			<Card>
 				<CardHeader>
 					<CardTitle className="font-serif text-2xl">Security</CardTitle>
 					<CardDescription>Password and account access</CardDescription>

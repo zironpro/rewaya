@@ -46,7 +46,7 @@ export const OverviewTab = ({
 	return (
 		<div className="space-y-6 lg:space-y-8">
 			<div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
-				<Card className="rounded-[2rem] border-stone-100 shadow-soft">
+				<Card>
 					<CardHeader className="flex flex-row items-center justify-between">
 						<div>
 							<CardTitle className="font-serif text-2xl">
@@ -102,7 +102,7 @@ export const OverviewTab = ({
 					</CardContent>
 				</Card>
 
-				<Card className="rounded-[2rem] border-stone-100 shadow-soft">
+				<Card>
 					<CardHeader>
 						<CardTitle className="font-serif text-2xl">
 							Recent Activity
@@ -136,7 +136,7 @@ export const OverviewTab = ({
 				</Card>
 			</div>
 
-			<Card className="overflow-hidden rounded-[2rem] border-stone-100 shadow-soft">
+			<Card className="overflow-hidden">
 				<CardHeader className="border-stone-100 border-b bg-stone-50/50 pb-6">
 					<div className="flex items-center justify-between gap-4">
 						<CardTitle className="font-serif text-2xl">Active Orders</CardTitle>

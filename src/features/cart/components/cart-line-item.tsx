@@ -140,11 +140,11 @@ export function CartLineItem({
 				) : (
 					<NumberField
 						className="w-28"
-						defaultValue={item.quantity}
 						max={maxQty}
 						onValueChange={(val) =>
 							lineId && onUpdateQuantity(lineId, val ?? 1)
 						}
+						value={item.quantity}
 					>
 						<NumberFieldGroup>
 							<NumberFieldDecrement />

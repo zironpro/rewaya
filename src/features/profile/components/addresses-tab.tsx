@@ -29,7 +29,7 @@ export const AddressesTab = ({
 
 	if (addresses.length === 0) {
 		return (
-			<Card className="rounded-[2rem] border-stone-100 shadow-soft">
+			<Card>
 				<CardContent className="flex flex-col items-center py-16 text-center md:py-24">
 					<MapPin className="mb-4 text-stone-300" size={40} />
 					<p className="mb-2 font-bold text-secondary">No saved addresses</p>
@@ -52,7 +52,7 @@ export const AddressesTab = ({
 		<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
 			{addresses.map((address) => (
 				<Card
-					className={`rounded-[2rem] border-stone-100 shadow-soft transition-all duration-300 hover:shadow-heavy ${
+					className={`transition-all duration-300 hover:shadow-md ${
 						address.isDefault ? "ring-2 ring-primary ring-offset-2" : ""
 					}`}
 					key={address.id}

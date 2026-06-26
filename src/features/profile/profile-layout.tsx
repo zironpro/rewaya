@@ -12,7 +12,7 @@ import { ProfileSidebar } from "@/features/profile/components/profile-sidebar";
 import { profileNavItems } from "@/features/profile/data/profile-data";
 import { useWixAuth } from "@/lib/wix/provider";
 
-const PROFILE_SHELL = "grow pt-20 pb-28 md:pb-16";
+const PROFILE_SHELL = "grow pt-8 pb-28 md:pb-16";
 
 function breadcrumbItems(pathname: string) {
 	if (pathname === "/profile") {
