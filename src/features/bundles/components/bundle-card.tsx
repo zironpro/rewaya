@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 import type { Bundle } from "@/domain/catalog";
+import { AddBundleToCartButton } from "@/features/bundles/components/add-bundle-to-cart-button";
 
 export function BundleCard({
 	id,
@@ -26,6 +27,9 @@ export function BundleCard({
 	coverImage,
 	tag,
 	books,
+	checkoutCatalogItemId,
+	checkoutCatalogAppId,
+	defaultVariant,
 }: Bundle) {
 	return (
 		<div className="group relative">
@@ -63,7 +67,11 @@ export function BundleCard({
 						</DialogTrigger>
 						<BundleQuickViewDialog
 							books={books}
+							checkoutCatalogAppId={checkoutCatalogAppId}
+							checkoutCatalogItemId={checkoutCatalogItemId}
 							coverImage={coverImage}
+							defaultVariant={defaultVariant}
+							id={id}
 							originalPrice={originalPrice}
 							price={price}
 							title={title}
@@ -72,12 +80,16 @@ export function BundleCard({
 				</div>
 
 				<div className="absolute right-0 bottom-0 left-0 z-10 translate-y-full bg-primary transition-transform duration-300 group-hover:translate-y-0">
-					<Button
-						className="w-full p-6 text-white hover:text-white hover:brightness-125"
+					<AddBundleToCartButton
+						bundleSlug={id}
+						checkoutCatalogAppId={checkoutCatalogAppId}
+						checkoutCatalogItemId={checkoutCatalogItemId ?? ""}
+						className="h-auto w-full rounded-none p-3 text-white hover:text-white md:p-4"
+						disabled={!checkoutCatalogItemId}
 						variant="ghost"
 					>
 						<Plus className="mr-2" size={14} /> Add to Bag
-					</Button>
+					</AddBundleToCartButton>
 				</div>
 
 				<div className="absolute top-4 left-4 z-10 flex flex-wrap items-start gap-3">
@@ -102,9 +114,6 @@ export function BundleCard({
 						</span>
 					</div>
 				</div>
-				{/* <p className="flex items-center gap-2 text-sm text-stone-500">
-					<Package size={11} /> {count} Volumes Collection
-				</p> */}
 			</div>
 		</div>
 	);
@@ -112,15 +121,26 @@ export function BundleCard({
 
 type BundleQuickViewDialogProps = Pick<
 	Bundle,
-	"title" | "books" | "price" | "originalPrice" | "coverImage"
+	| "id"
+	| "title"
+	| "books"
+	| "price"
+	| "originalPrice"
+	| "coverImage"
+	| "checkoutCatalogItemId"
+	| "checkoutCatalogAppId"
+	| "defaultVariant"
 >;
 
 function BundleQuickViewDialog({
+	id,
 	title,
 	books,
 	price,
 	originalPrice,
 	coverImage,
+	checkoutCatalogItemId,
+	checkoutCatalogAppId,
 }: BundleQuickViewDialogProps) {
 	return (
 		<DialogContent className="max-w-3xl">
@@ -158,7 +178,16 @@ function BundleQuickViewDialog({
 							provide a comprehensive journey through {title}.
 						</p>
 						<div className="flex gap-4">
-							<Button className="flex-1">Add to Bag</Button>
+							<AddBundleToCartButton
+								bundleSlug={id}
+								checkoutCatalogAppId={checkoutCatalogAppId}
+								checkoutCatalogItemId={checkoutCatalogItemId ?? ""}
+								className="flex-1"
+								disabled={!checkoutCatalogItemId}
+								variant="default"
+							>
+								Add to Bag
+							</AddBundleToCartButton>
 							<Button size="icon-lg" variant="outline">
 								<Heart size={20} strokeWidth={1.5} />
 							</Button>
