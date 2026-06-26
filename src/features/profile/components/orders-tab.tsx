@@ -88,15 +88,32 @@ export const OrdersTab = ({ orders, loading = false }: OrdersTabProps) => {
 								</div>
 							</div>
 							<div className="flex items-center justify-between gap-8 md:justify-end">
-								<div className="text-right">
-									<p className="font-bold text-lg text-secondary">
-										{order.total}
-									</p>
-									<span
-										className={`rounded-full px-2 py-1 font-bold text-[10px] uppercase tracking-wider ${statusClass(order.status)}`}
-									>
-										{order.status}
-									</span>
+								<div className="flex flex-col items-end gap-2 text-right">
+									<div>
+										<p className="font-bold text-lg text-secondary">
+											{order.total}
+										</p>
+										<span
+											className={`rounded-full px-2 py-1 font-bold text-[10px] uppercase tracking-wider ${statusClass(order.status)}`}
+										>
+											{order.status}
+										</span>
+									</div>
+									{order.trackingUrl && (
+										<Button
+											render={
+												<a
+													href={order.trackingUrl}
+													rel="noreferrer"
+													target="_blank"
+												/>
+											}
+											size="xs"
+											variant="outline"
+										>
+											Track Order
+										</Button>
+									)}
 								</div>
 							</div>
 						</div>

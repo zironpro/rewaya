@@ -20,6 +20,8 @@ export type ProfileOrder = {
 	status: string;
 	total: string;
 	items: number;
+	trackingUrl?: string;
+	trackingNumber?: string;
 };
 
 export type ProfileAddress = {
@@ -61,6 +63,22 @@ type WixOrderRaw = {
 	status?: string;
 	fulfillmentStatus?: string;
 	lineItems?: unknown[];
+	shippingInfo?: {
+		deliveries?: Array<{
+			trackingInfo?: {
+				trackingLink?: string;
+				trackingNumber?: string;
+				shippingProvider?: string;
+			};
+		}>;
+	};
+	fulfillments?: Array<{
+		trackingInfo?: {
+			trackingLink?: string;
+			trackingNumber?: string;
+			shippingProvider?: string;
+		};
+	}>;
 	priceSummary?: {
 		total?: { formattedAmount?: string; amount?: string };
 	};
@@ -108,6 +126,11 @@ function mapOrder(order: WixOrderRaw): ProfileOrder {
 			? `$${order.priceSummary.total.amount}`
 			: "—");
 
+	const delivery =
+		order.shippingInfo?.deliveries?.[0] ?? order.fulfillments?.[0];
+	const trackingLink = delivery?.trackingInfo?.trackingLink;
+	const trackingNumber = delivery?.trackingInfo?.trackingNumber;
+
 	return {
 		id: displayNumber,
 		orderId,
@@ -115,6 +138,8 @@ function mapOrder(order: WixOrderRaw): ProfileOrder {
 		status: formatOrderStatus(order),
 		total,
 		items: Array.isArray(order.lineItems) ? order.lineItems.length : 0,
+		trackingUrl: trackingLink,
+		trackingNumber,
 	};
 }
 
