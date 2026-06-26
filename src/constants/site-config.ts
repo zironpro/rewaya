@@ -13,7 +13,8 @@ export const SOCIAL_LINKS = [
 	},
 ] as const;
 
-export const BASE_URL =
-	(process.env.NEXT_PUBLIC_SITE_URL ?? process.env.NODE_ENV === "development")
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL
+	? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
+	: process.env.NODE_ENV === "development"
 		? "http://localhost:3000"
 		: "https://rewayabooks.com";
