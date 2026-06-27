@@ -35,9 +35,9 @@ import {
 } from "@/components/ui/drawer";
 
 import { cn } from "@/lib/utils";
+import type { StoreCategory } from "@/lib/wix/categories";
 import { useWixAuth } from "@/lib/wix/provider";
 
-import type { StoreCategory } from "@/lib/wix/categories";
 import { CATEGORIES, MEGA_MENU_DATA } from "../data";
 
 type MobileNavigationDrawerProps = {

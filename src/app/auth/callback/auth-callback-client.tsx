@@ -25,7 +25,9 @@ export function AuthCallbackClient({
 		async function verifyLogin() {
 			const client = createBrowserClient(getTokensFromCookie());
 			if (!client) {
-				throw new Error("Wix is not configured. Set NEXT_PUBLIC_WIX_CLIENT_ID in .env.local.");
+				throw new Error(
+					"Wix is not configured. Set NEXT_PUBLIC_WIX_CLIENT_ID in .env.local."
+				);
 			}
 
 			const parsed = client.auth.parseFromUrl();
@@ -47,13 +49,17 @@ export function AuthCallbackClient({
 				sessionStorage.removeItem(WIX_OAUTH_DATA_KEY);
 				if (!rawOauth) {
 					setRedirectTo("/login");
-					throw new Error("Missing OAuth session data. Please try logging in again.");
+					throw new Error(
+						"Missing OAuth session data. Please try logging in again."
+					);
 				}
 				try {
 					oauthData = JSON.parse(rawOauth) as OauthData;
 				} catch {
 					setRedirectTo("/login");
-					throw new Error("Invalid OAuth session data. Please try logging in again.");
+					throw new Error(
+						"Invalid OAuth session data. Please try logging in again."
+					);
 				}
 			}
 

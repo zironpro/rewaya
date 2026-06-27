@@ -215,10 +215,16 @@ export function AuthProvider({
 				});
 
 				if (res.ok) {
-					const { authUrl, oauthData } = (await res.json()) as { authUrl?: string, oauthData?: OauthData };
+					const { authUrl, oauthData } = (await res.json()) as {
+						authUrl?: string;
+						oauthData?: OauthData;
+					};
 					if (authUrl) {
 						if (oauthData) {
-							sessionStorage.setItem(WIX_OAUTH_DATA_KEY, JSON.stringify(oauthData));
+							sessionStorage.setItem(
+								WIX_OAUTH_DATA_KEY,
+								JSON.stringify(oauthData)
+							);
 						}
 						window.location.href = authUrl;
 						return;

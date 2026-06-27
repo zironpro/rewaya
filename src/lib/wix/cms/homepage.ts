@@ -145,25 +145,30 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
 			.limit(20)
 			.find();
 
-		const sections: HomepageSection[] = [];
+		const validData = items
+			.map(
+				(item) =>
+					getCmsItemData(
+						item as Record<string, unknown>
+					) as HomepageSectionCmsRow
+			)
+			.filter((data) => data?.sectionKey);
 
-		for (const item of items) {
-			const raw = getCmsItemData(item as Record<string, unknown>);
-			const data = raw as HomepageSectionCmsRow;
-			if (!data?.sectionKey) continue;
-
-			const books = await resolveSectionBooks(data);
-			sections.push({
-				sectionKey: data.sectionKey,
-				title: data.title ?? formatSectionTitle(data.sectionKey),
-				subtitle: data.subtitle,
-				badge: mapBadge(data.badge),
-				books,
-				href: data.categorySlug
-					? `/shop?category=${encodeURIComponent(data.categorySlug.trim())}`
-					: undefined,
-			});
-		}
+		const sections: HomepageSection[] = await Promise.all(
+			validData.map(async (data) => {
+				const books = await resolveSectionBooks(data);
+				return {
+					sectionKey: data.sectionKey!,
+					title: data.title ?? formatSectionTitle(data.sectionKey!),
+					subtitle: data.subtitle,
+					badge: mapBadge(data.badge),
+					books,
+					href: data.categorySlug
+						? `/shop?category=${encodeURIComponent(data.categorySlug.trim())}`
+						: undefined,
+				};
+			})
+		);
 
 		return sections;
 	} catch {
@@ -255,25 +260,30 @@ export async function buildHomepageSectionsFromCategories(): Promise<
 > {
 	const categories = await getStoreCategories();
 	const categoryNameMap = await getCategoryNameMap();
-	const sections: HomepageSection[] = [];
+	const sections: HomepageSection[] = await Promise.all(
+		DEFAULT_HOMEPAGE_SECTION_LOOKUPS.map(async (def) => {
+			const match = findStoreCategory(categories, def.lookup);
+			const books = match
+				? await loadSectionBooks(
+						match.id,
+						def.limit,
+						categoryNameMap,
+						def.badge
+					)
+				: [];
 
-	for (const def of DEFAULT_HOMEPAGE_SECTION_LOOKUPS) {
-		const match = findStoreCategory(categories, def.lookup);
-		const books = match
-			? await loadSectionBooks(match.id, def.limit, categoryNameMap, def.badge)
-			: [];
-
-		sections.push({
-			sectionKey: def.sectionKey,
-			title: def.title,
-			subtitle: def.subtitle,
-			badge: def.badge,
-			books,
-			href: match
-				? `/shop?category=${encodeURIComponent(match.slug)}`
-				: undefined,
-		});
-	}
+			return {
+				sectionKey: def.sectionKey,
+				title: def.title,
+				subtitle: def.subtitle,
+				badge: def.badge,
+				books,
+				href: match
+					? `/shop?category=${encodeURIComponent(match.slug)}`
+					: undefined,
+			};
+		})
+	);
 
 	return sections;
 }
