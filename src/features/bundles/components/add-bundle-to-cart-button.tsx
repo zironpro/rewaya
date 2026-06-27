@@ -6,6 +6,7 @@ import { useOpenPanel } from "@openpanel/nextjs";
 
 import { dispatchCartUpdated } from "@/components/commerce/cart-events";
 import { Button } from "@/components/ui/button";
+import { toastManager } from "@/components/ui/toast";
 
 import { addBundle } from "@/features/cart/cart-actions";
 import { syncCartFromWixResponse } from "@/features/cart/cart-sdk";
@@ -63,6 +64,11 @@ export function AddBundleToCartButton({
 				if (error) {
 					setErrorMessage(error);
 					setStatus("error");
+					toastManager.add({
+						title: "Error",
+						description: error,
+						type: "error",
+					});
 					setTimeout(() => {
 						setStatus("idle");
 						setErrorMessage(null);
@@ -73,10 +79,15 @@ export function AddBundleToCartButton({
 					(cart as { lineItems?: unknown[] })?.lineItems?.length ?? 0;
 
 				if (lineCount === 0) {
-					setErrorMessage(
-						"Bundle was not added (cart has 0 items). Set bundleProductId in Wix BookBundles."
-					);
+					const errorMsg =
+						"Bundle was not added (cart has 0 items). Set bundleProductId in Wix BookBundles.";
+					setErrorMessage(errorMsg);
 					setStatus("error");
+					toastManager.add({
+						title: "Error",
+						description: errorMsg,
+						type: "error",
+					});
 					setTimeout(() => {
 						setStatus("idle");
 						setErrorMessage(null);
@@ -88,6 +99,11 @@ export function AddBundleToCartButton({
 					syncCartFromWixResponse(cart);
 				}
 				dispatchCartUpdated(cart);
+				toastManager.add({
+					title: "Bundle added to cart",
+					description: bundleSlug ?? "bundle",
+					type: "success",
+				});
 				// Track Meta AddToCart for bundle
 				if (typeof window !== "undefined") {
 					trackMetaEvent("AddToCart", {
@@ -108,8 +124,14 @@ export function AddBundleToCartButton({
 				});
 			})
 			.catch(() => {
-				setErrorMessage("Could not add bundle to cart. Please try again.");
+				const errorMsg = "Could not add bundle to cart. Please try again.";
+				setErrorMessage(errorMsg);
 				setStatus("error");
+				toastManager.add({
+					title: "Error",
+					description: errorMsg,
+					type: "error",
+				});
 				dispatchCartUpdated();
 				setTimeout(() => {
 					setStatus("idle");

@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 
 import MetaPixelProvider from "@/components/meta/MetaPixelProvider";
 import QueryProvider from "@/components/providers/query";
+import { ToastProvider } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { inter, playfair } from "@/assets/fonts";
@@ -47,7 +48,9 @@ export default function RootLayout({
 							<CartProvider>
 								<WishlistProvider>
 									<MetaPixelProvider>
-										<TooltipProvider delay={0}>{children}</TooltipProvider>
+										<TooltipProvider delay={0}>
+											<ToastProvider>{children}</ToastProvider>
+										</TooltipProvider>
 									</MetaPixelProvider>
 								</WishlistProvider>
 							</CartProvider>

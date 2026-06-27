@@ -10,6 +10,7 @@ import {
 } from "@/components/commerce/cart-events";
 import { StatusBanner } from "@/components/feedback/status-banner";
 import Breadcrumbs from "@/components/layout/Breadcrumbs";
+import { toastManager } from "@/components/ui/toast";
 
 import {
 	fetchCart,
@@ -104,9 +105,14 @@ export function CartView() {
 						quantity,
 					});
 					if (error || !cart) {
-						setActionError(
-							error ?? "Could not update quantity. Please try again."
-						);
+						const errorMsg =
+							error ?? "Could not update quantity. Please try again.";
+						setActionError(errorMsg);
+						toastManager.add({
+							title: "Error",
+							description: errorMsg,
+							type: "error",
+						});
 						await loadCart();
 						return;
 					}
@@ -114,7 +120,13 @@ export function CartView() {
 					applyCart(cart);
 					dispatchCartUpdated(cart);
 				} catch {
-					setActionError("Could not update quantity. Please try again.");
+					const errorMsg = "Could not update quantity. Please try again.";
+					setActionError(errorMsg);
+					toastManager.add({
+						title: "Error",
+						description: errorMsg,
+						type: "error",
+					});
 					await loadCart();
 				}
 			}, 300)
@@ -127,15 +139,28 @@ export function CartView() {
 		try {
 			const { cart, error } = await removeItem(null, itemId);
 			if (error || !cart) {
-				setActionError(error ?? "Could not remove item. Please try again.");
+				const errorMsg = error ?? "Could not remove item. Please try again.";
+				setActionError(errorMsg);
+				toastManager.add({
+					title: "Error",
+					description: errorMsg,
+					type: "error",
+				});
 				await loadCart();
 				return;
 			}
 			setActionError(null);
 			applyCart(cart);
 			dispatchCartUpdated(cart);
+			toastManager.add({ title: "Item removed", type: "success" });
 		} catch {
-			setActionError("Could not remove item. Please try again.");
+			const errorMsg = "Could not remove item. Please try again.";
+			setActionError(errorMsg);
+			toastManager.add({
+				title: "Error",
+				description: errorMsg,
+				type: "error",
+			});
 			await loadCart();
 		}
 	};

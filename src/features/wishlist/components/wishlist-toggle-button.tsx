@@ -5,6 +5,7 @@ import type { MouseEvent } from "react";
 import { Heart } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { toastManager } from "@/components/ui/toast";
 
 import { cn } from "@/lib/utils";
 
@@ -41,7 +42,21 @@ export function WishlistToggleButton({
 		e.stopPropagation();
 		onClick?.(e);
 		if (!productId) return;
-		await toggle(productId);
+
+		try {
+			await toggle(productId);
+			const willBeWishlisted = !wishlisted;
+			toastManager.add({
+				title: willBeWishlisted ? "Added to wishlist" : "Removed from wishlist",
+				type: "success",
+			});
+		} catch {
+			toastManager.add({
+				title: "Error",
+				description: "Failed to update wishlist",
+				type: "error",
+			});
+		}
 	};
 
 	if (variant === "row") {

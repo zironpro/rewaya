@@ -6,6 +6,7 @@ import { useOpenPanel } from "@openpanel/nextjs";
 
 import { dispatchCartUpdated } from "@/components/commerce/cart-events";
 import { Button } from "@/components/ui/button";
+import { toastManager } from "@/components/ui/toast";
 
 import { isAvailableForPurchase } from "@/domain/product/availability";
 import { addItem } from "@/features/cart/cart-actions";
@@ -74,6 +75,11 @@ export function AddToCartButton({
 			.then(({ error, cart }) => {
 				if (error) {
 					setStatus("error");
+					toastManager.add({
+						title: "Error",
+						description: error,
+						type: "error",
+					});
 					setTimeout(() => setStatus("idle"), 2500);
 					return;
 				}
@@ -81,6 +87,11 @@ export function AddToCartButton({
 					syncCartFromWixResponse(cart);
 				}
 				dispatchCartUpdated(cart);
+				toastManager.add({
+					title: "Added to cart",
+					description: productName,
+					type: "success",
+				});
 				// Track Meta AddToCart event
 				if (typeof window !== "undefined") {
 					trackMetaEvent("AddToCart", {
@@ -102,6 +113,11 @@ export function AddToCartButton({
 			.catch((e) => {
 				console.error("[cart] add to cart failed:", e);
 				setStatus("error");
+				toastManager.add({
+					title: "Error",
+					description: "Could not add to cart.",
+					type: "error",
+				});
 				dispatchCartUpdated();
 				setTimeout(() => setStatus("idle"), 2500);
 			});

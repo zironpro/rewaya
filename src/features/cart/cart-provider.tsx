@@ -11,6 +11,7 @@ import {
 } from "react";
 
 import { CART_UPDATED_EVENT } from "@/components/commerce/cart-events";
+import { toastManager } from "@/components/ui/toast";
 
 import { fetchCart } from "@/features/cart/cart-actions";
 import {
@@ -54,7 +55,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 				setSnapshot(readCartSnapshot());
 			}
 		} catch {
-			setError("Could not load your cart. Please refresh the page.");
+			const errorMsg = "Could not load your cart. Please refresh the page.";
+			setError(errorMsg);
+			toastManager.add({
+				title: "Error",
+				description: errorMsg,
+				type: "error",
+			});
 		} finally {
 			setIsLoading(false);
 		}
