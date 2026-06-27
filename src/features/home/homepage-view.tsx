@@ -56,6 +56,7 @@ export const HomepageView = ({
 					section.books.length > 0 ? (
 						<ProductStrip
 							books={section.books}
+							href={section.href}
 							key={section.sectionKey}
 							subtitle={section.subtitle}
 							title={section.title}
@@ -149,6 +150,7 @@ export const HomepageView = ({
 				(childrenSection.books.length > 0 ? (
 					<ProductStrip
 						books={childrenSection.books}
+						href={childrenSection.href}
 						subtitle={childrenSection.subtitle}
 						title={childrenSection.title}
 					/>

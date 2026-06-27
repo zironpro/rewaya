@@ -34,6 +34,7 @@ export interface HomepageSection {
 	subtitle?: string;
 	badge?: BookProps["badge"];
 	books: BookProps[];
+	href?: string;
 }
 
 export interface HomepageData {
@@ -158,6 +159,9 @@ export async function getHomepageSections(): Promise<HomepageSection[]> {
 				subtitle: data.subtitle,
 				badge: mapBadge(data.badge),
 				books,
+				href: data.categorySlug
+					? `/shop?category=${encodeURIComponent(data.categorySlug.trim())}`
+					: undefined,
 			});
 		}
 
@@ -265,6 +269,9 @@ export async function buildHomepageSectionsFromCategories(): Promise<
 			subtitle: def.subtitle,
 			badge: def.badge,
 			books,
+			href: match
+				? `/shop?category=${encodeURIComponent(match.slug)}`
+				: undefined,
 		});
 	}
 
@@ -329,11 +336,17 @@ export async function buildHomepageSectionsFromProducts(): Promise<
 
 	if (ranked.length === 0) {
 		const any = [...booksByCategoryId.entries()].slice(0, 5);
-		return any.map(([categoryId, books]) => ({
-			sectionKey: categoryId,
-			title: categoryNameMap.get(categoryId) ?? "Featured",
-			books,
-		}));
+		return any.map(([categoryId, books]) => {
+			const cat = categories.find((c) => c.id === categoryId);
+			return {
+				sectionKey: categoryId,
+				title: categoryNameMap.get(categoryId) ?? "Featured",
+				books,
+				href: cat
+					? `/shop?category=${encodeURIComponent(cat.slug)}`
+					: undefined,
+			};
+		});
 	}
 
 	return ranked.map((cat) => ({
@@ -341,6 +354,9 @@ export async function buildHomepageSectionsFromProducts(): Promise<
 		title: cat.name,
 		subtitle: cat.productCount ? `${cat.productCount} titles` : undefined,
 		books: booksByCategoryId.get(cat.id) ?? [],
+		href: cat.slug
+			? `/shop?category=${encodeURIComponent(cat.slug)}`
+			: undefined,
 	}));
 }
 

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Badge } from "@/components/ui/badge";
 import {
 	Carousel,
@@ -19,9 +21,15 @@ interface ProductStripProps {
 	title: string;
 	subtitle?: string;
 	books: BookProps[];
+	href?: string;
 }
 
-export function ProductStrip({ title, subtitle, books }: ProductStripProps) {
+export function ProductStrip({
+	title,
+	subtitle,
+	books,
+	href,
+}: ProductStripProps) {
 	return (
 		<section className="group/strip container mx-auto pb-16">
 			<Carousel
@@ -65,13 +73,26 @@ export function ProductStrip({ title, subtitle, books }: ProductStripProps) {
 						</CarouselItem>
 					))}
 					<CarouselItem className="flex basis-[240px] pl-6 md:basis-[280px]">
-						<div className="group flex h-full min-h-0 w-full cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30">
-							<div className="text-center">
-								<span className="font-bold text-sm text-stone-300 transition-colors group-hover:text-primary">
-									View All <br /> Collection
-								</span>
+						{href ? (
+							<Link
+								className="group flex h-full min-h-0 w-full cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30"
+								href={href}
+							>
+								<div className="text-center">
+									<span className="font-bold text-sm text-stone-300 transition-colors group-hover:text-primary">
+										View All <br /> Collection
+									</span>
+								</div>
+							</Link>
+						) : (
+							<div className="group flex h-full min-h-0 w-full cursor-pointer items-center justify-center border-2 border-stone-100 border-dashed transition-colors hover:border-primary/30">
+								<div className="text-center">
+									<span className="font-bold text-sm text-stone-300 transition-colors group-hover:text-primary">
+										View All <br /> Collection
+									</span>
+								</div>
 							</div>
-						</div>
+						)}
 					</CarouselItem>
 				</CarouselContent>
 			</Carousel>
