@@ -6,9 +6,15 @@ import Link from "next/link";
 import { BookOpen, ChevronDown, Menu, Star, Zap } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
+import type { StoreCategory } from "@/lib/wix/categories";
+
 import { CATEGORIES, MEGA_MENU_DATA } from "../data";
 
-export const CategoriesMenu = () => {
+export const CategoriesMenu = ({
+	categories,
+}: {
+	categories?: StoreCategory[];
+}) => {
 	const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
 	return (
 		<nav className="relative hidden overflow-visible border-stone-50 border-b bg-white lg:block">
@@ -59,26 +65,18 @@ export const CategoriesMenu = () => {
 						>
 							<div className="container py-12">
 								<div className="grid grid-cols-5 gap-12">
-									{MEGA_MENU_DATA.categories.map((group) => (
-										<div className="space-y-6" key={group.name}>
-											<h4 className="border-b pb-3 font-bold font-display text-lg text-secondary uppercase">
-												{group.name}
-											</h4>
-											<ul className="space-y-3">
-												{group.items.map((item) => (
-													<li key={item}>
-														<Link
-															className="group/item flex items-center gap-2 font-medium text-secondary transition-colors hover:text-primary"
-															href={`/shop?category=${encodeURIComponent(item.toLowerCase().replace(/ /g, "-"))}`}
-														>
-															<div className="h-1 w-1 rounded-full bg-secondary/30 transition-colors group-hover/item:bg-primary" />
-															{item}
-														</Link>
-													</li>
-												))}
-											</ul>
-										</div>
-									))}
+									<div className="col-span-4 grid grid-cols-4 gap-x-8 gap-y-3">
+										{categories?.map((cat) => (
+											<Link
+												className="group/item flex items-center gap-2 font-medium text-secondary text-sm transition-colors hover:text-primary"
+												href={cat.href}
+												key={cat.id}
+											>
+												<div className="h-1.5 w-1.5 rounded-full bg-secondary/30 transition-colors group-hover/item:bg-primary" />
+												{cat.name}
+											</Link>
+										))}
+									</div>
 
 									{/* Featured Section */}
 									<div className="col-span-1 border-stone-100 border-l pl-12">

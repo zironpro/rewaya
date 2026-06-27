@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/assets/logo";
 
 import { useCartCount } from "@/hooks/use-cart-count";
+import type { StoreCategory } from "@/lib/wix/categories";
 import { useWixAuth } from "@/lib/wix/provider";
 
 import { CategoriesMenu } from "./components/categories-menu";
@@ -22,6 +23,7 @@ interface NavbarProps {
 	showSearch?: boolean;
 	showActions?: boolean;
 	children?: React.ReactNode;
+	categories?: StoreCategory[];
 }
 
 export function Navbar({
@@ -29,6 +31,7 @@ export function Navbar({
 	showSearch = true,
 	showActions = true,
 	children,
+	categories,
 }: NavbarProps) {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -146,9 +149,10 @@ export function Navbar({
 			</div>
 
 			{/* Sub-Nav: Categories */}
-			{showCategories && <CategoriesMenu />}
+			{showCategories && <CategoriesMenu categories={categories} />}
 
 			<MobileNavigationDrawer
+				categories={categories}
 				onOpenChange={setIsMobileMenuOpen}
 				open={isMobileMenuOpen}
 			/>

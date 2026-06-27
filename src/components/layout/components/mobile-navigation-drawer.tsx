@@ -37,11 +37,13 @@ import {
 import { cn } from "@/lib/utils";
 import { useWixAuth } from "@/lib/wix/provider";
 
+import type { StoreCategory } from "@/lib/wix/categories";
 import { CATEGORIES, MEGA_MENU_DATA } from "../data";
 
 type MobileNavigationDrawerProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+	categories?: StoreCategory[];
 };
 
 function sectionTriggerClass() {
@@ -56,6 +58,7 @@ function sectionTriggerClass() {
 export function MobileNavigationDrawer({
 	open,
 	onOpenChange,
+	categories,
 }: MobileNavigationDrawerProps) {
 	const [departmentsOpen, setDepartmentsOpen] = useState(false);
 	const { isReady, isLoggedIn, memberDisplayName } = useWixAuth();
@@ -317,33 +320,20 @@ export function MobileNavigationDrawer({
 
 							<DrawerPanel className="pb-10" scrollFade={false}>
 								<div className="space-y-2 pt-1">
-									{MEGA_MENU_DATA.categories.map((group) => (
-										<Collapsible key={group.name}>
-											<CollapsibleTrigger className={sectionTriggerClass()}>
-												<span className="line-clamp-2 pr-2">{group.name}</span>
-												<ChevronDown
-													aria-hidden
-													className="size-4 shrink-0 in-aria-expanded:rotate-180 text-muted-foreground transition-transform duration-200"
-												/>
-											</CollapsibleTrigger>
-											<CollapsiblePanel>
-												<ul className="space-y-0.5 border-stone-100 border-l-2 border-l-primary/25 py-2 ps-4">
-													{group.items.map((item) => (
-														<li key={item}>
-															<Link
-																className="flex items-center gap-2 rounded-md py-2.5 ps-1 font-medium text-secondary text-sm transition-colors hover:text-primary"
-																href={`/shop?category=${encodeURIComponent(item.toLowerCase().replace(/ /g, "-"))}`}
-																onClick={closeAll}
-															>
-																<span className="h-1 w-1 shrink-0 rounded-full bg-secondary/35" />
-																{item}
-															</Link>
-														</li>
-													))}
-												</ul>
-											</CollapsiblePanel>
-										</Collapsible>
-									))}
+									<ul className="space-y-0.5 border-stone-100 border-l-2 border-l-primary/25 py-2 ps-4">
+										{categories?.map((cat) => (
+											<li key={cat.id}>
+												<Link
+													className="flex items-center gap-2 rounded-md py-2.5 ps-1 font-medium text-secondary text-sm transition-colors hover:text-primary"
+													href={cat.href}
+													onClick={closeAll}
+												>
+													<span className="h-1 w-1 shrink-0 rounded-full bg-secondary/35" />
+													{cat.name}
+												</Link>
+											</li>
+										))}
+									</ul>
 								</div>
 
 								<Link
