@@ -7,6 +7,7 @@ import { Grid, Home, type LucideIcon, ShoppingBag, User } from "lucide-react";
 
 import { useCartCount } from "@/hooks/use-cart-count";
 import { cn } from "@/lib/utils";
+import { useWixAuth } from "@/lib/wix/provider";
 
 type NavItem = {
 	label: string;
@@ -28,6 +29,7 @@ function isNavItemActive(pathname: string, item: NavItem): boolean {
 export function MobileBottomNav() {
 	const pathname = usePathname();
 	const cartCount = useCartCount();
+	const { isReady, isLoggedIn, memberDisplayName } = useWixAuth();
 
 	const navItems: NavItem[] = [
 		{ label: "Home", icon: Home, href: "/" },
@@ -39,9 +41,12 @@ export function MobileBottomNav() {
 		},
 		{ label: "Cart", icon: ShoppingBag, href: "/cart", badge: cartCount },
 		{
-			label: "Profile",
+			label:
+				isReady && isLoggedIn
+					? memberDisplayName.split(" ")[0] || "Profile"
+					: "Profile",
 			icon: User,
-			href: "/login",
+			href: isLoggedIn ? "/profile" : "/login",
 			activePrefixes: ["/login", "/signup", "/profile"],
 		},
 	];

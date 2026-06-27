@@ -28,7 +28,7 @@ export function MobileFilterDrawer({
 	return (
 		<Drawer onOpenChange={onOpenChange} open={open} position="bottom">
 			<DrawerPopup
-				className={cn("z-60 max-h-[85vh] lg:hidden", className)}
+				className={cn("z-[60] max-h-[85vh] lg:hidden", className)}
 				showBar
 				showCloseButton
 			>

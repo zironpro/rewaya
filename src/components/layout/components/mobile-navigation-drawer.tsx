@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/drawer";
 
 import { cn } from "@/lib/utils";
+import { useWixAuth } from "@/lib/wix/provider";
 
 import { CATEGORIES, MEGA_MENU_DATA } from "../data";
 
@@ -57,6 +58,7 @@ export function MobileNavigationDrawer({
 	onOpenChange,
 }: MobileNavigationDrawerProps) {
 	const [departmentsOpen, setDepartmentsOpen] = useState(false);
+	const { isReady, isLoggedIn, memberDisplayName } = useWixAuth();
 
 	useEffect(() => {
 		if (!open) {
@@ -74,7 +76,7 @@ export function MobileNavigationDrawer({
 	return (
 		<Drawer onOpenChange={onOpenChange} open={open} position="bottom">
 			<DrawerPopup
-				className="z-60 max-h-[88vh] lg:hidden"
+				className="z-[60] max-h-[88vh] lg:hidden"
 				showBar
 				showCloseButton
 			>
@@ -134,11 +136,13 @@ export function MobileNavigationDrawer({
 							</Link>
 							<Link
 								className="flex items-center gap-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 font-bold text-primary text-sm transition-colors hover:bg-primary/10"
-								href="/login"
+								href={isLoggedIn ? "/profile" : "/login"}
 								onClick={closeAll}
 							>
 								<User className="size-4 shrink-0" />
-								Sign in
+								{isReady && isLoggedIn
+									? memberDisplayName.split(" ")[0] || "Profile"
+									: "Sign in"}
 							</Link>
 						</div>
 
@@ -284,7 +288,7 @@ export function MobileNavigationDrawer({
 						position="bottom"
 					>
 						<DrawerPopup
-							className="z-70 max-h-[92vh] lg:hidden"
+							className="z-[70] max-h-[92vh] lg:hidden"
 							showBar
 							showCloseButton
 						>
