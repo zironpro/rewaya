@@ -28,7 +28,6 @@ export const WishlistView = () => {
 			return;
 		}
 		if (!wixClient) {
-			setBooks([]);
 			return;
 		}
 
@@ -60,7 +59,7 @@ export const WishlistView = () => {
 					<h1 className="mb-8 font-black font-serif text-3xl text-secondary sm:text-4xl md:text-5xl lg:text-6xl">
 						Saved <span className="font-normal italic">Stories</span>.
 					</h1>
-					{!isLoggedIn && productIds.length > 0 && (
+					{!loading && !isLoggedIn && productIds.length > 0 && (
 						<p className="mx-auto max-w-md text-sm text-stone-500">
 							<Link className="text-primary underline" href="/login">
 								Sign in

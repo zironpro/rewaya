@@ -42,9 +42,17 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 	const memberId = member?._id;
 	const mergedOnLogin = useRef(false);
 
-	const [productIds, setProductIds] = useState<string[]>(() =>
-		typeof window !== "undefined" ? readLocalWishlistIds() : []
-	);
+	const [productIds, setProductIds] = useState<string[]>([]);
+	const initialized = useRef(false);
+
+	useEffect(() => {
+		if (!initialized.current) {
+			initialized.current = true;
+			if (typeof window !== "undefined") {
+				setProductIds(readLocalWishlistIds());
+			}
+		}
+	}, []);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const persistLocal = useCallback((ids: string[]) => {

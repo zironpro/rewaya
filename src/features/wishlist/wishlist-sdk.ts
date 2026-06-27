@@ -117,10 +117,10 @@ export async function mergeGuestWishlistOnLogin(
 		if (!remoteIds.includes(productId)) {
 			try {
 				await addToMemberWishlist(client, memberId, productId);
-				remoteIds.push(productId);
 			} catch {
 				/* collection may not exist yet */
 			}
+			remoteIds.push(productId);
 		}
 	}
 

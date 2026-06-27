@@ -65,10 +65,18 @@ export function PriceFilter() {
 		if (sliderValue[0] !== normalized[0] || sliderValue[1] !== normalized[1]) {
 			setSliderValue(normalized);
 		}
-	}, [setSliderValue, sliderValue]);
+	}, [setSliderValue, searchParams]);
 
 	useEffect(() => {
-		const params = new URLSearchParams(searchParamsString);
+		const currentMin = parsePriceParam(searchParams.get("minPrice"), MIN_PRICE);
+		const currentMax = parsePriceParam(searchParams.get("maxPrice"), MAX_PRICE);
+
+		// Only push if the internal slider state differs from the URL parameters
+		if (sliderValue[0] === currentMin && sliderValue[1] === currentMax) {
+			return;
+		}
+
+		const params = new URLSearchParams(searchParams.toString());
 
 		if (sliderValue[0] !== MIN_PRICE) {
 			params.set("minPrice", sliderValue[0].toString());
@@ -84,12 +92,10 @@ export function PriceFilter() {
 
 		params.set("page", "1");
 		const nextSearch = params.toString();
+		const nextUrl = `${pathname}${nextSearch ? `?${nextSearch}` : ""}`;
 
-		if (nextSearch !== searchParamsString) {
-			const nextUrl = `${pathname}${nextSearch ? `?${nextSearch}` : ""}`;
-			router.push(nextUrl);
-		}
-	}, [sliderValue, pathname, router, searchParamsString]);
+		router.push(nextUrl, { scroll: false });
+	}, [sliderValue, pathname, router, searchParams]);
 
 	const formatPrice = (price: number) =>
 		price === MAX_PRICE
