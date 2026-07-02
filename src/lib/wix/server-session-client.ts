@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 import { items } from "@wix/data";
-import { currentCart } from "@wix/ecom";
+import { checkout, currentCart } from "@wix/ecom";
 import { redirects } from "@wix/redirects";
 import { createClient, OAuthStrategy, type Tokens } from "@wix/sdk";
 import {
@@ -39,6 +39,7 @@ function createSessionClient(clientId: string, tokens?: Tokens) {
 			currentCart,
 			redirects,
 			items,
+			checkout,
 		},
 		auth: OAuthStrategy({
 			clientId,

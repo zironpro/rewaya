@@ -358,6 +358,26 @@ export async function createCheckoutUrlServer(
 
 			checkoutDebug("checkout created", { checkoutId, channel });
 
+			if (checkoutId) {
+				try {
+					await client.checkout.updateCheckout(checkoutId, {
+						shippingInfo: {
+							shippingDestination: {
+								address: {
+									country: "AE",
+								},
+							},
+						},
+					});
+					checkoutDebug("checkout region defaulted to AE", { checkoutId });
+				} catch (updateError) {
+					console.error(
+						"[checkout] failed to set default region:",
+						updateError
+					);
+				}
+			}
+
 			const { redirectSession } = await client.redirects.createRedirectSession({
 				ecomCheckout: { checkoutId },
 				callbacks,
