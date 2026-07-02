@@ -146,6 +146,7 @@ export function extractSummary(
 					subtotal?: { formattedConvertedAmount?: string };
 					discount?: { formattedConvertedAmount?: string };
 					total?: { formattedConvertedAmount?: string };
+					shipping?: { amount?: string; formattedConvertedAmount?: string };
 				};
 				appliedDiscounts?: Array<{
 					discountName?: string;
@@ -177,7 +178,15 @@ export function extractSummary(
 	const parsedTotal = parseCurrencyAmount(total);
 
 	let shipping: string | undefined;
-	if (typeof parsedSubtotal === "number" && typeof parsedTotal === "number") {
+	const wixShipping = ps?.shipping;
+
+	if (wixShipping) {
+		const amt = Number(wixShipping.amount || "0");
+		shipping = amt === 0 ? "Free" : wixShipping.formattedConvertedAmount;
+	} else if (
+		typeof parsedSubtotal === "number" &&
+		typeof parsedTotal === "number"
+	) {
 		const shippingAmount = parsedTotal - parsedSubtotal + (parsedDiscount ?? 0);
 		if (!Number.isNaN(shippingAmount)) {
 			shipping =

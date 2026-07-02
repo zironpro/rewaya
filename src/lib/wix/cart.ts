@@ -297,10 +297,32 @@ export async function addBundleToCartServer(
 	});
 }
 
+async function applyEstimatedTotals(
+	client: WixSessionClient,
+	cart: unknown
+): Promise<unknown> {
+	if (!cart || typeof cart !== "object") return cart;
+	const c = cart as { lineItems?: unknown[]; priceSummary?: unknown };
+	if (!c.lineItems?.length) return cart;
+
+	try {
+		const response = await client.currentCart.estimateCurrentCartTotals({
+			shippingAddress: { country: "AE" },
+		});
+		if (response?.priceSummary) {
+			c.priceSummary = response.priceSummary;
+		}
+	} catch (err) {
+		console.error("[cart] Failed to estimate totals:", err);
+	}
+	return cart;
+}
+
 export async function getCartServer() {
 	return withWixServerSessionClient(async (client) => {
 		try {
-			return await client.currentCart.getCurrentCart();
+			const cart = await client.currentCart.getCurrentCart();
+			return await applyEstimatedTotals(client, cart);
 		} catch (error) {
 			if (isOwnedCartNotFound(error)) return undefined;
 			throw error;
@@ -316,7 +338,7 @@ export async function updateCartLineQuantityServer(
 		const { cart } = await client.currentCart.updateCurrentCartLineItemQuantity(
 			[{ _id: lineId, quantity }]
 		);
-		return cart;
+		return await applyEstimatedTotals(client, cart);
 	});
 }
 
@@ -324,7 +346,7 @@ export async function removeFromCartServer(lineIds: string[]) {
 	return withWixServerSessionClient(async (client) => {
 		const { cart } =
 			await client.currentCart.removeLineItemsFromCurrentCart(lineIds);
-		return cart;
+		return await applyEstimatedTotals(client, cart);
 	});
 }
 

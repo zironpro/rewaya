@@ -57,7 +57,7 @@ export function CartOrderSummary({
 					) : null}
 					<div className="flex justify-between text-muted-foreground text-sm">
 						<span>Shipping</span>
-						<span>{summary.shipping ?? "Free"}</span>
+						<span>{summary.shipping ?? "Calculated at checkout"}</span>
 					</div>
 				</div>
 
