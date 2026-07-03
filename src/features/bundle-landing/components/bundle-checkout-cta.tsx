@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 import { useRouter } from "next/navigation";
 
@@ -52,14 +52,28 @@ export function BundleCheckoutCta({
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [debugDetails, setDebugDetails] = useState<string | null>(null);
 	const [isPending, startCheckout] = useTransition();
+	const [isRestored, setIsRestored] = useState(false);
+
+	useEffect(() => {
+		const onPageShow = (event: PageTransitionEvent) => {
+			if (event.persisted) {
+				setStatus("idle");
+				setIsRestored(true);
+			}
+		};
+		window.addEventListener("pageshow", onPageShow);
+		return () => window.removeEventListener("pageshow", onPageShow);
+	}, []);
 
 	const canCheckout = Boolean(bundle.checkoutCatalogItemId);
-	const isDisabled = !canCheckout || status === "loading" || isPending;
+	const isLoading = (status === "loading" || isPending) && !isRestored;
+	const isDisabled = !canCheckout || isLoading;
 
 	const handleCheckout = () => {
 		if (!canCheckout) return;
 
 		setStatus("loading");
+		setIsRestored(false);
 		setErrorMessage(null);
 		setDebugDetails(null);
 
@@ -145,7 +159,7 @@ export function BundleCheckoutCta({
 				variant="secondary"
 			>
 				<ShoppingBag className="size-4" />
-				{status === "loading" || isPending ? "Redirecting…" : label}
+				{isLoading ? "Redirecting…" : label}
 			</Button>
 			{status === "error" && errorMessage ? (
 				<p className="text-destructive text-xs">{errorMessage}</p>

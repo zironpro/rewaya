@@ -2,17 +2,15 @@
 
 import Image from "next/image";
 
-import { ShoppingBag } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 
 import { CurrencyIcon } from "@/assets/icons/currency";
 
 import type { BundlePresentation } from "@/domain/bundle";
 
+import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { CountdownTimer } from "./countdown-timer";
 import { BookMosaic } from "./ui/book-mosic";
-import { CheckoutButton } from "./ui/checkout-button";
 
 interface HeroSectionProps {
 	bundle: BundlePresentation;
@@ -20,7 +18,6 @@ interface HeroSectionProps {
 
 export function HeroSection({
 	bundle,
-	productVariantId,
 }: HeroSectionProps & { productVariantId?: string | null }) {
 	return (
 		<section
@@ -54,14 +51,13 @@ export function HeroSection({
 								</Badge>
 							</div>
 						</div>
-						<CheckoutButton
-							className="btn-shimmer mx-auto w-fit"
-							productVariantId={productVariantId}
+						<BundleCheckoutCta
+							bundle={bundle}
+							className="mx-auto w-fit"
+							label="Get your bundle now"
+							mode="checkout"
 							size="lg"
-							variant="secondary"
-						>
-							<ShoppingBag className="size-4" /> Get your bundle now
-						</CheckoutButton>
+						/>
 					</div>
 
 					<div className="relative order-1 mb-6 aspect-5/3 w-full max-w-2xl overflow-hidden rounded-md border border-card/10 shadow-md sm:order-0 sm:mt-10 sm:mb-0">

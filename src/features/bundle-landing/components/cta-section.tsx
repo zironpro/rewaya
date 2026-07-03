@@ -1,11 +1,9 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
-
 import type { BundlePresentation } from "@/domain/bundle";
 
+import { BundleCheckoutCta } from "./bundle-checkout-cta";
 import { CountdownTimer } from "./countdown-timer";
-import { CheckoutButton } from "./ui/checkout-button";
 
 interface CtaSectionProps {
 	bundle: BundlePresentation;
@@ -13,7 +11,6 @@ interface CtaSectionProps {
 
 export function CtaSection({
 	bundle,
-	productVariantId,
 }: CtaSectionProps & { productVariantId?: string | null }) {
 	return (
 		<section
@@ -43,14 +40,12 @@ export function CtaSection({
 				<div className="mx-auto mt-6 mb-4 flex max-w-xs justify-center">
 					<CountdownTimer slug={bundle.slug} variant="dark" />
 				</div>
-				<CheckoutButton
-					className="btn-shimmer"
-					productVariantId={productVariantId}
+				<BundleCheckoutCta
+					bundle={bundle}
+					label="Get your bundle now"
+					mode="checkout"
 					size="lg"
-					variant="secondary"
-				>
-					<ShoppingBag className="size-4" /> Get your bundle now
-				</CheckoutButton>
+				/>
 				<p className="mt-4 text-white/55 text-xs">
 					AED {bundle.price} · List AED {bundle.originalPrice} · Save AED{" "}
 					{bundle.savingsAmount}
