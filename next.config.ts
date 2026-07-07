@@ -18,6 +18,15 @@ const nextConfig: NextConfig = {
 			{ hostname: "lh3.googleusercontent.com" },
 		],
 	},
+	async redirects() {
+		return [
+			{
+				source: "/product-page/:slug",
+				destination: "/product/:slug",
+				permanent: true,
+			},
+		];
+	},
 };
 
 export default nextConfig;
