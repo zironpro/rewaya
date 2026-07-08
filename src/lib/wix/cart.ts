@@ -416,19 +416,19 @@ export async function createCheckoutUrlServer(
 		};
 
 		try {
-			return await tryCheckout(currentCart.ChannelType.OTHER_PLATFORM);
+			return await tryCheckout(currentCart.ChannelType.WEB);
 		} catch (primaryError) {
-			checkoutDebug("OTHER_PLATFORM failed, retry WEB", {
+			checkoutDebug("WEB failed, retry OTHER_PLATFORM", {
 				error: serializeWixError(primaryError),
 			});
 			try {
-				return await tryCheckout(currentCart.ChannelType.WEB);
-			} catch (webError) {
-				console.error("[checkout] createCheckoutUrlServer failed:", webError);
-				checkoutDebug("WEB channel failed", {
-					error: serializeWixError(webError),
+				return await tryCheckout(currentCart.ChannelType.OTHER_PLATFORM);
+			} catch (otherError) {
+				console.error("[checkout] createCheckoutUrlServer failed:", otherError);
+				checkoutDebug("OTHER_PLATFORM channel failed", {
+					error: serializeWixError(otherError),
 				});
-				throw webError;
+				throw otherError;
 			}
 		}
 	});
