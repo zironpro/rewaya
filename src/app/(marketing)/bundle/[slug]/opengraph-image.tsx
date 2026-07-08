@@ -4,6 +4,7 @@ import { getBundlePresentation } from "@/lib/wix/bundles";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const revalidate = 60;
 export const alt = "Bundle offer";
 
 function fallback() {
@@ -51,7 +52,7 @@ export default async function Image({
 	try {
 		const css = await fetch(
 			"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@400&display=swap",
-			{ next: { revalidate: 86_400 } }
+			{ next: { revalidate: 900 } }
 		).then((r) => r.text());
 		const playfairUrl = css.match(
 			/font-family: 'Playfair Display'[\s\S]*?url\((https:\/\/fonts\.gstatic\.com[^)]+)\)/

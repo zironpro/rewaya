@@ -9,7 +9,7 @@ import { BundleLandingPage } from "@/features/bundle-landing/BundleLandingPage";
 import { getBundlePresentation, getBundlesIndex } from "@/lib/wix/bundles";
 import { getMarketingBundleStaticParams } from "@/lib/wix/static-params";
 
-export const revalidate = 86_400;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
 	return getMarketingBundleStaticParams();

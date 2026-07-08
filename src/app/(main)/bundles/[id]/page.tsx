@@ -5,7 +5,7 @@ import { getBundleBySlug, getBundlesIndex } from "@/lib/wix/bundles";
 import { getShopBooks } from "@/lib/wix/products";
 import { getBundleStaticParams } from "@/lib/wix/static-params";
 
-export const revalidate = 86_400;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
 	return getBundleStaticParams();

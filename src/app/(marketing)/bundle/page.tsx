@@ -5,7 +5,7 @@ import { buildBundlesIndexPageData } from "@/features/bundle-landing/lib/bundles
 import { BundleLandingPageView } from "@/features/bundles/bundle-landing-page-view";
 import { getBundlesIndex } from "@/lib/wix/bundles";
 
-export const revalidate = 86_400;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
 	const bundles = await getBundlesIndex();

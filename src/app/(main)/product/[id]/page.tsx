@@ -8,7 +8,7 @@ import {
 } from "@/lib/wix/products";
 import { getProductStaticParams } from "@/lib/wix/static-params";
 
-export const revalidate = 86_400;
+export const revalidate = 60;
 
 export async function generateStaticParams() {
 	return getProductStaticParams();

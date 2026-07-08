@@ -43,6 +43,15 @@ function createWixClient() {
 		headers: {
 			"wix-site-id": WIX_SITE_ID,
 		},
+		fetch: (url, request) =>
+			fetch(url, {
+				...request,
+				cache: "force-cache",
+				next: {
+					revalidate: 60,
+					tags: ["wix", "products"],
+				},
+			}),
 	});
 }
 
