@@ -264,27 +264,62 @@ async function queryV1ProductsViaSdk(options: {
 	const client = await getWixClient();
 	const limit = Math.min(Math.max(1, options.limit), MAX_WIX_LIMIT);
 	const offset = Math.max(0, options.offset);
-	let query = client.products.queryProducts();
 
-	if (options.collectionId) {
-		query = query.hasSome("collectionIds", [options.collectionId]);
-	}
+	const buildBaseQuery = () => {
+		let query = client.products.queryProducts();
+		if (options.collectionId) {
+			query = query.hasSome("collectionIds", [options.collectionId]);
+		}
+		if (options.slugs?.length === 1) {
+			query = query.eq("slug", options.slugs[0]);
+		} else if (options.ids?.length) {
+			query = query.in("_id", options.ids);
+		}
+		if (options.minPrice !== undefined) {
+			query = query.ge("priceData.price", options.minPrice);
+		}
+		if (options.maxPrice !== undefined) {
+			query = query.le("priceData.price", options.maxPrice);
+		}
+		return query;
+	};
+
 	if (options.search?.trim()) {
-		query = query.startsWith("name", options.search.trim());
-	}
-	if (options.slugs?.length === 1) {
-		query = query.eq("slug", options.slugs[0]);
-	} else if (options.ids?.length) {
-		query = query.in("_id", options.ids);
-	}
-	if (options.minPrice !== undefined) {
-		query = query.ge("priceData.price", options.minPrice);
-	}
-	if (options.maxPrice !== undefined) {
-		query = query.le("priceData.price", options.maxPrice);
+		const searchStr = options.search.trim();
+		const [nameRes, skuRes] = await Promise.all([
+			buildBaseQuery()
+				.startsWith("name", searchStr)
+				.limit(limit)
+				.skip(offset)
+				.find(),
+			buildBaseQuery()
+				.startsWith("sku", searchStr)
+				.limit(limit)
+				.skip(offset)
+				.find(),
+		]);
+
+		const itemsMap = new Map<string, V1Product>();
+		for (const item of nameRes.items) {
+			const id = item._id || (item as unknown as { id?: string | number }).id;
+			if (id) itemsMap.set(String(id), item as V1Product);
+		}
+		for (const item of skuRes.items) {
+			const id = item._id || (item as unknown as { id?: string | number }).id;
+			if (id && !itemsMap.has(String(id)))
+				itemsMap.set(String(id), item as V1Product);
+		}
+
+		const mergedItems = Array.from(itemsMap.values()).slice(0, limit);
+		const totalCount = (nameRes.totalCount ?? 0) + (skuRes.totalCount ?? 0);
+
+		return { items: mergedItems, totalCount };
 	}
 
-	const { items, totalCount } = await query.limit(limit).skip(offset).find();
+	const { items, totalCount } = await buildBaseQuery()
+		.limit(limit)
+		.skip(offset)
+		.find();
 	return { items: items as V1Product[], totalCount: totalCount ?? 0 };
 }
 
